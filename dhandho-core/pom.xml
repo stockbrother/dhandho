@@ -6,7 +6,7 @@
 
     <groupId>cc.dhandho</groupId>
     <artifactId>dhandho-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
     <name>Dhandho Core</name>
     <description></description>

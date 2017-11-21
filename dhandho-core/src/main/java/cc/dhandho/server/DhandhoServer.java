@@ -41,11 +41,18 @@ public class DhandhoServer {
 	}
 
 	public void start() {
+		if(LOG.isInfoEnabled()) {
+			LOG.info("start...");
+		}
 		try {
 			this.doStart();
 		} catch (IOException e) {
 			throw RtException.toRtException(e);
 		}
+		if(LOG.isInfoEnabled()) {
+			LOG.info("start done");
+		}
+		
 	}
 
 	private void doStart() throws IOException {

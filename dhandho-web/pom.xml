@@ -37,11 +37,16 @@
 	</dependencyManagement>
 
 	<dependencies>
-	
+		<dependency>
+			<groupId>cc.dhandho</groupId>
+			<artifactId>dhandho-core</artifactId>
+			<version>0.0.1</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.github.gwtd3</groupId>
 			<artifactId>gwt-d3-api</artifactId>
-			 <version>1.3.0</version>
+			<version>1.3.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
