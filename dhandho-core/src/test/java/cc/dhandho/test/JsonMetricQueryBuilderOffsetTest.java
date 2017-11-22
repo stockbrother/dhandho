@@ -27,7 +27,7 @@ import cc.dhandho.importer.GDBWashedFileValueLoader;
 import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
-
+@Ignore
 public class JsonMetricQueryBuilderOffsetTest {
 
 	private Logger LOG = LoggerFactory.getLogger(JsonMetricQueryBuilderOffsetTest.class);

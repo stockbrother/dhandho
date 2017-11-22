@@ -4,6 +4,7 @@ import java.io.StringWriter;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import cc.dhandho.AppContextImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.CorpChartJsonHandler2;
 
+@Ignore
 public class CorpChartHandler2Test {
 
 	private Logger LOG = LoggerFactory.getLogger(CorpChartHandler2Test.class);
@@ -30,6 +32,7 @@ public class CorpChartHandler2Test {
 
 	@Before
 	public void setUp() {
+
 		String dbUrl = "remote:localhost";
 		String dbName = "test";
 		String dbUser = "admin";
@@ -42,7 +45,7 @@ public class CorpChartHandler2Test {
 
 	@After
 	public void tearDown() {
-		
+
 		app.destroy();
 	}
 

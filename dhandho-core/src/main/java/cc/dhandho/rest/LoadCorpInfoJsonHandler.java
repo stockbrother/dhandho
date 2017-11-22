@@ -16,6 +16,12 @@ import cc.dhandho.importer.SseCorpInfo2Loader;
 import cc.dhandho.importer.SseCorpInfoLoader;
 import cc.dhandho.importer.SzseCorpInfoLoader;
 
+/**
+ * Import corp info from class path to DB.
+ * 
+ * @author Wu
+ *
+ */
 public class LoadCorpInfoJsonHandler extends AppContextAwareJsonHandler {
 
 	@Override
@@ -27,11 +33,11 @@ public class LoadCorpInfoJsonHandler extends AppContextAwareJsonHandler {
 			SseCorpInfoLoader l1 = new SseCorpInfoLoader();
 			l1.setDb(db);
 			l1.execute(getResource("cc/dhandho/load/sse.corplist.csv"));
-			
+
 			SseCorpInfo2Loader l2 = new SseCorpInfo2Loader();
 			l2.setDb(db);
 			l2.execute(getResource("cc/dhandho/load/sse.corplist2.csv"));
-			
+
 			SzseCorpInfoLoader l3 = new SzseCorpInfoLoader();
 			l3.setDb(db);
 			l3.execute(getResource("cc/dhandho/load/szse.corplist.csv"));

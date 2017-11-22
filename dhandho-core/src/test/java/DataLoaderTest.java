@@ -1,18 +1,18 @@
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.AppContext;
 import cc.dhandho.AppContextImpl;
-import cc.dhandho.Quarter;
 import cc.dhandho.graphdb.DbConfig;
-import cc.dhandho.importer.GDBWashedFileSchemaLoader;
-import cc.dhandho.importer.GDBWashedFileValueLoader;
 import cc.dhandho.util.DbInitUtil;
 
 //http://orientdb.com/docs/3.0.x/fiveminute/java-3.html
+
+@Ignore
 public class DataLoaderTest {
 	// static String host = "192.168.110.128";
 	static String url = "remote:localhost";

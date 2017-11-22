@@ -2,6 +2,9 @@ package cc.dhandho.util;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OType;
@@ -19,7 +22,15 @@ public class DbInitUtil {
 	public static String V_CORP_REPORT = "CorpReport";
 
 	public static String V_CORP_INFO = "CorpInfo";
+	
+	private static final Logger LOG = LoggerFactory.getLogger(DbInitUtil.class);
+	
 
+	/**
+	 * Create Schema If not done before on the DB provided.
+	 * 
+	 * @param app
+	 */
 	public static void initDb(AppContext app) {
 		ODatabaseSession ds = app.openDB();
 
@@ -68,8 +79,11 @@ public class DbInitUtil {
 		}
 
 		int dataVersion = objO.getProperty("dataVersion");
+		LOG.info("current data version:" + dataVersion);
+		
 		switch (dataVersion) {
 		case 0:
+			LOG.info("upgrade data version...");
 			// Create Vertex
 			OClass alias = db.createClass("AliasInfo", "V");
 			alias.createProperty("columnIndex", OType.INTEGER);
@@ -109,10 +123,10 @@ public class DbInitUtil {
 			// Save version info
 			objO.setProperty("dataVersion", 1);
 			objO.save();
-
+			LOG.info("data version now is :" + 1);
 			break;
 		case 1:
-
+			LOG.info("data version is 1,no need to upgrade");
 			break;
 		default:
 			throw new RuntimeException("todo");

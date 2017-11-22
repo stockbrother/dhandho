@@ -24,7 +24,7 @@ import cc.dhandho.EnvUtil;
 /**
  * This code collect data from http site and save to the host folder.
  *
- * @author wuzhen
+ * @author Wu
  *
  */
 public abstract class HttpDataCollector {

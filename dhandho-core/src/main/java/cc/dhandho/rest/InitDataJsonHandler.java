@@ -14,6 +14,12 @@ import com.google.gson.stream.JsonWriter;
 import au.com.bytecode.opencsv.CSVReader;
 import cc.dhandho.RtException;
 
+/**
+ * Client Init Handler,load metrics define from csv files.
+ * 
+ * @author Wu
+ *
+ */
 public class InitDataJsonHandler implements JsonHandler {
 
 	@Override

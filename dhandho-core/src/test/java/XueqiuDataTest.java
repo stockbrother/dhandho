@@ -1,4 +1,5 @@
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import cc.dhandho.xueqiu.XueqiuDataWasher;
@@ -6,6 +7,7 @@ import cc.dhandho.xueqiu.XueqiuDataWasher;
 import java.io.File;
 import java.nio.charset.Charset;
 
+@Ignore
 public class XueqiuDataTest {
 
     @Test

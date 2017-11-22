@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
@@ -19,6 +20,8 @@ import cc.dhandho.AppContextImpl;
 import cc.dhandho.graphdb.DbConfig;
 
 //http://orientdb.com/docs/3.0.x/fiveminute/java-3.html
+
+@Ignore
 public class MyMain {
 	static String url = "remote:192.168.110.128";
 	static String dbName = "test";

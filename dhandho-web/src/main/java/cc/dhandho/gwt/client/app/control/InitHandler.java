@@ -13,7 +13,12 @@ import com.google.gwt.json.client.JSONParser;
 import cc.dhandho.gwt.client.app.InitDataJson;
 import cc.dhandho.gwt.client.app.view.MainPanel;
 import cc.dhandho.gwt.client.core.Handlers;
-
+/**
+ * Called when the client is started.
+ * 
+ * @author Wu
+ *
+ */
 public class InitHandler {
 	private static Logger LOG = Logger.getLogger(InitHandler.class.getName());
 	Handlers handlers;

@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.server.DhandhoServer;
-
+/**
+ * 
+ * @author Wu
+ *
+ */
 public class JsonHandlersServlet extends HttpServlet {
 
 	// private static final Logger LOG = LoggerFactory.getLogger();

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * @author wuzhen
+ * @author Wu
  * 
  */
 public class DateUtil {

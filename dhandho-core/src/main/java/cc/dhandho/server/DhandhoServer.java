@@ -25,6 +25,11 @@ import cc.dhandho.rest.LoadCorpInfoJsonHandler;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
+/**
+ * 
+ * @author wuzhen
+ *
+ */
 public class DhandhoServer {
 	// private static final Logger LOG = LoggerFactory.getLogger();
 	private static final Logger LOG = LoggerFactory.getLogger(DhandhoServer.class);
@@ -41,7 +46,7 @@ public class DhandhoServer {
 	}
 
 	public void start() {
-		if(LOG.isInfoEnabled()) {
+		if (LOG.isInfoEnabled()) {
 			LOG.info("start...");
 		}
 		try {
@@ -49,10 +54,10 @@ public class DhandhoServer {
 		} catch (IOException e) {
 			throw RtException.toRtException(e);
 		}
-		if(LOG.isInfoEnabled()) {
+		if (LOG.isInfoEnabled()) {
 			LOG.info("start done");
 		}
-		
+
 	}
 
 	private void doStart() throws IOException {
@@ -78,10 +83,12 @@ public class DhandhoServer {
 		// new GDBWashedFileValueLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 	}
 
+	// TODO add data version for corpInfo and do not load twice for the same version
+	// of data.
 	public void loadCorpInfo() throws IOException {
-		
+
 		LOG.warn("loading corp info may take too much time and block the current thread for a while,please wait ...");
-		
+
 		String jsonS = ("{" //
 				+ "}" // end of message
 		).replaceAll("'", "\"");

@@ -5,6 +5,7 @@ import java.io.StringWriter;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import cc.dhandho.rest.LoadCorpInfoJsonHandler;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
+@Ignore
 public class CorpInfoLoadJsonHandlerTest {
 
 	private Logger LOG = LoggerFactory.getLogger(CorpInfoLoadJsonHandlerTest.class);

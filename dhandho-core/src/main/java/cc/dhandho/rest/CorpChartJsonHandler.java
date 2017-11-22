@@ -11,6 +11,11 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import cc.dhandho.AppContext;
 import cc.dhandho.DbAliasInfos;
 
+/**
+ * 
+ * @author Wu
+ *
+ */
 public class CorpChartJsonHandler extends  AppContextAwareJsonHandler {
 
 	@Override

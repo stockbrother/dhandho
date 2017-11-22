@@ -4,6 +4,7 @@ import java.io.StringWriter;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,9 @@ import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.AppContext;
-import cc.dhandho.rest.CorpChartJsonHandler2;
 import cc.dhandho.rest.JFreeChartHandler;
-
+import cc.dhandho.test.BaseTest;
+@Ignore
 public class JFreeChartHandlerTest {
 
 	private Logger LOG = LoggerFactory.getLogger(JFreeChartHandlerTest.class);
@@ -44,25 +44,24 @@ public class JFreeChartHandlerTest {
 				+ "'corpId':'a'"//
 				+ "}"//
 		).replace('\'', '\"');
-		
+
 		System.out.println(jsonS);
 
 		JsonReader reader = GSON.newJsonReader(new StringReader(jsonS));
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = GSON.newJsonWriter(sWriter);
 
-		new JFreeChartHandler().execute(GSON, reader, writer);		
-		
-		
+		new JFreeChartHandler().execute(GSON, reader, writer);
+
 		System.out.println(sWriter.getBuffer());
-		
+
 		JsonReader reader2 = GSON.newJsonReader(new StringReader(sWriter.getBuffer().toString()));
-		
-		JsonElement element = Streams.parse(reader2);		
+
+		JsonElement element = Streams.parse(reader2);
 		JsonObject object = element.getAsJsonObject();
 		String svgString = object.get("svgString").getAsString();
 		System.out.println(svgString);
-		
+
 	}
-	
+
 }

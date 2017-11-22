@@ -6,6 +6,7 @@ import java.io.StringWriter;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ import cc.dhandho.importer.GDBWashedFileValueLoader;
 import cc.dhandho.rest.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
-
+@Ignore
 public class SvgChartMetricQueryBuilderTest {
 
 	private Logger LOG = LoggerFactory.getLogger(SvgChartMetricQueryBuilderTest.class);
