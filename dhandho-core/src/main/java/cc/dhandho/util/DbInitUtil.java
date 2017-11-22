@@ -44,7 +44,7 @@ public class DbInitUtil {
 
 	}
 
-	private static OVertex getMetaInfo(ODatabaseSession db) {
+	public static OVertex getMetaInfo(ODatabaseSession db) {
 		String className = "MetaInfo";
 		OClass clazz = db.getClass(className);
 		if (clazz == null) {

@@ -13,17 +13,15 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.AppContext;
 import cc.dhandho.AppContextImpl;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.JsonHandlers;
-import cc.dhandho.rest.LoadCorpInfoJsonHandler;
+import cc.dhandho.rest.DbSessionTL;
 import cc.dhandho.util.DbInitUtil;
-import cc.dhandho.util.JsonUtil;
 
 /**
  * 
@@ -71,7 +69,25 @@ public class DhandhoServer {
 
 		handlers = new JsonHandlers(app);
 		DbInitUtil.initDb(app);
-		loadCorpInfo();
+
+		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
+
+		ODatabaseSession db = DbSessionTL.get();
+		if (db == null) {
+			db = app.openDB();
+			DbSessionTL.set(db);
+		}
+
+		db.begin();
+		try {
+			dbu.upgrade(db);
+			db.commit();
+		} catch (Throwable e) {
+			db.rollback();
+			throw RtException.toRtException(e);
+		} finally {
+
+		}
 		//
 
 		// TODO
@@ -85,23 +101,6 @@ public class DhandhoServer {
 
 	// TODO add data version for corpInfo and do not load twice for the same version
 	// of data.
-	public void loadCorpInfo() throws IOException {
-
-		LOG.warn("loading corp info may take too much time and block the current thread for a while,please wait ...");
-
-		String jsonS = ("{" //
-				+ "}" // end of message
-		).replaceAll("'", "\"");
-
-		JsonReader reader = JsonUtil.toJsonReader(jsonS);
-		StringWriter sWriter = new StringWriter();
-		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
-		LoadCorpInfoJsonHandler h = app.newInstance(LoadCorpInfoJsonHandler.class);
-		h.execute(GSON, reader, writer);
-		LOG.info("done of loading corp info.");
-		LOG.info(sWriter.getBuffer().toString());
-
-	}
 
 	private Reader traceReader(Reader reader) throws IOException {
 		StringWriter swriter = new StringWriter();

@@ -5,9 +5,14 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 public abstract class AbstractHeaderCsvFileHandler {
+
+	public static final Logger LOG = LoggerFactory.getLogger(AbstractHeaderCsvFileHandler.class);
 
 	public void execute(Reader freader) {
 		try {
@@ -26,7 +31,9 @@ public abstract class AbstractHeaderCsvFileHandler {
 					if (next == null) {
 						break;
 					}
-
+					if (LOG.isInfoEnabled()) {
+						LOG.info("processing line:" + next);
+					}
 					handleRow(next, colIndexMap);
 
 				}

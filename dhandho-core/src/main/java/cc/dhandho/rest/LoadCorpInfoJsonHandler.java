@@ -27,25 +27,19 @@ public class LoadCorpInfoJsonHandler extends AppContextAwareJsonHandler {
 	@Override
 	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
 
-		ODatabaseSession db = app.openDB();
-		db.begin();
-		try {
-			SseCorpInfoLoader l1 = new SseCorpInfoLoader();
-			l1.setDb(db);
-			l1.execute(getResource("cc/dhandho/load/sse.corplist.csv"));
+		ODatabaseSession db = DbSessionTL.get(true);
+		
+		SseCorpInfoLoader l1 = new SseCorpInfoLoader();
+		l1.setDb(db);
+		l1.execute(getResource("cc/dhandho/load/sse.corplist.csv"));
 
-			SseCorpInfo2Loader l2 = new SseCorpInfo2Loader();
-			l2.setDb(db);
-			l2.execute(getResource("cc/dhandho/load/sse.corplist2.csv"));
+		SseCorpInfo2Loader l2 = new SseCorpInfo2Loader();
+		l2.setDb(db);
+		l2.execute(getResource("cc/dhandho/load/sse.corplist2.csv"));
 
-			SzseCorpInfoLoader l3 = new SzseCorpInfoLoader();
-			l3.setDb(db);
-			l3.execute(getResource("cc/dhandho/load/szse.corplist.csv"));
-			db.commit();
-		} catch (Throwable t) {
-			db.rollback();
-			throw RtException.toRtException(t);
-		}
+		SzseCorpInfoLoader l3 = new SzseCorpInfoLoader();
+		l3.setDb(db);
+		l3.execute(getResource("cc/dhandho/load/szse.corplist.csv"));
 
 	}
 
