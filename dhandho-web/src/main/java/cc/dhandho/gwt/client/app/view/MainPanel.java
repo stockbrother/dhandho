@@ -18,33 +18,39 @@ import cc.dhandho.gwt.client.common.ClientPanelUiObject;
 import cc.dhandho.gwt.client.core.ConsolePanel;
 import cc.dhandho.gwt.client.core.Handlers;
 
+/**
+ * The main view.
+ * 
+ * @author wu
+ *
+ */
 public class MainPanel extends ClientPanelUiObject<VerticalPanel> {
-	//send to show chart.
+	// send to show chart.
 	public Button sendButton;
-	
+
 	public Button dataLoadButton;
 
-	//the corpId to show chart for.
+	// the corpId to show chart for.
 	public TextBox corpId;
 
-	//TODO remove
+	// TODO remove
 	public Label errorLabel;
 
-	//TODO remove
+	// TODO remove
 	public MyDialogBox dialogBox;
 
-	//the title list of chart, click to check and show them one by one.
+	// the title list of chart, click to check and show them one by one.
 	public VerticalPanel groupList;
 
-	//init data loaded from server side.
+	// init data loaded from server side.
 	public InitDataJson mdTable;
 
-	//the console of web client.
+	// the console of web client.
 	public ConsolePanel console;
 
-	//the chart list view.
+	// the chart list view.
 	public ChartBoxGroupListView chartList;
-	
+
 	public MainPanel(Handlers handlers) {
 		super(new VerticalPanel(), handlers, null);
 		super.mainPanel = this;
@@ -79,7 +85,7 @@ public class MainPanel extends ClientPanelUiObject<VerticalPanel> {
 		SendClickHandler handler = new SendClickHandler(this);
 		// sendButton.addClickHandler(handler);
 		sendButton.addClickHandler(handler);
-		
+
 		dataLoadButton.addClickHandler(new DataLoadClickHandler(this));
 
 	}

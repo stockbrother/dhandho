@@ -7,7 +7,11 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+/**
+ * 
+ * @author wu
+ *
+ */
 public class ChartBoxGroupListView extends VerticalPanel {
 
 	MainPanel mainPanel;
@@ -15,6 +19,8 @@ public class ChartBoxGroupListView extends VerticalPanel {
 	private List<ChartBoxGroup> groupList;
 
 	private boolean isJinRon;
+	
+	private int groupSize = 1;
 
 	public ChartBoxGroupListView(MainPanel mainPanel, boolean jinRon) {
 		this.mainPanel = mainPanel;
@@ -26,12 +32,16 @@ public class ChartBoxGroupListView extends VerticalPanel {
 		ChartBoxGroup cg = null;
 
 		if (groupList.size() > 0) {
+			//find the last chart group to add into.
 			cg = groupList.get(groupList.size() - 1);
-			if (cg.map.size() >= 3) {
+			if (cg.map.size() >= groupSize) {
+				//if the last chart group is full,then not found.
 				cg = null;
 			}
 		}
+		
 		if (cg == null) {
+			//not found, then create one new group.
 			cg = new ChartBoxGroup(this.mainPanel);
 			this.add(cg);
 			this.groupList.add(cg);

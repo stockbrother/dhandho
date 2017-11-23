@@ -6,6 +6,10 @@ import com.orientechnologies.orient.core.record.OVertex;
 
 public class SseCorpInfo2Loader extends AbstractCorpInfoCsvLoader {
 
+	public SseCorpInfo2Loader(String name) {
+		super(name);
+	}
+
 	@Override
 	protected void handleRow(String[] next, Map<String, Integer> colIndexMap) {
 		String x0 = CsvUtil.getValueByColumn(next, colIndexMap, "A股代码");

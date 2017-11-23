@@ -11,12 +11,17 @@ import cc.dhandho.Quarter;
 import cc.dhandho.importer.GDBWashedFileSchemaLoader;
 import cc.dhandho.importer.GDBWashedFileValueLoader;
 
+/**
+ * Load Washed Data to DB.
+ * @author wu
+ *
+ */
 public class DataLoadJsonHandler extends AppContextAwareJsonHandler{
 
 	@Override
 	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
 		
-		File dir = new File("D:\\data\\xueqiu\\washed\\\\");
+		File dir = new File("C:\\dhandho\\data\\xueqiu\\washed");
 		
 		//DbInitUtil.initDb(app);
 		

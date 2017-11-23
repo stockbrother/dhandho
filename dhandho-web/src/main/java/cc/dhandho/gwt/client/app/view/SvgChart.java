@@ -2,6 +2,12 @@ package cc.dhandho.gwt.client.app.view;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 
+/**
+ * Show svg chart.
+ * 
+ * @author wu
+ *
+ */
 public class SvgChart extends FlowPanel {
 
 	public SvgChart() {
@@ -13,7 +19,7 @@ public class SvgChart extends FlowPanel {
 		this.getElement().setInnerHTML(svg);
 
 	}
-	
+
 	public void unsetSvg(String msg) {
 		this.getElement().setInnerHTML(msg);
 	}

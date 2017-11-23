@@ -24,6 +24,10 @@ public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHan
 
 	ODatabaseSession db;
 
+	public AbstractCorpInfoCsvLoader(String name) {
+		super(name);		
+	}
+
 	public AbstractCorpInfoCsvLoader setDb(ODatabaseSession db) {
 		this.db = db;
 		return this;

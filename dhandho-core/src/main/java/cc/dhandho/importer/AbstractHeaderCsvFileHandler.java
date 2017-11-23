@@ -2,6 +2,7 @@ package cc.dhandho.importer;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +15,18 @@ public abstract class AbstractHeaderCsvFileHandler {
 
 	public static final Logger LOG = LoggerFactory.getLogger(AbstractHeaderCsvFileHandler.class);
 
+	protected String name;
+
+	public AbstractHeaderCsvFileHandler(String name) {
+		this.name = name;
+	}
+
 	public void execute(Reader freader) {
 		try {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("processing file:" + name);
+			}
+			
 			CSVReader reader = new CSVReader(freader);
 			try {
 				// skip header1
@@ -31,8 +42,8 @@ public abstract class AbstractHeaderCsvFileHandler {
 					if (next == null) {
 						break;
 					}
-					if (LOG.isInfoEnabled()) {
-						LOG.info("processing line:" + next);
+					if (LOG.isTraceEnabled()) {
+						LOG.trace("handle row:" + Arrays.asList(next));
 					}
 					handleRow(next, colIndexMap);
 
@@ -41,6 +52,11 @@ public abstract class AbstractHeaderCsvFileHandler {
 			} finally {
 				reader.close();
 			}
+
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("done of processing file:" + name);
+			}
+
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

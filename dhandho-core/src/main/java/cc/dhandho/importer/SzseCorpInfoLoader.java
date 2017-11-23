@@ -7,8 +7,8 @@ import com.orientechnologies.orient.core.record.OVertex;
 
 public class SzseCorpInfoLoader extends AbstractCorpInfoCsvLoader {
 
-	public SzseCorpInfoLoader() {
-
+	public SzseCorpInfoLoader(String name) {
+		super(name);
 	}
 
 	@Override

@@ -8,6 +8,11 @@ import com.google.gwt.user.client.ui.Label;
 
 import cc.dhandho.gwt.client.app.InitDataJson.TableRowJson;
 
+/**
+ * Select the group of metrics and show them as a chart.
+ * @author wu
+ *
+ */
 public class GroupSelectionLine extends HorizontalPanel implements ClickHandler {
 
 	MainPanel mainPanel;

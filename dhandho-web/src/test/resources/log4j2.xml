@@ -16,7 +16,7 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Logger name="daydayup.openstock" level="trace" />		
+		<Logger name="cc.dhandho" level="trace" />		
 		<Root level="info">
 			<AppenderRef ref="STDOUT" />
 			<AppenderRef ref="FILE" />
