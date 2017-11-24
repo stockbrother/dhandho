@@ -7,9 +7,6 @@
   "http://gwtproject.org/doctype/2.8.1/gwt-module.dtd">
 <module rename-to='tmp1'>
   <!-- Inherit our applications main module.                      -->
-  <inherits name='tmp1.Tmp1'/>
-
-  <!-- Specify the path to any remote services.                   -->
-  <servlet path="/tmp1/greet" class="cc.dhandho.gwt.server.GreetingServiceImpl" />
+  <inherits name='cc.dhandho.gwt.Dhandho'/>
 
 </module>
