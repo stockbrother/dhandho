@@ -11,7 +11,7 @@ public class SseCorpInfo2Loader extends AbstractCorpInfoCsvLoader {
 	}
 
 	@Override
-	protected void handleRow(String[] next, Map<String, Integer> colIndexMap) {
+	protected void handleRowInternal(String[] next, Map<String, Integer> colIndexMap) {
 		String x0 = CsvUtil.getValueByColumn(next, colIndexMap, "A股代码");
 		if ("-".equals(x0)) {
 			return;//ignore

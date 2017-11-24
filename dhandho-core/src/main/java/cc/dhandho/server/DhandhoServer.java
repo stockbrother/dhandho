@@ -78,16 +78,8 @@ public class DhandhoServer {
 			DbSessionTL.set(db);
 		}
 
-		db.begin();
-		try {
-			dbu.upgrade(db);
-			db.commit();
-		} catch (Throwable e) {
-			db.rollback();
-			throw RtException.toRtException(e);
-		} finally {
-
-		}
+		dbu.upgrade(db);
+			
 		//
 
 		// TODO

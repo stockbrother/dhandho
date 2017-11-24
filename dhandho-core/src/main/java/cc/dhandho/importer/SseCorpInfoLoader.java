@@ -12,7 +12,7 @@ public class SseCorpInfoLoader extends AbstractCorpInfoCsvLoader {
 	}
 
 	@Override
-	protected void handleRow(String[] next, Map<String, Integer> colIndexMap) {
+	protected void handleRowInternal(String[] next, Map<String, Integer> colIndexMap) {
 		String x0 = CsvUtil.getValueByColumn(next, colIndexMap, "A股代码");
 		String x1 = CsvUtil.getValueByColumn(next, colIndexMap, "A股简称");
 		Date x2 = CsvUtil.getDateValueByColumn(next, colIndexMap, "A股上市日期", DF, "-");

@@ -12,7 +12,7 @@ public class SzseCorpInfoLoader extends AbstractCorpInfoCsvLoader {
 	}
 
 	@Override
-	public void handleRow(String[] next, Map<String, Integer> colIndexMap) {
+	public void handleRowInternal(String[] next, Map<String, Integer> colIndexMap) {
 
 		String x0 = CsvUtil.getValueByColumn(next, colIndexMap, "A股代码");
 		String x1 = CsvUtil.getValueByColumn(next, colIndexMap, "公司简称");
