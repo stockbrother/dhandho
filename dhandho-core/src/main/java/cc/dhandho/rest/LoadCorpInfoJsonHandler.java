@@ -1,5 +1,8 @@
 package cc.dhandho.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,18 +32,25 @@ public class LoadCorpInfoJsonHandler extends AppContextAwareJsonHandler {
 
 		ODatabaseSession db = DbSessionTL.get(true);
 
-		SseCorpInfoLoader l1 = new SseCorpInfoLoader("classpath:cc/dhandho/load/sse.corplist.csv");
+		SseCorpInfoLoader l1 = new SseCorpInfoLoader("sse.corplist.csv");
 		l1.setDb(db);
-		l1.execute(getResource("cc/dhandho/load/sse.corplist.csv"));
+		l1.execute(getFileReader("C:\\dhandho\\server\\init\\sse.corplist.csv"));
 
-		SseCorpInfo2Loader l2 = new SseCorpInfo2Loader("classpath:cc/dhandho/load/sse.corplist2.csv");
+		SseCorpInfo2Loader l2 = new SseCorpInfo2Loader("sse.corplist2.csv");
 		l2.setDb(db);
-		l2.execute(getResource("cc/dhandho/load/sse.corplist2.csv"));
+		l2.execute(getFileReader("C:\\dhandho\\server\\init\\sse.corplist2.csv"));
 
-		SzseCorpInfoLoader l3 = new SzseCorpInfoLoader("classpath:cc/dhandho/load/szse.corplist.csv");
+		SzseCorpInfoLoader l3 = new SzseCorpInfoLoader("szse.corplist.csv");
 		l3.setDb(db);
-		l3.execute(getResource("cc/dhandho/load/szse.corplist.csv"));
+		l3.execute(getFileReader("C:\\dhandho\\server\\init\\szse.corplist.csv"));
 
+	}
+	
+	private Reader getFileReader(String file) throws IOException {
+		
+		InputStream is = new FileInputStream(file);
+		
+		return new InputStreamReader(is, Charset.forName("UTF-8"));
 	}
 
 	private Reader getResource(String resource) {

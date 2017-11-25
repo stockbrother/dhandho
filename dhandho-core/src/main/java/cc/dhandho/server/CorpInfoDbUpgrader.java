@@ -18,6 +18,12 @@ import cc.dhandho.rest.LoadCorpInfoJsonHandler;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
+/**
+ * Load CorpInfo data from file to DB.
+ * 
+ * @author wu
+ * TODO add virtual file system,for easiser testing.
+ */
 public class CorpInfoDbUpgrader extends DbUpgrader {
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Logger LOG = LoggerFactory.getLogger(DhandhoServer.class);
@@ -26,31 +32,39 @@ public class CorpInfoDbUpgrader extends DbUpgrader {
 	@Override
 	public void upgrade(ODatabaseSession db) {
 
-		OVertex meta = DbInitUtil.getMetaInfo(db);
-		Integer dv = meta.getProperty(DATA_VERSION_CORP_INFO);
-		if (dv == null) {
-			meta.setProperty(DATA_VERSION_CORP_INFO, 0);
-			meta.save();
-			dv = meta.getProperty(DATA_VERSION_CORP_INFO);
-		}
+		db.begin();
+		try {
 
-		if (dv == 0) {
-			LOG.info(DATA_VERSION_CORP_INFO + ":" + 0);
-			try {
-				loadCorpInfo();
-			} catch (IOException e) {
-				throw new RtException(e);
+			OVertex meta = DbInitUtil.getMetaInfo(db);
+			Integer dv = meta.getProperty(DATA_VERSION_CORP_INFO);
+			if (dv == null) {
+				meta.setProperty(DATA_VERSION_CORP_INFO, 0);
+				meta.save();
+				dv = meta.getProperty(DATA_VERSION_CORP_INFO);
 			}
-			meta.setProperty(DATA_VERSION_CORP_INFO, 1);
-			meta.save();
-			LOG.info(DATA_VERSION_CORP_INFO + ":" + 1);
-		} else if (dv == 1) {
-			LOG.info(DATA_VERSION_CORP_INFO + ":" + 1);
-		} else {
 
-			throw new RtException("bug");
-		}
+			if (dv == 0) {
+				LOG.info(DATA_VERSION_CORP_INFO + ":" + 0);
+				try {
+					loadCorpInfo();
+				} catch (IOException e) {
+					throw new RtException(e);
+				}
+				meta.setProperty(DATA_VERSION_CORP_INFO, 1);
+				meta.save();
+				LOG.info(DATA_VERSION_CORP_INFO + ":" + 1);
+			} else if (dv == 1) {
+				LOG.info(DATA_VERSION_CORP_INFO + ":" + 1);
+			} else {
 
+				throw new RtException("bug");
+			}
+
+			db.commit();
+		} catch (Throwable t) {
+			db.rollback();
+			throw RtException.toRtException(t);
+		} 
 	}
 
 	private void loadCorpInfo() throws IOException {

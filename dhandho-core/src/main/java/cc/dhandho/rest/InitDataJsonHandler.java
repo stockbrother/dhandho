@@ -1,8 +1,10 @@
 package cc.dhandho.rest;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import cc.dhandho.RtException;
 /**
  * Client Init Handler,load metrics define from csv files.
  * 
+ * TODO VFS for easier test.
  * @author Wu
  *
  */
@@ -26,20 +29,17 @@ public class InitDataJsonHandler implements JsonHandler {
 	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
 		writer.beginObject();
 		writer.name("metric-define-table");
-		this.loadTableCsv("cc/dhandho/rest/metric-define-table.csv", gson, reader, writer, true);
+		this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-table.csv", gson, reader, writer, true);
 
 		writer.name("metric-define-group-table");
-		this.loadTableCsv("cc/dhandho/rest/metric-define-group-table.csv", gson, reader, writer, false);
+		this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-group-table.csv", gson, reader, writer, false);
 		writer.endObject();
 	}
-
-	private void loadTableCsv(String resource, Gson gson, JsonReader reader, JsonWriter writer, boolean hasHeader)
+	
+	private void loadTableCsv(String file, Gson gson, JsonReader reader, JsonWriter writer, boolean hasHeader)
 			throws IOException {
 
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
-		if (is == null) {
-			throw new RtException("resource not found:" + resource);
-		}
+		InputStream is = new FileInputStream(file);
 		writer.beginObject();
 
 		CSVReader cReader = new CSVReader(new InputStreamReader(is, Charset.forName("UTF-8")));
