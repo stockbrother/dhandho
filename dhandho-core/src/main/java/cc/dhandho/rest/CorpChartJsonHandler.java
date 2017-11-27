@@ -16,7 +16,7 @@ import cc.dhandho.DbAliasInfos;
  * @author Wu
  *
  */
-public class CorpChartJsonHandler extends  AppContextAwareJsonHandler {
+public class CorpChartJsonHandler extends AppContextAwareJsonHandler {
 
 	@Override
 	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
@@ -28,7 +28,7 @@ public class CorpChartJsonHandler extends  AppContextAwareJsonHandler {
 		aliasInfos.initialize(db, app.getDbTemplate());
 
 		StringWriter swriter = new StringWriter();
-		
+
 		SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(reader, aliasInfos);
 		svgQ.query(db, swriter);
 		int width = svgQ.query.getWidth();
@@ -38,7 +38,7 @@ public class CorpChartJsonHandler extends  AppContextAwareJsonHandler {
 		writer.name("height").value(height);
 		writer.name("svg");
 		writer.value(swriter.toString());
-	
+
 		writer.endObject();
 
 	}

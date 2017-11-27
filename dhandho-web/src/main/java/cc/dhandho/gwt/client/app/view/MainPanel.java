@@ -14,6 +14,7 @@ import cc.dhandho.gwt.client.app.InitDataJson;
 import cc.dhandho.gwt.client.app.InitDataJson.TableRowJson;
 import cc.dhandho.gwt.client.app.control.DataLoadClickHandler;
 import cc.dhandho.gwt.client.app.control.SendClickHandler;
+import cc.dhandho.gwt.client.app.control.XueqiuDataWashClickHandler;
 import cc.dhandho.gwt.client.common.ClientPanelUiObject;
 import cc.dhandho.gwt.client.core.ConsolePanel;
 import cc.dhandho.gwt.client.core.Handlers;
@@ -29,6 +30,8 @@ public class MainPanel extends ClientPanelUiObject<VerticalPanel> {
 	public Button sendButton;
 
 	public Button dataLoadButton;
+	
+	public Button dataWashButton;
 
 	// the corpId to show chart for.
 	public TextBox corpId;
@@ -61,6 +64,7 @@ public class MainPanel extends ClientPanelUiObject<VerticalPanel> {
 
 		sendButton = new Button("Send");
 		dataLoadButton = new Button("Load Data");
+		dataWashButton = new Button("Data Wash");
 		errorLabel = new Label();
 
 		// We can add style names to widgets
@@ -72,7 +76,9 @@ public class MainPanel extends ClientPanelUiObject<VerticalPanel> {
 
 		add(corpId);
 		add(groupList);
+		add(dataWashButton);
 		add(dataLoadButton);
+		
 		add(sendButton);
 		add(chartList);
 		add(console);
@@ -87,6 +93,8 @@ public class MainPanel extends ClientPanelUiObject<VerticalPanel> {
 		sendButton.addClickHandler(handler);
 
 		dataLoadButton.addClickHandler(new DataLoadClickHandler(this));
+		
+		dataWashButton.addClickHandler(new XueqiuDataWashClickHandler(this));
 
 	}
 

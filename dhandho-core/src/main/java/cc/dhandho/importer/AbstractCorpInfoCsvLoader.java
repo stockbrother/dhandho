@@ -37,20 +37,6 @@ public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHan
 	}
 
 	@Override
-	public void execute(Reader freader) {
-		this.db.begin();
-
-		try {
-			super.execute(freader);
-			this.db.commit();
-		} catch (Throwable t) {
-			this.db.rollback();
-			throw RtException.toRtException(t);
-		}
-
-	}
-
-	@Override
 	protected void handleRow(String[] next, Map<String, Integer> colIndexMap) {
 		this.handleRowInternal(next, colIndexMap);
 		rows++;
