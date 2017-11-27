@@ -38,10 +38,12 @@ public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHan
 
 	@Override
 	protected void handleRow(String[] next, Map<String, Integer> colIndexMap) {
+		
 		this.handleRowInternal(next, colIndexMap);
 		rows++;
 		if (rows % 100 == 0) {
 			this.db.commit();
+			this.db.begin();
 		}
 
 	}

@@ -43,15 +43,9 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 		this.session = this.appContext.openDB();
 		this.aliasInfos = new DbAliasInfos();
 		try {
-			this.session.begin();
 			this.aliasInfos.initialize(this.session, this.appContext.getDbTemplate());
-			try {
-				super.start();
-				this.session.commit();
-			} catch (Throwable t) {
-				this.session.rollback();
-				throw RtException.toRtException(t);//
-			}
+			super.start();
+
 		} finally {
 			this.session.close();
 			this.session = null;
@@ -60,8 +54,14 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 
 	@Override
 	protected void onReader(String type, File file, Reader freader, int number) {
-		super.onReader(type, file, freader, number);
-		this.session.commit();
+		this.session.begin();
+		try {
+			super.onReader(type, file, freader, number);
+			this.session.commit();
+		} catch (Throwable t) {			
+			this.session.rollback();
+			throw RtException.toRtException(t);
+		} 
 	}
 
 	@Override
