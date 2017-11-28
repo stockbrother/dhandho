@@ -15,6 +15,9 @@ import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.AliasInfos;
+import cc.dhandho.RtException;
+import cc.dhandho.graphdb.DbUtil;
+import cc.dhandho.graphdb.GDBResultSetProcessor;
 
 /**
  * <code>
@@ -56,7 +59,7 @@ public class JsonMetricSqlLinkQueryBuilder {
 	private static Logger LOG = LoggerFactory.getLogger(JsonMetricSqlLinkQueryBuilder.class);
 
 	public static JsonMetricSqlLinkQueryBuilder newInstance(JsonReader reader, AliasInfos aliasInfos) {
-		JsonMetricSqlLinkQueryBuilder rt = new JsonMetricSqlLinkQueryBuilder(reader,aliasInfos);
+		JsonMetricSqlLinkQueryBuilder rt = new JsonMetricSqlLinkQueryBuilder(reader, aliasInfos);
 		return rt;
 	}
 
@@ -80,22 +83,34 @@ public class JsonMetricSqlLinkQueryBuilder {
 
 		LOG.info("sql:" + sql + ",corpId:" + corpId);
 
-		OResultSet rstSet = db.query(sql, this.query.getParameterArray());
-		writer.beginArray();
-		while (rstSet.hasNext()) {
-			writer.beginObject();
-			OResult row = rstSet.next();
+		DbUtil.executeQuery(db, sql, this.query.getParameterArray(), new GDBResultSetProcessor<Void>() {
 
-			for (String key : row.getPropertyNames()) {
-				writer.name(key);
-				Object value = row.getProperty(key);
-				String jsonV = row.toJson(value);
-				writer.jsonValue(jsonV);
+			@Override
+			public Void process(OResultSet rst) {
+				try {
+
+					writer.beginArray();
+					while (rst.hasNext()) {
+						writer.beginObject();
+						OResult row = rst.next();
+
+						for (String key : row.getPropertyNames()) {
+							writer.name(key);
+							Object value = row.getProperty(key);
+							String jsonV = row.toJson(value);
+							writer.jsonValue(jsonV);
+						}
+
+						writer.endObject();
+					}
+					writer.endArray();
+				} catch (IOException e) {
+					throw RtException.toRtException(e);
+				}
+				return null;
 			}
+		});
 
-			writer.endObject();
-		}
-		writer.endArray();
 		return this;
 	}
 

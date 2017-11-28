@@ -14,6 +14,8 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.AppContext;
 import cc.dhandho.RtException;
+import cc.dhandho.graphdb.DbUtil;
+import cc.dhandho.graphdb.GDBResultSetProcessor;
 
 public class DbInitUtil {
 
@@ -22,9 +24,8 @@ public class DbInitUtil {
 	public static String V_CORP_REPORT = "CorpReport";
 
 	public static String V_CORP_INFO = "CorpInfo";
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(DbInitUtil.class);
-	
 
 	/**
 	 * Create Schema If not done before on the DB provided.
@@ -51,14 +52,20 @@ public class DbInitUtil {
 			return null;
 		}
 
-		OResultSet resultSet = db.query("select * from " + className + "");
-		if (resultSet.hasNext()) {
-			OResult rst = resultSet.next();
-			Optional<OVertex> objO = rst.getVertex();
-			return objO.get();
-		}
+		return DbUtil.executeQuery(db, "select * from " + className + "", new Object[] {},
+				new GDBResultSetProcessor<OVertex>() {
 
-		return null;
+					@Override
+					public OVertex process(OResultSet rst) {
+						if (rst.hasNext()) {
+							OResult rs = rst.next();
+							Optional<OVertex> objO = rs.getVertex();
+							return objO.get();
+						}
+						return null;
+					}
+				});
+
 	}
 
 	private static OVertex createMetaInfo(ODatabaseSession db) {
@@ -80,7 +87,7 @@ public class DbInitUtil {
 
 		int dataVersion = objO.getProperty("dataVersion");
 		LOG.info("current data version:" + dataVersion);
-		
+
 		switch (dataVersion) {
 		case 0:
 			LOG.info("upgrade data version...");

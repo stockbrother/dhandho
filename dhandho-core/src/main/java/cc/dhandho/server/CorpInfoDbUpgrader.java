@@ -31,8 +31,6 @@ public class CorpInfoDbUpgrader extends DbUpgrader {
 	@Override
 	public void upgrade(ODatabaseSession db) {
 
-		db.begin();
-
 		OVertex meta = DbInitUtil.getMetaInfo(db);
 		Integer dv = meta.getProperty(DATA_VERSION_CORP_INFO);
 		if (dv == null) {
@@ -40,8 +38,7 @@ public class CorpInfoDbUpgrader extends DbUpgrader {
 			meta.save();
 			dv = meta.getProperty(DATA_VERSION_CORP_INFO);
 		}
-		db.commit();
-		
+	
 		if (dv == 0) {
 			LOG.info(DATA_VERSION_CORP_INFO + ":" + 0);
 			try {
@@ -49,16 +46,15 @@ public class CorpInfoDbUpgrader extends DbUpgrader {
 			} catch (IOException e) {
 				throw new RtException(e);
 			}
-			db.begin();
+			
 			meta = DbInitUtil.getMetaInfo(db);
 			meta.setProperty(DATA_VERSION_CORP_INFO, 1);
 			meta.save();
-			db.commit();
+			
 			LOG.info(DATA_VERSION_CORP_INFO + ":" + 1);
 		} else if (dv == 1) {
 			LOG.info(DATA_VERSION_CORP_INFO + ":" + 1);
 		} else {
-
 			throw new RtException("bug");
 		}
 

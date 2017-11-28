@@ -23,6 +23,13 @@ import cc.dhandho.RtException;
 import cc.dhandho.graphdb.GDBTemplate;
 import cc.dhandho.util.DbInitUtil;
 
+/**
+ * The 1st stage before loading data into db. This loader scan the specified
+ * folder and collect all metric keys. And create meta info for them.
+ * 
+ * @author Wu
+ *
+ */
 public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 
 	private static Logger LOG = LoggerFactory.getLogger(GDBWashedFileSchemaLoader.class);
@@ -49,19 +56,17 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 
 	@Override
 	public void start() {
-		//@see #onTableData();
+		// @see #onTableData();
 		super.start();
 		DbAliasInfos ais = new DbAliasInfos();
-		
-		
+
 		ODatabaseSession db = this.appContext.openDB();
-		db.begin();
-		GDBTemplate t = this.appContext.getDbTemplate();		
+
+		GDBTemplate t = this.appContext.getDbTemplate();
 		ais.initialize(db, t);
 		for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
 			ais.getOrCreateColumnIndexByAliasList(db, t, entry.getKey(), entry.getValue());
 		}
-		db.commit();
 
 		this.session = this.appContext.openDB();
 
@@ -69,15 +74,15 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 			for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
 				String type = entry.getKey();
 				type = type.toUpperCase();
-				
+
 				OClass reportClazz = this.session.getClass(type);
 
 				if (reportClazz == null) {
 					reportClazz = this.session.createClass(type, "CorpReport");
-					//add link property for masterReport
+					// add link property for masterReport
 					OClass masterClazz = this.session.getClass(DbInitUtil.V_MASTER_REPORT);
-					masterClazz.createProperty(type.toLowerCase(), OType.LINK);//lower case as property of link.
-										
+					masterClazz.createProperty(type.toLowerCase(), OType.LINK);// lower case as property of link.
+
 					reportClazz.createIndex("Idx_" + type + "_key", OClass.INDEX_TYPE.UNIQUE, "corpId", "reportDate");
 				}
 

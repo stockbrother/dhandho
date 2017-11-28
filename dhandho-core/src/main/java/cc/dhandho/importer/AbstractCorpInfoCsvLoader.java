@@ -13,6 +13,8 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.RtException;
+import cc.dhandho.graphdb.DbUtil;
+import cc.dhandho.graphdb.GDBResultSetProcessor;
 import cc.dhandho.util.DbInitUtil;
 
 public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHandler {
@@ -38,29 +40,30 @@ public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHan
 
 	@Override
 	protected void handleRow(String[] next, Map<String, Integer> colIndexMap) {
-		
+
 		this.handleRowInternal(next, colIndexMap);
 		rows++;
-		if (rows % 100 == 0) {
-			this.db.commit();
-			this.db.begin();
-		}
 
 	}
 
 	protected abstract void handleRowInternal(String[] next, Map<String, Integer> colIndexMap);
 
 	protected OVertex getCorpInfoVertex(String x0) {
-		OResultSet rs = db.query(SQL, x0);
+		return DbUtil.executeQuery(db, SQL, new Object[] { x0 }, new GDBResultSetProcessor<OVertex>() {
 
-		OVertex v = null;
-		if (rs.hasNext()) {
-			v = rs.next().getVertex().get();
-		} else {
-			v = db.newVertex(DbInitUtil.V_CORP_INFO);
-			v.setProperty("corpId", x0);
-		}
-		return v;
+			@Override
+			public OVertex process(OResultSet rst) {
+				OVertex v = null;
+				if (rst.hasNext()) {
+					v = rst.next().getVertex().get();
+				} else {
+					v = db.newVertex(DbInitUtil.V_CORP_INFO);
+					v.setProperty("corpId", x0);
+				}
+				return v;
+			}
+		});
+
 	}
 
 }

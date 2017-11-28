@@ -1,21 +1,22 @@
 package cc.dhandho;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
+import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 import cc.dhandho.graphdb.GDBTemplate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class DbAliasInfos extends AbstractAliasInfos{
@@ -31,7 +32,7 @@ public class DbAliasInfos extends AbstractAliasInfos{
         this.reportAliasColumnMap.clear();
         this.reportAliasListMap.clear();
         String sql = "select reportType,aliasName,columnIndex from AliasInfo";
-        t.executeQuery(con, sql, new Object[]{}, new GDBResultSetProcessor<Object>() {
+        DbUtil.executeQuery(con, sql, new Object[]{}, new GDBResultSetProcessor<Object>() {
 
             @Override
             public Object process(OResultSet rset) {
@@ -67,7 +68,7 @@ public class DbAliasInfos extends AbstractAliasInfos{
     protected int getMaxColumIndex(ODatabaseSession con, GDBTemplate t, String reportType) {
         String sql = "select max(columnIndex) from AliasInfo where reportType=?";
 
-        return t.executeQuery(con, sql, new Object[]{reportType}, new GDBResultSetProcessor<Integer>() {
+        return DbUtil.executeQuery(con, sql, new Object[]{reportType}, new GDBResultSetProcessor<Integer>() {
 
             @Override
             public Integer process(OResultSet rs) {

@@ -22,13 +22,5 @@ public class ReportQuery {
     private List<Metric> metricList = new ArrayList<>();
 
 
-    public List<Double> query(ODatabaseSession session) {
-        //TODO
-        List<Double> rt = new ArrayList<>();
-        String sql = "select ";
-        session.query(sql);
-        return rt;
-
-    }
 
 }
