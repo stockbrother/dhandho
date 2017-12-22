@@ -50,7 +50,7 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 
 		this.aliasInfos = new DbAliasInfos();
 		try {
-			this.aliasInfos.initialize(this.session, this.appContext.getDbTemplate());
+			this.aliasInfos.initialize(this.session);
 			super.start();
 
 		} finally {

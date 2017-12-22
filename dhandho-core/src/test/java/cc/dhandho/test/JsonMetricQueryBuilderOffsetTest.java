@@ -55,7 +55,7 @@ public class JsonMetricQueryBuilderOffsetTest {
 
 		aliasInfos = new DbAliasInfos();
 		db = app.openDB();
-		aliasInfos.initialize(db, app.getDbTemplate());
+		aliasInfos.initialize(db);
 
 	}
 

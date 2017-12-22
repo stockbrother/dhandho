@@ -14,8 +14,6 @@ public abstract class AppContext {
 
 	public abstract void executeSync(Handler handler);
 
-	public abstract GDBTemplate getDbTemplate();
-
 	public abstract void destroy();
 
 	public abstract ODatabaseSession openDB();

@@ -23,11 +23,11 @@ public class DbAliasInfos extends AbstractAliasInfos{
 
     private static final Logger LOG = LoggerFactory.getLogger(DbAliasInfos.class);
 
-    public void initialize(ODatabaseSession con, GDBTemplate t) {
-        this.updateCache(con, t);
+    public void initialize(ODatabaseSession con) {
+        this.updateCache(con);
     }
 
-    private void updateCache(ODatabaseSession con, GDBTemplate t) {
+    private void updateCache(ODatabaseSession con) {
         LOG.info("load/reload alias information from db.");
         this.reportAliasColumnMap.clear();
         this.reportAliasListMap.clear();
@@ -65,7 +65,7 @@ public class DbAliasInfos extends AbstractAliasInfos{
         LOG.info("alias information loaded.");
 
     }
-    protected int getMaxColumIndex(ODatabaseSession con, GDBTemplate t, String reportType) {
+    protected int getMaxColumIndex(ODatabaseSession con, String reportType) {
         String sql = "select max(columnIndex) from AliasInfo where reportType=?";
 
         return DbUtil.executeQuery(con, sql, new Object[]{reportType}, new GDBResultSetProcessor<Integer>() {
@@ -83,7 +83,7 @@ public class DbAliasInfos extends AbstractAliasInfos{
 
     }
     
-    public List<Integer> getOrCreateColumnIndexByAliasList(ODatabaseSession con, GDBTemplate t, final String reportType,
+    public List<Integer> getOrCreateColumnIndexByAliasList(ODatabaseSession con, final String reportType,
                                                            List<String> aliasList) {
         Map<String, Integer> aliasMap = reportAliasColumnMap.get(reportType);
 
@@ -95,7 +95,7 @@ public class DbAliasInfos extends AbstractAliasInfos{
             }
 
             if (columnIndex == null) {
-            	this.addColumnIndex(reportType, alias, con, t);
+            	this.addColumnIndex(reportType, alias, con);
             }
 
             rt.add(columnIndex);
@@ -109,15 +109,15 @@ public class DbAliasInfos extends AbstractAliasInfos{
     	throw new RtException("not supported.");
     }
     		
-    public Integer addColumnIndex(String reportType, String alias, ODatabaseSession con, GDBTemplate t) {
-    	int tmpIndex = getMaxColumIndex(con, t, reportType) + 1;
+    public Integer addColumnIndex(String reportType, String alias, ODatabaseSession con) {
+    	int tmpIndex = getMaxColumIndex(con, reportType) + 1;
         OClass aliasClazz = con.getClass("AliasInfo");
         OVertex ver = con.newVertex(aliasClazz);
         ver.setProperty("reportType", reportType);
         ver.setProperty("aliasName", alias);
         ver.setProperty("columnIndex", tmpIndex);
         ver.save();
-        updateCache(con, t);
+        updateCache(con);
         return tmpIndex;
     }
 

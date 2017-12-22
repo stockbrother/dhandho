@@ -24,6 +24,13 @@ public class DbInitUtil {
 	public static String V_CORP_REPORT = "CorpReport";
 
 	public static String V_CORP_INFO = "CorpInfo";
+	
+	public static String V_BALSHEET = "BALSHEET";
+	
+	public static String V_INCSTATEMENT = "INCSTATEMENT";
+	
+	public static String V_CFSTATEMENT = "CFSTATEMENT";
+	
 
 	private static final Logger LOG = LoggerFactory.getLogger(DbInitUtil.class);
 

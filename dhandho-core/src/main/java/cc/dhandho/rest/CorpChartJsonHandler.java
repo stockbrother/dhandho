@@ -22,28 +22,29 @@ public class CorpChartJsonHandler extends AppContextAwareJsonHandler {
 	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
 
 		ODatabaseSession db = app.openDB();
+		try {
 
-		DbAliasInfos aliasInfos = new DbAliasInfos();
+			DbAliasInfos aliasInfos = new DbAliasInfos();
 
-		aliasInfos.initialize(db, app.getDbTemplate());
+			aliasInfos.initialize(db);
 
-		StringWriter swriter = new StringWriter();
+			StringWriter swriter = new StringWriter();
 
-		SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(reader, aliasInfos);
-		svgQ.query(db, swriter);
-		int width = svgQ.query.getWidth();
-		int height = svgQ.query.getHeight();
-		writer.beginObject();
-		writer.name("width").value(width);
-		writer.name("height").value(height);
-		writer.name("svg");
-		writer.value(swriter.toString());
+			SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(reader, aliasInfos);
+			svgQ.query(db, swriter);
+			int width = svgQ.query.getWidth();
+			int height = svgQ.query.getHeight();
+			writer.beginObject();
+			writer.name("width").value(width);
+			writer.name("height").value(height);
+			writer.name("svg");
+			writer.value(swriter.toString());
 
-		writer.endObject();
+			writer.endObject();
+		} finally {
 
-	}
-
-	private void queryChart(String corpId) {
+			db.close();
+		}
 
 	}
 

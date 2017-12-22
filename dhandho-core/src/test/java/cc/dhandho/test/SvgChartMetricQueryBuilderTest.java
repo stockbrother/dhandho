@@ -26,6 +26,7 @@ import cc.dhandho.importer.GDBWashedFileValueLoader;
 import cc.dhandho.rest.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
+
 @Ignore
 public class SvgChartMetricQueryBuilderTest {
 
@@ -54,7 +55,7 @@ public class SvgChartMetricQueryBuilderTest {
 
 		aliasInfos = new DbAliasInfos();
 		db = app.openDB();
-		aliasInfos.initialize(db, app.getDbTemplate());
+		aliasInfos.initialize(db);
 
 	}
 
@@ -68,8 +69,8 @@ public class SvgChartMetricQueryBuilderTest {
 	public void testOffset() throws IOException {
 
 		String jsonS = ("{" //
-				+ "'corpId':'000002'"// end of corpId				
-				+ ",'dates':[2016,2015,2014,2013,2012]"// end of years				
+				+ "'corpId':'000002'"// end of corpId
+				+ ",'dates':[2016,2015,2014,2013,2012]"// end of years
 				+ ",'metrics':[" //
 				+ "  { 'name':'总资产收益率'," //
 				+ "    'offset':0," //
@@ -92,7 +93,7 @@ public class SvgChartMetricQueryBuilderTest {
 
 		JsonReader reader = JsonUtil.toJsonReader(jsonS);
 		StringWriter sWriter = new StringWriter();
-		
+
 		SvgChartMetricQueryBuilder r = SvgChartMetricQueryBuilder.newInstance(reader, aliasInfos);
 		r.query(db, sWriter);
 

@@ -62,10 +62,9 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 
 		ODatabaseSession db = this.appContext.openDB();
 
-		GDBTemplate t = this.appContext.getDbTemplate();
-		ais.initialize(db, t);
+		ais.initialize(db);
 		for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
-			ais.getOrCreateColumnIndexByAliasList(db, t, entry.getKey(), entry.getValue());
+			ais.getOrCreateColumnIndexByAliasList(db, entry.getKey(), entry.getValue());
 		}
 
 		this.session = this.appContext.openDB();
