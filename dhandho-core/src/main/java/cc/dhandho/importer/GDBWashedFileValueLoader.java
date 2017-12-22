@@ -13,17 +13,17 @@ import com.orientechnologies.orient.core.intent.OIntentMassiveInsert;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.AppContext;
 import cc.dhandho.DbAliasInfos;
 import cc.dhandho.Quarter;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
+import cc.dhandho.server.DbProvider;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.xueqiu.DateUtil;
 
 public class GDBWashedFileValueLoader extends WashedFileLoader {
 
-	AppContext appContext;
+	DbProvider appContext;
 
 	ODatabaseSession session;
 
@@ -31,7 +31,7 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 
 	private int files;
 
-	public GDBWashedFileValueLoader(AppContext appContext, File dir, Quarter quarter) {
+	public GDBWashedFileValueLoader(DbProvider appContext, File dir, Quarter quarter) {
 		super(dir, quarter);
 		this.appContext = appContext;
 	}

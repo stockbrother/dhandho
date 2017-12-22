@@ -8,7 +8,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.AppContext;
 import cc.dhandho.DbAliasInfos;
 
 /**
@@ -16,35 +15,27 @@ import cc.dhandho.DbAliasInfos;
  * @author Wu
  *
  */
-public class CorpChartJsonHandler extends AppContextAwareJsonHandler {
+public class CorpChartJsonHandler extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
+		DbAliasInfos aliasInfos = new DbAliasInfos();
 
-		ODatabaseSession db = app.openDB();
-		try {
+		aliasInfos.initialize(db);
 
-			DbAliasInfos aliasInfos = new DbAliasInfos();
+		StringWriter swriter = new StringWriter();
 
-			aliasInfos.initialize(db);
+		SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(reader, aliasInfos);
+		svgQ.query(db, swriter);
+		int width = svgQ.query.getWidth();
+		int height = svgQ.query.getHeight();
+		writer.beginObject();
+		writer.name("width").value(width);
+		writer.name("height").value(height);
+		writer.name("svg");
+		writer.value(swriter.toString());
 
-			StringWriter swriter = new StringWriter();
-
-			SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(reader, aliasInfos);
-			svgQ.query(db, swriter);
-			int width = svgQ.query.getWidth();
-			int height = svgQ.query.getHeight();
-			writer.beginObject();
-			writer.name("width").value(width);
-			writer.name("height").value(height);
-			writer.name("svg");
-			writer.value(swriter.toString());
-
-			writer.endObject();
-		} finally {
-
-			db.close();
-		}
+		writer.endObject();
 
 	}
 

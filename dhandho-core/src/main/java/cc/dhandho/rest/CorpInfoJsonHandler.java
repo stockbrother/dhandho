@@ -17,16 +17,15 @@ import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 import cc.dhandho.util.DbInitUtil;
 
-public class CorpInfoJsonHandler extends AppContextAwareJsonHandler {
+public class CorpInfoJsonHandler extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
 
 		JsonElement json = Streams.parse(reader);
 		JsonObject query = json.getAsJsonObject();
 		String corpId = query.get("corpId").getAsString();
 
-		ODatabaseSession db = app.openDB();
 		String sql = "select from " + DbInitUtil.V_CORP_INFO + " where corpId=?";
 
 		writer.beginObject();
@@ -54,10 +53,6 @@ public class CorpInfoJsonHandler extends AppContextAwareJsonHandler {
 			}
 		});
 		writer.endObject();
-
-	}
-
-	private void queryChart(String corpId) {
 
 	}
 

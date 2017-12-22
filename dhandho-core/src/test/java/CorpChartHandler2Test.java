@@ -32,15 +32,7 @@ public class CorpChartHandler2Test {
 
 	@Before
 	public void setUp() {
-
-		String dbUrl = "remote:localhost";
-		String dbName = "test";
-		String dbUser = "admin";
-		String dbPassword = "admin";
-
-		app = new AppContextImpl()
-				.dbConfig(new DbConfig().dbUrl(dbUrl).dbName(dbName).dbUser(dbUser).dbPassword(dbPassword)).create();
-		
+		app = new AppContextImpl();		
 	}
 
 	@After

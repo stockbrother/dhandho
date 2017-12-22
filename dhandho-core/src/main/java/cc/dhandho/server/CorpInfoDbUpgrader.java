@@ -29,7 +29,7 @@ public class CorpInfoDbUpgrader extends DbUpgrader {
 	public static String DATA_VERSION_CORP_INFO = "dataVersion_corpInfo";
 
 	@Override
-	public void upgrade(ODatabaseSession db) {
+	public void process(ODatabaseSession db) {
 
 		OVertex meta = DbInitUtil.getMetaInfo(db);
 		Integer dv = meta.getProperty(DATA_VERSION_CORP_INFO);

@@ -31,10 +31,9 @@ public class MyMain {
 	@Test
 	public void test() throws InterruptedException {
 
-		AppContext app = new AppContextImpl()
-				.dbConfig(new DbConfig().dbUrl(url).dbName(dbName).dbUser(user).dbPassword(password)).create();
+		AppContext app = new AppContextImpl();
 		Semaphore s = new Semaphore(0);
-		ODatabaseSession ds = app.openDB();
+		ODatabaseSession ds = null;//app.openDB();
 		{
 				long start1 = System.currentTimeMillis();
 				// let's do something with this session!

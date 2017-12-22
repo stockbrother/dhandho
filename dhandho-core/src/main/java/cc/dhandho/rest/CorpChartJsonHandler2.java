@@ -18,10 +18,10 @@ import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 
-public class CorpChartJsonHandler2 extends AppContextAwareJsonHandler {
+public class CorpChartJsonHandler2 extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
 		JsonElement json = Streams.parse(reader);
 		JsonObject obj = json.getAsJsonObject();
 		String corpId = obj.get("corpId").getAsString();
@@ -30,39 +30,33 @@ public class CorpChartJsonHandler2 extends AppContextAwareJsonHandler {
 		writer.beginObject();
 		writer.name("corpId").value(corpId);
 
-		ODatabaseSession db = app.openDB();
-		try {
-			String query = "select corpId,reportDate,d_1,d_2 from balsheet where corpId=? limit 15";
+		String query = "select corpId,reportDate,d_1,d_2 from balsheet where corpId=? limit 15";
 
-			writer.name("values");
+		writer.name("values");
 
-			DbUtil.executeQuery(db, query, new Object[] { corpId }, new GDBResultSetProcessor<Void>() {
+		DbUtil.executeQuery(db, query, new Object[] { corpId }, new GDBResultSetProcessor<Void>() {
 
-				@Override
-				public Void process(OResultSet rst) {
-					try {
-						writer.beginArray();
-						while (rst.hasNext()) {
+			@Override
+			public Void process(OResultSet rst) {
+				try {
+					writer.beginArray();
+					while (rst.hasNext()) {
 
-							writer.beginObject();
-							OResult row = rst.next();
-							Double d1 = row.getProperty("d_1");
-							Double d2 = row.getProperty("d_2");
-							writer.name("d1").value(d1);
-							writer.name("d2").value(d2);
-							writer.endObject();
-						}
-						writer.endArray();
-					} catch (IOException e) {
-						throw RtException.toRtException(e);
+						writer.beginObject();
+						OResult row = rst.next();
+						Double d1 = row.getProperty("d_1");
+						Double d2 = row.getProperty("d_2");
+						writer.name("d1").value(d1);
+						writer.name("d2").value(d2);
+						writer.endObject();
 					}
-					return null;
+					writer.endArray();
+				} catch (IOException e) {
+					throw RtException.toRtException(e);
 				}
-			});
-
-		} finally {
-			db.close();
-		}
+				return null;
+			}
+		});
 
 		writer.endObject();
 

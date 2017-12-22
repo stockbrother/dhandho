@@ -3,8 +3,9 @@ package cc.dhandho.server;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.AppContext;
+import cc.dhandho.Processor;
 
-public abstract class DbUpgrader implements AppContext.Aware {
+public abstract class DbUpgrader implements AppContext.Aware, Processor<ODatabaseSession> {
 	protected AppContext app;
 
 	@Override
@@ -12,5 +13,4 @@ public abstract class DbUpgrader implements AppContext.Aware {
 		this.app = app;
 	}
 
-	public abstract void upgrade(ODatabaseSession db);
 }

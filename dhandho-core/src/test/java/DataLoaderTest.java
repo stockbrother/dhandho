@@ -23,14 +23,13 @@ public class DataLoaderTest {
 	@Test
 	public void test() throws InterruptedException {
 
-		AppContext app = new AppContextImpl()
-				.dbConfig(new DbConfig().dbUrl(url).dbName(dbName).dbUser(user).dbPassword(password)).create();
+		AppContext app = new AppContextImpl();
 
 		// File dir = new File("D:\\data\\xueqiu\\washed\\balsheet\\");
 		// File dir = new File("D:\\data\\xueqiu\\washed\\balsheet\\");
 		File dir = new File("D:\\data\\xueqiu\\washed\\\\");
 		
-		DbInitUtil.initDb(app);
+		//DbInitUtil.initDb(app);
 		
 		//new GDBWashedFileSchemaLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 

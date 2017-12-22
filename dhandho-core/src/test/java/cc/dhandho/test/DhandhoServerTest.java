@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import cc.dhandho.server.DhandhoServer;
 
-public class ReportQueryJsonHandlerTest {
+public class DhandhoServerTest {
 
 	@BeforeClass
 	public static void setUp() {
@@ -22,10 +22,9 @@ public class ReportQueryJsonHandlerTest {
 
 	@Test
 	public void testNoTx() throws IOException {
-		DhandhoServer ds = new DhandhoServer();
+		DhandhoServer ds = TestUtil.newInMemoryTestDhandhoServer();
 		ds.start();
-		// ds.handle(handlerS, reader, writer);
 
-		// ds.destroy();
+		ds.shutdown();
 	}
 }

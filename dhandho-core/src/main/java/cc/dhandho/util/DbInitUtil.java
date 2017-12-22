@@ -12,12 +12,12 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.AppContext;
+import cc.dhandho.Processor;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 
-public class DbInitUtil {
+public class DbInitUtil implements Processor<ODatabaseSession>{
 
 	public static String V_MASTER_REPORT = "MasterReport";
 
@@ -39,8 +39,9 @@ public class DbInitUtil {
 	 * 
 	 * @param app
 	 */
-	public static void initDb(AppContext app) {
-		ODatabaseSession ds = app.openDB();
+
+	@Override
+	public void process(ODatabaseSession ds) {			
 
 		try {
 			createSchema(ds);
@@ -146,5 +147,6 @@ public class DbInitUtil {
 			throw new RuntimeException("todo");
 		}
 	}
+
 
 }

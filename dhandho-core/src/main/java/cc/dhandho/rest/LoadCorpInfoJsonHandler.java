@@ -25,13 +25,11 @@ import cc.dhandho.importer.SzseCorpInfoLoader;
  * @author Wu
  *
  */
-public class LoadCorpInfoJsonHandler extends AppContextAwareJsonHandler {
+public class LoadCorpInfoJsonHandler extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
 
-		ODatabaseSession db = DbSessionTL.get(true);
-		
 		SseCorpInfoLoader l1 = new SseCorpInfoLoader("sse.corplist.csv");
 		l1.setDb(db);
 		l1.execute(getFileReader("C:\\dhandho\\server\\init\\sse.corplist.csv"));
@@ -43,13 +41,13 @@ public class LoadCorpInfoJsonHandler extends AppContextAwareJsonHandler {
 		SzseCorpInfoLoader l3 = new SzseCorpInfoLoader("szse.corplist.csv");
 		l3.setDb(db);
 		l3.execute(getFileReader("C:\\dhandho\\server\\init\\szse.corplist.csv"));
-		
+
 	}
-	
+
 	private Reader getFileReader(String file) throws IOException {
-		
+
 		InputStream is = new FileInputStream(file);
-		
+
 		return new InputStreamReader(is, Charset.forName("UTF-8"));
 	}
 

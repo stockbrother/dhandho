@@ -16,11 +16,11 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
-import cc.dhandho.AppContext;
 import cc.dhandho.DbAliasInfos;
 import cc.dhandho.Quarter;
 import cc.dhandho.RtException;
-import cc.dhandho.graphdb.GDBTemplate;
+import cc.dhandho.graphdb.DbConfig;
+import cc.dhandho.server.DbProvider;
 import cc.dhandho.util.DbInitUtil;
 
 /**
@@ -34,7 +34,7 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 
 	private static Logger LOG = LoggerFactory.getLogger(GDBWashedFileSchemaLoader.class);
 
-	AppContext appContext;
+	DbProvider appContext;
 
 	ODatabaseSession session;
 
@@ -43,10 +43,10 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 	// store type=>columnIndexList
 	private Map<String, List<Integer>> propertyListMap2 = new HashMap<>();
 
-	public GDBWashedFileSchemaLoader(AppContext appContext, File dir, Quarter quarter) {
+	public GDBWashedFileSchemaLoader(DbProvider dbc, File dir, Quarter quarter) {
 		super(dir, quarter);
 
-		this.appContext = appContext;
+		this.appContext = dbc;
 	}
 
 	public GDBWashedFileSchemaLoader limit(int limit) {

@@ -42,20 +42,18 @@ public class JsonMetricQueryBuilderOffsetTest {
 
 	@BeforeClass
 	public static void setUp() {
-		app = new AppContextImpl()
-				.dbConfig(new DbConfig().dbName("test").dbUrl("memory:test").dbUser("admin").dbPassword("admin"))
-				.create();
+		app = new AppContextImpl();
 
-		DbInitUtil.initDb(app);
+		//DbInitUtil.initDb(app);
 
 		File dir = new File("src/test/resources/cc/dhandho/test/washed1".replace('/', File.separatorChar));
 
-		new GDBWashedFileSchemaLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
-		new GDBWashedFileValueLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
+		//new GDBWashedFileSchemaLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
+		//new GDBWashedFileValueLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 
 		aliasInfos = new DbAliasInfos();
-		db = app.openDB();
-		aliasInfos.initialize(db);
+		//db = app.openDB();
+		//aliasInfos.initialize(db);
 
 	}
 

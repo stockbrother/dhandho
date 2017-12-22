@@ -22,7 +22,7 @@ import cc.dhandho.report.ReportItemLocators;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.Visitor;
 
-public class ReportQueryJsonHandler extends AppContextAwareJsonHandler {
+public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 
 	public static class ReportRow {
 		List<Double> itemList = new ArrayList<>();
@@ -106,31 +106,28 @@ public class ReportQueryJsonHandler extends AppContextAwareJsonHandler {
 	}
 
 	@Override
-	public void execute(Gson gson, final JsonReader reader, JsonWriter writer) throws IOException {
-		ODatabaseSession dbs = app.openDB();
-		try {
+	public void execute(Gson gson, final JsonReader reader, JsonWriter writer, ODatabaseSession dbs)
+			throws IOException {
 
-			DbAliasInfos aliasInfos = new DbAliasInfos();
+		DbAliasInfos aliasInfos = new DbAliasInfos();
 
-			aliasInfos.initialize(dbs);
-			final String reportType = DbInitUtil.V_BALSHEET;
-			String sql = "select from " + DbInitUtil.V_BALSHEET + " where corpId=? ";
+		aliasInfos.initialize(dbs);
+		final String reportType = DbInitUtil.V_BALSHEET;
+		String sql = "select from " + DbInitUtil.V_BALSHEET + " where corpId=? ";
 
-			DbUtil.executeQuery(dbs, sql, new Object[] { corpId }, new GDBResultSetProcessor<Object>() {
+		DbUtil.executeQuery(dbs, sql, new Object[] { corpId }, new GDBResultSetProcessor<Object>() {
 
-				@Override
-				public Object process(OResultSet rst) {
+			@Override
+			public Object process(OResultSet rst) {
 
-					try {
-						return doProcess(reportType, rst, aliasInfos, reader, writer);
-					} catch (IOException e) {
-						throw RtException.toRtException(e);
-					}
+				try {
+					return doProcess(reportType, rst, aliasInfos, reader, writer);
+				} catch (IOException e) {
+					throw RtException.toRtException(e);
 				}
-			});
-		} finally {
-			dbs.close();
-		}
+			}
+		});
+
 	}
 
 	private Object doProcess(String reportType, OResultSet rst, AliasInfos aliasInfos, JsonReader reader,

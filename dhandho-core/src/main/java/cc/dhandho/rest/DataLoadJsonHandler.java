@@ -25,9 +25,9 @@ public class DataLoadJsonHandler extends AppContextAwareJsonHandler{
 		
 		//DbInitUtil.initDb(app);
 		
-		new GDBWashedFileSchemaLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
+		//new GDBWashedFileSchemaLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 
-		new GDBWashedFileValueLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
+		//new GDBWashedFileValueLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 		
 	}
 
