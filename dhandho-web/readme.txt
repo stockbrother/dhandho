@@ -63,6 +63,9 @@
 	
 ..Start orient Db
 -----------------
+...Set JAVA_HOME=<path to JDK 8>
+	note at lease JDK version 1.8 or higher.
+	
 ...Start DB Server: 
 	bin/server.bat
 		    
