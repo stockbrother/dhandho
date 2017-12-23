@@ -2,21 +2,20 @@ package cc.dhandho.test;
 
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cc.dhandho.server.DhandhoServer;
+import junit.framework.TestCase;
 
-public class DhandhoServerTest {
+public class DhandhoServerTest extends TestCase{
 
-	@BeforeClass
-	public static void setUp() {
+	@Override
+	public void setUp() {
 
 	}
 
-	@AfterClass
-	public static void tearDown() {
+	@Override
+	public void tearDown() {
 
 	}
 

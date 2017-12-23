@@ -12,7 +12,7 @@ public class DbConfig {
 
 	String password;
 	
-	public ODatabaseType dbType;
+	ODatabaseType dbType;
 
 	public String getDbUrl() {
 		return this.dbUrl;
@@ -48,6 +48,14 @@ public class DbConfig {
 	public DbConfig dbName(String dbName) {
 		this.dbName = dbName;
 		return this;
+	}
+	public DbConfig dbType(ODatabaseType dbType) {
+		this.dbType = dbType;
+		return this;
+	}
+	
+	public ODatabaseType getDbType() {
+		return this.dbType;
 	}
 
 }

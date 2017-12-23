@@ -16,7 +16,6 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
-import cc.dhandho.graphdb.GDBTemplate;
 
 
 public class DbAliasInfos extends AbstractAliasInfos{

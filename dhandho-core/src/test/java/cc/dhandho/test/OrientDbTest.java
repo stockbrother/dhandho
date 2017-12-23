@@ -2,10 +2,7 @@ package cc.dhandho.test;
 
 import java.io.IOException;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
@@ -19,16 +16,32 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
+import junit.framework.TestCase;
 
-public class OrientDbTest {
+public class OrientDbTest extends TestCase {
 
-	@BeforeClass
-	public static void setUp() {
+	public void setUp() {
 
 	}
 
-	@AfterClass
-	public static void tearDown() {
+	public void tearDown() {
+
+	}
+
+	@Test
+	public void testOpenClose() throws IOException {
+		String dbName = "db1";
+		String user = "admin";
+		String password = "admin";
+		String url = "memory:test";
+
+		OrientDB odb = new OrientDB(url, OrientDBConfig.defaultConfig());
+		odb.create(dbName, ODatabaseType.MEMORY);
+
+		for (int i = 0; i < 10; i++) {
+			ODatabaseSession dbs = odb.open(dbName, user, password);
+			dbs.close();
+		}
 
 	}
 

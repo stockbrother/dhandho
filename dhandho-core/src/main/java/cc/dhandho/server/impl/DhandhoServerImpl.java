@@ -24,6 +24,7 @@ import cc.dhandho.AppContextImpl;
 import cc.dhandho.Processor;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbConfig;
+import cc.dhandho.rest.DbSessionTL;
 import cc.dhandho.rest.JsonHandlers;
 import cc.dhandho.server.CorpInfoDbUpgrader;
 import cc.dhandho.server.DbProvider;
@@ -110,11 +111,12 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		} catch (InterruptedException e) {
 			throw new RuntimeException("", e);
 		}
+		this.orient.close();
 	}
 
 	@Override
 	public boolean createDbIfNotExist() {
-		return this.orient.createIfNotExists(this.dbConfig.getDbName(), this.dbConfig.dbType);
+		return this.orient.createIfNotExists(this.dbConfig.getDbName(), this.dbConfig.getDbType());
 	}
 
 	@Override
@@ -132,12 +134,23 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	}
 
 	public void executeWithDbSession(Processor<ODatabaseSession> processor) {
-		ODatabaseSession db = this.openDB();
-		try {
-			processor.process(db);
-		} finally {
-			db.close();
+
+		ODatabaseSession dbs = DbSessionTL.get();
+		boolean isNew = (dbs == null);
+		if (isNew) {
+			dbs = this.openDB();
+			DbSessionTL.set(dbs);
 		}
+
+		try {
+			processor.process(dbs);
+		} finally {
+			if (isNew) {
+				DbSessionTL.set(null);//
+				dbs.close();
+			}
+		}
+
 	}
 
 	// TODO add data version for corpInfo and do not load twice for the same version
