@@ -2,6 +2,7 @@ package cc.dhandho.test;
 
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
+import cc.dhandho.client.DhandhoConsole;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.server.DhandhoServer;
 import cc.dhandho.server.impl.DhandhoServerImpl;
@@ -20,5 +21,9 @@ public class TestUtil {
 
 	public static DhandhoServer newInMemoryTestDhandhoServer() {
 		return new DhandhoServerImpl().dbConfig(newInMemoryTestDbConfig());
+	}
+
+	public static DhandhoConsole newInMemoryTestDhandhoConsole() {
+		return new DhandhoConsole();
 	}
 }
