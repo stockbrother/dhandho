@@ -18,10 +18,12 @@ public class DhandhoConsoleTest extends TestCase {
 
 	public void test() throws Exception {
 
-		DhandhoConsole console = TestUtil.newInMemoryTestDhandhoConsole();
+		DhandhoConsole console = TestUtil.newInMemoryTestDhandhoServerConsole();
+		console.getServer().start();
 		console.start();
 		console.prompt();
-		while (true) {
+		console.shutdownAsync();
+		while (console.isAlive()) {
 			Thread.sleep(1000);
 		}
 

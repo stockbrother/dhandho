@@ -10,9 +10,6 @@ public interface DbProvider {
 
 	public boolean createDbIfNotExist();
 	
-	public ODatabaseSession openDB() ;
-	
 	public void executeWithDbSession(Processor<ODatabaseSession> processor) ;
 	
-	public ODatabaseSession getDB();
 }

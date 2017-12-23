@@ -58,6 +58,8 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 
 	private boolean isRunning;
 
+	private boolean isAlive = true;
+
 	private Map<String, String> attributeMap = new HashMap<String, String>();
 
 	Future<String> fs;
@@ -83,9 +85,8 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 
 	protected void run() {
 		try {
-			LOG.info("welcome to ...!");
+			LOG.info("running of console ...!");
 
-			LOG.info("... graph console!");
 			while (this.isRunning) {
 
 				this.writer.write(this.prompt);
@@ -100,10 +101,15 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 				this.commandCounter++;
 			}
 			LOG.warn("exiting graph console");
-		} catch (Throwable t) {
-			// TODO exit
+		} catch (Throwable t) {			
 			LOG.error("todo exit", t);
+		} finally {
+			this.isAlive = false;
 		}
+	}
+
+	public void echo(boolean echo) {
+		this.echo = echo;
 	}
 
 	public void prompt() {
@@ -204,6 +210,11 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	}
 
 	@Override
+	public void shutdownAsync() {
+		this.isRunning = false;
+	}
+
+	@Override
 	public void shutdown() {
 		this.isRunning = false;
 		try {
@@ -281,6 +292,11 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	@Override
 	public void addCommand(String name, CommandType type) {
 		this.commandMap.put(name, type);
+	}
+
+	@Override
+	public boolean isAlive() {
+		return this.isAlive;
 	}
 
 }

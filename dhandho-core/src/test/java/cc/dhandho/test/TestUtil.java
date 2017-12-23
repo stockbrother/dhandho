@@ -20,10 +20,11 @@ public class TestUtil {
 	}
 
 	public static DhandhoServer newInMemoryTestDhandhoServer() {
-		return new DhandhoServerImpl().dbConfig(newInMemoryTestDbConfig());
+		return new DhandhoServerImpl().home("res:cc/dhandho/test/dhandho").dbConfig(newInMemoryTestDbConfig());
 	}
 
-	public static DhandhoConsole newInMemoryTestDhandhoConsole() {
-		return new DhandhoConsole();
+	public static DhandhoConsole newInMemoryTestDhandhoServerConsole() {
+
+		return new DhandhoConsole().server(newInMemoryTestDhandhoServer());
 	}
 }

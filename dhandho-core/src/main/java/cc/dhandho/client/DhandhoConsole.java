@@ -22,15 +22,17 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 		return server;
 	}
 
-	public void setServer(DhandhoServer server) {
+	public DhandhoConsole server(DhandhoServer server) {
 		this.server = server;
+		return this;
 	}
 
 	@Override
 	public void start() {
 		super.start();
+		this.echo(false);
 		this.addCommand(new CommandType("help", "Print this message!"), new HelpCommandHandler());
-		this.addCommand(new CommandType("start", "Start server!"), new StartCommandHandler());
+		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 
 	}
 

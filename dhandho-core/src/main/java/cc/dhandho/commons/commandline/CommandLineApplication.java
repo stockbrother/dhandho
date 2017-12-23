@@ -35,4 +35,9 @@ public interface CommandLineApplication {
 	public void start();
 
 	public void shutdown();
+	
+	public void shutdownAsync();
+	
+	public boolean isAlive();
+	
 }

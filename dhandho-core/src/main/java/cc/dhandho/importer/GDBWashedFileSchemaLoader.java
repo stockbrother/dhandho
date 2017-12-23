@@ -1,6 +1,6 @@
 package cc.dhandho.importer;
 
-import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.vfs2.FileObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +18,9 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import cc.dhandho.DbAliasInfos;
+import cc.dhandho.Processor;
 import cc.dhandho.Quarter;
 import cc.dhandho.RtException;
-import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.server.DbProvider;
 import cc.dhandho.util.DbInitUtil;
 
@@ -43,7 +44,7 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 	// store type=>columnIndexList
 	private Map<String, List<Integer>> propertyListMap2 = new HashMap<>();
 
-	public GDBWashedFileSchemaLoader(DbProvider dbc, File dir, Quarter quarter) {
+	public GDBWashedFileSchemaLoader(DbProvider dbc, FileObject dir, Quarter quarter) {
 		super(dir, quarter);
 
 		this.appContext = dbc;
@@ -55,19 +56,34 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 	}
 
 	@Override
-	public void start() {
+	public void start() throws IOException {
 		// @see #onTableData();
 		super.start();
 		DbAliasInfos ais = new DbAliasInfos();
 
-		ODatabaseSession db = this.appContext.openDB();
+		this.appContext.executeWithDbSession(new Processor<ODatabaseSession>() {
 
-		ais.initialize(db);
-		for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
-			ais.getOrCreateColumnIndexByAliasList(db, entry.getKey(), entry.getValue());
-		}
+			@Override
+			public void process(ODatabaseSession db) {
+				ais.initialize(db);
+				for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
+					ais.getOrCreateColumnIndexByAliasList(db, entry.getKey(), entry.getValue());
+				}
 
-		this.session = this.appContext.openDB();
+			}
+		});
+
+		this.appContext.executeWithDbSession(new Processor<ODatabaseSession>() {
+
+			@Override
+			public void process(ODatabaseSession db) {
+				doProcess(ais, db);
+			}
+		});
+	}
+
+	private void doProcess(DbAliasInfos ais, ODatabaseSession db) {
+		this.session = db;
 
 		try {
 			for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
@@ -98,13 +114,13 @@ public class GDBWashedFileSchemaLoader extends WashedFileLoader {
 			}
 
 		} finally {
-			this.session.close();
 			this.session = null;
 		}
 	}
 
 	@Override
-	protected int onTableData(String type, File file, int number, CsvHeaderRowMap headers, CsvRowMap body) {
+	protected int onTableData(String type, FileObject file, int number, CsvHeaderRowMap headers, CsvRowMap body)
+			throws IOException {
 		List<String> set = propertyListMap.get(type);
 
 		if (set == null) {

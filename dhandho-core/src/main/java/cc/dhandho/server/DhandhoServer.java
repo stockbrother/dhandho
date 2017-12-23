@@ -11,6 +11,8 @@ import java.io.Writer;
  */
 public interface DhandhoServer extends DbProvider {
 
+	public DhandhoServer home(String home);
+	
 	public void start();
 
 	public void shutdown();

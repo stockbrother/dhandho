@@ -1,7 +1,10 @@
 package cc.dhandho.importer;
 
-import java.io.File;
 
+import java.io.IOException;
+
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,25 +17,26 @@ public abstract class FilesIterator {
 	protected boolean typeToUpperCase;
 	protected boolean interrupted;
 
-	private File dir;
+	private FileObject dir;
 
 	private int nextNumber;
 
-	public FilesIterator(File dir) {
+	public FilesIterator(FileObject dir) {
 		this.dir = dir;
 	}
 
-	public void start() {
+	public void start() throws IOException{
 		doLoadInternal(this.dir);
 	}
 
-	private void doLoadInternal(File dir) {
+	private void doLoadInternal(FileObject dir) throws IOException{
 		if (!dir.exists()) {
-			throw new RtException("dir:" + dir.getAbsolutePath() + " do not exists.");
+			throw new RtException("dir:" + dir.getURL() + " does not exists.");
 		}
-		if (dir.isFile()) {
-			File f = dir;
-			String fname = f.getName();
+		
+		if (dir.getType() == FileType.FILE) {
+			FileObject f = dir;
+			String fname = f.getName().getBaseName();
 			String[] fnames = fname.split("\\.");
 			if (fnames[fnames.length - 1].equals("csv")) {
 
@@ -50,13 +54,13 @@ public abstract class FilesIterator {
 				return;
 			}
 
-			File[] fs = dir.listFiles();
+			FileObject[] fs = dir.getChildren();
 
 			if (fs == null) {
 				throw new RtException("??");
 			}
 
-			for (File f : fs) {
+			for (FileObject f : fs) {
 				// is directory
 				if (this.interrupted) {
 					LOG.warn("interrupted.");
@@ -68,5 +72,5 @@ public abstract class FilesIterator {
 		}
 	}
 
-	protected abstract void onFile(String type, File file, int number);
+	protected abstract void onFile(String type, FileObject file, int number) throws IOException;
 }

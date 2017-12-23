@@ -1,11 +1,13 @@
 package cc.dhandho.importer;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
+import org.apache.commons.vfs2.FileObject;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.id.ORID;
@@ -14,7 +16,9 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.DbAliasInfos;
+import cc.dhandho.Processor;
 import cc.dhandho.Quarter;
+import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 import cc.dhandho.server.DbProvider;
@@ -31,7 +35,7 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 
 	private int files;
 
-	public GDBWashedFileValueLoader(DbProvider appContext, File dir, Quarter quarter) {
+	public GDBWashedFileValueLoader(DbProvider appContext, FileObject dir, Quarter quarter) {
 		super(dir, quarter);
 		this.appContext = appContext;
 	}
@@ -42,8 +46,22 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 	}
 
 	@Override
-	public void start() {
-		this.session = this.appContext.openDB();
+	public void start() throws IOException {
+		this.appContext.executeWithDbSession(new Processor<ODatabaseSession>() {
+
+			@Override
+			public void process(ODatabaseSession db) {
+				try {
+					doProcess(db);
+				} catch (IOException e) {
+					throw RtException.toRtException(e);
+				}
+			}
+		});
+	}
+
+	private void doProcess(ODatabaseSession db) throws IOException {
+		this.session = db;
 		OIntentMassiveInsert intent = new OIntentMassiveInsert();
 		// intent.setEnableCache(false);
 		this.session.declareIntent(intent);
@@ -54,13 +72,12 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 			super.start();
 
 		} finally {
-			this.session.close();
 			this.session = null;
 		}
 	}
 
 	@Override
-	protected void onReader(String type, File file, Reader freader, int number) {
+	protected void onReader(String type, FileObject file, Reader freader, int number) throws IOException {
 		super.onReader(type, file, freader, number);
 
 		files++;

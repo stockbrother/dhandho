@@ -21,14 +21,15 @@ import com.orientechnologies.orient.core.db.OrientDBConfig;
 
 import cc.dhandho.AppContext;
 import cc.dhandho.AppContextImpl;
+import cc.dhandho.DhandhoHome;
 import cc.dhandho.Processor;
-import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.DbSessionTL;
 import cc.dhandho.rest.JsonHandlers;
 import cc.dhandho.server.CorpInfoDbUpgrader;
 import cc.dhandho.server.DbProvider;
 import cc.dhandho.server.DhandhoServer;
+import cc.dhandho.server.WashedDataUpgrader;
 import cc.dhandho.util.DbInitUtil;
 
 /**
@@ -48,33 +49,9 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	AppContext app;
 	DbConfig dbConfig;
 
+	protected String home;
+
 	private ScheduledExecutorService executor;
-
-	@Override
-	public void uncaughtException(Thread thread, Throwable throwable) {
-		LOG.error("uncaughtException in thread:" + thread.getName(), throwable);
-	}
-
-	@Override
-	public Thread newThread(Runnable r) {
-		return new AppThread(r, this);
-	}
-
-	public static class AppThread extends Thread {
-		DhandhoServerImpl ddr;
-
-		public AppThread(Runnable r, DhandhoServerImpl ddr) {
-			super(r);
-			this.ddr = ddr;
-			this.setUncaughtExceptionHandler(ddr);
-		}
-
-		@Override
-		public void run() {
-			// AppContextImpl.set(this.ddr);
-			super.run();
-		}
-	}
 
 	public DhandhoServerImpl dbConfig(DbConfig dbConfig) {
 		this.dbConfig = dbConfig;
@@ -90,13 +67,23 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		this.executor = Executors.newScheduledThreadPool(1, this);
 		app = new AppContextImpl();
 		app.addComponent(DbProvider.class, this);
+
+		app.addComponent(DhandhoHome.class, new DhandhoHome(home));
+
 		orient = new OrientDB(this.dbConfig.getDbUrl(), OrientDBConfig.defaultConfig());
 		handlers = new JsonHandlers(app);
+		
 		this.createDbIfNotExist();
+		
 		this.executeWithDbSession(new DbInitUtil());
-		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
+		
+		//load corp info to DB.
+		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);		
 		this.executeWithDbSession(dbu);
-
+		//load washed data to DB.
+		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
+		this.executeWithDbSession(wdu);
+		
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start done");
 		}
@@ -119,8 +106,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		return this.orient.createIfNotExists(this.dbConfig.getDbName(), this.dbConfig.getDbType());
 	}
 
-	@Override
-	public ODatabaseSession openDB() {
+	private ODatabaseSession openDB() {
 		// TODO avoid openDB twice.
 		// TODO if dbName = null, it will block here. why?
 		if (this.dbConfig.getDbName() == null) {
@@ -196,9 +182,35 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	}
 
 	@Override
-	public ODatabaseSession getDB() {
-		// TODO
-		return null;
+	public DhandhoServer home(String home) {
+		this.home = home;
+		return this;
+	}
+
+	public static class AppThread extends Thread {
+		DhandhoServerImpl ddr;
+
+		public AppThread(Runnable r, DhandhoServerImpl ddr) {
+			super(r);
+			this.ddr = ddr;
+			this.setUncaughtExceptionHandler(ddr);
+		}
+
+		@Override
+		public void run() {
+			// AppContextImpl.set(this.ddr);
+			super.run();
+		}
+	}
+
+	@Override
+	public void uncaughtException(Thread thread, Throwable throwable) {
+		LOG.error("uncaughtException in thread:" + thread.getName(), throwable);
+	}
+
+	@Override
+	public Thread newThread(Runnable r) {
+		return new AppThread(r, this);
 	}
 
 }
