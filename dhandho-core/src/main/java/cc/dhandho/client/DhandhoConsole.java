@@ -25,6 +25,8 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 
 	protected MetricsDefine metrics;
 
+	protected HtmlRenderer htmlRenderer;
+
 	public DhandhoServer getServer() {
 		return server;
 	}
@@ -37,13 +39,17 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 	@Override
 	public void start() {
 		super.start();
+
 		this.echo(false);
 		this.addCommand(new CommandType("help", "Print this message!"), new HelpCommandHandler());
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
-
 		this.metrics = load(server.getHome());
+		if (this.htmlRenderer == null) {
+			this.htmlRenderer = new EmptyHtmlRenderer();
+		}
+
 	}
 
 	public MetricsDefine getMetricsDefine() {
@@ -87,6 +93,10 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 			return;
 		}
 		h.execute(cl);
+	}
+
+	public void htmlRenderer(HtmlRenderer htmlRenderer) {
+		this.htmlRenderer = htmlRenderer;
 	}
 
 }

@@ -27,6 +27,10 @@ public class DefaultConsoleReader implements CommandLineReader {
 
 			try {
 				char c = (char) r.read();
+				if (c == '\r') {
+					// ignore?
+					continue;
+				}
 				if (c == '\n') {
 					break;
 				}

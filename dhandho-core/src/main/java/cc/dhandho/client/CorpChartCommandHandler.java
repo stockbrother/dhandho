@@ -1,9 +1,14 @@
 package cc.dhandho.client;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 
+import javax.xml.transform.TransformerException;
+
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
@@ -39,12 +44,33 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 			StringWriter sWriter2 = new StringWriter();
 			console.getServer().handle(CorpChartJsonHandler.class.getName(), new StringReader(sWriter.toString()),
 					sWriter2);
-			System.out.println(sWriter2.toString());
 
+			JsonObject jsonO = (JsonObject) JsonUtil.parse(sWriter2.getBuffer().toString());
+			int height = jsonO.get("height").getAsInt();
+			int width = jsonO.get("width").getAsInt();
+			String svg = jsonO.get("svg").getAsString();
+
+			StringWriter sWriter3 = new StringWriter();
+			writeSvg2Html(width, height, svg, sWriter3);
+			console.htmlRenderer.showHtml(sWriter3.getBuffer().toString());
+			
 		} catch (IOException e) {
 			throw RtException.toRtException(e);
 		}
 
 	}
 
+	private static void writeSvg2Html(int width, int height, String svg, Writer out) throws IOException {
+		out.write("<html>\n");
+		out.write("  <head>\n");
+		out.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n");
+		out.write("  </head>\n");
+		out.write("  <body>\n");
+		out.write("    <div style=\"width:" + width + "; height:" + height + ";\">\n");
+		out.write("    " + svg + "\n");
+		out.write("    </div>\n");
+		out.write("  </body>\n");
+		out.write("</html>\n");
+		out.flush();
+	}
 }

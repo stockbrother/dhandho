@@ -1,5 +1,7 @@
 package cc.dhandho.commons.commandline;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +12,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -27,7 +28,7 @@ import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
 
 /**
  * 
- * @author wuzhen
+ * @author Wu
  * 
  */
 public abstract class AbstractComandLineApplication implements CommandLineApplication {
@@ -101,7 +102,7 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 				this.commandCounter++;
 			}
 			LOG.warn("exiting graph console");
-		} catch (Throwable t) {			
+		} catch (Throwable t) {
 			LOG.error("todo exit", t);
 		} finally {
 			this.isAlive = false;
@@ -144,13 +145,24 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 				cl = this.parseCommandLine(command, args2, true);
 			}
 			CommandAndLine cnl = new CommandAndLine(this, idx, command, cl);
-			this.processLine(cnl);
+			try {
+				this.processLine(cnl);
+			} catch (Throwable t) {
+				this.unexpectedThrowable(cnl, t);
+			}
+
 		} finally {
 			if (this.printLine) {
 				this.writer.writeLine();
 			}
 		}
 
+	}
+
+	protected void unexpectedThrowable(CommandAndLine cnl, Throwable t) {
+		StringWriter sWriter = new StringWriter();
+		t.printStackTrace(new PrintWriter(sWriter));
+		this.writer.write(sWriter.getBuffer().toString());
 	}
 
 	public abstract void processLine(CommandAndLine cl);
