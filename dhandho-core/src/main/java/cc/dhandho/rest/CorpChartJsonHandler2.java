@@ -18,6 +18,7 @@ import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 
+@Deprecated
 public class CorpChartJsonHandler2 extends DbSessionJsonHandler {
 
 	@Override

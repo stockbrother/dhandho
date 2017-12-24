@@ -22,7 +22,8 @@ public class DhandhoConsoleTest extends TestCase {
 		console.getServer().start();
 		console.start();
 		console.prompt();
-		console.shutdownAsync();
+		
+		//console.shutdownAsync();
 		while (console.isAlive()) {
 			Thread.sleep(1000);
 		}

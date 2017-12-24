@@ -1,6 +1,7 @@
 package cc.dhandho.util;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 
@@ -20,6 +21,10 @@ public class JsonUtil {
 
 	public static JsonWriter newJsonWriter(Writer writer) throws IOException {
 		return GSON.newJsonWriter(writer);
+	}
+
+	public static JsonReader newJsonReader(Reader reader) throws IOException {
+		return GSON.newJsonReader(reader);
 	}
 
 }

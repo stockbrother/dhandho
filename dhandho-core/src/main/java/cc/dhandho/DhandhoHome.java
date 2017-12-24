@@ -30,6 +30,10 @@ public class DhandhoHome {
 		return this.homeFile;
 	}
 
+	public FileObject getClientFile() throws IOException {
+		return resolveFile(this.homeFile, "client");
+	}
+
 	public FileObject getInportFile() throws IOException {
 		return resolveFile(this.homeFile, "inport");
 	}
@@ -40,6 +44,10 @@ public class DhandhoHome {
 
 	public FileObject getInportCorpsFile() throws IOException {
 		return resolveFile(this.getInportFile(), "corps");
+	}
+
+	public FileObject resolveFile(String path) throws IOException {
+		return resolveFile(this.homeFile, path);
 	}
 
 	public FileObject resolveFile(FileObject parent, String path) throws IOException {

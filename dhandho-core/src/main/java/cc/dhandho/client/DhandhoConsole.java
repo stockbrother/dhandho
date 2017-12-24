@@ -1,10 +1,15 @@
 package cc.dhandho.client;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.vfs2.FileObject;
+
+import cc.dhandho.DhandhoHome;
+import cc.dhandho.RtException;
 import cc.dhandho.commons.commandline.AbstractComandLineApplication;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
@@ -17,6 +22,8 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 	protected List<Handler> beforeShutdownHandlerList = new ArrayList<>();
 
 	protected Map<String, CommandHandler> handlerMap = new HashMap<>();
+
+	protected MetricsDefine metrics;
 
 	public DhandhoServer getServer() {
 		return server;
@@ -33,7 +40,24 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 		this.echo(false);
 		this.addCommand(new CommandType("help", "Print this message!"), new HelpCommandHandler());
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
+		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
+				new CorpChartCommandHandler());
 
+		this.metrics = load(server.getHome());
+	}
+
+	public MetricsDefine getMetricsDefine() {
+		return this.metrics;
+	}
+
+	private MetricsDefine load(DhandhoHome home) {
+		FileObject file;
+		try {
+			file = home.resolveFile(home.getClientFile(), "metrics-define.xml");
+			return MetricsDefine.load(file.getContent().getInputStream());
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
+		}
 	}
 
 	public void addCommand(CommandType type, CommandHandler handler) {

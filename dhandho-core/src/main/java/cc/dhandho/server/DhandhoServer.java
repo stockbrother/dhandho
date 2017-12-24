@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import cc.dhandho.DhandhoHome;
+
 /**
  * 
  * @author wuzhen
@@ -11,8 +13,16 @@ import java.io.Writer;
  */
 public interface DhandhoServer extends DbProvider {
 
-	public DhandhoServer home(String home);
-	
+	/**
+	 * 
+	 * @param home
+	 *            the Home folder in the VFS file system.
+	 * @return
+	 */
+	public DhandhoServer home(DhandhoHome home);
+
+	public DhandhoHome getHome();
+
 	public void start();
 
 	public void shutdown();

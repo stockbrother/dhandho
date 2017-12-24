@@ -80,8 +80,7 @@ public class CommandAndLine {
 	/**
 	 * @return
 	 */
-	public String[] getArgs() {
-		// TODO Auto-generated method stub
+	public String[] getArgs() {		
 		return this.line.getArgs();
 	}
 

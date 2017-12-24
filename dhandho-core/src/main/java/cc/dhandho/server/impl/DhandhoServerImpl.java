@@ -49,7 +49,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	AppContext app;
 	DbConfig dbConfig;
 
-	protected String home;
+	protected DhandhoHome home;
 
 	private ScheduledExecutorService executor;
 
@@ -68,22 +68,22 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		app = new AppContextImpl();
 		app.addComponent(DbProvider.class, this);
 
-		app.addComponent(DhandhoHome.class, new DhandhoHome(home));
+		app.addComponent(DhandhoHome.class, home);
 
 		orient = new OrientDB(this.dbConfig.getDbUrl(), OrientDBConfig.defaultConfig());
 		handlers = new JsonHandlers(app);
-		
+
 		this.createDbIfNotExist();
-		
+
 		this.executeWithDbSession(new DbInitUtil());
-		
-		//load corp info to DB.
-		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);		
+
+		// load corp info to DB.
+		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
 		this.executeWithDbSession(dbu);
-		//load washed data to DB.
+		// load washed data to DB.
 		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
 		this.executeWithDbSession(wdu);
-		
+
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start done");
 		}
@@ -182,7 +182,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	}
 
 	@Override
-	public DhandhoServer home(String home) {
+	public DhandhoServer home(DhandhoHome home) {
 		this.home = home;
 		return this;
 	}
@@ -211,6 +211,11 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	@Override
 	public Thread newThread(Runnable r) {
 		return new AppThread(r, this);
+	}
+
+	@Override
+	public DhandhoHome getHome() {
+		return home;
 	}
 
 }
