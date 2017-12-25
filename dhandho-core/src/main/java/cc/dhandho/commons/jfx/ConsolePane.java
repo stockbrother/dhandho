@@ -1,11 +1,10 @@
 package cc.dhandho.commons.jfx;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class ConsolePane extends StackPane {
 
@@ -42,16 +43,23 @@ public class ConsolePane extends StackPane {
 
 		ConsoleKeyListener kl = new ConsoleKeyListener(this);
 		this.nameComplete = new ConsoleNameComplete(this);
-		text = new ConsoleTexPane(this);
+		text = new TextArea();
 
-		Font font = new Font("Monospaced", Font.PLAIN, 14);
+		// Background background = new Background(new BackgroundFill(Color.BLACK,
+		// CornerRadii.EMPTY, Insets.EMPTY));
+		// Fill the background color on the matte
+		// text.setBackground(background);
+
+		text.setStyle(
+				"-fx-control-inner-background:#000000; -fx-font-family: Consolas; -fx-highlight-fill: #00ff00; -fx-highlight-text-fill: #000000; -fx-text-fill: #00ff00;");
+
 		text.setText("");
 		// text.setFont(font);
 		// text.setMargin(new Insets(7, 5, 7, 5));
 		text.addEventHandler(KeyEvent.ANY, kl);
 		// text.addKeyListener(kl);
 		// setViewportView(text);
-		//this.setContent(text);
+		// this.setContent(text);
 		this.getChildren().add(text);
 		// create popup menu
 		// menu = new ConsoleMenu(this);
@@ -69,6 +77,13 @@ public class ConsolePane extends StackPane {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	private String format(Color c) {
+		int r = (int) (255 * c.getRed());
+		int g = (int) (255 * c.getGreen());
+		int b = (int) (255 * c.getBlue());
+		return String.format("#%02x%02x%02x", r, g, b);
 	}
 
 	public InputStream getInputStream() {
@@ -126,7 +141,7 @@ public class ConsolePane extends StackPane {
 		System.out.println("textLength:" + textLength());
 
 		s = text.getText(cmdStart, textLength());
-
+		print(s);
 		return s;
 	}
 
@@ -167,13 +182,7 @@ public class ConsolePane extends StackPane {
 	}
 
 	public void print(final Object o) {
-		JfxUtil.runSafe(new Runnable() {
-			public void run() {
-				append(String.valueOf(o));
-				resetCommandStart();
-				text.positionCaret(cmdStart);
-			}
-		});
+		print(o, null, null);
 	}
 
 	/**
@@ -185,7 +194,7 @@ public class ConsolePane extends StackPane {
 	}
 
 	public void error(Object o) {
-		print(o, Color.red);
+		print(o, Color.RED);
 	}
 
 	public void print(Object s, Font font) {
@@ -201,10 +210,12 @@ public class ConsolePane extends StackPane {
 			public void run() {
 				// AttributeSet old = getStyle();
 				// setStyle(font, color);
+				String old = text.getStyle();
+				
 				append(String.valueOf(o));
 				resetCommandStart();
 				text.positionCaret(cmdStart);
-				// setStyle(old, true);
+				// text.setStyle(old);
 			}
 		});
 	}
@@ -220,6 +231,7 @@ public class ConsolePane extends StackPane {
 			public void run() {
 				// AttributeSet old = getStyle();
 				// setStyle(fontFamilyName, size, color, bold, italic, underline);
+
 				append(String.valueOf(o));
 				resetCommandStart();
 				text.positionCaret(cmdStart);

@@ -1,6 +1,6 @@
 package cc.dhandho.commons.jfx;
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class ConsoleNameComplete {
 
@@ -59,7 +59,7 @@ public class ConsoleNameComplete {
 			sb.append("...\n");
 		}
 
-		console.print(sb, Color.gray);
+		console.print(sb, Color.GRAY);
 		console.print(prompt); // print resets command start
 		console.append(command); // append does not reset command start
 	}
