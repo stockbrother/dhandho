@@ -24,15 +24,14 @@ public class ConsoleExample extends Application {
 
 		StackPane sp = new StackPane();
 		ConsolePane console = new ConsolePane();
-		//sp.getChildren().add(console);
+		// sp.getChildren().add(console);
 		Color color = Color.RED;
-	    BackgroundFill fill = new BackgroundFill(color, CornerRadii.EMPTY,
-	            Insets.EMPTY);
-	    Background background = new Background(fill);
-	    // Fill the background color on the matte
-	    sp.setBackground(background);
-	    console.setBackground(background);
-		Scene root = new Scene(console, 800, 400, Color.BLACK);
+		BackgroundFill fill = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
+		Background background = new Background(fill);
+		// Fill the background color on the matte
+		// sp.setBackground(background);
+		// console.setBackground(background);
+		Scene root = new Scene(console, 800, 400);
 
 		stage.setScene(root);
 
@@ -41,7 +40,7 @@ public class ConsoleExample extends Application {
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight,
 					Number height) {
 				System.out.println("Height: " + height);
-				//console.resize(sp.getWidth(), height.doubleValue());
+				// console.resize(sp.getWidth(), height.doubleValue());
 
 				// sp.setPrefHeight(newSceneHeight.doubleValue());
 				// sp.autosize();

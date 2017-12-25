@@ -50,9 +50,19 @@ public class ConsolePane extends StackPane {
 		// Fill the background color on the matte
 		// text.setBackground(background);
 
-		text.setStyle(
-				"-fx-control-inner-background:#000000; -fx-font-family: Consolas; -fx-highlight-fill: #00ff00; -fx-highlight-text-fill: #000000; -fx-text-fill: #00ff00;");
+		// text.setStyle(
+		// "-fx-control-inner-background:#000000; -fx-font-family: Consolas;
+		// -fx-highlight-fill: #00ff00; -fx-highlight-text-fill: #000000; -fx-text-fill:
+		// #00ff00;");
 
+		text.setStyle("" //
+				+ "-fx-font-family: Consolas;"//
+				+ "-fx-font-size: 12;"//
+				+ "-fx-control-inner-background:#000000;"//
+				+ "-fx-focus-color: -fx-control-inner-background;"//
+				+ "-fx-faint-focus-color: -fx-focus-color;"//
+				+ "-fx-text-fill: #00ff00;"//
+		);
 		text.setText("");
 		// text.setFont(font);
 		// text.setMargin(new Insets(7, 5, 7, 5));
@@ -211,7 +221,7 @@ public class ConsolePane extends StackPane {
 				// AttributeSet old = getStyle();
 				// setStyle(font, color);
 				String old = text.getStyle();
-				
+
 				append(String.valueOf(o));
 				resetCommandStart();
 				text.positionCaret(cmdStart);
