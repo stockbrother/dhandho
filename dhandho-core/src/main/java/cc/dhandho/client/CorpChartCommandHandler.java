@@ -33,7 +33,7 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 		String[] metrics = metricsS.split("/");
 
 		int[] years = new int[] { 2016, 2015, 2014, 2013, 2012 };
-		DhandhoConsole console = (DhandhoConsole) line.getConsole();
+		DhandhoCliConsole console = (DhandhoCliConsole) line.getConsole();
 
 		StringWriter sWriter = new StringWriter();
 		try {

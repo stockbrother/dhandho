@@ -18,6 +18,32 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
 
+/**
+ * Load define of metrics from formated xml as below: <code>
+ 
+    <metrics for="xueqiu">
+
+	    <group name="COMMON">
+		    <metric name="权益乘数" op="/">
+			    <metric ref="资产总计" />
+			    <metric ref="所有者权益_或股东权益_合计" />
+		    </metric>
+	    </group>
+
+	    <group name="NJR">
+	        ...
+	    </group>
+	    <group name="JR">
+	        ...
+	    </group>
+	    
+     <metrics>
+ 
+   </code>
+ * 
+ * @author wu
+ *
+ */
 public class MetricsDefine {
 
 	public static enum Group {

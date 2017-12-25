@@ -1,6 +1,6 @@
 package cc.dhandho.test;
 
-import cc.dhandho.client.DhandhoApplication;
+import cc.dhandho.client.jfx.DhandhoApplication;
 import cc.dhandho.server.DhandhoServer;
 import javafx.application.Application;
 import junit.framework.TestCase;

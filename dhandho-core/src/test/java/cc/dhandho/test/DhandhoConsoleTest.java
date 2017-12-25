@@ -1,6 +1,6 @@
 package cc.dhandho.test;
 
-import cc.dhandho.client.DhandhoConsole;
+import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.server.DhandhoServer;
 import junit.framework.TestCase;
 
@@ -18,7 +18,7 @@ public class DhandhoConsoleTest extends TestCase {
 
 	public void test() throws Exception {
 
-		DhandhoConsole console = TestUtil.newInMemoryTestDhandhoServerConsole();
+		DhandhoCliConsole console = TestUtil.newInMemoryTestDhandhoServerConsole();
 		console.getServer().start();
 		console.start();
 		console.prompt();

@@ -16,7 +16,7 @@ import cc.dhandho.commons.commandline.CommandType;
 import cc.dhandho.graphdb.Handler;
 import cc.dhandho.server.DhandhoServer;
 
-public class DhandhoConsole extends AbstractComandLineApplication {
+public class DhandhoCliConsole extends AbstractComandLineApplication {
 	protected DhandhoServer server;
 
 	protected List<Handler> beforeShutdownHandlerList = new ArrayList<>();
@@ -31,7 +31,7 @@ public class DhandhoConsole extends AbstractComandLineApplication {
 		return server;
 	}
 
-	public DhandhoConsole server(DhandhoServer server) {
+	public DhandhoCliConsole server(DhandhoServer server) {
 		this.server = server;
 		return this;
 	}
