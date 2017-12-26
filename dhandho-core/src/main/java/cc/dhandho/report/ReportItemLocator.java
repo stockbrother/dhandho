@@ -11,7 +11,7 @@ import cc.dhandho.util.Visitor;
  * 1-1 ReportItemEntity
  * 
  * @see ReportItemLocators
- * @author wuzhen
+ * @author Wu
  *
  */
 public class ReportItemLocator {

@@ -11,7 +11,7 @@ public class ConsoleTexPane extends TextArea {
 	}
 
 	public void cut() {
-		if (this.getCaretPosition() < console.cmdStart) {
+		if (this.getCaretPosition() < console.positionOfCmdStart) {
 			super.copy();
 		} else {
 			super.cut();

@@ -4,18 +4,24 @@ import java.util.List;
 
 /**
  * 
- * @author wuzhen
+ * @author Wu
  * 
  */
-public interface CommandLineApplication {
+public interface CommandLineApp {
 
-	public CommandLineApplication prompt(String prompt);
+	/**
+	 * Set the prompt character.
+	 * 
+	 * @param prompt
+	 * @return
+	 */
+	public CommandLineApp prompt(String prompt);
 
-	public CommandLineApplication pushReader(CommandLineReader cr);
+	public CommandLineApp pushReader(CommandLineReader cr);
 
-	public CommandLineApplication pushReader(CommandLineReader cr, boolean popWhenClosed);
+	public CommandLineApp pushReader(CommandLineReader cr, boolean popWhenClosed);
 
-	public CommandLineApplication pushWriter(CommandLineWriter cw);
+	public CommandLineApp pushWriter(CommandLineWriter cw);
 
 	public CommandLineWriter popWriter();
 
@@ -32,12 +38,21 @@ public interface CommandLineApplication {
 
 	public String getAttribute(String key);
 
+	/**
+	 * start the thread for running with.
+	 */
 	public void start();
 
+	/**
+	 * Shutdown and block until finished.
+	 */
 	public void shutdown();
-	
+
+	/**
+	 * Send message to shutdown it later.
+	 */
 	public void shutdownAsync();
-	
+
 	public boolean isAlive();
-	
+
 }

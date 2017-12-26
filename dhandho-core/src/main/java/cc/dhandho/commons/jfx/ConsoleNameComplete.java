@@ -42,13 +42,13 @@ public class ConsoleNameComplete {
 		// Found ambiguous, show (some of) them
 
 		String line = console.text.getText();
-		String command = line.substring(console.cmdStart);
+		String command = line.substring(console.positionOfCmdStart);
 		// Find prompt
-		for (i = console.cmdStart; line.charAt(i) != '\n' && i > 0; i--) {
+		for (i = console.positionOfCmdStart; line.charAt(i) != '\n' && i > 0; i--) {
 
 		}
 
-		String prompt = line.substring(i + 1, console.cmdStart);
+		String prompt = line.substring(i + 1, console.positionOfCmdStart);
 
 		// Show ambiguous
 		StringBuffer sb = new StringBuffer("\n");

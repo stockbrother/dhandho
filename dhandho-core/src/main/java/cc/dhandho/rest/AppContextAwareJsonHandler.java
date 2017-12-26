@@ -6,7 +6,7 @@ import cc.dhandho.server.DbProvider;
 
 /**
  * 
- * @author wuzhen
+ * @author Wu
  *
  */
 public abstract class AppContextAwareJsonHandler implements JsonHandler, AppContext.Aware {

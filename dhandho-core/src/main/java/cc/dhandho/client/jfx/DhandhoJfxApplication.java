@@ -1,8 +1,6 @@
 package cc.dhandho.client.jfx;
 
-import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.client.HtmlRenderer;
-import cc.dhandho.commons.jfx.ConsolePane;
 import cc.dhandho.commons.jfx.JfxUtil;
 import cc.dhandho.server.DhandhoServer;
 import javafx.application.Application;
@@ -12,26 +10,28 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class DhandhoApplication extends Application implements HtmlRenderer {
+public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 	WebEngine webEngine;
 
 	// this SERVER must be started and set before launch this application.
 
 	private static DhandhoServer SERVER;
 
-	DhandhoCliConsole console;
-	DhandhoJfxConsole console2;
-	ConsolePane console3;
+	DhandhoJfxConsole console;
 	Stage htmlStage;
-	
-	public DhandhoApplication() {
+
+	protected double width = 800;
+
+	protected double height = 300;
+
+	public DhandhoJfxApplication() {
 
 	}
 
 	@Override
 	public void init() throws Exception {
 
-		console = new DhandhoCliConsole();
+		console = new DhandhoJfxConsole();
 		console.server(SERVER);
 		console.htmlRenderer(this);
 
@@ -45,29 +45,18 @@ public class DhandhoApplication extends Application implements HtmlRenderer {
 	@Override
 	public void start(Stage stage) throws Exception {
 		console.start();
-		this.startConsoleStage3(stage);
+		this.startConsoleStage1(stage);
 		this.htmlStage = new Stage();
 		this.startHtmlStage(this.htmlStage);
 	}
 
-	private void startConsoleStage3(Stage stage) {
+	private void startConsoleStage1(Stage stage) {
 		stage.setTitle("Dhandho Console");
-		console3 = new ConsolePane();		
-		Scene root = new Scene(console3);
+		Scene root = new Scene(console.consolePane, this.width, this.height);
 		stage.setScene(root);
 		stage.show();
-
-	}
-	private void startConsoleStage2(Stage stage) {
-		stage.setTitle("Dhandho Console");
-		console2 = new DhandhoJfxConsole();		
-		Scene root = new Scene(console2);
-		stage.setScene(root);
-		stage.show();
-
 	}
 
-	
 	private void startHtmlStage(Stage stage) {
 		stage.setTitle("Dhandho Html");
 		BorderPane sp = new BorderPane();
@@ -92,7 +81,6 @@ public class DhandhoApplication extends Application implements HtmlRenderer {
 		});
 
 	}
-	
 
 	public static void setServer(DhandhoServer server) {
 		SERVER = server;

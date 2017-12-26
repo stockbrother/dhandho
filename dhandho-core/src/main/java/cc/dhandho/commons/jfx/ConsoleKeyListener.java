@@ -62,7 +62,7 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 		case LEFT:
 		case BACK_SPACE:
 		case DELETE:
-			if (console.text.getCaretPosition() <= console.cmdStart) {
+			if (console.text.getCaretPosition() <= console.positionOfCmdStart) {
 				// This doesn't work for backspace.
 				// See default case for workaround
 				e.consume();
@@ -80,7 +80,7 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 
 		case U: // clear line
 			if (e.isControlDown()) {
-				console.replaceRange("", console.cmdStart, console.textLength());
+				console.replaceRange("", console.positionOfCmdStart, console.textLength());
 				console.history.histLine = 0;
 				e.consume();
 			}
@@ -123,7 +123,7 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 
 		case TAB:
 			if (pressed) {
-				String part = console.text.getText().substring(console.cmdStart);
+				String part = console.text.getText().substring(console.positionOfCmdStart);
 				console.nameComplete.doCommandComplete(part);
 			}
 			e.consume();

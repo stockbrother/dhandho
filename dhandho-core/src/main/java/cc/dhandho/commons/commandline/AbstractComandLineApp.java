@@ -24,16 +24,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cc.dhandho.RtException;
+import cc.dhandho.client.CommandHandler;
 import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
 
 /**
+ * Sample code of usage: <br>
+ * <code>
+    public class MyCommandLineApp extends AbstractComandLineApplication{
+    
+      public void processLine(CommandAndLine cl) {
+		
+		line.getConsole().peekWriter().writeLine("this is a command.");
+		 
+      }
+    }
+  
+    MyCommandLineApp app = new MyCommandLineApp();
+    app.start();
+  </code> <br>
+ * To read from other source instead of standard input. <br>
+ * <code>
+    app.pushReader(reader);
+</code><br>
+ * to write to other writer instead of standard output. <code>  
+    app.pushWriter(writer);
+</code>
  * 
  * @author Wu
  * 
  */
-public abstract class AbstractComandLineApplication implements CommandLineApplication {
+public abstract class AbstractComandLineApp implements CommandLineApp {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractComandLineApplication.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractComandLineApp.class);
 
 	private StackConsoleReader reader;
 
@@ -44,10 +66,6 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	private Map<String, CommandType> commandMap = new HashMap<String, CommandType>();
 
 	private StackConsoleWriter writer;
-
-	private boolean pushStdInput = true;
-
-	private boolean pushStdOutput = true;
 
 	private String prompt = "$";
 
@@ -65,11 +83,14 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 
 	Future<String> fs;
 
-	public AbstractComandLineApplication() {
+	public AbstractComandLineApp() {
 
 		this.reader = new StackConsoleReader();
 		this.writer = new StackConsoleWriter();
 		this.executor = Executors.newSingleThreadExecutor();//
+		this.reader.push(new DefaultConsoleReader());
+		this.writer.push(new DefaultConsoleWriter());
+
 	}
 
 	@Override
@@ -78,7 +99,7 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	}
 
 	@Override
-	public CommandLineApplication prompt(String p) {
+	public CommandLineApp prompt(String p) {
 		this.prompt = p;
 		this.prompt();
 		return this;
@@ -200,20 +221,13 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	@Override
 	public void start() {
 
-		if (this.pushStdInput) {
-			this.reader.push(new DefaultConsoleReader());
-		}
-		if (this.pushStdOutput) {
-			this.writer.push(new DefaultConsoleWriter());
-		}
-
 		this.isRunning = true;
 
 		fs = this.executor.submit(new Callable<String>() {
 
 			@Override
 			public String call() throws Exception {
-				AbstractComandLineApplication.this.run();
+				AbstractComandLineApp.this.run();
 				return null;
 
 			}
@@ -241,12 +255,12 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	}
 
 	@Override
-	public CommandLineApplication pushReader(CommandLineReader cr) {
+	public CommandLineApp pushReader(CommandLineReader cr) {
 		return this.pushReader(cr, true);
 	}
 
 	@Override
-	public CommandLineApplication pushReader(CommandLineReader cr, boolean popWhenClosed) {
+	public CommandLineApp pushReader(CommandLineReader cr, boolean popWhenClosed) {
 
 		this.reader.push(cr, popWhenClosed);
 
@@ -254,7 +268,7 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 	}
 
 	@Override
-	public CommandLineApplication pushWriter(CommandLineWriter cw) {
+	public CommandLineApp pushWriter(CommandLineWriter cw) {
 		this.writer.push(cw);
 		return this;
 
@@ -292,7 +306,6 @@ public abstract class AbstractComandLineApplication implements CommandLineApplic
 
 	@Override
 	public CommandType getCommand(String name) {
-		// TODO Auto-generated method stub
 		return this.commandMap.get(name);
 	}
 

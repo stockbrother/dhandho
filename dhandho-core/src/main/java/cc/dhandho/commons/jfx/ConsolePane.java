@@ -2,9 +2,10 @@ package cc.dhandho.commons.jfx;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.util.Random;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.Reader;
+import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +20,23 @@ public class ConsolePane extends StackPane {
 
 	private static Logger LOG = LoggerFactory.getLogger(ConsolePane.class);
 
+	//
 	private static String ZEROS = "000";
 
-	private PipedOutputStream outPipe;
-	private InputStream in;
+	// the middle var for write(for read) the command into.
+	private PipedWriter outPipe;
 
-	int cmdStart = 0;
+	// the reader for client to reade from.
+	private Reader reader;
+
+	// the position in the text area which the command is inputing right now.
+	int positionOfCmdStart = 0;
 	ConsoleHistory history;
 	String startedLine;
 
-	// PopupMenu menu;
+	// ui component
 	protected TextArea text;
+
 	ConsoleNameComplete nameComplete;
 
 	final int SHOW_AMBIG_MAX = 10;
@@ -38,22 +45,11 @@ public class ConsolePane extends StackPane {
 	boolean gotUp = true;
 
 	public ConsolePane() {
-
 		this.history = new ConsoleHistory(this);
 
 		ConsoleKeyListener kl = new ConsoleKeyListener(this);
 		this.nameComplete = new ConsoleNameComplete(this);
 		text = new TextArea();
-
-		// Background background = new Background(new BackgroundFill(Color.BLACK,
-		// CornerRadii.EMPTY, Insets.EMPTY));
-		// Fill the background color on the matte
-		// text.setBackground(background);
-
-		// text.setStyle(
-		// "-fx-control-inner-background:#000000; -fx-font-family: Consolas;
-		// -fx-highlight-fill: #00ff00; -fx-highlight-text-fill: #000000; -fx-text-fill:
-		// #00ff00;");
 
 		text.setStyle("" //
 				+ "-fx-font-family: Consolas;"//
@@ -64,25 +60,12 @@ public class ConsolePane extends StackPane {
 				+ "-fx-text-fill: #00ff00;"//
 		);
 		text.setText("");
-		// text.setFont(font);
-		// text.setMargin(new Insets(7, 5, 7, 5));
 		text.addEventHandler(KeyEvent.ANY, kl);
-		// text.addKeyListener(kl);
-		// setViewportView(text);
-		// this.setContent(text);
 		this.getChildren().add(text);
-		// create popup menu
-		// menu = new ConsoleMenu(this);
 
-		// ConsoleMouseListener ml = new ConsoleMouseListener(this);
-		// text.addMouseListener(ml);
-
-		// make sure popup menu follows Look & Feel
-		// UIManager.addPropertyChangeListener(this);
-
-		outPipe = new PipedOutputStream();
+		outPipe = new PipedWriter();
 		try {
-			in = new PipedInputStream(outPipe);
+			reader = new PipedReader(outPipe);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -96,12 +79,12 @@ public class ConsolePane extends StackPane {
 		return String.format("#%02x%02x%02x", r, g, b);
 	}
 
-	public InputStream getInputStream() {
-		return in;
+	public Reader getReader() {
+		return reader;
 	}
 
 	void resetCommandStart() {
-		cmdStart = textLength();
+		positionOfCmdStart = textLength();
 	}
 
 	void append(String string) {
@@ -119,7 +102,7 @@ public class ConsolePane extends StackPane {
 	}
 
 	void forceCaretMoveToEnd() {
-		if (text.getCaretPosition() < cmdStart) {
+		if (text.getCaretPosition() < positionOfCmdStart) {
 			// move caret first!
 			text.positionCaret(textLength());
 		}
@@ -127,7 +110,7 @@ public class ConsolePane extends StackPane {
 	}
 
 	void forceCaretMoveToStart() {
-		if (text.getCaretPosition() < cmdStart) {
+		if (text.getCaretPosition() < positionOfCmdStart) {
 			// move caret first!
 		}
 		// text.repaint();
@@ -146,12 +129,8 @@ public class ConsolePane extends StackPane {
 	}
 
 	String getCmd() {
-		String s = "";
-		System.out.println("cmdStart:" + this.cmdStart);
-		System.out.println("textLength:" + textLength());
-
-		s = text.getText(cmdStart, textLength());
-		print(s);
+		String s = text.getText(positionOfCmdStart, textLength());
+		// print(s);
 		return s;
 	}
 
@@ -159,7 +138,13 @@ public class ConsolePane extends StackPane {
 		this.acceptLine(line + "\r\n");//
 	}
 
-	private void acceptLine(String line) {
+	/**
+	 * Why escape?
+	 * 
+	 * @param line
+	 * @return
+	 */
+	private String escape(String line) {
 		// Patch to handle Unicode characters
 		// Submitted by Daniel Leuck
 		StringBuffer buf = new StringBuffer();
@@ -176,9 +161,13 @@ public class ConsolePane extends StackPane {
 		}
 		line = buf.toString();
 		// End unicode patch
+		return line;
+	}
+
+	private void acceptLine(String line) {
 
 		try {
-			outPipe.write(line.getBytes());
+			outPipe.write(line);
 			outPipe.flush();
 		} catch (IOException e) {
 			throw new RuntimeException("Console pipe broken...");
@@ -224,7 +213,7 @@ public class ConsolePane extends StackPane {
 
 				append(String.valueOf(o));
 				resetCommandStart();
-				text.positionCaret(cmdStart);
+				text.positionCaret(positionOfCmdStart);
 				// text.setStyle(old);
 			}
 		});
@@ -244,7 +233,7 @@ public class ConsolePane extends StackPane {
 
 				append(String.valueOf(o));
 				resetCommandStart();
-				text.positionCaret(cmdStart);
+				text.positionCaret(positionOfCmdStart);
 				// setStyle(old, true);
 			}
 		});

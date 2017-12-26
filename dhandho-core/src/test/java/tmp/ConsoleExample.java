@@ -1,5 +1,7 @@
 package tmp;
 
+import java.io.IOException;
+
 import cc.dhandho.commons.jfx.ConsolePane;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +26,22 @@ public class ConsoleExample extends Application {
 
 		StackPane sp = new StackPane();
 		ConsolePane console = new ConsolePane();
+		new Thread() {
+			public void run() {
+
+				while (true) {
+					try {
+						char cI = (char) console.getReader().read();
+						
+						System.out.println(cI);
+
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 		// sp.getChildren().add(console);
 		Color color = Color.RED;
 		BackgroundFill fill = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);

@@ -34,7 +34,7 @@ import cc.dhandho.util.DbInitUtil;
 
 /**
  * 
- * @author wuzhen
+ * @author Wu
  *
  */
 public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptionHandler, ThreadFactory {

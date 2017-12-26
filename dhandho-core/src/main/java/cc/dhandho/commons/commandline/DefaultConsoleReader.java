@@ -13,10 +13,14 @@ import java.io.Reader;
  */
 public class DefaultConsoleReader implements CommandLineReader {
 
-	private Reader r = new InputStreamReader(System.in);
+	private Reader r;
 
 	public DefaultConsoleReader() {
+		this(new InputStreamReader(System.in));
+	}
 
+	public DefaultConsoleReader(Reader reader) {
+		this.r = reader;
 	}
 
 	@Override

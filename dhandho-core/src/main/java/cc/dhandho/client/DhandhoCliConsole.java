@@ -10,13 +10,13 @@ import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.RtException;
-import cc.dhandho.commons.commandline.AbstractComandLineApplication;
+import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
 import cc.dhandho.graphdb.Handler;
 import cc.dhandho.server.DhandhoServer;
 
-public class DhandhoCliConsole extends AbstractComandLineApplication {
+public class DhandhoCliConsole extends AbstractComandLineApp {
 	protected DhandhoServer server;
 
 	protected List<Handler> beforeShutdownHandlerList = new ArrayList<>();

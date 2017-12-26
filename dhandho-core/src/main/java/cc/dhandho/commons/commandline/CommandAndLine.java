@@ -14,20 +14,20 @@ public class CommandAndLine {
 	private int index;
 	private CommandType type;
 	private CommandLine line;
-	private CommandLineApplication console;
+	private CommandLineApp console;
 
 	/**
 	 * @param command2
 	 * @param cl
 	 */
-	public CommandAndLine(CommandLineApplication console, int idx, CommandType command2, CommandLine cl) {
+	public CommandAndLine(CommandLineApp console, int idx, CommandType command2, CommandLine cl) {
 		this.type = command2;
 		this.console = console;
 		this.line = cl;
 		this.index = idx;
 	}
 
-	public CommandLineApplication getConsole() {
+	public CommandLineApp getConsole() {
 		return console;
 	}
 

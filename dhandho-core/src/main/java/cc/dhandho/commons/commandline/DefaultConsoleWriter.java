@@ -13,12 +13,18 @@ import java.io.Writer;
  */
 public class DefaultConsoleWriter implements CommandLineWriter {
 	// TODO out configurable.
-	private Writer target = new OutputStreamWriter(System.out);
+	private Writer target;
 
 	public static String LBK = "\r\n";
 
-	public DefaultConsoleWriter() {
+	private int indent;
 
+	public DefaultConsoleWriter() {
+		this(new OutputStreamWriter(System.out));
+	}
+
+	public DefaultConsoleWriter(Writer writer) {
+		this.target = writer;
 	}
 
 	@Override
@@ -29,6 +35,7 @@ public class DefaultConsoleWriter implements CommandLineWriter {
 	@Override
 	public CommandLineWriter write(String str) {
 		try {
+			str.replace("\n", "\n ");
 			this.target.write(str, 0, str.length());
 			this.target.flush();
 		} catch (IOException e) {

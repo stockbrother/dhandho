@@ -8,7 +8,7 @@ import cc.dhandho.DhandhoHome;
 
 /**
  * 
- * @author wuzhen
+ * @author Wu
  *
  */
 public interface DhandhoServer extends DbProvider {

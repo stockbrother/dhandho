@@ -119,7 +119,7 @@ public class ConsoleHistory {
 			showline = elementAt(size() - histLine);
 		}
 
-		console.replaceRange(showline, console.cmdStart, console.textLength());
+		console.replaceRange(showline, console.positionOfCmdStart, console.textLength());
 		//console.text.setCaretPosition(console.textLength());
 		//console.text.repaint();
 	}
