@@ -46,8 +46,7 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 	public void start(Stage stage) throws Exception {
 		console.start();
 		this.startConsoleStage1(stage);
-		this.htmlStage = new Stage();
-		this.startHtmlStage(this.htmlStage);
+
 	}
 
 	private void startConsoleStage1(Stage stage) {
@@ -70,14 +69,24 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 		stage.show();
 	}
 
+	private void doShowHtml(String html) {
+		if (this.htmlStage == null) {
+			this.htmlStage = new Stage();
+			this.startHtmlStage(this.htmlStage);
+		}
+
+		webEngine.loadContent(html);
+	}
+
 	@Override
 	public void showHtml(String html) {
 		JfxUtil.runSafe(new Runnable() {
 
 			@Override
 			public void run() {
-				webEngine.loadContent(html);
+				doShowHtml(html);
 			}
+
 		});
 
 	}

@@ -13,6 +13,8 @@ public interface CommandLineWriter {
 	
 	public CommandLineWriter write(String str);
 	
+	public CommandLineWriter write(int value);
+	
 	public CommandLineWriter writeLine(String line);
 	
 }

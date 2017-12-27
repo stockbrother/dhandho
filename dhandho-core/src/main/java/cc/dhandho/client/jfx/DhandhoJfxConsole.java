@@ -40,4 +40,10 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 		return this;
 	}
 
+	@Override
+	public CommandLineWriter write(int value) {
+		consolePane.print(String.valueOf(value));//
+		return this;
+	}
+
 }

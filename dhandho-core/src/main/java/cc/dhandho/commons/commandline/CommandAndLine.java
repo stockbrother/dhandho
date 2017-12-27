@@ -39,12 +39,14 @@ public class CommandAndLine {
 		return line;
 	}
 
+	public boolean hasOption(String opt) {
+		return this.line.hasOption(opt);
+	}
 	/**
 	 * @param c
 	 * @return
 	 */
 	public boolean hasOption(char opt) {
-		// TODO Auto-generated method stub
 		return this.line.hasOption(opt);
 	}
 

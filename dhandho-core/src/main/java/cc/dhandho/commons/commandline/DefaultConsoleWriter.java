@@ -51,4 +51,9 @@ public class DefaultConsoleWriter implements CommandLineWriter {
 
 	}
 
+	@Override
+	public CommandLineWriter write(int value) {
+		return this.write(String.valueOf(value));
+	}
+
 }

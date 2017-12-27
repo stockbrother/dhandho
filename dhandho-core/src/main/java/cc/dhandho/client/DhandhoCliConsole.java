@@ -23,7 +23,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	protected Map<String, CommandHandler> handlerMap = new HashMap<>();
 
-	protected MetricsDefine metrics;
+	protected MetricDefines metrics;
 
 	protected HtmlRenderer htmlRenderer;
 
@@ -45,6 +45,12 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
+		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
+				.addOption(ShowCommandHandler.OPT_m, "metrics", false, "Show all metrics define.") //
+				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles."), //
+				new ShowCommandHandler()//
+		);
+
 		this.metrics = load(server.getHome());
 		if (this.htmlRenderer == null) {
 			this.htmlRenderer = new EmptyHtmlRenderer();
@@ -52,15 +58,15 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	}
 
-	public MetricsDefine getMetricsDefine() {
+	public MetricDefines getMetricsDefine() {
 		return this.metrics;
 	}
 
-	private MetricsDefine load(DhandhoHome home) {
+	private MetricDefines load(DhandhoHome home) {
 		FileObject file;
 		try {
 			file = home.resolveFile(home.getClientFile(), "metrics-define.xml");
-			return MetricsDefine.load(file.getContent().getInputStream());
+			return MetricDefines.load(file.getContent().getInputStream());
 		} catch (IOException e) {
 			throw RtException.toRtException(e);
 		}

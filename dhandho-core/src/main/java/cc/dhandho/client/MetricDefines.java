@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -44,31 +46,72 @@ import cc.dhandho.RtException;
  * @author wu
  *
  */
-public class MetricsDefine {
+public class MetricDefines {
 
 	public static enum Group {
 		COMMON, JR, NJR
 	}
 
 	public static enum Operator {
-		PLUS, MINUS, MULTIPLE, DIV
+		PLUS, MINUS, MULTIPLE, DIV;
+
+		private static Map<Operator, String> operatorSignMap = new HashMap<>();
+		static {
+
+			operatorSignMap.put(Operator.PLUS, "+");
+			operatorSignMap.put(Operator.MINUS, "-");
+			operatorSignMap.put(Operator.MULTIPLE, "*");
+			operatorSignMap.put(Operator.DIV, "/");
+
+		}
+
+		public String getSign() {
+			return operatorSignMap.get(this);
+		}
+
 	}
 
-	public static class Metric {
+	public static class MetricDefine {
+		private static AtomicInteger nextId = new AtomicInteger();
+		private int id;
 		private Group group;
 		private String name;
 		private Operator operator;
 		private List<String> childMetricList = new ArrayList<>();
 
+		public MetricDefine() {
+			id = nextId.incrementAndGet();
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public Group getGroup() {
+			return group;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public Operator getOperator() {
+			return operator;
+		}
+
+		public List<String> getChildMetricList() {
+			return childMetricList;
+		}
+
 	}
 
-	public static MetricsDefine load(InputStream is) throws IOException {
+	public static MetricDefines load(InputStream is) throws IOException {
 
 		SAXReader sreader = new SAXReader();
 		try {
 			Document doc = sreader.read(is);
 			Element ele = doc.getRootElement();
-			MetricsDefine rt = new MetricsDefine(ele);
+			MetricDefines rt = new MetricDefines(ele);
 			rt.init();
 			return rt;
 		} catch (DocumentException e) {
@@ -79,30 +122,30 @@ public class MetricsDefine {
 
 	private static Map<String, Operator> operatorMap = new HashMap<>();
 
-	private static Map<Operator, String> operatorMap2 = new HashMap<>();
-
 	static {
 		operatorMap.put("+", Operator.PLUS);
 		operatorMap.put("-", Operator.MINUS);
 		operatorMap.put("*", Operator.MULTIPLE);
 		operatorMap.put("/", Operator.DIV);
 
-		operatorMap2.put(Operator.PLUS, "+");
-		operatorMap2.put(Operator.MINUS, "-");
-		operatorMap2.put(Operator.MULTIPLE, "*");
-		operatorMap2.put(Operator.DIV, "/");
-
 	}
 	private Element root;
 
-	private Map<String, Metric> metricMap;
+	private Map<String, MetricDefine> metricNameMap;
 
-	public MetricsDefine(Element ele) {
+	private Map<Integer, MetricDefine> metricIdMap;
+
+	public MetricDefines(Element ele) {
 		this.root = ele;
 	}
 
+	public Stream<MetricDefine> getMetricDefineStream() {
+		return metricNameMap.values().stream();
+	}
+
 	private void init() {
-		this.metricMap = new HashMap<>();
+		this.metricNameMap = new HashMap<>();
+		this.metricIdMap = new HashMap<>();
 		for (Iterator<Element> it = root.elementIterator(); it.hasNext();) {
 			Element child = it.next();
 			processGroup(child);
@@ -124,7 +167,7 @@ public class MetricsDefine {
 	private void processMetric(Group group, Element ele) {
 		String opS = ele.attributeValue("op");
 
-		Metric m = new Metric();
+		MetricDefine m = new MetricDefine();
 		m.group = group;
 		m.name = ele.attributeValue("name");
 		m.operator = operatorMap.get(opS);
@@ -134,10 +177,11 @@ public class MetricsDefine {
 			m.childMetricList.add(ref);
 		}
 
-		Metric old = this.metricMap.put(m.name, m);
+		MetricDefine old = this.metricNameMap.put(m.name, m);
 		if (old != null) {
 			throw new RtException("duplicated metric:" + m.name);
 		}
+		this.metricIdMap.put(m.id, m);
 	}
 
 	public void buildMetricRequestAsJson(String corpId, int[] years, String[] metrics, JsonWriter writer)
@@ -156,6 +200,10 @@ public class MetricsDefine {
 		writer.endObject();
 	}
 
+	public MetricDefine getMetric(int id) {
+		return this.metricIdMap.get(id);
+	}
+
 	public void buildMetricArrayAsJson(String[] metrics, JsonWriter writer) throws IOException {
 		writer.beginArray();
 		for (String metric : metrics) {
@@ -169,7 +217,7 @@ public class MetricsDefine {
 	}
 
 	private void doBuildMetricAsJson(String metric, JsonWriter writer, Stack<String> stack) throws IOException {
-		Metric m = this.metricMap.get(metric);
+		MetricDefine m = this.metricNameMap.get(metric);
 
 		if (m == null) {// leaf
 			writer.value(metric);
@@ -186,7 +234,7 @@ public class MetricsDefine {
 		writer.name("offset");
 		writer.value(0);
 		writer.name("operator");
-		writer.value(operatorMap2.get(m.operator));
+		writer.value(m.operator.getSign());
 		writer.name("metrics");
 		writer.beginArray();
 		for (String key : m.childMetricList) {

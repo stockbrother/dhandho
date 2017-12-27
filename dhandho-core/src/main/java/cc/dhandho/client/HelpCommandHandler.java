@@ -19,28 +19,33 @@ public class HelpCommandHandler implements CommandHandler {
 		CommandLineWriter writer = cl.getConsole().peekWriter();
 		String[] as = cl.getArgs();
 		if (as.length == 1) {
+			// print help for specific command.
 			String cname = as[0];
 			CommandType cmd = line.getConsole().getCommand(cname);
 			if (cmd == null) {
-				writer.writeLine();
-				writer.writeLine("not found command:" + cname);
-				return;
+				helpAll(cl, writer);
+			} else {
+				helpForCommand(cl, writer, cmd);
 			}
-			HelpFormatter formatter = new HelpFormatter();
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			formatter.printHelp(pw, 1100, cname, cmd.getDescription(), cmd.getOptions(), 2, 12, " ", true);
-			writer.write(sw.getBuffer().toString());
 		} else {
-			this.printHelpItSelf(cl, writer);
+			// print all command list.
+			this.helpAll(cl, writer);
 		}
 
 	}
 
-	protected void printHelpItSelf(CommandAndLine cl, CommandLineWriter cc) {		
+	protected void helpForCommand(CommandAndLine cl, CommandLineWriter writer, CommandType cmd) {
+		HelpFormatter formatter = new HelpFormatter();
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		formatter.printHelp(pw, 1100, cmd.getName(), cmd.getDescription(), cmd.getOptions(), 2, 12, " ", true);
+		writer.write(sw.getBuffer().toString());
+	}
+
+	protected void helpAll(CommandAndLine cl, CommandLineWriter cc) {
 		cc.writeLine("usage: help <command>");
-		cc.writeLine();
-		//cc.writeLine("The most commonly used commands are:");
+		cc.writeLine("all available commands are:");
+		// cc.writeLine("The most commonly used commands are:");
 		List<CommandType> cmdL = cl.getConsole().getCommandList();
 		int maxLength = this.getMaxLength(cmdL);
 		for (int i = 0; i < cmdL.size(); i++) {
@@ -57,7 +62,7 @@ public class HelpCommandHandler implements CommandHandler {
 		}
 
 	}
-	
+
 	private int getMaxLength(List<CommandType> cmdL) {
 		int rt = 0;
 

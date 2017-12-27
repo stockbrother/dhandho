@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
-import cc.dhandho.client.MetricsDefine;
+import cc.dhandho.client.MetricDefines;
 import cc.dhandho.rest.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
@@ -18,7 +18,7 @@ public class MetricDefineTest extends TestCase {
 
 	public void testLoadMetricDefine() throws IOException {
 		InputStream is = TestUtil.getHome().resolveFile("client/metrics-define.xml").getContent().getInputStream();
-		MetricsDefine metrics = MetricsDefine.load(is);
+		MetricDefines metrics = MetricDefines.load(is);
 
 		String metric = "权益乘数";
 		StringWriter sWriter = new StringWriter();
@@ -36,7 +36,7 @@ public class MetricDefineTest extends TestCase {
 
 	public void testMetricDefine_GenereateRequest() throws IOException {
 		InputStream is = TestUtil.getHome().resolveFile("client/metrics-define.xml").getContent().getInputStream();
-		MetricsDefine metricsDefine = MetricsDefine.load(is);
+		MetricDefines metricsDefine = MetricDefines.load(is);
 
 		String corpId = "000001";
 		String[] metrics = new String[] { "权益乘数", "净资产收益率", "毛利率" };

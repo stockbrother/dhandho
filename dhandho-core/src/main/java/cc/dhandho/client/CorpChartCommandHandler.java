@@ -1,18 +1,16 @@
 package cc.dhandho.client;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-
-import javax.xml.transform.TransformerException;
 
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
 import cc.dhandho.commons.commandline.CommandAndLine;
+import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.rest.CorpChartJsonHandler;
 import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.util.JsonUtil;
@@ -25,7 +23,7 @@ import cc.dhandho.util.JsonUtil;
 public class CorpChartCommandHandler extends DhandhoCommandHandler {
 
 	@Override
-	public void execute(CommandAndLine line) {
+	protected void execute(CommandAndLine line, DhandhoCliConsole console, CommandLineWriter w) {
 
 		String[] args = line.getArgs();
 		String corpId = args[0];
@@ -33,7 +31,6 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 		String[] metrics = metricsS.split("/");
 
 		int[] years = new int[] { 2016, 2015, 2014, 2013, 2012 };
-		DhandhoCliConsole console = (DhandhoCliConsole) line.getConsole();
 
 		StringWriter sWriter = new StringWriter();
 		try {

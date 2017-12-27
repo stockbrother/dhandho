@@ -34,25 +34,34 @@ public class StackConsoleWriter implements CommandLineWriter {
 
 	@Override
 	public CommandLineWriter writeLine(String line) {
-		if (this.stack.isEmpty()) {
-			return null;
-		}
 
-		CommandLineWriter top = this.stack.peek();
-
-		top.writeLine(line);
+		peek(true).writeLine(line);
 
 		return this;
 	}
 
 	@Override
 	public CommandLineWriter write(String str) {
+		peek(true).write(str);
+
+		return this;
+	}
+
+	private CommandLineWriter peek(boolean force) {
 		if (this.stack.isEmpty()) {
-			throw new RuntimeException("writer stack is empty!");
+			if (force) {
+				throw new RuntimeException("writer stack is empty!");
+			}
+			return null;
 		}
 		CommandLineWriter top = this.stack.peek();
-		top.write(str);
+		return top;
+	}
 
+	@Override
+	public CommandLineWriter write(int value) {
+		//
+		peek(true).write(value);
 		return this;
 	}
 
