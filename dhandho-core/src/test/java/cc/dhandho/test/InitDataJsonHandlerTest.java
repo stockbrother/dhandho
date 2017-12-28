@@ -17,6 +17,7 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.rest.InitDataJsonHandler;
 import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.Assert;
@@ -49,7 +50,7 @@ public class InitDataJsonHandlerTest {
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
 		InitDataJsonHandler h = new InitDataJsonHandler();
-		h.execute(GSON, reader, writer);
+		h.execute(new RestRequestContext(GSON, reader, writer));
 
 		System.out.println(sWriter.getBuffer());
 

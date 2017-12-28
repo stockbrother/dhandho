@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
-import cc.dhandho.Quarter;
 
 public abstract class WashedFileLoader extends FileReaderIterator {
 	//
@@ -27,12 +26,9 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 
 	private int processed;
 
-	private Quarter quarter;
-
-	public WashedFileLoader(FileObject dir, Quarter quarter) {
+	public WashedFileLoader(FileObject dir) {
 		super(dir);
-		this.typeToUpperCase = true;
-		this.quarter = quarter;
+		this.typeToUpperCase = true;		
 	}
 
 	@Override
@@ -106,8 +102,9 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 				break;
 			}
 			// filter by quarter
-			if (this.quarter != null && !this.quarter.isEndDateOfQuarter(reportDate)) {
+			if (this.isIgnoreReportDate(reportDate)) {
 				// ignore the date other than the required quarter.
+				
 				continue;
 			}
 
@@ -128,6 +125,8 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 		}
 		return rt;
 	}
+	
+	protected abstract boolean isIgnoreReportDate(Date date);
 
 	protected abstract void onRowData(String reportType, String corpId, Date reportDate, List<String> keyList,
 			List<BigDecimal> valueList);

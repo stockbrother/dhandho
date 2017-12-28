@@ -2,11 +2,9 @@ package cc.dhandho.rest;
 
 import java.io.IOException;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
@@ -20,9 +18,9 @@ import cc.dhandho.util.DbInitUtil;
 public class CorpInfoJsonHandler extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
-
-		JsonElement json = Streams.parse(reader);
+	public void execute(RestRequestContext rrc, ODatabaseSession db) throws IOException {
+		JsonWriter writer = rrc.getWriter();
+		JsonElement json = Streams.parse(rrc.getReader());
 		JsonObject query = json.getAsJsonObject();
 		String corpId = query.get("corpId").getAsString();
 

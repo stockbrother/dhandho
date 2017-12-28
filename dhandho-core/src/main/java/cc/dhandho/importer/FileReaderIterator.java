@@ -16,11 +16,12 @@ public abstract class FileReaderIterator extends FilesIterator {
 
 	@Override
 	protected void onFile(String type, FileObject file, int number) throws IOException {
-
+	
 		InputStream is = file.getContent().getInputStream();
 		Charset cs = Charset.forName("UTF-8");
 		Reader reader = new InputStreamReader(is, cs);
 		this.onReader(type, file, reader, number);
+		
 	}
 
 	protected abstract void onReader(String type, FileObject file, Reader reader, int number) throws IOException;

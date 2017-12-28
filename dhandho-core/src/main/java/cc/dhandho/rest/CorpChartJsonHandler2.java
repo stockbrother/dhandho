@@ -3,12 +3,10 @@ package cc.dhandho.rest;
 import java.io.IOException;
 import java.util.Iterator;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.sql.executor.OResult;
@@ -22,8 +20,9 @@ import cc.dhandho.graphdb.GDBResultSetProcessor;
 public class CorpChartJsonHandler2 extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
-		JsonElement json = Streams.parse(reader);
+	public void execute(RestRequestContext rrc, ODatabaseSession db) throws IOException {
+		JsonWriter writer = rrc.getWriter();
+		JsonElement json = Streams.parse(rrc.getReader());
 		JsonObject obj = json.getAsJsonObject();
 		String corpId = obj.get("corpId").getAsString();
 		JsonArray components = obj.get("components").getAsJsonArray();

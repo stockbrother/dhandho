@@ -15,6 +15,7 @@ import com.orientechnologies.orient.core.record.OVertex;
 
 import cc.dhandho.RtException;
 import cc.dhandho.rest.LoadCorpInfoJsonHandler;
+import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
@@ -72,7 +73,7 @@ public class CorpInfoDbUpgrader extends DbUpgrader {
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
 		LoadCorpInfoJsonHandler h = app.newInstance(LoadCorpInfoJsonHandler.class);
-		h.execute(GSON, reader, writer);
+		h.execute(new RestRequestContext(GSON, reader, writer));
 		LOG.info("done of loading corp info.");
 		LOG.info(sWriter.getBuffer().toString());
 

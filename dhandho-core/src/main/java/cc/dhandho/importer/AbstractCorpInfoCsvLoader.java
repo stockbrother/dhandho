@@ -1,6 +1,5 @@
 package cc.dhandho.importer;
 
-import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -12,7 +11,6 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
 import cc.dhandho.util.DbInitUtil;

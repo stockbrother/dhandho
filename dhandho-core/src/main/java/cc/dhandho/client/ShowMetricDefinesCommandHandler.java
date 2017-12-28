@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import cc.dhandho.client.MetricDefines.MetricDefine;
-import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
 
@@ -17,11 +16,11 @@ import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
 public class ShowMetricDefinesCommandHandler extends DhandhoCommandHandler {
 
 	@Override
-	protected void execute(CommandAndLine line, DhandhoCliConsole console, CommandLineWriter writer) {
-		MetricDefines msd = console.getMetricsDefine();
+	public void execute(CommandContext cc) {
+		MetricDefines msd = cc.getConsole().getMetricsDefine();
 
 		Stream<MetricDefines.MetricDefine> mds = msd.getMetricDefineStream();
-		CommandLineWriter w = console.peekWriter();
+		CommandLineWriter w = cc.getConsole().peekWriter();
 
 		mds.sorted(new Comparator<MetricDefine>() {
 

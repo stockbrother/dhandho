@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
@@ -106,8 +107,7 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 	}
 
 	@Override
-	public void execute(Gson gson, final JsonReader reader, JsonWriter writer, ODatabaseSession dbs)
-			throws IOException {
+	public void execute(RestRequestContext rrc, ODatabaseSession dbs) throws IOException {
 
 		DbAliasInfos aliasInfos = new DbAliasInfos();
 
@@ -121,7 +121,7 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 			public Object process(OResultSet rst) {
 
 				try {
-					return doProcess(reportType, rst, aliasInfos, reader, writer);
+					return doProcess(reportType, rst, aliasInfos, rrc.getReader(), rrc.getWriter());
 				} catch (IOException e) {
 					throw RtException.toRtException(e);
 				}

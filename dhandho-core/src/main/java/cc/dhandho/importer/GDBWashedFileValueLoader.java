@@ -25,9 +25,9 @@ import cc.dhandho.server.DbProvider;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.xueqiu.DateUtil;
 
-public class GDBWashedFileValueLoader extends WashedFileLoader {
+public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 
-	DbProvider appContext;
+	DbProvider dbProvider;
 
 	ODatabaseSession session;
 
@@ -37,7 +37,7 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 
 	public GDBWashedFileValueLoader(DbProvider appContext, FileObject dir, Quarter quarter) {
 		super(dir, quarter);
-		this.appContext = appContext;
+		this.dbProvider = appContext;
 	}
 
 	public GDBWashedFileValueLoader limit(int limit) {
@@ -47,7 +47,7 @@ public class GDBWashedFileValueLoader extends WashedFileLoader {
 
 	@Override
 	public void start() throws IOException {
-		this.appContext.executeWithDbSession(new Processor<ODatabaseSession>() {
+		this.dbProvider.executeWithDbSession(new Processor<ODatabaseSession>() {
 
 			@Override
 			public void process(ODatabaseSession db) {

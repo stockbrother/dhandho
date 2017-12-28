@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.apache.commons.vfs2.FileObject;
 
+import cc.dhandho.AllQuotesInfos;
+import cc.dhandho.importer.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.sina.SinaAllQuotesPreprocessor;
 import cc.dhandho.sina.SinaQuotesCollector;
 import junit.framework.TestCase;
@@ -27,6 +29,11 @@ public class SinaTest extends TestCase {
 		FileObject to = data.resolveFile("sina" + File.separator + "washed");
 
 		new SinaAllQuotesPreprocessor(outputParentDir, to).process();
-
+		
+		AllQuotesInfos aqis = new AllQuotesInfos();
+		MemoryAllQuotesWashedDataLoader loader = new MemoryAllQuotesWashedDataLoader(to, aqis);
+		loader.start();
+		
+		
 	}
 }

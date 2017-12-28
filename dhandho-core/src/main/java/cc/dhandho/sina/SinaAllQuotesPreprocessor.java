@@ -69,6 +69,7 @@ public class SinaAllQuotesPreprocessor {
 				new OutputStreamWriter(outputWork.getContent().getOutputStream(), Charset.forName("UTF-8")), ',',
 				CSVWriter.NO_QUOTE_CHARACTER);
 		cw.writeNext(new String[] { "Header", "" });
+		cw.writeNext(new String[] { "单位", "1" });
 		cw.writeNext(new String[] { "日期格式", "yyyyMMddHHmmssSSS" });
 		cw.writeNext(new String[] { "报告日期", name });
 		cw.writeNext(new String[] { "Body", "" });

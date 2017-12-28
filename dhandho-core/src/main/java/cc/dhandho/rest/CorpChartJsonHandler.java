@@ -3,8 +3,6 @@ package cc.dhandho.rest;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
@@ -18,14 +16,17 @@ import cc.dhandho.DbAliasInfos;
 public class CorpChartJsonHandler extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
+	public void execute(RestRequestContext rrc, ODatabaseSession db) throws IOException {
+
+		JsonWriter writer = rrc.getWriter();
+
 		DbAliasInfos aliasInfos = new DbAliasInfos();
 
 		aliasInfos.initialize(db);
 
 		StringWriter swriter = new StringWriter();
 
-		SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(reader, aliasInfos);
+		SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(rrc.getReader(), aliasInfos);
 		svgQ.query(db, swriter);
 		int width = svgQ.query.getWidth();
 		int height = svgQ.query.getHeight();

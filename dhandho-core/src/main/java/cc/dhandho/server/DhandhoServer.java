@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import com.google.gson.JsonElement;
+
 import cc.dhandho.DhandhoHome;
 
 /**
@@ -26,6 +28,10 @@ public interface DhandhoServer extends DbProvider {
 	public void start();
 
 	public void shutdown();
+
+	public JsonElement handle(final String handlerS, JsonElement request) throws IOException;
+
+	public void handle(final String handlerS) throws IOException;
 
 	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException;
 

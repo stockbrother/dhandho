@@ -13,28 +13,27 @@ import cc.dhandho.commons.commandline.CommandType;
 public class HelpCommandHandler implements CommandHandler {
 
 	@Override
-	public void execute(CommandAndLine line) {
+	public void execute(CommandContext cc) {
 
-		CommandAndLine cl = line;
-		CommandLineWriter writer = cl.getConsole().peekWriter();
-		String[] as = cl.getArgs();
+		CommandLineWriter writer = cc.getConsole().peekWriter();
+		String[] as = cc.getArgs();
 		if (as.length == 1) {
 			// print help for specific command.
 			String cname = as[0];
-			CommandType cmd = line.getConsole().getCommand(cname);
+			CommandType cmd = cc.getConsole().getCommand(cname);
 			if (cmd == null) {
-				helpAll(cl, writer);
+				helpAll(cc, writer);
 			} else {
-				helpForCommand(cl, writer, cmd);
+				helpForCommand(cc, writer, cmd);
 			}
 		} else {
 			// print all command list.
-			this.helpAll(cl, writer);
+			this.helpAll(cc, writer);
 		}
 
 	}
 
-	protected void helpForCommand(CommandAndLine cl, CommandLineWriter writer, CommandType cmd) {
+	protected void helpForCommand(CommandContext cl, CommandLineWriter writer, CommandType cmd) {
 		HelpFormatter formatter = new HelpFormatter();
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
@@ -42,7 +41,7 @@ public class HelpCommandHandler implements CommandHandler {
 		writer.write(sw.getBuffer().toString());
 	}
 
-	protected void helpAll(CommandAndLine cl, CommandLineWriter cc) {
+	protected void helpAll(CommandContext cl, CommandLineWriter cc) {
 		cc.writeLine("usage: help <command>");
 		cc.writeLine("all available commands are:");
 		// cc.writeLine("The most commonly used commands are:");

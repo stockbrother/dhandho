@@ -31,7 +31,7 @@ import cc.dhandho.util.DbInitUtil;
  * @author Wu
  *
  */
-public class GDBWashedFileSchemaLoader extends WashedFileLoader {
+public class GDBWashedFileSchemaLoader extends QuarterWahsedFileLoader {
 
 	private static Logger LOG = LoggerFactory.getLogger(GDBWashedFileSchemaLoader.class);
 

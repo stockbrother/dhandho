@@ -5,11 +5,11 @@ import cc.dhandho.DhandhoHome;
 import cc.dhandho.server.DbProvider;
 
 /**
- * 
+ * AppContext.newInstance();
  * @author Wu
  *
  */
-public abstract class AppContextAwareJsonHandler implements JsonHandler, AppContext.Aware {
+public abstract class AbstractRestRequestHandler implements RestRequestHandler, AppContext.Aware {
 
 	protected AppContext app;
 

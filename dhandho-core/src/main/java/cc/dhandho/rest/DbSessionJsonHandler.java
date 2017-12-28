@@ -15,17 +15,17 @@ import cc.dhandho.RtException;
  * @author Wu
  *
  */
-public abstract class DbSessionJsonHandler extends AppContextAwareJsonHandler {
+public abstract class DbSessionJsonHandler extends AbstractRestRequestHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(RestRequestContext rrc) throws IOException {
 
 		this.dbProvider.executeWithDbSession(new Processor<ODatabaseSession>() {
 
 			@Override
 			public void process(ODatabaseSession db) {
 				try {
-					execute(gson, reader, writer, db);
+					execute(rrc, db);
 				} catch (IOException e) {
 					throw RtException.toRtException(e);
 				}
@@ -34,7 +34,7 @@ public abstract class DbSessionJsonHandler extends AppContextAwareJsonHandler {
 
 	}
 
-	protected abstract void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db)
+	protected abstract void execute(RestRequestContext rrc, ODatabaseSession db)
 			throws IOException;
 
 }

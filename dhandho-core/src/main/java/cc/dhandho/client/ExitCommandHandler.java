@@ -1,13 +1,11 @@
 package cc.dhandho.client;
 
-import cc.dhandho.commons.commandline.CommandAndLine;
-
 public class ExitCommandHandler implements CommandHandler {
 
 	@Override
-	public void execute(CommandAndLine line) {
+	public void execute(CommandContext cc) {
 		
-		line.getConsole().shutdownAsync();
+		cc.getConsole().shutdownAsync();
 		
 	}
 

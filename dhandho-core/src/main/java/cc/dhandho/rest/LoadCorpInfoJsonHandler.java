@@ -8,9 +8,6 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.vfs2.FileObject;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.importer.SseCorpInfo2Loader;
@@ -26,7 +23,7 @@ import cc.dhandho.importer.SzseCorpInfoLoader;
 public class LoadCorpInfoJsonHandler extends DbSessionJsonHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer, ODatabaseSession db) throws IOException {
+	public void execute(RestRequestContext rrc, ODatabaseSession db) throws IOException {
 
 		SseCorpInfoLoader l1 = new SseCorpInfoLoader("sse.corplist.csv");
 		l1.setDb(db);

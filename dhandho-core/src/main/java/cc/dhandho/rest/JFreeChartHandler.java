@@ -32,11 +32,12 @@ import com.google.gson.stream.JsonWriter;
  * 3)svg no width; no height;<br>
  * 
  */
-public class JFreeChartHandler implements JsonHandler {
+public class JFreeChartHandler implements RestRequestHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
-		JsonElement json = Streams.parse(reader);
+	public void execute(RestRequestContext rrc) throws IOException {
+		JsonWriter writer = rrc.getWriter();
+		JsonElement json = rrc.parseReader();
 		JsonObject obj = json.getAsJsonObject();
 		JFreeChart chart = createLineChart();
 		int width = 600;

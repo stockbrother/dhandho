@@ -20,6 +20,7 @@ import cc.dhandho.AppContextImpl;
 import cc.dhandho.DbAliasInfos;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.LoadCorpInfoJsonHandler;
+import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
@@ -60,7 +61,7 @@ public class CorpInfoLoadJsonHandlerTest {
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
 		LoadCorpInfoJsonHandler h  = new LoadCorpInfoJsonHandler();		
-		h.execute(GSON, reader, writer);
+		h.execute(new RestRequestContext(GSON, reader, writer));
 
 		System.out.println(sWriter.getBuffer());
 

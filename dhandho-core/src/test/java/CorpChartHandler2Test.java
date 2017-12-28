@@ -16,8 +16,8 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.AppContext;
 import cc.dhandho.AppContextImpl;
-import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.CorpChartJsonHandler2;
+import cc.dhandho.rest.RestRequestContext;
 
 @Ignore
 public class CorpChartHandler2Test {
@@ -56,7 +56,7 @@ public class CorpChartHandler2Test {
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = GSON.newJsonWriter(sWriter);
 
-		new CorpChartJsonHandler2().execute(GSON, reader, writer);
+		new CorpChartJsonHandler2().execute(new RestRequestContext(GSON, reader, writer));
 
 		System.out.println(sWriter.getBuffer());
 
@@ -100,7 +100,7 @@ public class CorpChartHandler2Test {
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = GSON.newJsonWriter(sWriter);
 
-		new CorpChartJsonHandler2().execute(GSON, reader, writer);
+		new CorpChartJsonHandler2().execute(new RestRequestContext(GSON, reader, writer));
 
 		System.out.println(sWriter.getBuffer());
 

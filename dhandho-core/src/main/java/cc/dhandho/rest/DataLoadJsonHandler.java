@@ -16,10 +16,10 @@ import cc.dhandho.importer.GDBWashedFileValueLoader;
  * @author wu
  *
  */
-public class DataLoadJsonHandler extends AppContextAwareJsonHandler{
+public class DataLoadJsonHandler extends AbstractRestRequestHandler{
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(RestRequestContext rrc) throws IOException {
 		
 		File dir = new File("C:\\dhandho\\data\\xueqiu\\washed");
 		

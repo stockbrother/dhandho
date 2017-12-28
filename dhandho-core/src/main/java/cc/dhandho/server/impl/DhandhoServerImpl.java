@@ -2,8 +2,6 @@ package cc.dhandho.server.impl;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -15,10 +13,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
 
+import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.AppContext;
 import cc.dhandho.AppContextImpl;
 import cc.dhandho.DhandhoHome;
@@ -67,8 +69,8 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		this.executor = Executors.newScheduledThreadPool(1, this);
 		app = new AppContextImpl();
 		app.addComponent(DbProvider.class, this);
-
 		app.addComponent(DhandhoHome.class, home);
+		app.addComponent(AllQuotesInfos.class, new AllQuotesInfos());
 
 		orient = new OrientDB(this.dbConfig.getDbUrl(), OrientDBConfig.defaultConfig());
 		handlers = new JsonHandlers(app);
@@ -139,46 +141,23 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 
 	}
 
-	// TODO add data version for corpInfo and do not load twice for the same version
-	// of data.
-
-	private Reader traceReader(Reader reader) throws IOException {
-		StringWriter swriter = new StringWriter();
-		char[] cbuf = new char[1024];
-		while (true) {
-			int len = reader.read(cbuf);
-			if (len == -1) {
-				break;
-			}
-			swriter.write(cbuf, 0, len);
-
-		}
-		LOG.trace(":start of request.reader:");
-		LOG.trace(swriter.getBuffer().toString());
-		LOG.trace(":end of request.reader:");
-
-		return new StringReader(swriter.getBuffer().toString());
+	@Override
+	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException {
+		handlers.handle(handlerS, reader, writer);
 	}
 
 	@Override
-	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException {
+	public void handle(final String handlerS) throws IOException {
+		handlers.handle(handlerS);
+	}
 
-		if (LOG.isTraceEnabled()) {
-			reader = traceReader(reader);
-		}
+	public void handle(final String handlerS, JsonReader reader, final JsonWriter writer) throws IOException {
+		handlers.handle(handlerS, reader, writer);
+	}
 
-		Reader readerF = reader;
-
-		StringWriter writerF = new StringWriter();
-		handlers.handle(handlerS, readerF, writerF);
-		if (LOG.isTraceEnabled()) {
-			LOG.trace(":start of response.writer:");
-			LOG.trace(writerF.getBuffer().toString());
-			LOG.trace(":end of response.writer:");
-		}
-
-		writer.write(writerF.getBuffer().toString());
-
+	@Override
+	public JsonElement handle(String handlerS, JsonElement request) throws IOException {
+		return handlers.handle(handlerS, request);
 	}
 
 	@Override

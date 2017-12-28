@@ -14,6 +14,10 @@ public class DhandhoHome {
 	
 	FileObject dataFile;
 
+	public FileSystemManager getFileSystem() {
+		return fileSystem;
+	}
+
 	public DhandhoHome(FileSystemManager fileSystem, String home) {
 		
 		try {

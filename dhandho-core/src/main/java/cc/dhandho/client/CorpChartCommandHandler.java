@@ -23,9 +23,9 @@ import cc.dhandho.util.JsonUtil;
 public class CorpChartCommandHandler extends DhandhoCommandHandler {
 
 	@Override
-	protected void execute(CommandAndLine line, DhandhoCliConsole console, CommandLineWriter w) {
+	public void execute(CommandContext cc) {
 
-		String[] args = line.getArgs();
+		String[] args = cc.getArgs();
 		String corpId = args[0];
 		String metricsS = args[1];
 		String[] metrics = metricsS.split("/");
@@ -36,10 +36,10 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 		try {
 
 			JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
-			console.getMetricsDefine().buildMetricRequestAsJson(corpId, years, metrics, writer);
+			cc.getConsole().getMetricsDefine().buildMetricRequestAsJson(corpId, years, metrics, writer);
 
 			StringWriter sWriter2 = new StringWriter();
-			console.getServer().handle(CorpChartJsonHandler.class.getName(), new StringReader(sWriter.toString()),
+			cc.getConsole().getServer().handle(CorpChartJsonHandler.class.getName(), new StringReader(sWriter.toString()),
 					sWriter2);
 
 			JsonObject jsonO = (JsonObject) JsonUtil.parse(sWriter2.getBuffer().toString());
@@ -49,7 +49,7 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 
 			StringWriter sWriter3 = new StringWriter();
 			writeSvg2Html(width, height, svg, sWriter3);
-			console.htmlRenderer.showHtml(sWriter3.getBuffer().toString());
+			cc.getConsole().htmlRenderer.showHtml(sWriter3.getBuffer().toString());
 			
 		} catch (IOException e) {
 			throw RtException.toRtException(e);

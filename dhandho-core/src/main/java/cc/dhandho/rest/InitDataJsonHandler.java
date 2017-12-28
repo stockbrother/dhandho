@@ -20,25 +20,26 @@ import cc.dhandho.RtException;
  * Client Init Handler,load metrics define from csv files.
  * 
  * TODO VFS for easier test.
+ * 
  * @author Wu
  *
  */
-public class InitDataJsonHandler implements JsonHandler {
+public class InitDataJsonHandler implements RestRequestHandler {
 
 	@Override
-	public void execute(Gson gson, JsonReader reader, JsonWriter writer) throws IOException {
+	public void execute(RestRequestContext rrc) throws IOException {
+		JsonWriter writer = rrc.getWriter();
 		writer.beginObject();
 		writer.name("metric-define-table");
-		this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-table.csv", gson, reader, writer, true);
+		this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-table.csv", rrc, true);
 
 		writer.name("metric-define-group-table");
-		this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-group-table.csv", gson, reader, writer, false);
+		this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-group-table.csv", rrc, false);
 		writer.endObject();
 	}
-	
-	private void loadTableCsv(String file, Gson gson, JsonReader reader, JsonWriter writer, boolean hasHeader)
-			throws IOException {
 
+	private void loadTableCsv(String file, RestRequestContext rrc, boolean hasHeader) throws IOException {
+		JsonWriter writer = rrc.getWriter();
 		InputStream is = new FileInputStream(file);
 		writer.beginObject();
 

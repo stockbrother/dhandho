@@ -47,9 +47,12 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 				new CorpChartCommandHandler());
 		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
 				.addOption(ShowCommandHandler.OPT_m, "metrics", false, "Show all metrics define.") //
-				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles."), //
+				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
+				.addOption(ShowCommandHandler.OPT_f, "file", true, "Show file content."), //
 				new ShowCommandHandler()//
 		);
+		this.addCommand(new CommandType("sina", "Collect/wash/load all-quotes data from sina."),
+				new SinaDataLoadCommandHandler());
 
 		this.metrics = load(server.getHome());
 		if (this.htmlRenderer == null) {
@@ -93,12 +96,14 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	@Override
 	public void processLine(CommandAndLine cl) {
+		CommandContext cc = new CommandContext(cl);
 		CommandHandler h = this.handlerMap.get(cl.getCommand().getName());
 		if (h == null) {
 			cl.getConsole().peekWriter().writeLine("not found handler for command:" + cl.getCommand().getName());
 			return;
 		}
-		h.execute(cl);
+
+		h.execute(cc);
 	}
 
 	public void htmlRenderer(HtmlRenderer htmlRenderer) {
