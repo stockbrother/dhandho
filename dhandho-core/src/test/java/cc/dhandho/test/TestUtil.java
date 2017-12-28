@@ -1,14 +1,28 @@
 package cc.dhandho.test;
 
+import java.io.IOException;
+
+import org.apache.commons.vfs2.AllFileSelector;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.apache.commons.vfs2.VFS;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
 import cc.dhandho.DhandhoHome;
+import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.server.DhandhoServer;
 import cc.dhandho.server.impl.DhandhoServerImpl;
 
 public class TestUtil {
+	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);
+
+	private static DhandhoHome HOME;
 
 	public static DbConfig newInMemoryTestDbConfig() {
 		return new DbConfig().dbName("test").dbUrl("memory:test").dbUser("admin").dbPassword("admin")
@@ -20,12 +34,46 @@ public class TestUtil {
 				.dbType(ODatabaseType.PLOCAL);
 	}
 
-	public static DhandhoHome getHome() {
-		return new DhandhoHome("res:cc/dhandho/test/dhandho");
+	public static FileObject newTempFolder() throws IOException {
+		FileSystemManager fsm = VFS.getManager();
+		int i = 0;
+		while (true) {
+			FileObject rt = fsm.resolveFile("tmp://tmp-folder-" + (i++));
+			if (!rt.exists()) {
+				rt.createFolder();
+				return rt;
+			}
+		}
 	}
-	
+
+	public static DhandhoHome getHome() {
+
+		try {
+			if (HOME == null) {
+
+				FileSystemManager fsm = VFS.getManager();
+				String from = "res:cc/dhandho/test/dhandho";
+				String home = "tmp://dahandho-test-home";
+				FileObject fromF = fsm.resolveFile(from);
+				FileObject homeF = fsm.resolveFile(home);
+				if (homeF.exists()) {
+					throw new RtException("home already there:" + home);
+				}
+				LOG.info("test home:" + home + " is ready.");
+
+				homeF.copyFrom(fromF, new AllFileSelector());
+
+				HOME = new DhandhoHome(fsm, home);
+			}
+			return HOME;
+		} catch (FileSystemException e) {
+			throw RtException.toRtException(e);
+		}
+
+	}
+
 	public static DhandhoServer newInMemoryTestDhandhoServer() {
-		
+
 		return new DhandhoServerImpl().home(getHome()).dbConfig(newInMemoryTestDbConfig());
 	}
 

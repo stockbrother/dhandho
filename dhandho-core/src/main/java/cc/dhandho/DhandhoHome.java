@@ -5,20 +5,19 @@ import java.io.IOException;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.VFS;
 
 public class DhandhoHome {
-
-	String home;
 
 	FileSystemManager fileSystem;
 
 	FileObject homeFile;
+	
+	FileObject dataFile;
 
-	public DhandhoHome(String home) {
-		this.home = home;
+	public DhandhoHome(FileSystemManager fileSystem, String home) {
+		
 		try {
-			this.fileSystem = VFS.getManager();
+			this.fileSystem = fileSystem;
 			this.homeFile = fileSystem.resolveFile(home);
 		} catch (FileSystemException e) {
 			throw RtException.toRtException(e);

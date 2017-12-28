@@ -32,5 +32,9 @@ public class JsonUtil {
 	public static JsonElement parse(String jsonS) {
 		return new JsonParser().parse(jsonS);
 	}
+	
+	public static JsonElement parse(Reader r) {
+		return new JsonParser().parse(r);
+	}
 
 }
