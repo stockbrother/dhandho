@@ -2,6 +2,8 @@ package cc.dhandho.importer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CsvHeaderRowMap extends CsvRowMap {
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd");
@@ -22,10 +24,24 @@ public class CsvHeaderRowMap extends CsvRowMap {
 		}
 		return this.dateFormat;
 	}
+	
+	public Date getAsDate(String key) {
+		return this.get(key, true).getAsDate(1, this.getDateFormat());
+	}
 
-	public Date[] getReportDateArray() {
-		CsvRow row = this.get("报告日期", true);
-		//CsvRow row = this.get("报表日期", true);
+	public Map<String,Integer> getAsIndexMap(String key) {
+		Map<String,Integer> rt = new HashMap<>();
+		CsvRow row = this.get(key, true);
+		for (int i = 0; i < row.size(); i++) {
+			String key2 = row.getString(i, true);
+			rt.put(key2, i);			
+		}
+		return rt;
+	}
+
+	public Date[] getAsDateArray(String key) {
+		CsvRow row = this.get(key, true);
+		//
 		SimpleDateFormat df = this.getDateFormat();
 		Date[] rt = row.getAsDateArray(df);
 		return rt;

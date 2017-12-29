@@ -12,5 +12,5 @@ public interface WashedFileProcessor {
 	 * @param loader
 	 * @return interrupt
 	 */
-	public int process(File file, Reader reader, WashedFileLoader loader);
+	public int process(File file, Reader reader, WashedCorpDataFileLoader loader);
 }

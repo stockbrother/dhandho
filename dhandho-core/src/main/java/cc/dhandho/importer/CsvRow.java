@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class CsvRow {
 
@@ -79,4 +82,18 @@ public class CsvRow {
 		}
 		return rt;
 	}
+
+	public Map<String, Integer> getAsIndexMap() {
+		Map<String, Integer> rt = new HashMap<>();
+		for (int i = 0; i < this.line.length; i++) {
+			rt.put(line[i], i);
+		}
+
+		return rt;
+	}
+
+	public Stream<String> stream() {
+		return Arrays.stream(this.line);
+	}
+
 }

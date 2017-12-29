@@ -25,4 +25,8 @@ public class AllQuotesInfos {
 
 	}
 
+	public Double get(String corpId) {
+		return this.quotesMap.get(corpId);
+	}
+
 }

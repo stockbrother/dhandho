@@ -13,7 +13,7 @@ import cc.dhandho.RtException;
 
 public abstract class FilesIterator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(WashedFileLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WashedCorpDataFileLoader.class);
 
 	protected boolean typeToUpperCase;
 	protected boolean interrupted;

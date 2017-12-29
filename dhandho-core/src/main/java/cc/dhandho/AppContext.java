@@ -1,6 +1,14 @@
 package cc.dhandho;
 
+/**
+ * 
+ * @author Wu
+ *
+ */
+
 public abstract class AppContext {
+	
+	@Deprecated // use XxxContext to reference a app context and find any component..
 	public static interface Aware {
 		public void setAppContext(AppContext app);
 	}

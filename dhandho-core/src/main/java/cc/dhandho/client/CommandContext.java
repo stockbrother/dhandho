@@ -1,6 +1,7 @@
 package cc.dhandho.client;
 
 import cc.dhandho.commons.commandline.CommandAndLine;
+import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.server.DhandhoServer;
 
 public class CommandContext {
@@ -17,7 +18,11 @@ public class CommandContext {
 	public DhandhoCliConsole getConsole() {
 		return (DhandhoCliConsole) this.commandLine.getConsole();
 	}
-
+	
+	public CommandLineWriter getWriter() {
+		return this.getConsole().peekWriter();
+	}
+	
 	public String[] getArgs() {
 		return commandLine.getArgs();
 	}

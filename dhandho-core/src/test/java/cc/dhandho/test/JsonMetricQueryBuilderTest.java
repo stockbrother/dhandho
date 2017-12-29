@@ -15,8 +15,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.MemoryAliasInfos;
-import cc.dhandho.rest.JsonMetricSqlJoinQueryBuilder;
-import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.JsonMetricSqlJoinQueryBuilder;
+import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.Assert;

@@ -1,6 +1,6 @@
 package cc.dhandho.client;
 
-import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 
 /**
  * @see JsonMetricSqlLinkQueryBuilder

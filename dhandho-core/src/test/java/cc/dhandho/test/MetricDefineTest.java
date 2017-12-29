@@ -10,7 +10,7 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
 import cc.dhandho.client.MetricDefines;
-import cc.dhandho.rest.SvgChartMetricQueryBuilder;
+import cc.dhandho.report.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
 

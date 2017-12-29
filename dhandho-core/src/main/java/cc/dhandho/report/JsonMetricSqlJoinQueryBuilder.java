@@ -1,4 +1,4 @@
-package cc.dhandho.rest;
+package cc.dhandho.report;
 
 import java.io.IOException;
 import java.util.ArrayList;

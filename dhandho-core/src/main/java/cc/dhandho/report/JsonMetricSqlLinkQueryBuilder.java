@@ -1,4 +1,4 @@
-package cc.dhandho.rest;
+package cc.dhandho.report;
 
 import java.io.IOException;
 
@@ -69,7 +69,7 @@ public class JsonMetricSqlLinkQueryBuilder {
 
 	StringBuffer sql;
 
-	protected QueryJsonWrapper query;
+	public QueryJsonWrapper query;
 
 	protected JsonMetricSqlLinkQueryBuilder(JsonReader reader, AliasInfos aliasInfos) {
 		this.reader = reader;

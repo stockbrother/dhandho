@@ -24,7 +24,7 @@ import cc.dhandho.Quarter;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.importer.GDBWashedFileSchemaLoader;
 import cc.dhandho.importer.GDBWashedFileValueLoader;
-import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 @Ignore
@@ -67,46 +67,7 @@ public class JsonMetricQueryBuilderOffsetTest {
 	@Ignore
 	public void testSimple() throws IOException {
 
-		String jsonS = ("{" //
-				+ "'corpId':'000002'"// end of corpId
-				+ ",'dates':[2016,2015,2014,2013,2012]"// end of years
-				+ ",'metrics':" //
-				+ "  [" //
-				+ "    { 'name':'净资产收益率'," //
-				+ "      'offset':0," //
-				+ "      'operator':'*'," //
-				+ "      'metrics':[" //
-				+ "        { 'name':'总资产收益率'," //
-				+ "          'offset':0," //
-				+ "          'operator':'/'," //
-				+ "          'metrics':[" //
-				+ "            '净利润'," //
-				+ "            '资产总计'" //
-				+ "          ]" //
-				+ "        }," //
-				+ "        { 'name':'权益乘数'," //
-				+ "          'offset':0," //
-				+ "          'operator':'/'," //
-				+ "          'metrics':[" //
-				+ "          '资产总计'," //
-				+ "          '所有者权益_或股东权益_合计'" //
-				+ "          ]" //
-				+ "        }" //
-				+ "      ]" //
-				+ "    }" //
-				+ "  ]" // end of formulas
-				+ "}" // end of message
-		).replaceAll("'", "\"");
-
-		JsonReader reader = JsonUtil.toJsonReader(jsonS);
 		
-		StringWriter sWriter = new StringWriter();
-		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
-
-		JsonMetricSqlLinkQueryBuilder r = JsonMetricSqlLinkQueryBuilder.newInstance(reader, aliasInfos);
-		r.build().query(db,writer);
-		
-		System.out.println(sWriter.getBuffer());
 
 	}
 	

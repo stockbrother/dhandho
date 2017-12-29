@@ -6,7 +6,7 @@ import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.Quarter;
 
-public abstract class QuarterWahsedFileLoader extends WashedFileLoader {
+public abstract class QuarterWahsedFileLoader extends WashedCorpDataFileLoader {
 
 	private Quarter quarter;
 

@@ -15,8 +15,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.rest.InitDataJsonHandler;
-import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;

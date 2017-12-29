@@ -1,4 +1,4 @@
-package cc.dhandho.rest;
+package cc.dhandho.report;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import cc.dhandho.RtException;
+import cc.dhandho.rest.JsonWrapper;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.xueqiu.DateUtil;
 

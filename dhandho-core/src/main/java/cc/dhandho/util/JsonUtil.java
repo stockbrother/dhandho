@@ -17,6 +17,14 @@ public class JsonUtil {
 
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+	public static void write(JsonElement json, JsonWriter writer) {
+		GSON.toJson(json, writer);
+	}
+
+	public static void write(JsonElement json, Writer writer) {
+		GSON.toJson(json, writer);
+	}
+
 	public static JsonReader toJsonReader(String jsonString) {
 		return GSON.newJsonReader(new StringReader(jsonString));
 	}
@@ -32,7 +40,7 @@ public class JsonUtil {
 	public static JsonElement parse(String jsonS) {
 		return new JsonParser().parse(jsonS);
 	}
-	
+
 	public static JsonElement parse(Reader r) {
 		return new JsonParser().parse(r);
 	}

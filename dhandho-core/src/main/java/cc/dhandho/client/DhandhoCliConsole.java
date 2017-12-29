@@ -23,6 +23,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	protected Map<String, CommandHandler> handlerMap = new HashMap<>();
 
+	@Deprecated // move to server side.
 	protected MetricDefines metrics;
 
 	protected HtmlRenderer htmlRenderer;
@@ -48,6 +49,8 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
 				.addOption(ShowCommandHandler.OPT_m, "metrics", false, "Show all metrics define.") //
 				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
+				.addOption(ShowCommandHandler.OPT_p, "price", false, "Show price ratios.") //
+				.addOption(ShowCommandHandler.OPT_c, "code", true, "For the show command that require a corp code.") //
 				.addOption(ShowCommandHandler.OPT_f, "file", true, "Show file content."), //
 				new ShowCommandHandler()//
 		);

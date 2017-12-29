@@ -23,7 +23,7 @@ import cc.dhandho.Quarter;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.importer.GDBWashedFileSchemaLoader;
 import cc.dhandho.importer.GDBWashedFileValueLoader;
-import cc.dhandho.rest.SvgChartMetricQueryBuilder;
+import cc.dhandho.report.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 

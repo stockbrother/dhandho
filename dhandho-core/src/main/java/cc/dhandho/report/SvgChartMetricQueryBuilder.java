@@ -1,4 +1,4 @@
-package cc.dhandho.rest;
+package cc.dhandho.report;
 
 import java.awt.BasicStroke;
 import java.awt.geom.Rectangle2D;
@@ -50,7 +50,7 @@ public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
 		return rt;
 	}
 
-	protected SvgChartMetricQueryBuilder(JsonReader reader, AliasInfos aliasInfos) {
+	public SvgChartMetricQueryBuilder(JsonReader reader, AliasInfos aliasInfos) {
 		super(reader, aliasInfos);
 	}
 

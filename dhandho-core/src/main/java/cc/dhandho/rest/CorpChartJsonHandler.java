@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.DbAliasInfos;
+import cc.dhandho.report.SvgChartMetricQueryBuilder;
 
 /**
  * 

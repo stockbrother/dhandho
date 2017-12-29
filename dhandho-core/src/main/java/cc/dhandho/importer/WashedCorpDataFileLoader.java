@@ -15,10 +15,25 @@ import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public abstract class WashedFileLoader extends FileReaderIterator {
+/**
+ * <code>
+		Header,
+		日期格式,yyyyMMdd
+		公司代码,000001
+		单位,1
+		备注,balsheet
+		报告日期,20170331,20161231
+		Body,
+		货币资金,269541000000,311258000000
+</code>
+ * 
+ * @author Wu
+ *
+ */
+public abstract class WashedCorpDataFileLoader extends FileReaderIterator {
 	//
 
-	private static final Logger LOG = LoggerFactory.getLogger(WashedFileLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WashedCorpDataFileLoader.class);
 
 	private Map<String, WashedFileProcessor> processMap = new HashMap<>();
 
@@ -26,9 +41,9 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 
 	private int processed;
 
-	public WashedFileLoader(FileObject dir) {
+	public WashedCorpDataFileLoader(FileObject dir) {
 		super(dir);
-		this.typeToUpperCase = true;		
+		this.typeToUpperCase = true;
 	}
 
 	@Override
@@ -87,7 +102,7 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 		}
 
 		//
-		Date[] reportDateArray = headers.getReportDateArray();
+		Date[] reportDateArray = headers.getAsDateArray("报告日期");
 		BigDecimal unit = headers.get("单位", true).getAsBigDecimal(1, true);
 		String corpId = headers.get("公司代码", true).getString(1, true);
 		List<String> itemKeyList = body.keyList;
@@ -104,7 +119,7 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 			// filter by quarter
 			if (this.isIgnoreReportDate(reportDate)) {
 				// ignore the date other than the required quarter.
-				
+
 				continue;
 			}
 
@@ -125,7 +140,7 @@ public abstract class WashedFileLoader extends FileReaderIterator {
 		}
 		return rt;
 	}
-	
+
 	protected abstract boolean isIgnoreReportDate(Date date);
 
 	protected abstract void onRowData(String reportType, String corpId, Date reportDate, List<String> keyList,

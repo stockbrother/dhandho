@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import cc.dhandho.client.MetricDefines.MetricDefine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
-import cc.dhandho.rest.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 
 /**
  * @see JsonMetricSqlLinkQueryBuilder

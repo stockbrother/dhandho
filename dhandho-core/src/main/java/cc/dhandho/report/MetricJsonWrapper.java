@@ -1,4 +1,4 @@
-package cc.dhandho.rest;
+package cc.dhandho.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.RtException;
+import cc.dhandho.rest.JsonWrapper;
 
 /**
  * 

@@ -19,7 +19,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 /**
  * Convert original file format to the target format that acceptable by DB.
  * @see XueqiuDataCollector
- * @see WashedFileLoader
+ * @see WashedCorpDataFileLoader
  * @author Wu
  */
 public class XueqiuDataWasher extends AbstractDataWasher {
