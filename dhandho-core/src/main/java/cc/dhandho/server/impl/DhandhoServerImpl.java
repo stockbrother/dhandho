@@ -26,6 +26,7 @@ import cc.dhandho.AppContextImpl;
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.Processor;
 import cc.dhandho.graphdb.DbConfig;
+import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.rest.DbSessionTL;
 import cc.dhandho.rest.JsonHandlers;
 import cc.dhandho.server.CorpInfoDbUpgrader;
@@ -49,15 +50,15 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	private OrientDB orient;
 
 	AppContext app;
-	DbConfig dbConfig;
 
 	protected DhandhoHome home;
 
+	protected DefaultDbProvider dbProvider;
+
 	private ScheduledExecutorService executor;
 
-	public DhandhoServerImpl dbConfig(DbConfig dbConfig) {
-		this.dbConfig = dbConfig;
-		return this;
+	public DhandhoServerImpl() {
+		this.dbProvider = new DefaultDbProvider();
 	}
 
 	@Override
@@ -68,23 +69,22 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 
 		this.executor = Executors.newScheduledThreadPool(1, this);
 		app = new AppContextImpl();
-		app.addComponent(DbProvider.class, this);
+		app.addComponent(DbProvider.class, this.dbProvider);
 		app.addComponent(DhandhoHome.class, home);
 		app.addComponent(AllQuotesInfos.class, new AllQuotesInfos());
 
-		orient = new OrientDB(this.dbConfig.getDbUrl(), OrientDBConfig.defaultConfig());
 		handlers = new JsonHandlers(app);
 
-		this.createDbIfNotExist();
+		this.dbProvider.createDbIfNotExist();
 
-		this.executeWithDbSession(new DbInitUtil());
+		this.dbProvider.executeWithDbSession(new DbInitUtil());
 
 		// load corp info to DB.
 		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
-		this.executeWithDbSession(dbu);
+		this.dbProvider.executeWithDbSession(dbu);
 		// load washed data to DB.
 		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
-		this.executeWithDbSession(wdu);
+		this.dbProvider.executeWithDbSession(wdu);
 
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start done");
@@ -101,44 +101,6 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 			throw new RuntimeException("", e);
 		}
 		this.orient.close();
-	}
-
-	@Override
-	public boolean createDbIfNotExist() {
-		return this.orient.createIfNotExists(this.dbConfig.getDbName(), this.dbConfig.getDbType());
-	}
-
-	private ODatabaseSession openDB() {
-		// TODO avoid openDB twice.
-		// TODO if dbName = null, it will block here. why?
-		if (this.dbConfig.getDbName() == null) {
-			throw new IllegalArgumentException("no db name set.");
-		}
-
-		ODatabaseSession databaseSession = this.orient.open(this.dbConfig.getDbName(), this.dbConfig.getUser(),
-				this.dbConfig.getPassword());
-
-		return databaseSession;
-	}
-
-	public void executeWithDbSession(Processor<ODatabaseSession> processor) {
-
-		ODatabaseSession dbs = DbSessionTL.get();
-		boolean isNew = (dbs == null);
-		if (isNew) {
-			dbs = this.openDB();
-			DbSessionTL.set(dbs);
-		}
-
-		try {
-			processor.process(dbs);
-		} finally {
-			if (isNew) {
-				DbSessionTL.set(null);//
-				dbs.close();
-			}
-		}
-
 	}
 
 	@Override
@@ -195,6 +157,12 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	@Override
 	public DhandhoHome getHome() {
 		return home;
+	}
+
+	@Override
+	public DhandhoServer dbConfig(DbConfig config) {
+		this.dbProvider.dbConfig(config);
+		return this;
 	}
 
 }

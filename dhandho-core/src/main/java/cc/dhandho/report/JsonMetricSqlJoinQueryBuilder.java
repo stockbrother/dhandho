@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 
-import cc.dhandho.AliasInfos;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 
 /**
@@ -53,7 +53,7 @@ import cc.dhandho.RtException;
  */
 public class JsonMetricSqlJoinQueryBuilder {
 
-	public static JsonMetricSqlJoinQueryBuilder newInstance(JsonReader reader, AliasInfos aliasInfos) {
+	public static JsonMetricSqlJoinQueryBuilder newInstance(JsonReader reader, ReportMetaInfos aliasInfos) {
 
 		JsonMetricSqlJoinQueryBuilder rt = new JsonMetricSqlJoinQueryBuilder();
 		rt.reader = reader;
@@ -63,7 +63,7 @@ public class JsonMetricSqlJoinQueryBuilder {
 
 	private JsonReader reader;
 
-	private AliasInfos aliasInfos;
+	private ReportMetaInfos aliasInfos;
 
 	private StringBuffer sql;
 

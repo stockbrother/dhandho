@@ -30,8 +30,6 @@ public class GetPriceRatioJsonHandler extends AbstractRestRequestHandler {
 		AllQuotesInfos aqis = this.app.findComponent(AllQuotesInfos.class, true);
 		Double value = aqis.get(corpId);
 
-		rrc.getWriter().beginObject();
-
 		JsonObject res = new JsonObject();
 		res.addProperty("corpId", corpId);
 		res.addProperty("price", value);
@@ -51,8 +49,13 @@ public class GetPriceRatioJsonHandler extends AbstractRestRequestHandler {
 			}
 		});
 		// TODO rewrite json by price.
-
-		JsonUtil.write(res, rrc.getWriter());
+		JsonWriter writer = rrc.getWriter();
+		writer.beginObject();
+		writer.name("corpId").value(corpId);
+		writer.name("price").value(value);
+		writer.name("metrics:");
+		writer.jsonValue(sWriter.getBuffer().toString());
+		writer.endObject();
 
 	}
 
@@ -65,10 +68,12 @@ public class GetPriceRatioJsonHandler extends AbstractRestRequestHandler {
 				+ "'corpId':'" + corpId + "'"// end of corpId
 				+ ",'dates':[2016,2015,2014,2013,2012]"// end of years
 				+ ",'metrics':" //
-				+ " [" + "  '净利润'," //
+				+ " ["//
+				+ "  '净利润'," //
 				+ "  '资产总计'," //
 				+ "  '所有者权益_或股东权益_合计'" //
-				+ " ]" + "}" // end of message
+				+ " ]"//
+				+ "}" // end of message
 		).replaceAll("'", "\"");
 
 		JsonReader reader = JsonUtil.toJsonReader(jsonS);

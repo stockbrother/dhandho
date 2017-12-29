@@ -83,10 +83,6 @@ public class ConsolePane extends StackPane {
 		return reader;
 	}
 
-	void resetCommandStart() {
-		positionOfCmdStart = textLength();
-	}
-
 	void append(String string) {
 		int slen = textLength();
 		text.selectRange(slen, slen);
@@ -125,6 +121,7 @@ public class ConsolePane extends StackPane {
 
 		history.histLine = 0;
 		acceptLine(s);
+		this.positionOfCmdStart = textLength();
 		// text.repaint();
 	}
 
@@ -212,9 +209,20 @@ public class ConsolePane extends StackPane {
 				String old = text.getStyle();
 
 				append(String.valueOf(o));
-				resetCommandStart();
+				positionOfCmdStart = textLength();
 				text.positionCaret(positionOfCmdStart);
 				// text.setStyle(old);
+			}
+		});
+	}
+	
+	public void clear() {
+		JfxUtil.runSafe(new Runnable() {
+			public void run() {
+				text.setText("");
+				positionOfCmdStart = textLength();				
+				text.positionCaret(positionOfCmdStart);
+				// setStyle(old, true);
 			}
 		});
 	}
@@ -227,14 +235,10 @@ public class ConsolePane extends StackPane {
 	public void print(final Object o, final String fontFamilyName, final int size, final Color color,
 			final boolean bold, final boolean italic, final boolean underline) {
 		JfxUtil.runSafe(new Runnable() {
-			public void run() {
-				// AttributeSet old = getStyle();
-				// setStyle(fontFamilyName, size, color, bold, italic, underline);
-
+			public void run() {				
 				append(String.valueOf(o));
-				resetCommandStart();
+				positionOfCmdStart = textLength();
 				text.positionCaret(positionOfCmdStart);
-				// setStyle(old, true);
 			}
 		});
 	}

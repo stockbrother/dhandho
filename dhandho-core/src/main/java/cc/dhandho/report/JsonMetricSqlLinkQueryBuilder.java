@@ -14,7 +14,7 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.AliasInfos;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.GDBResultSetProcessor;
@@ -58,20 +58,20 @@ public class JsonMetricSqlLinkQueryBuilder {
 
 	private static Logger LOG = LoggerFactory.getLogger(JsonMetricSqlLinkQueryBuilder.class);
 
-	public static JsonMetricSqlLinkQueryBuilder newInstance(JsonReader reader, AliasInfos aliasInfos) {
+	public static JsonMetricSqlLinkQueryBuilder newInstance(JsonReader reader, ReportMetaInfos aliasInfos) {
 		JsonMetricSqlLinkQueryBuilder rt = new JsonMetricSqlLinkQueryBuilder(reader, aliasInfos);
 		return rt;
 	}
 
 	private JsonReader reader;
 
-	AliasInfos aliasInfos;
+	ReportMetaInfos aliasInfos;
 
 	StringBuffer sql;
 
 	public QueryJsonWrapper query;
 
-	protected JsonMetricSqlLinkQueryBuilder(JsonReader reader, AliasInfos aliasInfos) {
+	public JsonMetricSqlLinkQueryBuilder(JsonReader reader, ReportMetaInfos aliasInfos) {
 		this.reader = reader;
 		this.aliasInfos = aliasInfos;
 	}

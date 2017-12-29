@@ -2,7 +2,7 @@ package cc.dhandho;
 
 import java.util.List;
 
-public interface AliasInfos {
+public interface ReportMetaInfos {
 
 	public List<String> getReportAliasList(int reportType);
 

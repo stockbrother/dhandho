@@ -16,6 +16,8 @@ import cc.dhandho.DhandhoHome;
 import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.graphdb.DbConfig;
+import cc.dhandho.graphdb.DefaultDbProvider;
+import cc.dhandho.server.DbProvider;
 import cc.dhandho.server.DhandhoServer;
 import cc.dhandho.server.impl.DhandhoServerImpl;
 
@@ -69,6 +71,15 @@ public class TestUtil {
 		} catch (FileSystemException e) {
 			throw RtException.toRtException(e);
 		}
+
+	}
+
+	public static DbProvider newInMemoryTestDbProvider(boolean create) {
+		DbProvider rt = new DefaultDbProvider().dbConfig(newInMemoryTestDbConfig());
+		if (create) {
+			rt.createDbIfNotExist();
+		}
+		return rt;
 
 	}
 

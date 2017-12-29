@@ -12,7 +12,7 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.AliasInfos;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.DbAliasInfos;
 import cc.dhandho.Quarter;
 import cc.dhandho.RtException;
@@ -83,7 +83,7 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 
 	int years = 5;
 
-	private List<ReportRow> newReportRowListFromLocaltors(String reportType, AliasInfos aliasInfos) {
+	private List<ReportRow> newReportRowListFromLocaltors(String reportType, ReportMetaInfos aliasInfos) {
 		List<ReportRow> rL = new ArrayList<>();
 		List<ReportItemLocator> locL = new ArrayList<>();
 
@@ -130,7 +130,7 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 
 	}
 
-	private Object doProcess(String reportType, OResultSet rst, AliasInfos aliasInfos, JsonReader reader,
+	private Object doProcess(String reportType, OResultSet rst, ReportMetaInfos aliasInfos, JsonReader reader,
 			JsonWriter writer) throws IOException {
 		// create a sorted empty ReportRow.
 		List<ReportRow> rL = this.newReportRowListFromLocaltors(reportType, aliasInfos);

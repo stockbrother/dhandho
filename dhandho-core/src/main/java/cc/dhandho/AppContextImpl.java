@@ -83,11 +83,12 @@ public class AppContextImpl extends AppContext {
 	}
 
 	@Override
-	public <T> void addComponent(Class<T> cls, T obj) {
+	public <T> AppContext addComponent(Class<T> cls, T obj) {
 		Object old = this.componentMap.put(cls, obj);
 		if (old != null) {
 			throw new RtException("duplicated component:" + old);
 		}
+		return this;
 	}
 
 }

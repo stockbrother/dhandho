@@ -7,13 +7,14 @@ import java.io.Writer;
 import com.google.gson.JsonElement;
 
 import cc.dhandho.DhandhoHome;
+import cc.dhandho.graphdb.DbConfig;
 
 /**
  * 
  * @author Wu
  *
  */
-public interface DhandhoServer extends DbProvider {
+public interface DhandhoServer {
 
 	/**
 	 * 
@@ -34,5 +35,8 @@ public interface DhandhoServer extends DbProvider {
 	public void handle(final String handlerS) throws IOException;
 
 	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException;
+
+	public DhandhoServer dbConfig(DbConfig newInMemoryTestDbConfig);
+	
 
 }

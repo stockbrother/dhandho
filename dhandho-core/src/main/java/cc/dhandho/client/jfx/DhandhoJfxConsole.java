@@ -45,5 +45,8 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 		consolePane.print(String.valueOf(value));//
 		return this;
 	}
-
+	@Override
+	public void clear() {
+		consolePane.clear();
+	}
 }

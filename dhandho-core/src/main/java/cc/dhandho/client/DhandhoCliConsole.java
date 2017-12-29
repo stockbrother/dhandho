@@ -43,6 +43,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 		this.echo(false);
 		this.addCommand(new CommandType("help", "Print this message!"), new HelpCommandHandler());
+		this.addCommand(new CommandType("cls", "Clear screen!"), new ClearScreenCommandHandler());
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
@@ -111,6 +112,10 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	public void htmlRenderer(HtmlRenderer htmlRenderer) {
 		this.htmlRenderer = htmlRenderer;
+	}
+
+	public void clear() {
+		
 	}
 
 }

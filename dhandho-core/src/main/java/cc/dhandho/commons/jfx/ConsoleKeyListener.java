@@ -1,6 +1,5 @@
 package cc.dhandho.commons.jfx;
 
-
 import javafx.event.EventHandler;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
@@ -8,41 +7,37 @@ import javafx.scene.input.KeyEvent;
 
 class ConsoleKeyListener implements EventHandler<KeyEvent> {
 	ConsolePane console;
-	
+
 	public ConsoleKeyListener(ConsolePane console) {
 		this.console = console;
-		
+
 	}
 
 	@Override
 	public void handle(KeyEvent event) {
-		
-		if(KeyEvent.KEY_PRESSED.equals(event.getEventType())) {
-			type(event,true,false);
+
+		if (KeyEvent.KEY_PRESSED.equals(event.getEventType())) {
+			type(event, true, false);
 			console.gotUp = false;
-		}else if(KeyEvent.KEY_RELEASED.equals(event.getEventType())) {
+		} else if (KeyEvent.KEY_RELEASED.equals(event.getEventType())) {
 			console.gotUp = true;
-			type(event,false,true);
-		}else if(KeyEvent.KEY_TYPED.equals(event.getEventType())) {
-			type(event,false,false);
+			type(event, false, true);
+		} else if (KeyEvent.KEY_TYPED.equals(event.getEventType())) {
+			type(event, false, false);
 		}
 	}
 
-
-	private synchronized void type(KeyEvent e,boolean pressed, boolean release) {
+	private synchronized void type(KeyEvent e, boolean pressed, boolean release) {
 		KeyCode code = e.getCode();
-		
+
 		switch (e.getCode()) {
 		case ENTER:
 			if (pressed) {
 				if (console.gotUp) {
 					console.enter();
-					console.resetCommandStart();
-					//console.text.setCaretPosition(console.cmdStart);
 				}
 			}
 			e.consume();
-			//console.text.repaint();
 			break;
 
 		case UP:
@@ -74,7 +69,6 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 			break;
 
 		case HOME:
-			//console.text.setCaretPosition(console.cmdStart);
 			e.consume();
 			break;
 
@@ -135,17 +129,6 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 				console.forceCaretMoveToEnd();
 			}
 
-			/*
-			 * The getKeyCode function always returns VK_UNDEFINED for
-			 * keyTyped events, so backspace is not fully consumed.
-			 */
-//			if (code.paramString().indexOf("Backspace") != -1) {
-//				if (console.text.getCaretPosition() <= console.cmdStart) {
-//					e.consume();
-//					break;
-//				}
-//			}
-//
 			break;
 		}
 	}

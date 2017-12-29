@@ -8,7 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractAliasInfos implements AliasInfos {
+public abstract class AbstractAliasInfos implements ReportMetaInfos {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAliasInfos.class);
 
