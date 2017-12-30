@@ -12,7 +12,7 @@ import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.commons.handler.Handler2;
-import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.util.JsonUtil;
@@ -85,8 +85,8 @@ public class GetPriceRatioJsonHandler extends AbstractRestRequestHandler {
 
 		JsonReader reader = JsonUtil.toJsonReader(jsonS);
 
-		JsonMetricSqlLinkQueryBuilder r = JsonMetricSqlLinkQueryBuilder.newInstance(reader, aliasInfos);
-		r.build().query(db, writer);
+		JsonArrayMetricsQuery r = JsonArrayMetricsQuery.newInstance(reader, aliasInfos);
+		r.query(db);
 
 	}
 

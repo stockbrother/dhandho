@@ -1,4 +1,4 @@
-package cc.dhandho.report;
+package cc.dhandho.report.query;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +11,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.sun.istack.internal.NotNull;
 
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.rest.JsonWrapper;
@@ -23,16 +25,20 @@ import cc.dhandho.util.DbInitUtil;
  *
  */
 public class QueryJsonWrapper extends JsonWrapper {
+
+	public static String CORP_ID = "corpId";
+	public static String REPORT_DATA = "reportDate";
+	public static String PREFIX_M = "m";
+
 	JsonObject obj;
 
 	List<Date> dateList_cache;
-	
+
 	List<MetricJsonWrapper> metricList_cache;
-	
 
 	Map<Integer, String> metricIndex2NameMap;
 
-	public QueryJsonWrapper(JsonObject obj) {
+	public QueryJsonWrapper(@NotNull JsonObject obj) {
 		this.obj = obj;
 	}
 
@@ -46,18 +52,18 @@ public class QueryJsonWrapper extends JsonWrapper {
 		}
 		return rt;
 	}
-	
+
 	public int getWidth() {
 		JsonElement json = obj.get("width");
-		if(json == null) {
+		if (json == null) {
 			return 600;
 		}
 		return json.getAsInt();
 	}
-	
+
 	public int getHeight() {
 		JsonElement json = obj.get("height");
-		if(json == null) {
+		if (json == null) {
 			return 400;
 		}
 		return json.getAsInt();
@@ -97,55 +103,54 @@ public class QueryJsonWrapper extends JsonWrapper {
 	}
 
 	public List<MetricJsonWrapper> getMetricList() {
-		if(metricList_cache != null) {
+		if (metricList_cache != null) {
 			return metricList_cache;
 		}
 		JsonArray metrics = obj.get("metrics").getAsJsonArray();
 
 		metricList_cache = MetricJsonWrapper.valueListOf(null, metrics);
-		return metricList_cache; 
+		return metricList_cache;
 
-		
 	}
 
-	public void doBuildSql(JsonMetricSqlLinkQueryBuilder builder) {
+	public void doBuildSql(StringBuffer sql, ReportMetaInfos aliasInfos) {
 
-		builder.sql.append("select corpId,reportDate,");
+		sql.append("select " + CORP_ID + "," + REPORT_DATA + ",");
 		this.metricIndex2NameMap = new HashMap<>();
 		List<MetricJsonWrapper> ml = this.getMetricList();
 
 		for (int i = 0; i < ml.size(); i++) {
 			MetricJsonWrapper m = ml.get(i);
 
-			m.doBuildSql(null, builder);
+			m.doBuildSql(null, sql, aliasInfos);
 
-			builder.sql.append(" as m" + (i + 1));
+			sql.append(" as " + PREFIX_M + (i + 1));
 			String mName = m.resolveNameAsTitle();
 			this.metricIndex2NameMap.put((i + 1), mName);
 
 			if (i < ml.size() - 1) {
-				builder.sql.append(",");
+				sql.append(",");
 			}
 
 		}
 
-		builder.sql.append(" from ").append(DbInitUtil.V_MASTER_REPORT);
+		sql.append(" from ").append(DbInitUtil.V_MASTER_REPORT);
 
-		builder.sql.append(" where corpId=? ");
+		sql.append(" where corpId=? ");
 		List<Date> dL = this.getDateList();
 		if (dL.size() > 0) {
 
-			builder.sql.append(" and (");
+			sql.append(" and (");
 
 			for (int i = 0; i < dL.size(); i++) {
-				builder.sql.append("reportDate=?");
+				sql.append("reportDate=?");
 				if (i < dL.size() - 1) {
-					builder.sql.append(" or ");
+					sql.append(" or ");
 				}
 			}
-			builder.sql.append(")");
+			sql.append(")");
 		}
-		builder.sql.append(" order by reportDate desc");
+		sql.append(" order by reportDate desc");
 
 	}
 

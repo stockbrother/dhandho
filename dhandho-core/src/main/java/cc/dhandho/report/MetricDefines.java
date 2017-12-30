@@ -1,7 +1,8 @@
-package cc.dhandho.client;
+package cc.dhandho.report;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,9 +17,11 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
+import cc.dhandho.util.JsonUtil;
 
 /**
  * Load define of metrics from formated xml as below: <code>
@@ -135,7 +138,7 @@ public class MetricDefines {
 
 	private Map<Integer, MetricDefine> metricIdMap;
 
-	public MetricDefines(Element ele) {
+	private MetricDefines(Element ele) {
 		this.root = ele;
 	}
 
@@ -184,20 +187,30 @@ public class MetricDefines {
 		this.metricIdMap.put(m.id, m);
 	}
 
-	public void buildMetricRequestAsJson(String corpId, int[] years, String[] metrics, JsonWriter writer)
-			throws IOException {
-		writer.beginObject();
-		writer.name("corpId");
-		writer.value(corpId);
-		writer.name("dates");
-		writer.beginArray();
-		for (int y : years) {
-			writer.value(y);
+	public JsonObject buildMetricRequestAsJson(String corpId, int[] years, String[] metrics) {
+		StringWriter sWriter = new StringWriter();
+		this.buildMetricRequestAsJson(corpId, years, metrics, new JsonWriter(sWriter));
+		return (JsonObject) JsonUtil.parse(sWriter.getBuffer().toString());
+	}
+
+	public void buildMetricRequestAsJson(String corpId, int[] years, String[] metrics, JsonWriter writer) {
+		try {
+
+			writer.beginObject();
+			writer.name("corpId");
+			writer.value(corpId);
+			writer.name("dates");
+			writer.beginArray();
+			for (int y : years) {
+				writer.value(y);
+			}
+			writer.endArray();
+			writer.name("metrics");
+			buildMetricArrayAsJson(metrics, writer);
+			writer.endObject();
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
 		}
-		writer.endArray();
-		writer.name("metrics");
-		buildMetricArrayAsJson(metrics, writer);
-		writer.endObject();
 	}
 
 	public MetricDefine getMetric(int id) {

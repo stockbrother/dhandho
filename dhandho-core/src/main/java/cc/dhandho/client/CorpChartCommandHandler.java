@@ -11,12 +11,12 @@ import com.google.gson.stream.JsonWriter;
 import cc.dhandho.RtException;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
-import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.rest.handler.CorpChartJsonHandler;
 import cc.dhandho.util.JsonUtil;
 
 /**
- * @see JsonMetricSqlLinkQueryBuilder
+ * @see JsonArrayMetricsQuery
  * @author wu
  *
  */

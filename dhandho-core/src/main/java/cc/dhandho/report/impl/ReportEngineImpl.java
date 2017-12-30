@@ -1,30 +1,27 @@
 package cc.dhandho.report.impl;
 
-import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Date;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
 import cc.dhandho.commons.container.Container;
-import cc.dhandho.commons.handler.Handler2;
-import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.ReportData;
 import cc.dhandho.report.ReportEngine;
+import cc.dhandho.report.query.JsonArrayMetricsQuery;
+import cc.dhandho.report.query.ReportDataMetricQuery;
 import cc.dhandho.rest.server.DbProvider;
-import cc.dhandho.util.JsonUtil;
 
 public class ReportEngineImpl implements ReportEngine, Container.Aware {
 
 	private DbProvider dbProvider;
 
 	private ReportMetaInfos reportMetaInfos;
+
+	private MetricDefines metricDefines;
 
 	public ReportEngineImpl() {
 
@@ -34,6 +31,7 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 	public void setContainer(Container app) {
 		this.dbProvider = app.findComponent(DbProvider.class, true);
 		this.reportMetaInfos = app.findComponent(ReportMetaInfos.class, true);
+		this.metricDefines = app.findComponent(MetricDefines.class, true);
 	}
 
 	@Override
@@ -48,28 +46,23 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 		json.add("metrics", metrics);
 
 		JsonReader reader = new JsonReader(new StringReader(json.toString()));
-		JsonMetricSqlLinkQueryBuilder jb = new JsonMetricSqlLinkQueryBuilder(reader, this.reportMetaInfos);
-		StringWriter sWriter = new StringWriter();
-		JsonWriter writer = new JsonWriter(sWriter);
-		this.dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
+		JsonArrayMetricsQuery jb = new JsonArrayMetricsQuery(reader, this.reportMetaInfos);
 
-			@Override
-			public void handle(ODatabaseSession db) {
-				try {
-					jb.build().query(db, writer);
-				} catch (IOException e) {
-					throw RtException.toRtException(e);
-				}
-			}
-		});
-
-		JsonArray mvalues = (JsonArray) JsonUtil.parse(sWriter.getBuffer().toString());
+		JsonArray mvalues = jb.query(dbProvider);
 
 		JsonObject row1 = (JsonObject) mvalues.get(0);
 
 		Double d = row1.get("m1").getAsDouble();
 
 		return d;
+	}
+
+	@Override
+	public ReportData getReport(String corpId, int[] years, String[] metrics) {
+
+		JsonObject json = this.metricDefines.buildMetricRequestAsJson(corpId, years, metrics);
+		
+		return new ReportDataMetricQuery(json, this.reportMetaInfos).query(this.dbProvider);
 	}
 
 }

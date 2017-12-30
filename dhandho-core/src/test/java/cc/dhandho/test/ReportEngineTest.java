@@ -5,6 +5,8 @@ import cc.dhandho.DhandhoHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
+import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.ReportData;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.server.CorpInfoDbUpgrader;
@@ -24,9 +26,13 @@ public class ReportEngineTest extends TestCase {
 		DbReportMetaInfos metaInfos = new DbReportMetaInfos();
 		dbProvider.executeWithDbSession(metaInfos.initializer());
 
+		MetricDefines metricDefines = TestUtil.newMetricDefines();
+
 		app.addComponent(DhandhoHome.class, TestUtil.getHome());
 		app.addComponent(DbProvider.class, dbProvider);
 		app.addComponent(ReportMetaInfos.class, metaInfos);
+		app.addComponent(MetricDefines.class, metricDefines);
+
 		//
 
 		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
@@ -41,5 +47,11 @@ public class ReportEngineTest extends TestCase {
 		String metric = "资产总计";
 		Double d = re.getMetricValue(corpId, year, metric);
 		System.out.println(d);
+
+		int[] years = new int[] { 2016, 2015 };
+		String[] metrics = new String[] { "资产总计", "净利润" };
+		ReportData data = re.getReport(corpId, years, metrics);
+		System.out.println(data.print(new StringBuffer()));
+
 	}
 }

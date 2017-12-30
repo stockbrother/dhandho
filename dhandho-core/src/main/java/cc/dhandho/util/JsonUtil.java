@@ -3,10 +3,12 @@ package cc.dhandho.util;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
@@ -43,6 +45,12 @@ public class JsonUtil {
 
 	public static JsonElement parse(Reader r) {
 		return new JsonParser().parse(r);
+	}
+
+	public static JsonReader toJsonReader(JsonArray json) {
+		StringWriter sWriter = new StringWriter();
+		write(json, sWriter);
+		return new JsonReader(new StringReader(sWriter.getBuffer().toString()));
 	}
 
 }

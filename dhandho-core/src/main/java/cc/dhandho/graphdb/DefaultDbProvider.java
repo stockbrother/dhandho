@@ -5,6 +5,7 @@ import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
 
 import cc.dhandho.commons.handler.Handler2;
+import cc.dhandho.commons.handler.Handler3;
 import cc.dhandho.rest.server.DbProvider;
 
 public class DefaultDbProvider implements DbProvider {
@@ -46,6 +47,19 @@ public class DefaultDbProvider implements DbProvider {
 	@Override
 	public void executeWithDbSession(Handler2<ODatabaseSession> processor) {
 
+		executeWithDbSession(new Handler3<ODatabaseSession, Void>() {
+
+			@Override
+			public Void handle(ODatabaseSession req) {
+				processor.handle(req);
+				return null;
+			}
+		});
+
+	}
+
+	@Override
+	public <R> R executeWithDbSession(Handler3<ODatabaseSession, R> processor) {
 		ODatabaseSession dbs = DbSessionTL.get();
 		boolean isNew = (dbs == null);
 		if (isNew) {
@@ -54,14 +68,13 @@ public class DefaultDbProvider implements DbProvider {
 		}
 
 		try {
-			processor.handle(dbs);
+			return processor.handle(dbs);
 		} finally {
 			if (isNew) {
 				DbSessionTL.set(null);//
 				dbs.close();
 			}
 		}
-
 	}
 
 }

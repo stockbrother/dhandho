@@ -23,7 +23,7 @@ import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.input.washed.GDBWashedFileSchemaLoader;
 import cc.dhandho.input.washed.GDBWashedFileValueLoader;
-import cc.dhandho.report.SvgChartMetricQueryBuilder;
+import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
@@ -90,12 +90,11 @@ public class SvgChartMetricQueryBuilderTest {
 		).replaceAll("'", "\"");
 
 		JsonReader reader = JsonUtil.toJsonReader(jsonS);
-		StringWriter sWriter = new StringWriter();
 
 		SvgChartMetricQueryBuilder r = SvgChartMetricQueryBuilder.newInstance(reader, aliasInfos);
-		r.query(db, sWriter);
+		StringBuffer sb = r.query(db);
 
-		System.out.println(sWriter.getBuffer());
+		System.out.println(sb);
 
 	}
 }

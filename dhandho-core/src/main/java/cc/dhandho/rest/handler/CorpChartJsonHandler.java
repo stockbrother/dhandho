@@ -1,13 +1,12 @@
 package cc.dhandho.rest.handler;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.DbReportMetaInfos;
-import cc.dhandho.report.SvgChartMetricQueryBuilder;
+import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
 import cc.dhandho.rest.RestRequestContext;
 
 /**
@@ -26,17 +25,16 @@ public class CorpChartJsonHandler extends DbSessionJsonHandler {
 
 		aliasInfos.initialize(db);
 
-		StringWriter swriter = new StringWriter();
-
 		SvgChartMetricQueryBuilder svgQ = new SvgChartMetricQueryBuilder(rrc.getReader(), aliasInfos);
-		svgQ.query(db, swriter);
-		int width = svgQ.query.getWidth();
-		int height = svgQ.query.getHeight();
+		StringBuffer sb = svgQ.query(db);
+		
+		int width = 600;
+		int height = 400;
 		writer.beginObject();
 		writer.name("width").value(width);
 		writer.name("height").value(height);
 		writer.name("svg");
-		writer.value(swriter.toString());
+		writer.value(sb.toString());
 
 		writer.endObject();
 

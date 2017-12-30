@@ -1,4 +1,4 @@
-package cc.dhandho.report;
+package cc.dhandho.report.query;
 
 import java.awt.BasicStroke;
 import java.awt.geom.Rectangle2D;
@@ -34,14 +34,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import com.orientechnologies.orient.core.db.ODatabaseSession;
+import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.ReportMetaInfos;
+import cc.dhandho.RtException;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.util.JsonUtil;
 
-public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
+public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
+
 	private static Logger LOG = LoggerFactory.getLogger(SvgChartMetricQueryBuilder.class);
 
 	public static SvgChartMetricQueryBuilder newInstance(JsonReader reader, ReportMetaInfos aliasInfos) {
@@ -54,12 +55,12 @@ public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
 		super(reader, aliasInfos);
 	}
 
-	public SvgChartMetricQueryBuilder query(ODatabaseSession db, Writer writer) throws IOException {
-		StringWriter swriter = new StringWriter();
-		JsonWriter jwriter = JsonUtil.newJsonWriter(swriter);
-		super.build().query(db, jwriter);
+	@Override
+	public StringBuffer handle(OResultSet req) {
 
-		JsonReader jreader = JsonUtil.toJsonReader(swriter.getBuffer().toString());
+		JsonArray json = new JsonMetricQueryResultHandler().handle(req);
+
+		JsonReader jreader = JsonUtil.toJsonReader(json);
 		String title = "[" + this.query.getCorpId() + "]";
 		DefaultCategoryDataset dataSet = createDataset(jreader);
 		JFreeChart chart = ChartFactory.createLineChart(title, null, null, dataSet, PlotOrientation.VERTICAL, true,
@@ -87,9 +88,9 @@ public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
 		root.setAttribute("viewBox", "0 0 " + width + " " + height);
 
 		// writeXmlWithDiv(width / 1, height / 1, root, writer);
-
+		StringWriter writer = new StringWriter();
 		writeXml2(root, writer);
-		return this;
+		return writer.getBuffer();
 
 	}
 
@@ -106,7 +107,7 @@ public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
 		out.flush();
 	}
 
-	private static void writeXml2(Element root, Writer out) throws IOException {
+	private static void writeXml2(Element root, Writer out) {
 		try {
 			TransformerFactory transFactory = TransformerFactory.newInstance();
 			Transformer transformer = transFactory.newTransformer();
@@ -116,7 +117,7 @@ public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
 
 			transformer.transform(new DOMSource(root), new StreamResult(out));
 		} catch (TransformerException e) {
-			throw new IOException(e);
+			throw new RtException(e);
 		}
 
 	}

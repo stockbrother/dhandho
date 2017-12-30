@@ -1,4 +1,4 @@
-package cc.dhandho.report;
+package cc.dhandho.report.query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.rest.JsonWrapper;
 
@@ -44,7 +45,7 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 
 	abstract int resolveOffset();
 
-	abstract void doBuildSql(MetricJsonWrapper m, JsonMetricSqlLinkQueryBuilder resolver);
+	abstract void doBuildSql(MetricJsonWrapper m, StringBuffer sql, ReportMetaInfos aliasInfos);
 
 	abstract String resolveNameAsTitle();
 
@@ -63,7 +64,7 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 		}
 
 		@Override
-		void doBuildSql(MetricJsonWrapper parent, JsonMetricSqlLinkQueryBuilder builder) {
+		void doBuildSql(MetricJsonWrapper parent, StringBuffer sql, ReportMetaInfos aliasInfos) {
 
 			String[] reportType_Alias = reportTypeAndAlias.split("\\.");
 
@@ -89,13 +90,13 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 
 			if (reportType == null) {
 				// resolve it
-				reportType = builder.aliasInfos.getFirstReportTypeByAlias(alias);
+				reportType = aliasInfos.getFirstReportTypeByAlias(alias);
 				if (reportType == null) {
 					throw new RtException("not fount alias:" + alias);
 				}
 				
 			}
-			String cI = builder.aliasInfos.getColumnNameByAlias(reportType, alias);
+			String cI = aliasInfos.getColumnNameByAlias(reportType, alias);
 			if (cI == null) {
 				throw new RtException("no this alias:" + reportType + "." + alias);
 			}
@@ -105,16 +106,16 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 			if (offset > 0) {
 
 				for (int i = 0; i < offset; i++) {
-					builder.sql.append("next.");
+					sql.append("next.");
 				}
 			} else if (offset < 0) {
 
 				for (int i = 0; i > offset; i--) {
-					builder.sql.append("prev.");
+					sql.append("prev.");
 				}
 			}
 
-			builder.sql.append(link).append(".").append(cI);
+			sql.append(link).append(".").append(cI);
 		}
 
 		@Override
@@ -168,48 +169,48 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 		}
 
 		@Override
-		void doBuildSql(MetricJsonWrapper parent, JsonMetricSqlLinkQueryBuilder builder) {
+		void doBuildSql(MetricJsonWrapper parent, StringBuffer sql, ReportMetaInfos aliasInfos) {
 			String operator = this.getOperator();
 			if ("/".equals(operator)) {
-				doBuild(operator, builder);
+				doBuild(operator, sql, aliasInfos);
 			} else if ("*".equals(operator)) {
-				doBuild(operator, builder);
+				doBuild(operator, sql, aliasInfos);
 			} else if ("+".equals(operator)) {
-				doBuild(operator, builder);
+				doBuild(operator, sql, aliasInfos);
 			} else if ("-".equals(operator)) {
-				doBuild(operator, builder);
+				doBuild(operator, sql, aliasInfos);
 			} else if ("sum".equals(operator)) {
-				doBuild("+", builder);
+				doBuild("+", sql, aliasInfos);
 			} else if ("avg".equals(operator)) {
-				doBuildAvg(builder);
+				doBuildAvg(sql, aliasInfos);
 			} else {
 				throw new RtException("todo:" + operator);
 			}
 		}
 
-		private void doBuildAvg(JsonMetricSqlLinkQueryBuilder builder) {
+		private void doBuildAvg(StringBuffer sql,ReportMetaInfos aliasInfos) {
 			List<MetricJsonWrapper> childL = this.getChildren();
-			builder.sql.append("(");
-			doBuild("+", builder);
-			builder.sql.append("/").append(childL.size()).append(")");
+			sql.append("(");
+			doBuild("+", sql, aliasInfos);
+			sql.append("/").append(childL.size()).append(")");
 
 		}
 
-		private void doBuild(String operator, JsonMetricSqlLinkQueryBuilder builder) {
+		private void doBuild(String operator, StringBuffer sql, ReportMetaInfos aliasInfos) {
 			List<MetricJsonWrapper> childL = this.getChildren();
 			if (childL.size() < 2) {
 				throw new RtException("total child metrics at least 2 for div op");
 			}
-			builder.sql.append("(");
+			sql.append("(");
 			for (int i = 0; i < childL.size(); i++) {
 				MetricJsonWrapper m = childL.get(i);
-				m.doBuildSql(this, builder);
+				m.doBuildSql(this, sql, aliasInfos);
 				if (i < childL.size() - 1) {
-					builder.sql.append(operator);
+					sql.append(operator);
 				}
 			}
 
-			builder.sql.append(")");
+			sql.append(")");
 		}
 
 		@Override

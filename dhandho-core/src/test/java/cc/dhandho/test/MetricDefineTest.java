@@ -9,8 +9,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
-import cc.dhandho.client.MetricDefines;
-import cc.dhandho.report.SvgChartMetricQueryBuilder;
+import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
 

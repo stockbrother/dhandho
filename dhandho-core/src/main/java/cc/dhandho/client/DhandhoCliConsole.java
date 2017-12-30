@@ -14,6 +14,7 @@ import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
 import cc.dhandho.commons.handler.Handler;
+import cc.dhandho.report.MetricDefines;
 import cc.dhandho.rest.server.DhandhoServer;
 
 public class DhandhoCliConsole extends AbstractComandLineApp {

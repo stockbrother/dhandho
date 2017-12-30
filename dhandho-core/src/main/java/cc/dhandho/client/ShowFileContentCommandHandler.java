@@ -7,10 +7,10 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileUtil;
 
 import cc.dhandho.RtException;
-import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.query.JsonArrayMetricsQuery;
 
 /**
- * @see JsonMetricSqlLinkQueryBuilder
+ * @see JsonArrayMetricsQuery
  * @author wu
  *
  */

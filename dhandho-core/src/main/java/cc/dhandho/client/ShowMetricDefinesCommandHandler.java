@@ -4,12 +4,13 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import cc.dhandho.client.MetricDefines.MetricDefine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
-import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
+import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.MetricDefines.MetricDefine;
+import cc.dhandho.report.query.JsonArrayMetricsQuery;
 
 /**
- * @see JsonMetricSqlLinkQueryBuilder
+ * @see JsonArrayMetricsQuery
  * @author wu
  *
  */

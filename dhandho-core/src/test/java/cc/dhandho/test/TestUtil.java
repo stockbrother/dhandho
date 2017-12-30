@@ -17,6 +17,7 @@ import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
+import cc.dhandho.report.MetricDefines;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.DhandhoServer;
 import cc.dhandho.rest.server.DhandhoServerImpl;
@@ -72,6 +73,17 @@ public class TestUtil {
 			throw RtException.toRtException(e);
 		}
 
+	}
+
+	public static MetricDefines newMetricDefines() {
+		DhandhoHome home = getHome();
+		FileObject file;
+		try {
+			file = home.resolveFile(home.getClientFile(), "metrics-define.xml");
+			return MetricDefines.load(file.getContent().getInputStream());
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
+		}
 	}
 
 	public static DbProvider newInMemoryTestDbProvider(boolean create) {
