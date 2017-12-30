@@ -13,7 +13,7 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
@@ -109,7 +109,7 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 	@Override
 	public void execute(RestRequestContext rrc, ODatabaseSession dbs) throws IOException {
 
-		DbAliasInfos aliasInfos = new DbAliasInfos();
+		DbReportMetaInfos aliasInfos = new DbReportMetaInfos();
 
 		aliasInfos.initialize(dbs);
 		final String reportType = DbInitUtil.V_BALSHEET;

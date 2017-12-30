@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.server.DhandhoServer;
 import junit.framework.TestCase;
 
@@ -25,7 +25,7 @@ public class DhandhoServerTest extends TestCase {
 		DhandhoServer ds = TestUtil.newInMemoryTestDhandhoServer();
 		ds.start();
 
-		DbAliasInfos aliasInfos = new DbAliasInfos();
+		DbReportMetaInfos aliasInfos = new DbReportMetaInfos();
 
 		ds.shutdown();
 	}

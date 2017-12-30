@@ -18,8 +18,8 @@ import com.google.gson.JsonNull;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.AppContext;
 import cc.dhandho.RtException;
+import cc.dhandho.commons.container.Container;
 import cc.dhandho.util.JsonUtil;
 
 public class JsonHandlers {
@@ -29,9 +29,9 @@ public class JsonHandlers {
 
 	private Map<String, RestRequestHandler> handlerMap = new HashMap<>();
 
-	private AppContext app;
+	private Container app;
 
-	public JsonHandlers(AppContext app) {
+	public JsonHandlers(Container app) {
 		this.app = app;
 	}
 

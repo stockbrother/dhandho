@@ -8,9 +8,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractAliasInfos implements ReportMetaInfos {
+public abstract class AbstractReportMetaInfos implements ReportMetaInfos {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractAliasInfos.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractReportMetaInfos.class);
 
 	protected Map<String, Map<String, Integer>> reportAliasColumnMap = new HashMap<>();
 
@@ -69,6 +69,24 @@ public abstract class AbstractAliasInfos implements ReportMetaInfos {
 		}
 	}
 
+    protected void updateCacheEntry(String reportType, String aliasName, Integer columnIndex) {
+    	
+    	Map<String, Integer> tc = reportAliasColumnMap.get(reportType);
+    	
+    	if (tc == null) {
+    		tc = new HashMap<>();
+    		reportAliasColumnMap.put(reportType, tc);
+    	}
+    	tc.put(aliasName, columnIndex);
+    	//
+    	List<String> aliasList = reportAliasListMap.get(reportType);
+    	if (aliasList == null) {
+    		aliasList = new ArrayList<>();
+    		reportAliasListMap.put(reportType, aliasList);
+    	}
+    	aliasList.add(aliasName);
+    }
+    
 	@Override
 	public List<String> getReportTypeListByAlias(String alias) {
 		List<String> rt = new ArrayList<>();

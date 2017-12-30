@@ -17,9 +17,10 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Processor;
 import cc.dhandho.Quarter;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.server.DbProvider;
 import cc.dhandho.util.DbInitUtil;
@@ -35,19 +36,21 @@ public class GDBWashedFileSchemaLoader extends QuarterWahsedFileLoader {
 
 	private static Logger LOG = LoggerFactory.getLogger(GDBWashedFileSchemaLoader.class);
 
-	DbProvider appContext;
+	DbProvider dbProvider;
 
 	ODatabaseSession session;
+	
+	DbReportMetaInfos reportMetaInfos;
 
 	// store type=>aliasList.
 	private Map<String, List<String>> propertyListMap = new HashMap<>();
 	// store type=>columnIndexList
 	private Map<String, List<Integer>> propertyListMap2 = new HashMap<>();
 
-	public GDBWashedFileSchemaLoader(DbProvider dbc, FileObject dir, Quarter quarter) {
+	public GDBWashedFileSchemaLoader(DbProvider dbc, FileObject dir, Quarter quarter , DbReportMetaInfos reportMetaInfos) {
 		super(dir, quarter);
-
-		this.appContext = dbc;
+		this.reportMetaInfos = reportMetaInfos;
+		this.dbProvider = dbc;
 	}
 
 	public GDBWashedFileSchemaLoader limit(int limit) {
@@ -59,30 +62,29 @@ public class GDBWashedFileSchemaLoader extends QuarterWahsedFileLoader {
 	public void start() throws IOException {
 		// @see #onTableData();
 		super.start();
-		DbAliasInfos ais = new DbAliasInfos();
 
-		this.appContext.executeWithDbSession(new Processor<ODatabaseSession>() {
+		this.dbProvider.executeWithDbSession(new Processor<ODatabaseSession>() {
 
 			@Override
 			public void process(ODatabaseSession db) {
-				ais.initialize(db);
+				
 				for (Map.Entry<String, List<String>> entry : propertyListMap.entrySet()) {
-					ais.getOrCreateColumnIndexByAliasList(db, entry.getKey(), entry.getValue());
+					reportMetaInfos.getOrCreateColumnIndexByAliasList(db, entry.getKey(), entry.getValue());
 				}
 
 			}
 		});
 
-		this.appContext.executeWithDbSession(new Processor<ODatabaseSession>() {
+		this.dbProvider.executeWithDbSession(new Processor<ODatabaseSession>() {
 
 			@Override
 			public void process(ODatabaseSession db) {
-				doProcess(ais, db);
+				doProcess(reportMetaInfos, db);
 			}
 		});
 	}
 
-	private void doProcess(DbAliasInfos ais, ODatabaseSession db) {
+	private void doProcess(DbReportMetaInfos ais, ODatabaseSession db) {
 		this.session = db;
 
 		try {

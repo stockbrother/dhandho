@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MemoryAliasInfos extends AbstractAliasInfos {
+public class MemoryAliasInfos extends AbstractReportMetaInfos {
 
 	private Map<String, AtomicInteger> maxColumnIndexMap = new HashMap<>();
 

@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Processor;
 import cc.dhandho.RtException;
 import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
@@ -61,7 +61,7 @@ public class GetPriceRatioJsonHandler extends AbstractRestRequestHandler {
 
 	private void queryMetrics(String corpId, ODatabaseSession db, JsonWriter writer) throws IOException {
 
-		DbAliasInfos aliasInfos = new DbAliasInfos();
+		DbReportMetaInfos aliasInfos = new DbReportMetaInfos();
 		aliasInfos.initialize(db);
 
 		String jsonS = ("{" //

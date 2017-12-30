@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.AppContext;
+import cc.dhandho.commons.container.Container;
 import cc.dhandho.importer.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.sina.SinaAllQuotesPreprocessor;
 import cc.dhandho.sina.SinaQuotesCollector;
@@ -15,8 +15,8 @@ public class SinaAllQuotesDataLoadRRHandler extends AbstractRestRequestHandler {
 	AllQuotesInfos allQuotesInfos;
 
 	@Override
-	public void setAppContext(AppContext app) {
-		super.setAppContext(app);
+	public void setContainer(Container app) {
+		super.setContainer(app);
 		this.allQuotesInfos = app.findComponent(AllQuotesInfos.class, true);
 
 	}

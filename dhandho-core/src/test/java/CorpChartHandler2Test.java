@@ -14,8 +14,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.rest.CorpChartJsonHandler2;
 import cc.dhandho.rest.RestRequestContext;
 
@@ -28,11 +28,11 @@ public class CorpChartHandler2Test {
 
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-	AppContext app;
+	Container app;
 
 	@Before
 	public void setUp() {
-		app = new AppContextImpl();		
+		app = new ContainerImpl();		
 	}
 
 	@After

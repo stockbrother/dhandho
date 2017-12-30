@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.util.DbInitUtil;
 
@@ -23,7 +23,7 @@ public class DataLoaderTest {
 	@Test
 	public void test() throws InterruptedException {
 
-		AppContext app = new AppContextImpl();
+		Container app = new ContainerImpl();
 
 		// File dir = new File("D:\\data\\xueqiu\\washed\\balsheet\\");
 		// File dir = new File("D:\\data\\xueqiu\\washed\\balsheet\\");

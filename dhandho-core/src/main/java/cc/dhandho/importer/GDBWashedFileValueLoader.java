@@ -15,7 +15,7 @@ import com.orientechnologies.orient.core.intent.OIntentMassiveInsert;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Processor;
 import cc.dhandho.Quarter;
 import cc.dhandho.RtException;
@@ -31,7 +31,7 @@ public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 
 	ODatabaseSession session;
 
-	DbAliasInfos aliasInfos;
+	DbReportMetaInfos aliasInfos;
 
 	private int files;
 
@@ -66,7 +66,7 @@ public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 		// intent.setEnableCache(false);
 		this.session.declareIntent(intent);
 
-		this.aliasInfos = new DbAliasInfos();
+		this.aliasInfos = new DbReportMetaInfos();
 		try {
 			this.aliasInfos.initialize(this.session);
 			super.start();

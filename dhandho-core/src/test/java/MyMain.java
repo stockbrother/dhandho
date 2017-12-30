@@ -15,8 +15,8 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 
 //http://orientdb.com/docs/3.0.x/fiveminute/java-3.html
@@ -31,7 +31,7 @@ public class MyMain {
 	@Test
 	public void test() throws InterruptedException {
 
-		AppContext app = new AppContextImpl();
+		Container app = new ContainerImpl();
 		Semaphore s = new Semaphore(0);
 		ODatabaseSession ds = null;//app.openDB();
 		{

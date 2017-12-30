@@ -1,13 +1,10 @@
 package cc.dhandho.test;
 
-import com.orientechnologies.orient.core.db.ODatabaseSession;
-
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhandhoHome;
-import cc.dhandho.Processor;
 import cc.dhandho.ReportMetaInfos;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.server.CorpInfoDbUpgrader;
@@ -20,28 +17,23 @@ public class ReportEngineTest extends TestCase {
 
 	public void test() {
 
-		AppContext app = new AppContextImpl();
+		Container app = new ContainerImpl();
 		DbProvider dbProvider = TestUtil.newInMemoryTestDbProvider(true);
 		dbProvider.executeWithDbSession(new DbInitUtil());
+
+		DbReportMetaInfos metaInfos = new DbReportMetaInfos();
+		dbProvider.executeWithDbSession(metaInfos.initializer());
+
 		app.addComponent(DhandhoHome.class, TestUtil.getHome());
 		app.addComponent(DbProvider.class, dbProvider);
+		app.addComponent(ReportMetaInfos.class, metaInfos);
+		//
 
 		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
 		dbProvider.executeWithDbSession(dbu);
 		// load washed data to DB.
 		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
 		dbProvider.executeWithDbSession(wdu);
-
-		DbAliasInfos rmi = new DbAliasInfos();
-		app.addComponent(ReportMetaInfos.class, rmi);
-		dbProvider.executeWithDbSession(new Processor<ODatabaseSession>() {
-
-			@Override
-			public void process(ODatabaseSession t) {
-				rmi.initialize(t);
-
-			}
-		});
 
 		ReportEngine re = app.newInstance(ReportEngineImpl.class);
 		String corpId = "000002";

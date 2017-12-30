@@ -21,10 +21,10 @@ import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.Processor;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.rest.DbSessionTL;
@@ -49,7 +49,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 
 	private OrientDB orient;
 
-	AppContext app;
+	Container app;
 
 	protected DhandhoHome home;
 
@@ -68,7 +68,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		}
 
 		this.executor = Executors.newScheduledThreadPool(1, this);
-		app = new AppContextImpl();
+		app = new ContainerImpl();
 		app.addComponent(DbProvider.class, this.dbProvider);
 		app.addComponent(DhandhoHome.class, home);
 		app.addComponent(AllQuotesInfos.class, new AllQuotesInfos());

@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.report.SvgChartMetricQueryBuilder;
 
 /**
@@ -21,7 +21,7 @@ public class CorpChartJsonHandler extends DbSessionJsonHandler {
 
 		JsonWriter writer = rrc.getWriter();
 
-		DbAliasInfos aliasInfos = new DbAliasInfos();
+		DbReportMetaInfos aliasInfos = new DbReportMetaInfos();
 
 		aliasInfos.initialize(db);
 

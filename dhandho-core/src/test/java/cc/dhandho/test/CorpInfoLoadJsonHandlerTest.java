@@ -15,9 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.LoadCorpInfoJsonHandler;
 import cc.dhandho.rest.RestRequestContext;
@@ -33,12 +33,12 @@ public class CorpInfoLoadJsonHandlerTest {
 
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-	static AppContext app;
-	static DbAliasInfos aliasInfos;
+	static Container app;
+	static DbReportMetaInfos aliasInfos;
 	
 	@BeforeClass
 	public static void setUp() {
-		app = new AppContextImpl();
+		app = new ContainerImpl();
 
 		//DbInitUtil.initDb(app);
 		

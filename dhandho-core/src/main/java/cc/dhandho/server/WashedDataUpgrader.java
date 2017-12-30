@@ -10,10 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.AppContext;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.Quarter;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
+import cc.dhandho.commons.container.Container;
 import cc.dhandho.importer.GDBWashedFileSchemaLoader;
 import cc.dhandho.importer.GDBWashedFileValueLoader;
 
@@ -29,12 +31,14 @@ public class WashedDataUpgrader extends DbUpgrader {
 
 	private DhandhoHome home;
 	DbProvider dbp;
+	ReportMetaInfos reportMetaInfos;
 
 	@Override
-	public void setAppContext(AppContext app) {
-		super.setAppContext(app);
+	public void setContainer(Container app) {
+		super.setContainer(app);
 		this.dbp = app.findComponent(DbProvider.class, true);
 		this.home = app.findComponent(DhandhoHome.class, true);
+		this.reportMetaInfos = app.findComponent(ReportMetaInfos.class, true);
 	}
 
 	@Override
@@ -43,7 +47,8 @@ public class WashedDataUpgrader extends DbUpgrader {
 
 			FileObject dir = this.home.getInportWashedDataFolder();
 
-			new GDBWashedFileSchemaLoader(this.dbp, dir, Quarter.Q4)/* .limit(10) */.start();
+			new GDBWashedFileSchemaLoader(this.dbp, dir, Quarter.Q4, (DbReportMetaInfos) this.reportMetaInfos)
+					/* .limit(10) */.start();
 
 			new GDBWashedFileValueLoader(this.dbp, dir, Quarter.Q4)/* .limit(10) */.start();
 		} catch (IOException e) {

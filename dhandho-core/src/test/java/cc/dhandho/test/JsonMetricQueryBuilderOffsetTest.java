@@ -17,10 +17,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.AppContext;
-import cc.dhandho.AppContextImpl;
-import cc.dhandho.DbAliasInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.importer.GDBWashedFileSchemaLoader;
 import cc.dhandho.importer.GDBWashedFileValueLoader;
@@ -36,13 +36,13 @@ public class JsonMetricQueryBuilderOffsetTest {
 
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-	static AppContext app;
-	static DbAliasInfos aliasInfos;
+	static Container app;
+	static DbReportMetaInfos aliasInfos;
 	static ODatabaseSession db;
 
 	@BeforeClass
 	public static void setUp() {
-		app = new AppContextImpl();
+		app = new ContainerImpl();
 
 		//DbInitUtil.initDb(app);
 
@@ -51,7 +51,7 @@ public class JsonMetricQueryBuilderOffsetTest {
 		//new GDBWashedFileSchemaLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 		//new GDBWashedFileValueLoader(app, dir, Quarter.Q4)/* .limit(10) */.start();
 
-		aliasInfos = new DbAliasInfos();
+		aliasInfos = new DbReportMetaInfos();
 		//db = app.openDB();
 		//aliasInfos.initialize(db);
 

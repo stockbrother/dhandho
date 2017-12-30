@@ -1,7 +1,7 @@
 package cc.dhandho.rest;
 
-import cc.dhandho.AppContext;
 import cc.dhandho.DhandhoHome;
+import cc.dhandho.commons.container.Container;
 import cc.dhandho.server.DbProvider;
 
 /**
@@ -9,16 +9,16 @@ import cc.dhandho.server.DbProvider;
  * @author Wu
  *
  */
-public abstract class AbstractRestRequestHandler implements RestRequestHandler, AppContext.Aware {
+public abstract class AbstractRestRequestHandler implements RestRequestHandler, Container.Aware {
 
-	protected AppContext app;
+	protected Container app;
 
 	protected DbProvider dbProvider;
 	
 	protected DhandhoHome home;
 
 	@Override
-	public void setAppContext(AppContext app) {
+	public void setContainer(Container app) {
 		this.app = app;
 		this.dbProvider = app.findComponent(DbProvider.class, true);
 		this.home = app.findComponent(DhandhoHome.class, true);

@@ -11,16 +11,16 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.AppContext;
 import cc.dhandho.Processor;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
+import cc.dhandho.commons.container.Container;
 import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.server.DbProvider;
 import cc.dhandho.util.JsonUtil;
 
-public class ReportEngineImpl implements ReportEngine, AppContext.Aware {
+public class ReportEngineImpl implements ReportEngine, Container.Aware {
 
 	private DbProvider dbProvider;
 
@@ -31,7 +31,7 @@ public class ReportEngineImpl implements ReportEngine, AppContext.Aware {
 	}
 
 	@Override
-	public void setAppContext(AppContext app) {
+	public void setContainer(Container app) {
 		this.dbProvider = app.findComponent(DbProvider.class, true);
 		this.reportMetaInfos = app.findComponent(ReportMetaInfos.class, true);
 	}
