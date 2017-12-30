@@ -1,5 +1,8 @@
 package cc.dhandho.report.query;
 
+import java.util.Date;
+import java.util.function.Consumer;
+
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.orientechnologies.orient.core.sql.executor.OResult;
@@ -23,18 +26,25 @@ public class ReportDataMetricQuery extends MetricsQuery<ReportData> {
 	public ReportData handle(OResultSet rst) {
 		ReportData rt = new ReportData();
 
-		while (rst.hasNext()) {
-			OResult row = rst.next();
-			
-			ReportRow rr = rt.addRow();
-			//TODO
-			for (String key : row.getPropertyNames()) {
-				Object value = row.getProperty(key);
-				
-				rr.set(key, (Double) value);
-			}
-		}
+		rst.stream().forEach(new Consumer<OResult>() {
 
+			@Override
+			public void accept(OResult row) {
+
+				String corpId = row.getProperty(QueryJsonWrapper.CORP_ID);
+				Date reportDate = row.getProperty(QueryJsonWrapper.REPORT_DATA);
+
+				ReportRow rr = rt.addRow(corpId, reportDate);
+
+				// TODO
+				for (int i = 0; i < row.getPropertyNames().size() - 2; i++) {
+					String key = "m" + (i + 1);
+					Object value = row.getProperty(key);
+					rr.set(key, (Double) value);
+				}
+
+			}
+		});
 		return rt;
 	}
 

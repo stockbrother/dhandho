@@ -25,7 +25,7 @@ public class AllQuotesInfos {
 
 	}
 
-	public Double get(String corpId) {
+	public Double getBuyPrice(String corpId) {
 		return this.quotesMap.get(corpId);
 	}
 

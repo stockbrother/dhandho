@@ -3,6 +3,7 @@ package cc.dhandho.report.impl;
 import java.io.StringReader;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
@@ -52,7 +53,8 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 
 		JsonObject row1 = (JsonObject) mvalues.get(0);
 
-		Double d = row1.get("m1").getAsDouble();
+		JsonElement m1 = row1.get("m1");
+		Double d = m1.isJsonNull() ? null : m1.getAsDouble();
 
 		return d;
 	}
@@ -61,7 +63,7 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 	public ReportData getReport(String corpId, int[] years, String[] metrics) {
 
 		JsonObject json = this.metricDefines.buildMetricRequestAsJson(corpId, years, metrics);
-		
+
 		return new ReportDataMetricQuery(json, this.reportMetaInfos).query(this.dbProvider);
 	}
 

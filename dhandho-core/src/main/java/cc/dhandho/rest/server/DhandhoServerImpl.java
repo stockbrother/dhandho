@@ -8,6 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,18 +18,21 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
-import com.orientechnologies.orient.core.db.OrientDBConfig;
 
 import cc.dhandho.AllQuotesInfos;
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhandhoHome;
+import cc.dhandho.ReportMetaInfos;
+import cc.dhandho.RtException;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
-import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.graphdb.DbConfig;
-import cc.dhandho.graphdb.DbSessionTL;
 import cc.dhandho.graphdb.DefaultDbProvider;
+import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
+import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.ReportEngine;
+import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.JsonHandlers;
 import cc.dhandho.util.DbInitUtil;
 
@@ -62,14 +67,41 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start...");
 		}
+		ReportMetaInfos metaInfos = new DbReportMetaInfos();
+		MetricDefines metricDefines = null;
+		try {
+			metricDefines = MetricDefines.load(this.home.getClientFile().resolveFile("metric-defines.xml"));
+		} catch (FileSystemException e) {
+			throw RtException.toRtException(e);
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
+		}
 
 		this.executor = Executors.newScheduledThreadPool(1, this);
 		app = new ContainerImpl();
-		app.addComponent(DbProvider.class, this.dbProvider);
 		app.addComponent(DhandhoHome.class, home);
-		app.addComponent(AllQuotesInfos.class, new AllQuotesInfos());
+		app.addComponent(MetricDefines.class, metricDefines);
+		app.addComponent(ReportMetaInfos.class, metaInfos);
+		app.addComponent(DbProvider.class, this.dbProvider);
+		
+		ReportEngine reportEngine = app.newInstance(ReportEngineImpl.class);
+		app.addComponent(ReportEngine.class, reportEngine);
+		AllQuotesInfos allQuotesInfos = new AllQuotesInfos();
+		app.addComponent(AllQuotesInfos.class, allQuotesInfos);
+		
+		try {
 
-		handlers = new JsonHandlers(app);
+			FileObject to = home.getInportFile().resolveFile("sina");
+			if (to.exists()) {
+				LOG.warn("loading all-quotes from folder:" + to.getURL());
+				MemoryAllQuotesWashedDataLoader loader = new MemoryAllQuotesWashedDataLoader(to, allQuotesInfos);
+				loader.start();
+			} else {
+				LOG.warn("skip loadin all-quotes since folder not exist:" + to.getURL());
+			}
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
+		}
 
 		this.dbProvider.createDbIfNotExist();
 
@@ -81,6 +113,8 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		// load washed data to DB.
 		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
 		this.dbProvider.executeWithDbSession(wdu);
+
+		handlers = new JsonHandlers(app);
 
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start done");

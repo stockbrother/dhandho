@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.AllQuotesInfos;
+import cc.dhandho.RtException;
 import cc.dhandho.input.CsvHeaderRowMap;
 import cc.dhandho.input.CsvReaderIterator;
 import cc.dhandho.input.CsvRow;
@@ -31,9 +32,10 @@ public class MemoryAllQuotesWashedDataLoader extends CsvReaderIterator {
 	AllQuotesInfos allQuotesInfos;
 
 	CsvHeaderRowMap headers;
-	Map<String,Integer> bodyFirstRow;
+	Map<String, Integer> bodyFirstRow;
 	boolean body;
 	Date reportDate;
+
 	public AllQuotesInfos getAllQuotesInfos() {
 		return allQuotesInfos;
 	}
@@ -58,19 +60,24 @@ public class MemoryAllQuotesWashedDataLoader extends CsvReaderIterator {
 
 		if (!body) {
 			// header area
+
+			if (headers == null) {
+				throw new RtException("This is header area but no 'Header' mark.");
+			}
+
 			String key = row.getString(0, true);
 			headers.put(key, row);
 		} else {
-			if(reportDate == null) {
-				 reportDate = headers.getAsDate("报告日期");						 
+			if (reportDate == null) {
+				reportDate = headers.getAsDate("报告日期");
 			}
-			
-			if(this.bodyFirstRow == null) {
+
+			if (this.bodyFirstRow == null) {
 				this.bodyFirstRow = row.getAsIndexMap();
 				return;
 			}
-			// body area			
-			
+			// body area
+
 			String corpId = row.getString(bodyFirstRow.get("code"), true);
 			BigDecimal price = row.getAsBigDecimal(bodyFirstRow.get("buy"), true);
 			allQuotesInfos.put(reportDate, corpId, price);

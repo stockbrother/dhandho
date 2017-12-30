@@ -13,6 +13,7 @@ import cc.dhandho.rest.server.CorpInfoDbUpgrader;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.WashedDataUpgrader;
 import cc.dhandho.util.DbInitUtil;
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class ReportEngineTest extends TestCase {
@@ -51,6 +52,16 @@ public class ReportEngineTest extends TestCase {
 		int[] years = new int[] { 2016, 2015 };
 		String[] metrics = new String[] { "资产总计", "净利润" };
 		ReportData data = re.getReport(corpId, years, metrics);
+
+		TestCase.assertNotNull("", data);
+
+		TestCase.assertEquals(years.length, data.getRowList().size());
+		ReportData.ReportRow row1 = data.getRowList().get(0);
+		TestCase.assertEquals(metrics.length, row1.getValueMap().size());
+
+		ReportData.ReportRow row2 = data.getRowList().get(1);
+		TestCase.assertEquals(metrics.length, row2.getValueMap().size());
+
 		System.out.println(data.print(new StringBuffer()));
 
 	}

@@ -49,13 +49,19 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
 		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
-				.addOption(ShowCommandHandler.OPT_m, "metrics", false, "Show all metrics define.") //
+				.addOption(ShowCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
 				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
-				.addOption(ShowCommandHandler.OPT_p, "price", false, "Show price ratios.") //
+				.addOption(ShowCommandHandler.OPT_r, "report", false, "Show report.") //
 				.addOption(ShowCommandHandler.OPT_c, "code", true, "For the show command that require a corp code.") //
-				.addOption(ShowCommandHandler.OPT_f, "file", true, "Show file content."), //
+				.addOption(ShowCommandHandler.OPT_m, "metrics", true,
+						"For the show command that requires a metric list."), //
 				new ShowCommandHandler()//
 		);
+
+		this.addCommand(new CommandType("cat", "Print file content!")//
+				.addOption(CatCommandHandler.OPT_f, "file", true, "Show file content.") //
+				, new CatCommandHandler());
+
 		this.addCommand(new CommandType("sina", "Collect/wash/load all-quotes data from sina."),
 				new SinaDataLoadCommandHandler());
 
@@ -73,7 +79,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	private MetricDefines load(DhandhoHome home) {
 		FileObject file;
 		try {
-			file = home.resolveFile(home.getClientFile(), "metrics-define.xml");
+			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");
 			return MetricDefines.load(file.getContent().getInputStream());
 		} catch (IOException e) {
 			throw RtException.toRtException(e);
@@ -116,7 +122,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	}
 
 	public void clear() {
-		
+
 	}
 
 }

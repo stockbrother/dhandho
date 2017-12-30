@@ -14,11 +14,11 @@ import cc.dhandho.report.query.JsonArrayMetricsQuery;
  * @author wu
  *
  */
-public class ShowFileContentCommandHandler extends DhandhoCommandHandler {
-
+public class CatCommandHandler extends DhandhoCommandHandler {
+	public static final String OPT_f = "f";
 	@Override
 	public void execute(CommandContext cc) {
-		String file = cc.getCommandLine().getLine().getOptionValue(ShowCommandHandler.OPT_f);
+		String file = cc.getCommandLine().getLine().getOptionValue(OPT_f);
 
 		try {
 			FileObject fo = cc.getServer().getHome().resolveFile(file);

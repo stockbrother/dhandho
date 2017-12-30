@@ -79,7 +79,7 @@ public class TestUtil {
 		DhandhoHome home = getHome();
 		FileObject file;
 		try {
-			file = home.resolveFile(home.getClientFile(), "metrics-define.xml");
+			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");
 			return MetricDefines.load(file.getContent().getInputStream());
 		} catch (IOException e) {
 			throw RtException.toRtException(e);

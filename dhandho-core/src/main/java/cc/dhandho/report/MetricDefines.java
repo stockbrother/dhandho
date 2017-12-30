@@ -12,6 +12,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import org.apache.commons.vfs2.FileObject;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -106,6 +107,10 @@ public class MetricDefines {
 			return childMetricList;
 		}
 
+	}
+
+	public static MetricDefines load(FileObject fo) throws IOException {
+		return load(fo.getContent().getInputStream());
 	}
 
 	public static MetricDefines load(InputStream is) throws IOException {

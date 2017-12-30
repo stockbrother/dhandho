@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 public class MetricDefineTest extends TestCase {
 
 	public void testLoadMetricDefine() throws IOException {
-		InputStream is = TestUtil.getHome().resolveFile("client/metrics-define.xml").getContent().getInputStream();
+		InputStream is = TestUtil.getHome().resolveFile("client/metric-defines.xml").getContent().getInputStream();
 		MetricDefines metrics = MetricDefines.load(is);
 
 		String metric = "权益乘数";
@@ -35,7 +35,7 @@ public class MetricDefineTest extends TestCase {
 	}
 
 	public void testMetricDefine_GenereateRequest() throws IOException {
-		InputStream is = TestUtil.getHome().resolveFile("client/metrics-define.xml").getContent().getInputStream();
+		InputStream is = TestUtil.getHome().resolveFile("client/metric-defines.xml").getContent().getInputStream();
 		MetricDefines metricsDefine = MetricDefines.load(is);
 
 		String corpId = "000001";

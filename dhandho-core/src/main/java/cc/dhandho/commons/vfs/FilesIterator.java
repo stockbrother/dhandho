@@ -19,18 +19,18 @@ public abstract class FilesIterator {
 	protected boolean typeToUpperCase;
 	protected boolean interrupted;
 
-	private FileObject dir;
+	private FileObject dirOrFile;
 
 	private int nextNumber;
 
 	private boolean printFileContentWhenFailure = true;
 
 	public FilesIterator(FileObject dir) {
-		this.dir = dir;
+		this.dirOrFile = dir;
 	}
 
 	public void start() throws IOException {
-		doLoadInternal(this.dir);
+		doLoadInternal(this.dirOrFile);
 	}
 
 	private void doLoadInternal(FileObject dir) throws IOException {

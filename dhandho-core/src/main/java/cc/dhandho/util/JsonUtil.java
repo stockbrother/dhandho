@@ -53,4 +53,22 @@ public class JsonUtil {
 		return new JsonReader(new StringReader(sWriter.getBuffer().toString()));
 	}
 
+	public static String[] getAsStringArray(JsonArray array) {
+		//
+		String[] rt = new String[array.size()];
+		for (int i = 0; i < rt.length; i++) {
+			rt[i] = array.get(i).getAsString();
+		}
+		return rt;
+	}
+
+	public static JsonElement toJsonArray(String[] values) {
+		//
+		JsonArray rt = new JsonArray();
+		for (String s : values) {
+			rt.add(s);
+		}
+		return rt;
+	}
+
 }
