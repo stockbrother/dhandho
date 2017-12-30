@@ -5,19 +5,20 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 public class DbUtil {
 
+	@Deprecated
 	public static interface DbCallback {
 		public void execute(ODatabaseSession db);
 	}
-
-	public static <T> T executeQuery(ODatabaseSession session, String sql, GDBResultSetProcessor<T> resultProcessor) {
+	@Deprecated
+	public static <T> T executeQuery(ODatabaseSession session, String sql, OResultSetHandler<T> resultProcessor) {
 		return executeQuery(session, sql, new Object[] {}, resultProcessor);
 	}
-
+	@Deprecated
 	public static <T> T executeQuery(ODatabaseSession session, String sql, Object[] args,
-			GDBResultSetProcessor<T> resultProcessor) {
+			OResultSetHandler<T> resultProcessor) {
 		OResultSet rst = session.query(sql, args);
 		try {
-			T rt = resultProcessor.process(rst);
+			T rt = resultProcessor.handle(rst);
 			return rt;
 		} finally {
 			rst.close();

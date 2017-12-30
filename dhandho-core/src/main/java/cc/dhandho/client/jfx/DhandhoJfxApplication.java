@@ -2,7 +2,7 @@ package cc.dhandho.client.jfx;
 
 import cc.dhandho.client.HtmlRenderer;
 import cc.dhandho.commons.jfx.JfxUtil;
-import cc.dhandho.server.DhandhoServer;
+import cc.dhandho.rest.server.DhandhoServer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;

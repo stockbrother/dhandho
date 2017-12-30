@@ -12,7 +12,7 @@ import cc.dhandho.RtException;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
-import cc.dhandho.rest.CorpChartJsonHandler;
+import cc.dhandho.rest.handler.CorpChartJsonHandler;
 import cc.dhandho.util.JsonUtil;
 
 /**

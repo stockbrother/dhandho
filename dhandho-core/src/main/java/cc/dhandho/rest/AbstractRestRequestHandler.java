@@ -2,7 +2,7 @@ package cc.dhandho.rest;
 
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.commons.container.Container;
-import cc.dhandho.server.DbProvider;
+import cc.dhandho.rest.server.DbProvider;
 
 /**
  * AppContext.newInstance();

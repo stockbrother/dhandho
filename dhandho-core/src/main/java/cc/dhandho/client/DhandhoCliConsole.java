@@ -13,8 +13,8 @@ import cc.dhandho.RtException;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
-import cc.dhandho.graphdb.Handler;
-import cc.dhandho.server.DhandhoServer;
+import cc.dhandho.commons.handler.Handler;
+import cc.dhandho.rest.server.DhandhoServer;
 
 public class DhandhoCliConsole extends AbstractComandLineApp {
 	protected DhandhoServer server;
@@ -88,7 +88,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	public void shutdown() {
 
 		for (Handler h : this.beforeShutdownHandlerList) {
-			h.execute();
+			h.handle();
 		}
 
 		super.shutdown();

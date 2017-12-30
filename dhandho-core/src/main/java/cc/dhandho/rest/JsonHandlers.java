@@ -59,7 +59,7 @@ public class JsonHandlers {
 
 		RestRequestHandler handler = this.resolveHandler(handlerS);
 
-		handler.execute(new RestRequestContext(gson, reader, writer));
+		handler.handle(new RestRequestContext(gson, reader, writer));
 
 	}
 	// TODO add data version for corpInfo and do not load twice for the same version

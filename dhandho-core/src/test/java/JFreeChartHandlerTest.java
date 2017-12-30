@@ -17,8 +17,8 @@ import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.rest.JFreeChartHandler;
 import cc.dhandho.rest.RestRequestContext;
+import cc.dhandho.rest.handler.JFreeChartHandler;
 import cc.dhandho.test.BaseTest;
 
 @Ignore
@@ -53,7 +53,7 @@ public class JFreeChartHandlerTest {
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = GSON.newJsonWriter(sWriter);
 
-		new JFreeChartHandler().execute(new RestRequestContext(GSON, reader, writer));
+		new JFreeChartHandler().handle(new RestRequestContext(GSON, reader, writer));
 
 		System.out.println(sWriter.getBuffer());
 

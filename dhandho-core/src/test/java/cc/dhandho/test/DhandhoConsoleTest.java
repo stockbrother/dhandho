@@ -1,7 +1,7 @@
 package cc.dhandho.test;
 
 import cc.dhandho.client.DhandhoCliConsole;
-import cc.dhandho.server.DhandhoServer;
+import cc.dhandho.rest.server.DhandhoServer;
 import junit.framework.TestCase;
 
 public class DhandhoConsoleTest extends TestCase {

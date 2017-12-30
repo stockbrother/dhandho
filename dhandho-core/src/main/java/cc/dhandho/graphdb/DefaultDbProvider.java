@@ -4,9 +4,8 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
 
-import cc.dhandho.Processor;
-import cc.dhandho.rest.DbSessionTL;
-import cc.dhandho.server.DbProvider;
+import cc.dhandho.commons.handler.Handler2;
+import cc.dhandho.rest.server.DbProvider;
 
 public class DefaultDbProvider implements DbProvider {
 	DbConfig dbConfig;
@@ -45,7 +44,7 @@ public class DefaultDbProvider implements DbProvider {
 	}
 
 	@Override
-	public void executeWithDbSession(Processor<ODatabaseSession> processor) {
+	public void executeWithDbSession(Handler2<ODatabaseSession> processor) {
 
 		ODatabaseSession dbs = DbSessionTL.get();
 		boolean isNew = (dbs == null);
@@ -55,7 +54,7 @@ public class DefaultDbProvider implements DbProvider {
 		}
 
 		try {
-			processor.process(dbs);
+			processor.handle(dbs);
 		} finally {
 			if (isNew) {
 				DbSessionTL.set(null);//

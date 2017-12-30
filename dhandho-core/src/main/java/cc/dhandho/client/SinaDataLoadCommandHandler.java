@@ -3,7 +3,7 @@ package cc.dhandho.client;
 import java.io.IOException;
 
 import cc.dhandho.RtException;
-import cc.dhandho.rest.SinaAllQuotesDataLoadRRHandler;
+import cc.dhandho.rest.handler.SinaAllQuotesDataLoadRRHandler;
 
 public class SinaDataLoadCommandHandler extends DhandhoCommandHandler {
 

@@ -1,7 +1,7 @@
 package cc.dhandho.test;
 
 import cc.dhandho.client.jfx.DhandhoJfxApplication;
-import cc.dhandho.server.DhandhoServer;
+import cc.dhandho.rest.server.DhandhoServer;
 import javafx.application.Application;
 import junit.framework.TestCase;
 

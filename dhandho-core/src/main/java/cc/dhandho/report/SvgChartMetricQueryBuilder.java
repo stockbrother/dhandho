@@ -38,8 +38,8 @@ import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.ReportMetaInfos;
+import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.util.JsonUtil;
-import cc.dhandho.xueqiu.DateUtil;
 
 public class SvgChartMetricQueryBuilder extends JsonMetricSqlLinkQueryBuilder {
 	private static Logger LOG = LoggerFactory.getLogger(SvgChartMetricQueryBuilder.class);

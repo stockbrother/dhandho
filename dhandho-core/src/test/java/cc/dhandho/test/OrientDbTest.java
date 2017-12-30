@@ -15,7 +15,7 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.graphdb.DbUtil;
-import cc.dhandho.graphdb.GDBResultSetProcessor;
+import cc.dhandho.graphdb.OResultSetHandler;
 import junit.framework.TestCase;
 
 public class OrientDbTest extends TestCase {
@@ -78,10 +78,10 @@ public class OrientDbTest extends TestCase {
 		{
 			ODatabaseSession dbs = odb.open(dbName, user, password);
 			String sql = "select from " + class1 + " where string=? and integer=?";
-			DbUtil.executeQuery(dbs, sql, new Object[] { "StringValue1", 1 }, new GDBResultSetProcessor<OVertex>() {
+			DbUtil.executeQuery(dbs, sql, new Object[] { "StringValue1", 1 }, new OResultSetHandler<OVertex>() {
 
 				@Override
-				public OVertex process(OResultSet rst) {
+				public OVertex handle(OResultSet rst) {
 					Assert.assertTrue("no vertext found for:" + class1, rst.hasNext());
 					OVertex row1 = rst.next().getVertex().get();
 					Assert.assertNotNull(row1);

@@ -5,9 +5,9 @@ import java.io.File;
 import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.importer.MemoryAllQuotesWashedDataLoader;
-import cc.dhandho.sina.SinaAllQuotesPreprocessor;
-import cc.dhandho.sina.SinaQuotesCollector;
+import cc.dhandho.input.sina.SinaAllQuotesPreprocessor;
+import cc.dhandho.input.sina.SinaQuotesCollector;
+import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
 import junit.framework.TestCase;
 
 public class SinaTest extends TestCase {

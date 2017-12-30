@@ -11,13 +11,13 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.Processor;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.report.JsonMetricSqlLinkQueryBuilder;
 import cc.dhandho.report.ReportEngine;
-import cc.dhandho.server.DbProvider;
+import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.util.JsonUtil;
 
 public class ReportEngineImpl implements ReportEngine, Container.Aware {
@@ -51,10 +51,10 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 		JsonMetricSqlLinkQueryBuilder jb = new JsonMetricSqlLinkQueryBuilder(reader, this.reportMetaInfos);
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = new JsonWriter(sWriter);
-		this.dbProvider.executeWithDbSession(new Processor<ODatabaseSession>() {
+		this.dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
 
 			@Override
-			public void process(ODatabaseSession db) {
+			public void handle(ODatabaseSession db) {
 				try {
 					jb.build().query(db, writer);
 				} catch (IOException e) {

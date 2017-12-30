@@ -17,9 +17,9 @@ import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
-import cc.dhandho.server.DbProvider;
-import cc.dhandho.server.DhandhoServer;
-import cc.dhandho.server.impl.DhandhoServerImpl;
+import cc.dhandho.rest.server.DbProvider;
+import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhandhoServerImpl;
 
 public class TestUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);

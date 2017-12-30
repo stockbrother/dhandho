@@ -12,12 +12,12 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.Processor;
 import cc.dhandho.RtException;
+import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.graphdb.DbUtil;
-import cc.dhandho.graphdb.GDBResultSetProcessor;
+import cc.dhandho.graphdb.OResultSetHandler;
 
-public class DbInitUtil implements Processor<ODatabaseSession>{
+public class DbInitUtil implements Handler2<ODatabaseSession>{
 
 	public static String V_MASTER_REPORT = "MasterReport";
 
@@ -41,7 +41,7 @@ public class DbInitUtil implements Processor<ODatabaseSession>{
 	 */
 
 	@Override
-	public void process(ODatabaseSession ds) {			
+	public void handle(ODatabaseSession ds) {			
 
 		try {
 			createSchema(ds);
@@ -61,10 +61,10 @@ public class DbInitUtil implements Processor<ODatabaseSession>{
 		}
 
 		return DbUtil.executeQuery(db, "select * from " + className + "", new Object[] {},
-				new GDBResultSetProcessor<OVertex>() {
+				new OResultSetHandler<OVertex>() {
 
 					@Override
-					public OVertex process(OResultSet rst) {
+					public OVertex handle(OResultSet rst) {
 						if (rst.hasNext()) {
 							OResult rs = rst.next();
 							Optional<OVertex> objO = rs.getVertex();

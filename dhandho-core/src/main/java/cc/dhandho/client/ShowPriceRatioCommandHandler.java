@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.RtException;
-import cc.dhandho.rest.GetPriceRatioJsonHandler;
+import cc.dhandho.rest.handler.GetPriceRatioJsonHandler;
 import cc.dhandho.util.JsonUtil;
 
 public class ShowPriceRatioCommandHandler extends DhandhoCommandHandler {

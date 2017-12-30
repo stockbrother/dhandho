@@ -7,9 +7,9 @@ import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
-import cc.dhandho.server.CorpInfoDbUpgrader;
-import cc.dhandho.server.DbProvider;
-import cc.dhandho.server.WashedDataUpgrader;
+import cc.dhandho.rest.server.CorpInfoDbUpgrader;
+import cc.dhandho.rest.server.DbProvider;
+import cc.dhandho.rest.server.WashedDataUpgrader;
 import cc.dhandho.util.DbInitUtil;
 import junit.framework.TestCase;
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 
 import cc.dhandho.jetty.Message;
 import cc.dhandho.jetty.WebServer;
-import cc.dhandho.rest.EchoJsonHandler;
+import cc.dhandho.rest.handler.EchoJsonHandler;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

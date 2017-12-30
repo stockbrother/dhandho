@@ -17,7 +17,7 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
-import cc.dhandho.graphdb.GDBResultSetProcessor;
+import cc.dhandho.graphdb.OResultSetHandler;
 
 /**
  * <code>
@@ -83,10 +83,10 @@ public class JsonMetricSqlLinkQueryBuilder {
 
 		LOG.info("sql:" + sql + ",corpId:" + corpId);
 
-		DbUtil.executeQuery(db, sql, this.query.getParameterArray(), new GDBResultSetProcessor<Void>() {
+		DbUtil.executeQuery(db, sql, this.query.getParameterArray(), new OResultSetHandler<Void>() {
 
 			@Override
-			public Void process(OResultSet rst) {
+			public Void handle(OResultSet rst) {
 				try {
 
 					writer.beginArray();

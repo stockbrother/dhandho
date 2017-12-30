@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import com.google.gson.stream.JsonReader;
 
-import cc.dhandho.rest.CorpChartJsonHandler;
-import cc.dhandho.server.DhandhoServer;
+import cc.dhandho.rest.handler.CorpChartJsonHandler;
+import cc.dhandho.rest.server.DhandhoServer;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
 

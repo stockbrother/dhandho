@@ -2,8 +2,8 @@ package cc.dhandho.rest;
 
 import java.io.IOException;
 
-public interface RestRequestHandler {
+import cc.dhandho.commons.handler.Handler2;
 
-	public void execute(RestRequestContext rrc) throws IOException;
+public interface RestRequestHandler extends Handler2<RestRequestContext> {
 
 }

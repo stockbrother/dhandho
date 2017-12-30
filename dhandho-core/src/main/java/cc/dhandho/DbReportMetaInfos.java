@@ -13,8 +13,9 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
+import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.graphdb.DbUtil;
-import cc.dhandho.graphdb.GDBResultSetProcessor;
+import cc.dhandho.graphdb.OResultSetHandler;
 
 public class DbReportMetaInfos extends AbstractReportMetaInfos {
 
@@ -25,11 +26,11 @@ public class DbReportMetaInfos extends AbstractReportMetaInfos {
 		this.updateCache(con);
 	}
 
-	public Processor<ODatabaseSession> initializer() {
-		return new Processor<ODatabaseSession>() {
+	public Handler2<ODatabaseSession> initializer() {
+		return new Handler2<ODatabaseSession>() {
 
 			@Override
-			public void process(ODatabaseSession t) {
+			public void handle(ODatabaseSession t) {
 				updateCache(t);
 			}
 
@@ -41,10 +42,10 @@ public class DbReportMetaInfos extends AbstractReportMetaInfos {
 		this.reportAliasColumnMap.clear();
 		this.reportAliasListMap.clear();
 		String sql = "select reportType,aliasName,columnIndex from AliasInfo";
-		DbUtil.executeQuery(con, sql, new Object[] {}, new GDBResultSetProcessor<Object>() {
+		DbUtil.executeQuery(con, sql, new Object[] {}, new OResultSetHandler<Object>() {
 
 			@Override
-			public Object process(OResultSet rset) {
+			public Object handle(OResultSet rset) {
 
 				while (rset.hasNext()) {
 					OResult rs = rset.next();
@@ -65,10 +66,10 @@ public class DbReportMetaInfos extends AbstractReportMetaInfos {
 	protected int getMaxColumIndex(ODatabaseSession con, String reportType) {
 		String sql = "select max(columnIndex) from AliasInfo where reportType=?";
 
-		return DbUtil.executeQuery(con, sql, new Object[] { reportType }, new GDBResultSetProcessor<Integer>() {
+		return DbUtil.executeQuery(con, sql, new Object[] { reportType }, new OResultSetHandler<Integer>() {
 
 			@Override
-			public Integer process(OResultSet rs) {
+			public Integer handle(OResultSet rs) {
 
 				while (rs.hasNext()) {
 					OResult rst = rs.next();
