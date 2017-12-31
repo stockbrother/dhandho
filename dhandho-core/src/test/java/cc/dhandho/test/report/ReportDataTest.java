@@ -14,17 +14,15 @@ import junit.framework.TestCase;
 public class ReportDataTest extends TestCase {
 
 	public void test() throws Exception {
-		ReportData r = new ReportData();
+		String[] headerArray = new String[] { "c1", "c2" };
+		ReportData r = new ReportData(headerArray);
 		String corpId = "000001";
 		Date reportDate1 = DateUtil.FORMAT_YEAR.parse("2016");
 		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
-		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1);
-		row1.set("m1", 11D);
-		row1.set("m2", 12D);
+		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
 
-		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2);
-		row2.set("m1", 21D);
-		row2.set("m2", 22D);
+		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
+
 		StringBuilder sb = new StringBuilder();
 		r.writeToJson(sb);
 
@@ -38,18 +36,32 @@ public class ReportDataTest extends TestCase {
 		TestCase.assertNotNull(rowA);
 		TestCase.assertEquals(2, rowA.size());
 
-		JsonObject rowO1 = rowA.get(0).getAsJsonObject();
-		JsonObject rowO2 = rowA.get(1).getAsJsonObject();
-		Double d11 = rowO1.get("m1").getAsDouble();
-		Double d12 = rowO1.get("m2").getAsDouble();
+		JsonArray rowO1 = rowA.get(0).getAsJsonArray();
+		JsonArray rowO2 = rowA.get(1).getAsJsonArray();
+		String coprId1 = rowO1.get(0).getAsString();
+		String date1 = rowO1.get(1).getAsString();
 
-		Double d21 = rowO2.get("m1").getAsDouble();
-		Double d22 = rowO2.get("m2").getAsDouble();
+		Double d11 = rowO1.get(2).getAsDouble();
+		Double d12 = rowO1.get(3).getAsDouble();
 
+		String coprId2 = rowO2.get(0).getAsString();
+		String date2 = rowO2.get(1).getAsString();
+		Double d21 = rowO2.get(2).getAsDouble();
+		Double d22 = rowO2.get(3).getAsDouble();
+
+		TestCase.assertEquals(corpId, coprId1);
+		TestCase.assertEquals(corpId, coprId2);
+		TestCase.assertEquals(DateUtil.format(reportDate1), date1);
+		TestCase.assertEquals(DateUtil.format(reportDate2), date2);
 		TestCase.assertEquals(11D, d11, 0.001D);
 		TestCase.assertEquals(12D, d12, 0.001D);
 		TestCase.assertEquals(21D, d21, 0.001D);
 		TestCase.assertEquals(22D, d22, 0.001D);
 
+		ReportData r2 = ReportData.parseJson(sb.toString());
+		StringBuilder sb2 = new StringBuilder();
+		r2.writeToJson(sb2);
+
+		TestCase.assertEquals(sb.toString(), sb2.toString());
 	}
 }

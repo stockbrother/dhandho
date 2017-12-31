@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.function.Function;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -151,6 +152,18 @@ public class QueryJsonWrapper extends JsonWrapper {
 			sql.append(")");
 		}
 		sql.append(" order by reportDate desc");
+
+	}
+
+	public String[] getMetricArray() {
+		List<MetricJsonWrapper> ml = this.getMetricList();
+		return ml.stream().map(new Function<MetricJsonWrapper, String>() {
+
+			@Override
+			public String apply(MetricJsonWrapper t) {
+				return t.resolveNameAsTitle();
+			}
+		}).toArray(String[]::new);
 
 	}
 

@@ -43,16 +43,11 @@ public class MetricDefineTest extends TestCase {
 		int[] years = new int[] { 2016, 2015, 2014, 2013, 2012 };
 
 		StringWriter sWriter = new StringWriter();
-		try {
 
-			JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
-			metricsDefine.buildMetricRequestAsJson(corpId, years, metrics, writer);
+		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
+		metricsDefine.buildMetricRequestAsJson(corpId, years, metrics, writer);
 
-			System.out.println(sWriter.getBuffer());
-
-		} catch (IOException e) {
-			throw RtException.toRtException(e);
-		}
+		System.out.println(sWriter.getBuffer());
 
 	}
 }

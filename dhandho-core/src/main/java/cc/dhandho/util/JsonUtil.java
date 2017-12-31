@@ -10,9 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import cc.dhandho.RtException;
 
 public class JsonUtil {
 	protected static Gson GSON4LOG = new GsonBuilder().setPrettyPrinting().create();
@@ -31,11 +34,19 @@ public class JsonUtil {
 		return GSON.newJsonReader(new StringReader(jsonString));
 	}
 
-	public static JsonWriter newJsonWriter(Writer writer) throws IOException {
-		return GSON.newJsonWriter(writer);
+	public static JsonWriter newJsonWriter(Writer writer) {
+		try {
+			return GSON.newJsonWriter(writer);
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
+		}
 	}
 
-	public static JsonReader newJsonReader(Reader reader) throws IOException {
+	public static JsonReader newJsonReader(String string) {
+		return newJsonReader(new StringReader(string));
+	}
+
+	public static JsonReader newJsonReader(Reader reader) {
 		return GSON.newJsonReader(reader);
 	}
 

@@ -3,109 +3,103 @@ package cc.dhandho.report;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
+import cc.dhandho.input.xueqiu.DateUtil;
+import cc.dhandho.util.JsonUtil;
 
 public class ReportData {
 	public static class ReportRow {
 		private String corpId;
 		private Date reportDate;
-		private Map<String, Double> valueMap = new HashMap<>();
+		private Double[] valueArray;
 
-		public ReportRow(String corpId2, Date reportDate2) {
+		public ReportRow(String corpId2, Date reportDate2, Double[] values) {
 			this.corpId = corpId2;
 			this.reportDate = reportDate2;
+			this.valueArray = values;
 		}
 
-		public void set(String key, Double value) {
-			this.valueMap.put(key, value);
+		public Double[] getValueArray() {
+			return valueArray;
 		}
 
-		public Map<String, Double> getValueMap() {
-			return valueMap;
+		public void set(int idx, Double value) {
+			this.valueArray[idx] = value;
 		}
 
 		@Override
 		public ReportRow clone() {
-			ReportRow rt = new ReportRow(this.corpId, this.reportDate);
-			rt.valueMap.putAll(this.valueMap);
+			Double[] dA = Arrays.copyOf(valueArray, valueArray.length);
+
+			ReportRow rt = new ReportRow(this.corpId, this.reportDate, dA);
 			return rt;
 		}
 
 		public void dividBy(double d) {
-			valueMap.entrySet().stream().forEach(new Consumer<Map.Entry<String, Double>>() {
 
-				@Override
-				public void accept(Entry<String, Double> t) {
-					Double d1 = t.getValue();
-					if (d1 == null) {
-						return;
-					}
+			for (int i = 0; i < this.valueArray.length; i++) {
+				Double d1 = valueArray[i];
+
+				if (d1 != null) {
+
 					if (d1 == 0) {
-						t.setValue(Double.NaN);
+						valueArray[i] = null;
 					} else {
-						t.setValue(d / d1);
+						valueArray[i] = d / d1;
 					}
 				}
-			});
+			}
 		}
 
 		public void multiple(double d) {
-			valueMap.entrySet().stream().forEach(new Consumer<Map.Entry<String, Double>>() {
+			for (int i = 0; i < this.valueArray.length; i++) {
+				Double d1 = valueArray[i];
 
-				@Override
-				public void accept(Entry<String, Double> t) {
-					Double d1 = t.getValue();
-					if (d1 == null) {
-						return;
-					}
-					t.setValue(d1 * d);
+				if (d1 != null) {
+					valueArray[i] = d * d1;
 				}
-			});
+			}
 		}
 
 		public void writerToJson(JsonWriter writer) {
 			try {
 
-				writer.beginObject();
-				this.valueMap.entrySet().stream().forEach(new Consumer<Map.Entry<String, Double>>() {
-
-					@Override
-					public void accept(Entry<String, Double> t) {
-						try {
-
-							writer.name(t.getKey());
-							Double value = t.getValue();
-							if (Double.isNaN(value)) {
-								writer.value((Double) null);
-							} else {
-								writer.value(value);
-							}
-						} catch (IOException e) {
-							throw RtException.toRtException(e);
-						}
-					}
-				});
-				writer.endObject();
+				writer.beginArray();
+				writer.value(this.corpId);
+				writer.value(DateUtil.format(this.reportDate));
+				for (int i = 0; i < this.valueArray.length; i++) {
+					Double d1 = valueArray[i];
+					d1 = (d1 == null || d1.isNaN()) ? null : d1;
+					writer.value(d1);
+				}
+				writer.endArray();
 			} catch (IOException e) {
 				throw RtException.toRtException(e);
 			}
 		}
 	}
 
+	private String[] headerArray;
+
 	private List<ReportRow> rowList = new ArrayList<>();
 
-	public ReportRow addRow(String corpId, Date reportDate) {
-		ReportRow rt = new ReportRow(corpId, reportDate);
+	public ReportData(String[] headerArray) {
+		this.headerArray = headerArray;
+	}
+
+	public ReportRow addRow(String corpId, Date reportDate, Double[] valueArray) {
+		ReportRow rt = new ReportRow(corpId, reportDate, valueArray);
 		addRow(rt);
 		return rt;
 	}
@@ -118,7 +112,7 @@ public class ReportData {
 
 	@Override
 	public ReportData clone() {
-		ReportData rt = new ReportData();
+		ReportData rt = new ReportData(this.headerArray);
 		this.rowList.stream().forEach(new Consumer<ReportRow>() {
 
 			@Override
@@ -169,6 +163,12 @@ public class ReportData {
 		return sb;
 	}
 
+	public JsonObject toJson() {
+		StringBuilder sb = new StringBuilder();
+		writeToJson(sb);
+		return (JsonObject) JsonUtil.parse(sb.toString());
+	}
+
 	public void writeToJson(Appendable sb) {
 		StringWriter sWriter = new StringWriter();
 		writeToJson(new JsonWriter(sWriter));
@@ -183,6 +183,15 @@ public class ReportData {
 		try {
 
 			writer.beginObject();
+			writer.name("headerArray");
+			writer.beginArray();
+
+			for (int i = 0; i < this.headerArray.length; i++) {
+				writer.value(this.headerArray[i]);
+			}
+
+			writer.endArray();
+
 			writer.name("rowArray");
 			writer.beginArray();
 			this.rowList.stream().forEach(new Consumer<ReportRow>() {
@@ -198,6 +207,35 @@ public class ReportData {
 			throw new RtException(e);
 		}
 
+	}
+
+	public static ReportData parseJson(String string) {
+		//
+		JsonObject json = (JsonObject) JsonUtil.parse(string);
+		JsonArray headerA = (JsonArray) json.get("headerArray");
+		String[] header = new String[headerA.size()];
+		for (int i = 0; i < headerA.size(); i++) {
+			header[i] = headerA.get(i).getAsString();
+		}
+
+		JsonArray arry = (JsonArray) json.get("rowArray");
+		ReportData rt = new ReportData(header);
+
+		for (int i = 0; i < arry.size(); i++) {
+			JsonArray arry2 = arry.get(i).getAsJsonArray();
+			String corpId = arry2.get(0).getAsString();
+			String dateS = arry2.get(1).getAsString();
+			Date reportDate = DateUtil.parse(dateS);
+
+			Double[] valueArray = new Double[headerA.size()];
+			for (int j = 2; j < arry2.size(); j++) {
+				JsonElement jJ = arry2.get(j);
+				valueArray[j - 2] = jJ.isJsonNull() ? null : jJ.getAsDouble();
+			}
+			rt.addRow(corpId, reportDate, valueArray);
+		}
+
+		return rt;
 	}
 
 }

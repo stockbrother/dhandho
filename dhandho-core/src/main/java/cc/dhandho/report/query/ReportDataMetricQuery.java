@@ -24,7 +24,8 @@ public class ReportDataMetricQuery extends MetricsQuery<ReportData> {
 
 	@Override
 	public ReportData handle(OResultSet rst) {
-		ReportData rt = new ReportData();
+
+		ReportData rt = new ReportData(this.query.getMetricArray());
 
 		rst.stream().forEach(new Consumer<OResult>() {
 
@@ -34,14 +35,15 @@ public class ReportDataMetricQuery extends MetricsQuery<ReportData> {
 				String corpId = row.getProperty(QueryJsonWrapper.CORP_ID);
 				Date reportDate = row.getProperty(QueryJsonWrapper.REPORT_DATA);
 
-				ReportRow rr = rt.addRow(corpId, reportDate);
+				Double[] valueArray = new Double[row.getPropertyNames().size() - 2];
 
-				// TODO
-				for (int i = 0; i < row.getPropertyNames().size() - 2; i++) {
+				for (int i = 0; i < valueArray.length; i++) {
 					String key = "m" + (i + 1);
 					Object value = row.getProperty(key);
-					rr.set(key, (Double) value);
+					valueArray[i] = (Double) value;
 				}
+
+				ReportRow rr = rt.addRow(corpId, reportDate, valueArray);
 
 			}
 		});
