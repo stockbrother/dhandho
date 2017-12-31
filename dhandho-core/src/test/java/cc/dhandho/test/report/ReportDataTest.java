@@ -13,7 +13,40 @@ import junit.framework.TestCase;
 
 public class ReportDataTest extends TestCase {
 
-	public void test() throws Exception {
+	@Override
+	protected void setUp() throws Exception {
+
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+
+	}
+
+	public void testHtml() throws Exception {
+		String[] headerArray = new String[] { "c1", "c2" };
+		ReportData r = new ReportData(headerArray);
+		String corpId = "000001";
+		Date reportDate1 = DateUtil.FORMAT_YEAR.parse("2016");
+		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
+		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
+		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
+		StringBuilder sb = r.toHtml(new StringBuilder());
+		String html = sb.toString();
+		TestCase.assertTrue(html.startsWith("<table>"));
+		TestCase.assertTrue(html.indexOf("<td>CorpID</td>") > 0);
+		TestCase.assertTrue(html.indexOf("<td>ReportDate</td>") > 0);
+		TestCase.assertTrue(html.indexOf("<td>c1</td>") > 0);
+		TestCase.assertTrue(html.indexOf("<td>c2</td>") > 0);
+		TestCase.assertTrue(html.indexOf("<td>" + corpId + "</td>") > 0);
+		TestCase.assertTrue(html.indexOf("<td>11.0</td>")>0);
+		TestCase.assertTrue(html.indexOf("<td>12.0</td>")>0);
+		TestCase.assertTrue(html.indexOf("<td>21.0</td>")>0);
+		TestCase.assertTrue(html.indexOf("<td>22.0</td>")>0);		
+		TestCase.assertTrue(html.endsWith("</table>"));
+	}
+
+	public void testJson() throws Exception {
 		String[] headerArray = new String[] { "c1", "c2" };
 		ReportData r = new ReportData(headerArray);
 		String corpId = "000001";

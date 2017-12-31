@@ -7,4 +7,9 @@ public class EmptyHtmlRenderer implements HtmlRenderer {
 		System.out.println(html);
 	}
 
+	@Override
+	public void showHtml(StringBuilder html) {
+		showHtml(html.toString());
+	}
+
 }

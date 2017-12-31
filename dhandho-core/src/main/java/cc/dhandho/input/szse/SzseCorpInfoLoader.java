@@ -7,7 +7,12 @@ import com.orientechnologies.orient.core.record.OVertex;
 
 import cc.dhandho.input.AbstractCorpInfoCsvLoader;
 import cc.dhandho.input.CsvUtil;
-
+/**
+ * Shenzhen Secure E
+ * 
+ * @author wu
+ *
+ */
 public class SzseCorpInfoLoader extends AbstractCorpInfoCsvLoader {
 
 	public SzseCorpInfoLoader(String name) {

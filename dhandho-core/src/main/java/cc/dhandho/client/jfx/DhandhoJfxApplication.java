@@ -95,4 +95,9 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 		SERVER = server;
 	}
 
+	@Override
+	public void showHtml(StringBuilder html) {
+		this.showHtml(html.toString());
+	}
+
 }

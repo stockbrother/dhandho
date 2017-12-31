@@ -88,6 +88,11 @@ public class ReportData {
 				throw RtException.toRtException(e);
 			}
 		}
+
+		public StringBuilder toHtml(StringBuilder sb) {
+
+			return sb;
+		}
 	}
 
 	private String[] headerArray;
@@ -210,8 +215,12 @@ public class ReportData {
 	}
 
 	public static ReportData parseJson(String string) {
-		//
 		JsonObject json = (JsonObject) JsonUtil.parse(string);
+		return parseJson(json);
+	}
+
+	public static ReportData parseJson(JsonObject json) {
+		//
 		JsonArray headerA = (JsonArray) json.get("headerArray");
 		String[] header = new String[headerA.size()];
 		for (int i = 0; i < headerA.size(); i++) {
@@ -236,6 +245,61 @@ public class ReportData {
 		}
 
 		return rt;
+	}
+
+	public StringBuilder toHtml(StringBuilder sb) {
+		sb.append("<table>");
+		sb.append("<thead>");
+
+		sb.append("<tr>");
+		sb.append("<td>");
+		sb.append("CorpID");
+		sb.append("</td>");
+		sb.append("<td>");
+		sb.append("ReportDate");
+		sb.append("</td>");
+		for (int i = 0; i < this.headerArray.length; i++) {
+			sb.append("<td>");
+			sb.append(this.headerArray[i]);
+			sb.append("</td>");
+		}
+
+		sb.append("</tr>");
+
+		sb.append("</thead>");
+		sb.append("<tbody>");
+		this.rowList.stream().forEach(new Consumer<ReportRow>() {
+
+			@Override
+			public void accept(ReportRow t) {
+
+				sb.append("<tr>");
+
+				sb.append("<td>");
+				sb.append(t.corpId);
+				sb.append("</td>");
+				sb.append("<td>");
+				sb.append(DateUtil.format(t.reportDate));
+				sb.append("</td>");
+				for (int i = 0; i < t.valueArray.length; i++) {
+
+					sb.append("<td>");
+					if (t.valueArray[i] != null) {
+						sb.append(t.valueArray[i]);
+					} else {
+						sb.append("NaN");
+					}
+
+					sb.append("</td>");
+				}
+
+				sb.append("</tr>");
+
+			}
+		});
+		sb.append("</tbody>");
+		sb.append("</table>");
+		return sb;
 	}
 
 }
