@@ -16,113 +16,70 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
 import cc.dhandho.input.xueqiu.DateUtil;
+import cc.dhandho.report.chart.SvgChartWriter;
 import cc.dhandho.util.JsonUtil;
 
-public class ReportData {
+public class ReportData extends DoubleTable {
+
 	public static class ReportRow {
+
+		private ReportData table;
 		private String corpId;
 		private Date reportDate;
-		private Double[] valueArray;
+		int row;
 
-		public ReportRow(String corpId2, Date reportDate2, Double[] values) {
+		public ReportRow(ReportData table, String corpId2, Date reportDate2, int row) {
+			this.table = table;
 			this.corpId = corpId2;
 			this.reportDate = reportDate2;
-			this.valueArray = values;
+			this.row = row;
 		}
 
-		public Double[] getValueArray() {
-			return valueArray;
+		public String getCorpId() {
+			return corpId;
 		}
 
-		public void set(int idx, Double value) {
-			this.valueArray[idx] = value;
-		}
-
-		@Override
-		public ReportRow clone() {
-			Double[] dA = Arrays.copyOf(valueArray, valueArray.length);
-
-			ReportRow rt = new ReportRow(this.corpId, this.reportDate, dA);
-			return rt;
-		}
-
-		public void dividBy(double d) {
-
-			for (int i = 0; i < this.valueArray.length; i++) {
-				Double d1 = valueArray[i];
-
-				if (d1 != null) {
-
-					if (d1 == 0) {
-						valueArray[i] = null;
-					} else {
-						valueArray[i] = d / d1;
-					}
-				}
-			}
-		}
-
-		public void multiple(double d) {
-			for (int i = 0; i < this.valueArray.length; i++) {
-				Double d1 = valueArray[i];
-
-				if (d1 != null) {
-					valueArray[i] = d * d1;
-				}
-			}
-		}
-
-		public void writerToJson(JsonWriter writer) {
-			try {
-
-				writer.beginArray();
-				writer.value(this.corpId);
-				writer.value(DateUtil.format(this.reportDate));
-				for (int i = 0; i < this.valueArray.length; i++) {
-					Double d1 = valueArray[i];
-					d1 = (d1 == null || d1.isNaN()) ? null : d1;
-					writer.value(d1);
-				}
-				writer.endArray();
-			} catch (IOException e) {
-				throw RtException.toRtException(e);
-			}
+		public Date getReportDate() {
+			return reportDate;
 		}
 
 		public StringBuilder toHtml(StringBuilder sb) {
-
 			return sb;
 		}
+
 	}
 
 	private String[] headerArray;
 
+	public String[] getHeaderArray() {
+		return headerArray;
+	}
+
 	private List<ReportRow> rowList = new ArrayList<>();
 
 	public ReportData(String[] headerArray) {
+		super();
 		this.headerArray = headerArray;
 	}
 
 	public ReportRow addRow(String corpId, Date reportDate, Double[] valueArray) {
-		ReportRow rt = new ReportRow(corpId, reportDate, valueArray);
-		addRow(rt);
-		return rt;
-	}
-
-	public ReportData addRow(ReportRow rr) {
-
+		int row = super.addRow(valueArray);
+		ReportRow rr = new ReportRow(this, corpId, reportDate, row);
 		rowList.add(rr);
-		return this;
+		return rr;
 	}
 
 	@Override
 	public ReportData clone() {
+
 		ReportData rt = new ReportData(this.headerArray);
+
 		this.rowList.stream().forEach(new Consumer<ReportRow>() {
 
 			@Override
 			public void accept(ReportRow t) {
-				rt.addRow(t.clone());
+				Double[] valueArray = ReportData.this.cloneRow(t.row);
+				rt.addRow(t.corpId, t.reportDate, valueArray);
 			}
 		});
 
@@ -130,13 +87,7 @@ public class ReportData {
 	}
 
 	public ReportData dividBy(double d) {
-		this.rowList.stream().forEach(new Consumer<ReportRow>() {
-
-			@Override
-			public void accept(ReportRow t) {
-				t.dividBy(d);
-			}
-		});
+		super.dividBy(d);
 		return this;
 	}
 
@@ -145,13 +96,7 @@ public class ReportData {
 	}
 
 	public ReportData multiple(double d) {
-		this.rowList.stream().forEach(new Consumer<ReportRow>() {
-
-			@Override
-			public void accept(ReportRow t) {
-				t.multiple(d);
-			}
-		});
+		super.multiple(d);
 		return this;
 	}
 
@@ -203,7 +148,7 @@ public class ReportData {
 
 				@Override
 				public void accept(ReportRow t) {
-					t.writerToJson(writer);
+					writeRowToJson(t, writer);
 				}
 			});
 			writer.endArray();
@@ -212,6 +157,25 @@ public class ReportData {
 			throw new RtException(e);
 		}
 
+	}
+
+	public void writeRowToJson(ReportRow rr, JsonWriter writer) {
+		try {
+
+			writer.beginArray();
+			writer.value(rr.corpId);
+			writer.value(DateUtil.format(rr.reportDate));
+			Double[] valueArray = super.getRow(rr.row);
+
+			for (int i = 0; i < valueArray.length; i++) {
+				Double d1 = valueArray[i];
+				d1 = (d1 == null || d1.isNaN()) ? null : d1;
+				writer.value(d1);
+			}
+			writer.endArray();
+		} catch (IOException e) {
+			throw RtException.toRtException(e);
+		}
 	}
 
 	public static ReportData parseJson(String string) {
@@ -247,7 +211,35 @@ public class ReportData {
 		return rt;
 	}
 
-	public StringBuilder toHtml(StringBuilder sb) {
+	public StringBuilder toSvgDiv(StringBuilder sb) {
+		sb.append("<div style='width:600;height:320;'>");
+		toSvg(sb);
+		sb.append("</div>");
+		return sb;
+	}
+
+	public StringBuilder toSvg(StringBuilder sb) {
+
+		new SvgChartWriter().writeSvg(this, sb);
+
+		return sb;
+	}
+
+	public StringBuilder toSvgDivAndHtmlTable(StringBuilder sb) {
+		sb.append("<table>");
+		sb.append("<tr>").append("<td>");
+		toSvgDiv(sb);
+		sb.append("</td>").append("</tr>");
+
+		sb.append("<tr>").append("<td>");
+		toHtmlTable(sb);
+		sb.append("</td>").append("</tr>");
+
+		sb.append("<table>");
+		return sb;
+	}
+
+	public StringBuilder toHtmlTable(StringBuilder sb) {
 		sb.append("<table>");
 		sb.append("<thead>");
 
@@ -281,11 +273,12 @@ public class ReportData {
 				sb.append("<td>");
 				sb.append(DateUtil.format(t.reportDate));
 				sb.append("</td>");
-				for (int i = 0; i < t.valueArray.length; i++) {
+				Double[] valueArray = ReportData.this.getRow(t.row);
+				for (int i = 0; i < valueArray.length; i++) {
 
 					sb.append("<td>");
-					if (t.valueArray[i] != null) {
-						sb.append(t.valueArray[i]);
+					if (valueArray[i] != null) {
+						sb.append(valueArray[i]);
 					} else {
 						sb.append("NaN");
 					}

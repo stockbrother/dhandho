@@ -55,13 +55,6 @@ public class ReportEngineTest extends TestCase {
 
 		TestCase.assertNotNull("", data);
 
-		TestCase.assertEquals(years.length, data.getRowList().size());
-		ReportData.ReportRow row1 = data.getRowList().get(0);
-		TestCase.assertEquals(metrics.length, row1.getValueArray().length);
-
-		ReportData.ReportRow row2 = data.getRowList().get(1);
-		TestCase.assertEquals(metrics.length, row2.getValueArray().length);
-
 		System.out.println(data.print(new StringBuffer()));
 
 	}

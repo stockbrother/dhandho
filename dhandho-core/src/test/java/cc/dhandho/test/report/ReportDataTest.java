@@ -22,7 +22,21 @@ public class ReportDataTest extends TestCase {
 	protected void tearDown() throws Exception {
 
 	}
-
+	
+	public void testSvg() throws Exception {
+		String[] headerArray = new String[] { "c1", "c2" };
+		ReportData r = new ReportData(headerArray);
+		String corpId = "000001";
+		Date reportDate1 = DateUtil.FORMAT_YEAR.parse("2016");
+		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
+		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
+		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
+		StringBuilder sb = r.toSvg(new StringBuilder());
+		String svg = sb.toString();
+		TestCase.assertTrue(svg.startsWith("<svg"));
+		TestCase.assertTrue(svg.endsWith("</svg>\r\n"));
+	}
+	
 	public void testHtml() throws Exception {
 		String[] headerArray = new String[] { "c1", "c2" };
 		ReportData r = new ReportData(headerArray);
@@ -31,7 +45,7 @@ public class ReportDataTest extends TestCase {
 		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
 		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
 		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
-		StringBuilder sb = r.toHtml(new StringBuilder());
+		StringBuilder sb = r.toHtmlTable(new StringBuilder());
 		String html = sb.toString();
 		TestCase.assertTrue(html.startsWith("<table>"));
 		TestCase.assertTrue(html.indexOf("<td>CorpID</td>") > 0);
