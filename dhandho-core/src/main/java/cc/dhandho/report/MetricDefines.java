@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -109,11 +110,15 @@ public class MetricDefines {
 
 	}
 
-	public static MetricDefines load(FileObject fo) throws IOException {
-		return load(fo.getContent().getInputStream());
+	public static MetricDefines load(FileObject fo) {
+		try {
+			return load(fo.getContent().getInputStream());
+		} catch (FileSystemException e) {
+			throw new RtException(e);
+		}
 	}
 
-	public static MetricDefines load(InputStream is) throws IOException {
+	public static MetricDefines load(InputStream is) {
 
 		SAXReader sreader = new SAXReader();
 		try {
@@ -123,7 +128,7 @@ public class MetricDefines {
 			rt.init();
 			return rt;
 		} catch (DocumentException e) {
-			throw new IOException("", e);
+			throw new RtException("", e);
 		}
 
 	}

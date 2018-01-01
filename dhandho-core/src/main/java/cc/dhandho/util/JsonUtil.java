@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -32,6 +32,10 @@ public class JsonUtil {
 
 	public static JsonReader toJsonReader(String jsonString) {
 		return GSON.newJsonReader(new StringReader(jsonString));
+	}
+
+	public static JsonWriter newJsonWriter(Appendable app) {
+		return newJsonWriter(Streams.writerForAppendable(app));
 	}
 
 	public static JsonWriter newJsonWriter(Writer writer) {

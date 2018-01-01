@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 
 import cc.dhandho.RtException;
 import cc.dhandho.input.xueqiu.DateUtil;
-import cc.dhandho.report.ReportData;
+import cc.dhandho.report.CorpDatedMetricReportData;
 
 public class SvgChartWriter {
 
@@ -36,13 +36,13 @@ public class SvgChartWriter {
 
 	}
 
-	public void writeSvg(ReportData rdata, StringBuilder sb) {
+	public void writeSvg(CorpDatedMetricReportData rdata, StringBuilder sb) {
 		StringWriter sWriter = new StringWriter();
 		writeSvg(rdata, sWriter);
 		sb.append(sWriter.getBuffer());
 	}
 
-	public void writeSvg(ReportData rdata, Writer writer) {
+	public void writeSvg(CorpDatedMetricReportData rdata, Writer writer) {
 		String title = "[" + "todo" + "]";
 		DefaultCategoryDataset dataSet = createDataset(rdata);
 		JFreeChart chart = ChartFactory.createLineChart(title, null, null, dataSet, PlotOrientation.VERTICAL, true,
@@ -90,12 +90,12 @@ public class SvgChartWriter {
 
 	}
 
-	private DefaultCategoryDataset createDataset(ReportData rdata) {
+	private DefaultCategoryDataset createDataset(CorpDatedMetricReportData rdata) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		List<ReportData.ReportRow> rowL = rdata.getRowList();
+		List<CorpDatedMetricReportData.ReportRow> rowL = rdata.getRowList();
 		String[] headerA = rdata.getHeaderArray();
 		for (int i = 0; i < rowL.size(); i++) {
-			ReportData.ReportRow row = rowL.get(i);
+			CorpDatedMetricReportData.ReportRow row = rowL.get(i);
 
 			long date = row.getReportDate().getTime();//
 			String yearS = DateUtil.formatYear(new Date(date));

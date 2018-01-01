@@ -6,7 +6,7 @@ import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.report.MetricDefines;
-import cc.dhandho.report.ReportData;
+import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.server.CorpInfoDbUpgrader;
@@ -52,7 +52,7 @@ public class ReportEngineTest extends TestCase {
 
 		int[] years = new int[] { 2016, 2015 };
 		String[] metrics = new String[] { "资产总计", "净利润" };
-		ReportData data = re.getReport(corpId, years, metrics);
+		CorpDatedMetricReportData data = re.getReport(corpId, years, metrics);
 
 		TestCase.assertNotNull("", data);
 

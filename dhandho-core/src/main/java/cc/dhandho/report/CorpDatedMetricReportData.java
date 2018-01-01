@@ -19,16 +19,16 @@ import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.chart.SvgChartWriter;
 import cc.dhandho.util.JsonUtil;
 
-public class ReportData extends DoubleTable {
+public class CorpDatedMetricReportData extends DoubleTable {
 
 	public static class ReportRow {
 
-		private ReportData table;
+		private CorpDatedMetricReportData table;
 		private String corpId;
 		private Date reportDate;
 		int row;
 
-		public ReportRow(ReportData table, String corpId2, Date reportDate2, int row) {
+		public ReportRow(CorpDatedMetricReportData table, String corpId2, Date reportDate2, int row) {
 			this.table = table;
 			this.corpId = corpId2;
 			this.reportDate = reportDate2;
@@ -57,7 +57,7 @@ public class ReportData extends DoubleTable {
 
 	private List<ReportRow> rowList = new ArrayList<>();
 
-	public ReportData(String[] headerArray) {
+	public CorpDatedMetricReportData(String[] headerArray) {
 		super();
 		this.headerArray = headerArray;
 	}
@@ -70,15 +70,15 @@ public class ReportData extends DoubleTable {
 	}
 
 	@Override
-	public ReportData clone() {
+	public CorpDatedMetricReportData clone() {
 
-		ReportData rt = new ReportData(this.headerArray);
+		CorpDatedMetricReportData rt = new CorpDatedMetricReportData(this.headerArray);
 
 		this.rowList.stream().forEach(new Consumer<ReportRow>() {
 
 			@Override
 			public void accept(ReportRow t) {
-				Double[] valueArray = ReportData.this.cloneRow(t.row);
+				Double[] valueArray = CorpDatedMetricReportData.this.cloneRow(t.row);
 				rt.addRow(t.corpId, t.reportDate, valueArray);
 			}
 		});
@@ -86,16 +86,16 @@ public class ReportData extends DoubleTable {
 		return rt;
 	}
 
-	public ReportData dividBy(double d) {
+	public CorpDatedMetricReportData dividBy(double d) {
 		super.dividBy(d);
 		return this;
 	}
 
-	public ReportData divid(double d) {
+	public CorpDatedMetricReportData divid(double d) {
 		return this.multiple(1D / d);
 	}
 
-	public ReportData multiple(double d) {
+	public CorpDatedMetricReportData multiple(double d) {
 		super.multiple(d);
 		return this;
 	}
@@ -178,12 +178,12 @@ public class ReportData extends DoubleTable {
 		}
 	}
 
-	public static ReportData parseJson(String string) {
+	public static CorpDatedMetricReportData parseJson(String string) {
 		JsonObject json = (JsonObject) JsonUtil.parse(string);
 		return parseJson(json);
 	}
 
-	public static ReportData parseJson(JsonObject json) {
+	public static CorpDatedMetricReportData parseJson(JsonObject json) {
 		//
 		JsonArray headerA = (JsonArray) json.get("headerArray");
 		String[] header = new String[headerA.size()];
@@ -192,7 +192,7 @@ public class ReportData extends DoubleTable {
 		}
 
 		JsonArray arry = (JsonArray) json.get("rowArray");
-		ReportData rt = new ReportData(header);
+		CorpDatedMetricReportData rt = new CorpDatedMetricReportData(header);
 
 		for (int i = 0; i < arry.size(); i++) {
 			JsonArray arry2 = arry.get(i).getAsJsonArray();
@@ -273,7 +273,7 @@ public class ReportData extends DoubleTable {
 				sb.append("<td>");
 				sb.append(DateUtil.format(t.reportDate));
 				sb.append("</td>");
-				Double[] valueArray = ReportData.this.getRow(t.row);
+				Double[] valueArray = CorpDatedMetricReportData.this.getRow(t.row);
 				for (int i = 0; i < valueArray.length; i++) {
 
 					sb.append("<td>");

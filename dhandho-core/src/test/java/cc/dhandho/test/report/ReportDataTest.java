@@ -7,7 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.input.xueqiu.DateUtil;
-import cc.dhandho.report.ReportData;
+import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
 
@@ -25,12 +25,12 @@ public class ReportDataTest extends TestCase {
 	
 	public void testSvg() throws Exception {
 		String[] headerArray = new String[] { "c1", "c2" };
-		ReportData r = new ReportData(headerArray);
+		CorpDatedMetricReportData r = new CorpDatedMetricReportData(headerArray);
 		String corpId = "000001";
 		Date reportDate1 = DateUtil.FORMAT_YEAR.parse("2016");
 		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
-		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
-		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
+		CorpDatedMetricReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
+		CorpDatedMetricReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
 		StringBuilder sb = r.toSvg(new StringBuilder());
 		String svg = sb.toString();
 		TestCase.assertTrue(svg.startsWith("<svg"));
@@ -39,12 +39,12 @@ public class ReportDataTest extends TestCase {
 	
 	public void testHtml() throws Exception {
 		String[] headerArray = new String[] { "c1", "c2" };
-		ReportData r = new ReportData(headerArray);
+		CorpDatedMetricReportData r = new CorpDatedMetricReportData(headerArray);
 		String corpId = "000001";
 		Date reportDate1 = DateUtil.FORMAT_YEAR.parse("2016");
 		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
-		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
-		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
+		CorpDatedMetricReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
+		CorpDatedMetricReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
 		StringBuilder sb = r.toHtmlTable(new StringBuilder());
 		String html = sb.toString();
 		TestCase.assertTrue(html.startsWith("<table>"));
@@ -62,13 +62,13 @@ public class ReportDataTest extends TestCase {
 
 	public void testJson() throws Exception {
 		String[] headerArray = new String[] { "c1", "c2" };
-		ReportData r = new ReportData(headerArray);
+		CorpDatedMetricReportData r = new CorpDatedMetricReportData(headerArray);
 		String corpId = "000001";
 		Date reportDate1 = DateUtil.FORMAT_YEAR.parse("2016");
 		Date reportDate2 = DateUtil.FORMAT_YEAR.parse("2015");
-		ReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
+		CorpDatedMetricReportData.ReportRow row1 = r.addRow(corpId, reportDate1, new Double[] { 11D, 12D });
 
-		ReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
+		CorpDatedMetricReportData.ReportRow row2 = r.addRow(corpId, reportDate2, new Double[] { 21D, 22D });
 
 		StringBuilder sb = new StringBuilder();
 		r.writeToJson(sb);
@@ -105,7 +105,7 @@ public class ReportDataTest extends TestCase {
 		TestCase.assertEquals(21D, d21, 0.001D);
 		TestCase.assertEquals(22D, d22, 0.001D);
 
-		ReportData r2 = ReportData.parseJson(sb.toString());
+		CorpDatedMetricReportData r2 = CorpDatedMetricReportData.parseJson(sb.toString());
 		StringBuilder sb2 = new StringBuilder();
 		r2.writeToJson(sb2);
 

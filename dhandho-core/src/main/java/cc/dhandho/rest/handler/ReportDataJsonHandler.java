@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.RtException;
-import cc.dhandho.report.ReportData;
+import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.report.query.ReportDataMetricQuery;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
@@ -42,8 +42,8 @@ public class ReportDataJsonHandler extends AbstractRestRequestHandler {
 		JsonObject jsonReq = this.metricDefines.buildMetricRequestAsJson(corpId, years, metrics);
 
 		ReportDataMetricQuery q = new ReportDataMetricQuery(jsonReq, this.metaInfos);
-		ReportData rdata = q.query(this.dbProvider);
-		ReportData rdata2 = rdata.clone();
+		CorpDatedMetricReportData rdata = q.query(this.dbProvider);
+		CorpDatedMetricReportData rdata2 = rdata.clone();
 		if (totoalPrice == null) {
 			rdata2.dividBy(Double.NaN);
 		} else {

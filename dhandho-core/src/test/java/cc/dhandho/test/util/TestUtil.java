@@ -12,15 +12,24 @@ import org.slf4j.LoggerFactory;
 
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
+import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhandhoHome;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
+import cc.dhandho.commons.container.Container;
+import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.ReportEngine;
+import cc.dhandho.report.impl.ReportEngineImpl;
+import cc.dhandho.rest.server.CorpInfoDbUpgrader;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.DhandhoServer;
 import cc.dhandho.rest.server.DhandhoServerImpl;
+import cc.dhandho.rest.server.WashedDataUpgrader;
+import cc.dhandho.util.DbInitUtil;
 
 public class TestUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);
@@ -117,5 +126,35 @@ public class TestUtil {
 	public static DhandhoCliConsole newInMemoryTestDhandhoServerConsole() {
 
 		return new DhandhoCliConsole().server(newInMemoryTestDhandhoServer());
+	}
+
+	public static ReportEngine newInMemoryReportEgine() {
+		try {
+			DbProvider dbProvider = TestUtil.newInMemoryTestDbProvider(true);
+			DhandhoHome home = getHome();
+			Container app = new ContainerImpl();
+			ReportMetaInfos metaInfos = new DbReportMetaInfos();
+			MetricDefines metricDefines = MetricDefines.load(home.getClientFile().resolveFile("metric-defines.xml"));
+			app.addComponent(DhandhoHome.class, home);
+			app.addComponent(MetricDefines.class, metricDefines);
+			app.addComponent(ReportMetaInfos.class, metaInfos);
+			app.addComponent(DbProvider.class, dbProvider);
+			ReportEngine reportEngine = app.addNewComponent(ReportEngine.class, ReportEngineImpl.class);
+			
+			dbProvider.createDbIfNotExist();
+
+			dbProvider.executeWithDbSession(new DbInitUtil());
+
+			// load corp info to DB.
+			CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
+			dbProvider.executeWithDbSession(dbu);
+			// load washed data to DB.
+			WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
+			dbProvider.executeWithDbSession(wdu);
+
+			return reportEngine;
+		} catch (IOException e) {
+			throw new RtException(e);
+		}
 	}
 }

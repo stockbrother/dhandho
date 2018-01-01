@@ -23,6 +23,14 @@ public interface Container {
 	public <T> T newInstance(Class<T> cls);
 
 	/**
+	 * 
+	 * @param cls1
+	 * @param cls2
+	 * @return
+	 */
+	public <I, T extends I> T addNewComponent(Class<I> cls1, Class<T> impcls);
+
+	/**
 	 * Add component with the type declared.
 	 * 
 	 * @param cls

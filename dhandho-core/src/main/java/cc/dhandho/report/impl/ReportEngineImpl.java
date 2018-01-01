@@ -10,7 +10,8 @@ import com.google.gson.stream.JsonReader;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.report.MetricDefines;
-import cc.dhandho.report.ReportData;
+import cc.dhandho.report.CorpDatedMetricReportData;
+import cc.dhandho.report.CorpDupontProfileReport;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.report.query.ReportDataMetricQuery;
@@ -60,11 +61,17 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 	}
 
 	@Override
-	public ReportData getReport(String corpId, int[] years, String[] metrics) {
+	public CorpDatedMetricReportData getReport(String corpId, int[] years, String[] metrics) {
 
 		JsonObject json = this.metricDefines.buildMetricRequestAsJson(corpId, years, metrics);
 
 		return new ReportDataMetricQuery(json, this.reportMetaInfos).query(this.dbProvider);
+	}
+
+	@Override
+	public CorpDupontProfileReport getDupontProfileReport(String corpId, int[] years) {
+		
+		return null;
 	}
 
 }

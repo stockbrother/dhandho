@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.RtException;
-import cc.dhandho.report.ReportData;
+import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.rest.handler.ReportDataJsonHandler;
 import cc.dhandho.util.JsonUtil;
 
@@ -26,9 +26,9 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 			JsonObject res = (JsonObject) cc.getServer().handle(ReportDataJsonHandler.class.getName(), req);
 
 			// Response
-			ReportData r = ReportData.parseJson(res.get("report").getAsJsonObject());
+			CorpDatedMetricReportData r = CorpDatedMetricReportData.parseJson(res.get("report").getAsJsonObject());
 
-			ReportData r2 = ReportData.parseJson(res.get("report2").getAsJsonObject());
+			CorpDatedMetricReportData r2 = CorpDatedMetricReportData.parseJson(res.get("report2").getAsJsonObject());
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("<table>");
@@ -48,7 +48,7 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 				toTr(r2, sb, colspan);
 			}
 
-			ReportData r3 = r2.clone();
+			CorpDatedMetricReportData r3 = r2.clone();
 			r3.dividBy(1D);
 			toTr(r3, sb, colspan);
 
@@ -73,7 +73,7 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 		sb.append("</td>");
 	}
 
-	private void toTr(ReportData rd, StringBuilder sb, int colspan) {
+	private void toTr(CorpDatedMetricReportData rd, StringBuilder sb, int colspan) {
 		sb.append("<tr>");
 		sb.append("<td colspan='" + colspan + "'>");
 		rd.toSvgDivAndHtmlTable(sb);

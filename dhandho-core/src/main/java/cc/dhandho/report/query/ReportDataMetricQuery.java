@@ -9,10 +9,10 @@ import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.report.ReportData;
-import cc.dhandho.report.ReportData.ReportRow;
+import cc.dhandho.report.CorpDatedMetricReportData;
+import cc.dhandho.report.CorpDatedMetricReportData.ReportRow;
 
-public class ReportDataMetricQuery extends MetricsQuery<ReportData> {
+public class ReportDataMetricQuery extends MetricsQuery<CorpDatedMetricReportData> {
 
 	public ReportDataMetricQuery(JsonObject json, ReportMetaInfos reportMetaInfos) {
 		super(json, reportMetaInfos);
@@ -23,9 +23,9 @@ public class ReportDataMetricQuery extends MetricsQuery<ReportData> {
 	}
 
 	@Override
-	public ReportData handle(OResultSet rst) {
+	public CorpDatedMetricReportData handle(OResultSet rst) {
 
-		ReportData rt = new ReportData(this.query.getMetricArray());
+		CorpDatedMetricReportData rt = new CorpDatedMetricReportData(this.query.getMetricArray());
 
 		rst.stream().forEach(new Consumer<OResult>() {
 
