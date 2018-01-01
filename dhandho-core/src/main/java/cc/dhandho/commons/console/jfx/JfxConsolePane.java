@@ -1,24 +1,25 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.console.jfx;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.Reader;
-import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cc.dhandho.commons.console.Console;
+import cc.dhandho.commons.console.MemoryHistoryStore;
+import cc.dhandho.commons.util.JfxUtil;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class ConsolePane extends StackPane {
+public class JfxConsolePane extends StackPane implements Console {
 
-	private static Logger LOG = LoggerFactory.getLogger(ConsolePane.class);
+	private static Logger LOG = LoggerFactory.getLogger(JfxConsolePane.class);
 
 	//
 	private static String ZEROS = "000";
@@ -31,7 +32,11 @@ public class ConsolePane extends StackPane {
 
 	// the position in the text area which the command is inputing right now.
 	int positionOfCmdStart = 0;
-	ConsoleHistory history;
+
+	int historyIndex = 0;
+
+	Console.HistoryStore historyStore;
+
 	String startedLine;
 
 	// ui component
@@ -44,8 +49,13 @@ public class ConsolePane extends StackPane {
 	// hack to prevent key repeat for some reason?
 	boolean gotUp = true;
 
-	public ConsolePane() {
-		this.history = new ConsoleHistory(this);
+	public JfxConsolePane() {
+		this(new MemoryHistoryStore());
+	}
+
+	public JfxConsolePane(HistoryStore store) {
+		this.historyStore = store;
+		store.load();
 
 		ConsoleKeyListener kl = new ConsoleKeyListener(this);
 		this.nameComplete = new ConsoleNameComplete(this);
@@ -72,15 +82,103 @@ public class ConsolePane extends StackPane {
 
 	}
 
+	@Override
+	public Reader getReader() {
+		return reader;
+	}
+
+	@Override
+	public void enter(String line) {
+		this.text.appendText(line);
+		this.enter();
+	}
+
+	@Override
+	public void println(Object o) {
+		print(String.valueOf(o) + "\n");
+		// text.repaint();
+	}
+
+	@Override
+	public void print(final Object o) {
+		print(o, null, null);
+	}
+
+	/**
+	 * Prints "\\n" (i.e. newline)
+	 */
+	@Override
+	public void println() {
+		print("\n");
+		// text.repaint();
+	}
+
+	@Override
+	public void error(Object o) {
+		print(o, Color.RED);
+	}
+
+	@Override
+	public void close() {
+		this.historyStore.save();
+	}
+
+	public void print(Object s, Font font) {
+		print(s, font, null);
+	}
+
+	public void print(Object s, Color color) {
+		print(s, null, color);
+	}
+
+	public void print(final Object o, final Font font, final Color color) {
+		JfxUtil.runSafe(new Runnable() {
+			public void run() {
+				// AttributeSet old = getStyle();
+				// setStyle(font, color);
+				String old = text.getStyle();
+
+				append(String.valueOf(o));
+				positionOfCmdStart = textLength();
+				text.positionCaret(positionOfCmdStart);
+				// text.setStyle(old);
+			}
+		});
+	}
+
+	public void clear() {
+		JfxUtil.runSafe(new Runnable() {
+			public void run() {
+				text.setText("");
+				positionOfCmdStart = textLength();
+				text.positionCaret(positionOfCmdStart);
+				// setStyle(old, true);
+			}
+		});
+	}
+
+	@Deprecated // no Color Support
+	public void print(Object s, String fontFamilyName, int size, Color color) {
+
+		print(s, fontFamilyName, size, color, false, false, false);
+	}
+
+	public void print(final Object o, final String fontFamilyName, final int size, final Color color,
+			final boolean bold, final boolean italic, final boolean underline) {
+		JfxUtil.runSafe(new Runnable() {
+			public void run() {
+				append(String.valueOf(o));
+				positionOfCmdStart = textLength();
+				text.positionCaret(positionOfCmdStart);
+			}
+		});
+	}
+
 	private String format(Color c) {
 		int r = (int) (255 * c.getRed());
 		int g = (int) (255 * c.getGreen());
 		int b = (int) (255 * c.getBlue());
 		return String.format("#%02x%02x%02x", r, g, b);
-	}
-
-	public Reader getReader() {
-		return reader;
 	}
 
 	void append(String string) {
@@ -115,11 +213,11 @@ public class ConsolePane extends StackPane {
 	void enter() {
 		String s = getCmd();
 
-		history.addElement(s);
+		historyStore.addElement(s);
 		s = s + "\n";
 		append("\n");
 
-		history.histLine = 0;
+		this.historyIndex = 0;
 		acceptLine(s);
 		this.positionOfCmdStart = textLength();
 		// text.repaint();
@@ -129,10 +227,6 @@ public class ConsolePane extends StackPane {
 		String s = text.getText(positionOfCmdStart, textLength());
 		// print(s);
 		return s;
-	}
-
-	public void inputLine(String line) {
-		this.acceptLine(line + "\r\n");//
 	}
 
 	/**
@@ -172,79 +266,45 @@ public class ConsolePane extends StackPane {
 		// text.repaint();
 	}
 
-	public void println(Object o) {
-		print(String.valueOf(o) + "\n");
-		// text.repaint();
-	}
-
-	public void print(final Object o) {
-		print(o, null, null);
-	}
-
-	/**
-	 * Prints "\\n" (i.e. newline)
-	 */
-	public void println() {
-		print("\n");
-		// text.repaint();
-	}
-
-	public void error(Object o) {
-		print(o, Color.RED);
-	}
-
-	public void print(Object s, Font font) {
-		print(s, font, null);
-	}
-
-	public void print(Object s, Color color) {
-		print(s, null, color);
-	}
-
-	public void print(final Object o, final Font font, final Color color) {
-		JfxUtil.runSafe(new Runnable() {
-			public void run() {
-				// AttributeSet old = getStyle();
-				// setStyle(font, color);
-				String old = text.getStyle();
-
-				append(String.valueOf(o));
-				positionOfCmdStart = textLength();
-				text.positionCaret(positionOfCmdStart);
-				// text.setStyle(old);
-			}
-		});
-	}
-	
-	public void clear() {
-		JfxUtil.runSafe(new Runnable() {
-			public void run() {
-				text.setText("");
-				positionOfCmdStart = textLength();				
-				text.positionCaret(positionOfCmdStart);
-				// setStyle(old, true);
-			}
-		});
-	}
-
-	public void print(Object s, String fontFamilyName, int size, Color color) {
-
-		print(s, fontFamilyName, size, color, false, false, false);
-	}
-
-	public void print(final Object o, final String fontFamilyName, final int size, final Color color,
-			final boolean bold, final boolean italic, final boolean underline) {
-		JfxUtil.runSafe(new Runnable() {
-			public void run() {				
-				append(String.valueOf(o));
-				positionOfCmdStart = textLength();
-				text.positionCaret(positionOfCmdStart);
-			}
-		});
-	}
-
 	protected int textLength() {
 		return text.getLength();
 	}
 
+	void historyUp() {
+		if (this.historyStore.size() == 0) {
+			return;
+		}
+		if (this.historyIndex == 0) {// save current line
+			startedLine = getCmd();
+		}
+
+		if (this.historyIndex < this.historyStore.size()) {
+			this.historyIndex++;
+			showHistoryLine();
+		}
+	}
+
+	boolean isHistoryBottom() {
+		return this.historyIndex == 0;
+	}
+
+	void historyDown() {
+		if (this.isHistoryBottom()) {
+			return;
+		}
+
+		historyIndex--;
+		showHistoryLine();
+	}
+
+	private void showHistoryLine() {
+		String showline;
+		if (this.isHistoryBottom()) {
+			showline = startedLine;
+		} else {
+			showline = this.historyStore.elementAt(this.historyStore.size() - historyIndex);
+		}
+
+		replaceRange(showline, positionOfCmdStart, textLength());
+	}
 }

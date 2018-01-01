@@ -1,9 +1,14 @@
 package cc.dhandho.client.jfx;
 
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+
+import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.commons.commandline.DefaultConsoleReader;
-import cc.dhandho.commons.jfx.ConsolePane;
+import cc.dhandho.commons.console.jfx.DefaultHistoryStore;
+import cc.dhandho.commons.console.jfx.JfxConsolePane;
 
 /**
  * GUI console implementation.
@@ -13,10 +18,15 @@ import cc.dhandho.commons.jfx.ConsolePane;
  */
 public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineWriter {
 
-	protected ConsolePane consolePane;
+	protected JfxConsolePane consolePane;
 
-	public DhandhoJfxConsole() {
-		consolePane = new ConsolePane();
+	public DhandhoJfxConsole(FileObject consoleHome) {
+		try {
+			FileObject historyFile = consoleHome.resolveFile("history.txt");
+			consolePane = new JfxConsolePane(new DefaultHistoryStore(historyFile));
+		} catch (FileSystemException e) {
+			throw RtException.toRtException(e);
+		}
 
 		this.pushReader(new DefaultConsoleReader(consolePane.getReader()));
 		this.pushWriter(this);

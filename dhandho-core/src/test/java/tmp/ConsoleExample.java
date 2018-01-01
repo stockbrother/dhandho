@@ -2,7 +2,11 @@ package tmp;
 
 import java.io.IOException;
 
-import cc.dhandho.commons.jfx.ConsolePane;
+import org.apache.commons.vfs2.FileObject;
+
+import cc.dhandho.commons.console.jfx.DefaultHistoryStore;
+import cc.dhandho.commons.console.jfx.JfxConsolePane;
+import cc.dhandho.test.util.TestUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,7 +29,9 @@ public class ConsoleExample extends Application {
 		stage.setTitle("JavaFX: WebView");
 
 		StackPane sp = new StackPane();
-		ConsolePane console = new ConsolePane();
+		FileObject tmp = TestUtil.newRamFile();
+		
+		JfxConsolePane console = new JfxConsolePane(new DefaultHistoryStore(tmp));
 		new Thread() {
 			public void run() {
 
@@ -57,12 +63,7 @@ public class ConsoleExample extends Application {
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight,
 					Number height) {
-				System.out.println("Height: " + height);
-				// console.resize(sp.getWidth(), height.doubleValue());
-
-				// sp.setPrefHeight(newSceneHeight.doubleValue());
-				// sp.autosize();
-				// console.setPrefHeight(newSceneHeight.doubleValue());
+				System.out.println("Height: " + height);				
 
 			}
 		});

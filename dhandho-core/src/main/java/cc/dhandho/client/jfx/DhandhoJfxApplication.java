@@ -1,7 +1,10 @@
 package cc.dhandho.client.jfx;
 
+import org.apache.commons.vfs2.FileObject;
+
+import cc.dhandho.DhandhoHome;
 import cc.dhandho.client.HtmlRenderer;
-import cc.dhandho.commons.jfx.JfxUtil;
+import cc.dhandho.commons.util.JfxUtil;
 import cc.dhandho.rest.server.DhandhoServer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -30,8 +33,12 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	@Override
 	public void init() throws Exception {
-
-		console = new DhandhoJfxConsole();
+		DhandhoHome home = SERVER.getHome();
+		FileObject consoleHome = home.resolveFile("console");
+		if (!consoleHome.exists()) {
+			consoleHome.createFolder();
+		}
+		console = new DhandhoJfxConsole(consoleHome);
 		console.server(SERVER);
 		console.htmlRenderer(this);
 

@@ -12,6 +12,7 @@ import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.server.CorpInfoDbUpgrader;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.WashedDataUpgrader;
+import cc.dhandho.test.util.TestUtil;
 import cc.dhandho.util.DbInitUtil;
 import junit.framework.Assert;
 import junit.framework.TestCase;

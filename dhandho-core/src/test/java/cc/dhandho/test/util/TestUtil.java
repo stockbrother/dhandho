@@ -1,4 +1,4 @@
-package cc.dhandho.test;
+package cc.dhandho.test.util;
 
 import java.io.IOException;
 
@@ -37,11 +37,25 @@ public class TestUtil {
 				.dbType(ODatabaseType.PLOCAL);
 	}
 
-	public static FileObject newTempFolder() throws IOException {
+	public static FileObject newRamFile() throws IOException {
+		FileObject rt = newRamFolder().resolveFile("ram.file");
+		rt.createFile();
+		return rt;
+	}
+
+	public static FileObject newRamFolder() throws IOException {
+		return newAnyFolder("ram://tmp-folder-");
+	}
+
+	public static FileObject newTmpFolder() throws IOException {
+		return newAnyFolder("tmp://tmp-folder-");
+	}
+
+	private static FileObject newAnyFolder(String prefix) throws IOException {
 		FileSystemManager fsm = VFS.getManager();
 		int i = 0;
 		while (true) {
-			FileObject rt = fsm.resolveFile("tmp://tmp-folder-" + (i++));
+			FileObject rt = fsm.resolveFile(prefix + (i++));
 			if (!rt.exists()) {
 				rt.createFolder();
 				return rt;

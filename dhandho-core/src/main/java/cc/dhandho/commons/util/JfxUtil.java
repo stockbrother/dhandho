@@ -1,4 +1,4 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.util;
 
 import java.util.Objects;
 

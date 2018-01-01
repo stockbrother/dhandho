@@ -8,7 +8,7 @@ import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.RtException;
 import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
-import cc.dhandho.test.TestUtil;
+import cc.dhandho.test.util.TestUtil;
 import junit.framework.TestCase;
 
 public class MemoryAllQuotesWashedDataLoaderTest extends TestCase{

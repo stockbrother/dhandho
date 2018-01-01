@@ -1,12 +1,12 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.console.jfx;
 
 import javafx.scene.control.TextArea;
 
 public class ConsoleTexPane extends TextArea {
 	
-	private ConsolePane console;
+	private JfxConsolePane console;
 
-	public ConsoleTexPane(ConsolePane console) {
+	public ConsoleTexPane(JfxConsolePane console) {
 	
 	}
 

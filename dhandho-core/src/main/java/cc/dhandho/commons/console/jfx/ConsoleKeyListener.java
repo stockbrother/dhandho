@@ -1,4 +1,4 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.console.jfx;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.InputEvent;
@@ -6,9 +6,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 class ConsoleKeyListener implements EventHandler<KeyEvent> {
-	ConsolePane console;
+	JfxConsolePane console;
 
-	public ConsoleKeyListener(ConsolePane console) {
+	public ConsoleKeyListener(JfxConsolePane console) {
 		this.console = console;
 
 	}
@@ -42,14 +42,14 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 
 		case UP:
 			if (pressed) {
-				console.history.historyUp();
+				console.historyUp();
 			}
 			e.consume();
 			break;
 
 		case DOWN:
 			if (pressed) {
-				console.history.historyDown();
+				console.historyDown();
 			}
 			e.consume();
 			break;
@@ -75,7 +75,7 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 		case U: // clear line
 			if (e.isControlDown()) {
 				console.replaceRange("", console.positionOfCmdStart, console.textLength());
-				console.history.histLine = 0;
+				console.historyIndex = 0;
 				e.consume();
 			}
 			break;

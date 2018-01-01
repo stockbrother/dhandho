@@ -1,12 +1,12 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.console.jfx;
 
 import javafx.scene.paint.Color;
 
 public class ConsoleNameComplete {
 
-	ConsolePane console;
+	JfxConsolePane console;
 
-	public ConsoleNameComplete(ConsolePane console) {
+	public ConsoleNameComplete(JfxConsolePane console) {
 		this.console = console;
 	}
 

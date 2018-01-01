@@ -30,25 +30,27 @@ import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
 /**
  * Sample code of usage: <br>
  * <code>
-    public class MyCommandLineApp extends AbstractComandLineApplication{
-    
-      public void processLine(CommandAndLine cl) {
-		
-		line.getConsole().peekWriter().writeLine("this is a command.");
-		 
-      }
-    }
-  
-    MyCommandLineApp app = new MyCommandLineApp();
-    app.start();
-  </code> <br>
+ * public class MyCommandLineApp extends AbstractComandLineApplication{
+ *    
+ *   public void processLine(CommandAndLine cl) {
+ *		
+ *		line.getConsole().peekWriter().writeLine("this is a command.");
+ *		 
+ *   }
+ * }
+ * 
+ * MyCommandLineApp app = new MyCommandLineApp();
+ * app.start();
+ * 
+ * </code> <br>
  * To read from other source instead of standard input. <br>
  * <code>
-    app.pushReader(reader);
-</code><br>
- * to write to other writer instead of standard output. <code>  
-    app.pushWriter(writer);
-</code>
+ * app.pushReader(reader);
+ * </code><br>
+ * to write to other writer instead of standard output. <br>
+ * <code>  
+ * app.pushWriter(writer);
+ * </code>
  * 
  * @author Wu
  * 

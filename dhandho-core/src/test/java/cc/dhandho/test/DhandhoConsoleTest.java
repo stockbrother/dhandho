@@ -2,6 +2,7 @@ package cc.dhandho.test;
 
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.test.util.TestUtil;
 import junit.framework.TestCase;
 
 public class DhandhoConsoleTest extends TestCase {
@@ -21,15 +22,9 @@ public class DhandhoConsoleTest extends TestCase {
 		DhandhoCliConsole console = TestUtil.newInMemoryTestDhandhoServerConsole();
 		console.getServer().start();
 		console.start();
-		console.prompt();
+		console.prompt();		
+		console.shutdown();
 		
-		//console.shutdownAsync();
-		while (console.isAlive()) {
-			Thread.sleep(1000);
-		}
-
-		// console.shutdown();
-
 	}
 
 }

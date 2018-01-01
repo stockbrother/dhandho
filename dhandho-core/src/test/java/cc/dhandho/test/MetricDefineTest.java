@@ -11,6 +11,7 @@ import com.google.gson.stream.JsonWriter;
 import cc.dhandho.RtException;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
+import cc.dhandho.test.util.TestUtil;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
 

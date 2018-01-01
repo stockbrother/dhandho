@@ -1,4 +1,4 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.console.jfx;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +12,9 @@ public class ConsoleMenu extends JPopupMenu implements ActionListener {
 	private final static String COPY = "Copy";
 	private final static String PASTE = "Paste";
 
-	ConsolePane console;
+	JfxConsolePane console;
 
-	public ConsoleMenu(ConsolePane console) {
+	public ConsoleMenu(JfxConsolePane console) {
 		add(new JMenuItem(CUT)).addActionListener(this);
 		add(new JMenuItem(COPY)).addActionListener(this);
 		add(new JMenuItem(PASTE)).addActionListener(this);

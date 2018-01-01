@@ -1,14 +1,13 @@
-package cc.dhandho.commons.jfx;
+package cc.dhandho.commons.console.jfx;
 
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 class ConsoleMouseListener implements MouseListener {
 
-	private ConsolePane console;
+	private JfxConsolePane console;
 
-	public ConsoleMouseListener(ConsolePane console) {
+	public ConsoleMouseListener(JfxConsolePane console) {
 		this.console = console;
 	}
 
