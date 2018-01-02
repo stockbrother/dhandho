@@ -5,16 +5,15 @@ import cc.dhandho.DhandhoHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
-import cc.dhandho.report.MetricDefines;
+import cc.dhandho.graphdb.MyDataUpgraders;
+import cc.dhandho.input.loader.CorpInfoInputDataLoader;
+import cc.dhandho.input.loader.WashedInputDataLoader;
 import cc.dhandho.report.CorpDatedMetricReportData;
+import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
-import cc.dhandho.rest.server.CorpInfoDbUpgrader;
 import cc.dhandho.rest.server.DbProvider;
-import cc.dhandho.rest.server.WashedDataUpgrader;
 import cc.dhandho.test.util.TestUtil;
-import cc.dhandho.util.DbInitUtil;
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class ReportEngineTest extends TestCase {
@@ -23,7 +22,7 @@ public class ReportEngineTest extends TestCase {
 
 		Container app = new ContainerImpl();
 		DbProvider dbProvider = TestUtil.newInMemoryTestDbProvider(true);
-		dbProvider.executeWithDbSession(new DbInitUtil());
+		dbProvider.executeWithDbSession(new MyDataUpgraders());
 
 		DbReportMetaInfos metaInfos = new DbReportMetaInfos();
 		dbProvider.executeWithDbSession(metaInfos.initializer());
@@ -37,10 +36,10 @@ public class ReportEngineTest extends TestCase {
 
 		//
 
-		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
+		CorpInfoInputDataLoader dbu = app.newInstance(CorpInfoInputDataLoader.class);
 		dbProvider.executeWithDbSession(dbu);
 		// load washed data to DB.
-		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
+		WashedInputDataLoader wdu = app.newInstance(WashedInputDataLoader.class);
 		dbProvider.executeWithDbSession(wdu);
 
 		ReportEngine re = app.newInstance(ReportEngineImpl.class);

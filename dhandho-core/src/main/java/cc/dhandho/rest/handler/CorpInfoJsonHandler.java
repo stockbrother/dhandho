@@ -13,8 +13,8 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.rest.RestRequestContext;
-import cc.dhandho.util.DbInitUtil;
 
 public class CorpInfoJsonHandler extends DbSessionJsonHandler {
 
@@ -25,7 +25,7 @@ public class CorpInfoJsonHandler extends DbSessionJsonHandler {
 		JsonObject query = json.getAsJsonObject();
 		String corpId = query.get("corpId").getAsString();
 
-		String sql = "select from " + DbInitUtil.V_CORP_INFO + " where corpId=?";
+		String sql = "select from " + DbUpgrader0_0_1.V_CORP_INFO + " where corpId=?";
 
 		writer.beginObject();
 		DbUtil.executeQuery(db, sql, new Object[] { corpId }, new OResultSetHandler<Void>() {

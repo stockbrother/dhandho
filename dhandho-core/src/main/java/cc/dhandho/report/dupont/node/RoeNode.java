@@ -1,4 +1,6 @@
-package cc.dhandho.report.dupont;
+package cc.dhandho.report.dupont.node;
+
+import cc.dhandho.report.dupont.DupontAnalysis;
 
 public class RoeNode extends MultipleNode {
 

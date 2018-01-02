@@ -29,12 +29,14 @@ import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
+import cc.dhandho.graphdb.MyDataUpgraders;
+import cc.dhandho.input.loader.CorpInfoInputDataLoader;
+import cc.dhandho.input.loader.WashedInputDataLoader;
 import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.JsonHandlers;
-import cc.dhandho.util.DbInitUtil;
 
 /**
  * 
@@ -91,7 +93,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		
 		try {
 
-			FileObject to = home.getInportFile().resolveFile("sina");
+			FileObject to = home.getInputFolder().resolveFile("sina");
 			if (to.exists()) {
 				LOG.warn("loading all-quotes from folder:" + to.getURL());
 				MemoryAllQuotesWashedDataLoader loader = new MemoryAllQuotesWashedDataLoader(to, allQuotesInfos);
@@ -104,14 +106,13 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		}
 
 		this.dbProvider.createDbIfNotExist();
-
-		this.dbProvider.executeWithDbSession(new DbInitUtil());
+		this.dbProvider.executeWithDbSession(new MyDataUpgraders());
 
 		// load corp info to DB.
-		CorpInfoDbUpgrader dbu = app.newInstance(CorpInfoDbUpgrader.class);
+		CorpInfoInputDataLoader dbu = app.newInstance(CorpInfoInputDataLoader.class);
 		this.dbProvider.executeWithDbSession(dbu);
 		// load washed data to DB.
-		WashedDataUpgrader wdu = app.newInstance(WashedDataUpgrader.class);
+		WashedInputDataLoader wdu = app.newInstance(WashedInputDataLoader.class);
 		this.dbProvider.executeWithDbSession(wdu);
 
 		handlers = new JsonHandlers(app);

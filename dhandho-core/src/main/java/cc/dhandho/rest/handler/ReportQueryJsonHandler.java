@@ -4,24 +4,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.report.ReportItemLocator;
 import cc.dhandho.report.ReportItemLocators;
 import cc.dhandho.rest.RestRequestContext;
-import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.Visitor;
 
 public class ReportQueryJsonHandler extends DbSessionJsonHandler {
@@ -113,8 +111,8 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 		DbReportMetaInfos aliasInfos = new DbReportMetaInfos();
 
 		aliasInfos.initialize(dbs);
-		final String reportType = DbInitUtil.V_BALSHEET;
-		String sql = "select from " + DbInitUtil.V_BALSHEET + " where corpId=? ";
+		final String reportType = DbUpgrader0_0_1.V_BALSHEET;
+		String sql = "select from " + DbUpgrader0_0_1.V_BALSHEET + " where corpId=? ";
 
 		DbUtil.executeQuery(dbs, sql, new Object[] { corpId }, new OResultSetHandler<Object>() {
 

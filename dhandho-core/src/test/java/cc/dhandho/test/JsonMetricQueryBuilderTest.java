@@ -15,9 +15,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.MemoryAliasInfos;
-import cc.dhandho.report.query.JsonMetricSqlJoinQueryBuilder;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
-import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.Assert;
 @Ignore
@@ -89,7 +88,7 @@ public class JsonMetricQueryBuilderTest {
 
 		Assert.assertEquals(
 				"select ((" + cA1 + "/" + cB1 + ")*(" + cB1 + "/" + cB2 + "))"
-						+ " from "+DbInitUtil.V_MASTER_REPORT+" where corpId=?",
+						+ " from "+DbUpgrader0_0_1.V_MASTER_REPORT+" where corpId=?",
 				sql);
 
 		System.out.println(sql);

@@ -2,7 +2,6 @@ package cc.dhandho.test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -17,14 +16,9 @@ import com.google.gson.stream.JsonReader;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.DbReportMetaInfos;
-import cc.dhandho.Quarter;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
-import cc.dhandho.graphdb.DbConfig;
-import cc.dhandho.input.washed.GDBWashedFileSchemaLoader;
-import cc.dhandho.input.washed.GDBWashedFileValueLoader;
 import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
-import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
 @Ignore

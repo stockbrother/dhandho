@@ -1,7 +1,6 @@
 package cc.dhandho.test;
 
 import cc.dhandho.client.DhandhoCliConsole;
-import cc.dhandho.rest.server.DhandhoServer;
 import cc.dhandho.test.util.TestUtil;
 import junit.framework.TestCase;
 

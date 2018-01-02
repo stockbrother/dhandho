@@ -13,7 +13,7 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
-import cc.dhandho.util.DbInitUtil;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 
 public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHandler {
 
@@ -21,7 +21,7 @@ public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHan
 
 	protected static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
 
-	private static final String SQL = "select from " + DbInitUtil.V_CORP_INFO + " where corpId=?";
+	private static final String SQL = "select from " + DbUpgrader0_0_1.V_CORP_INFO + " where corpId=?";
 
 	protected ODatabaseSession db;
 
@@ -55,7 +55,7 @@ public abstract class AbstractCorpInfoCsvLoader extends AbstractHeaderCsvFileHan
 				if (rst.hasNext()) {
 					v = rst.next().getVertex().get();
 				} else {
-					v = db.newVertex(DbInitUtil.V_CORP_INFO);
+					v = db.newVertex(DbUpgrader0_0_1.V_CORP_INFO);
 					v.setProperty("corpId", x0);
 				}
 				return v;

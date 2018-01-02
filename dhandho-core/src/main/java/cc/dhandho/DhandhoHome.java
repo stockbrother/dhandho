@@ -37,16 +37,16 @@ public class DhandhoHome {
 		return resolveFile(this.homeFile, "client");
 	}
 
-	public FileObject getInportFile() throws IOException {
-		return resolveFile(this.homeFile, "inport");
+	public FileObject getInputFolder() throws IOException {
+		return resolveFile(this.homeFile, "input");
 	}
 
 	public FileObject getInportWashedDataFolder() throws IOException {
-		return resolveFile(this.getInportFile(), "washed");
+		return resolveFile(this.getInputFolder(), "washed");
 	}
 
-	public FileObject getInportCorpsFile() throws IOException {
-		return resolveFile(this.getInportFile(), "corps");
+	public FileObject getInputCorpsFolder() throws IOException {
+		return resolveFile(this.getInputFolder(), "corps");
 	}
 
 	public FileObject resolveFile(String path) throws IOException {

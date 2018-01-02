@@ -1,4 +1,7 @@
-package cc.dhandho.report.dupont;
+package cc.dhandho.report.dupont.node;
+
+import cc.dhandho.report.dupont.DupontAnalysis;
+import cc.dhandho.report.dupont.DupontAnalysis.Context;
 
 public class DividNode extends DefineNode {
 
@@ -7,7 +10,7 @@ public class DividNode extends DefineNode {
 	}
 
 	@Override
-	public ValueNode calculate(AnalysisContext ac) {
+	public ValueNode calculate(Context ac) {
 
 		ValueNode rt = new ValueNode(this);
 

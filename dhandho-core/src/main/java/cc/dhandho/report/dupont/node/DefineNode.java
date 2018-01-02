@@ -1,7 +1,10 @@
-package cc.dhandho.report.dupont;
+package cc.dhandho.report.dupont.node;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cc.dhandho.report.dupont.DupontAnalysis;
+import cc.dhandho.report.dupont.DupontAnalysis.Context;
 
 public abstract class DefineNode {
 
@@ -17,6 +20,6 @@ public abstract class DefineNode {
 		this.childList.add(child);
 	}
 
-	public abstract ValueNode calculate(AnalysisContext ac);
+	public abstract ValueNode calculate(Context ac);
 
 }

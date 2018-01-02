@@ -15,12 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.handler.InitDataJsonHandler;
-import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
-import junit.framework.Assert;
 
 @Ignore
 public class InitDataJsonHandlerTest {

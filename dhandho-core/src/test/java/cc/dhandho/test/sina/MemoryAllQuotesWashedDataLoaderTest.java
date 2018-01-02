@@ -19,7 +19,7 @@ public class MemoryAllQuotesWashedDataLoaderTest extends TestCase{
 		AllQuotesInfos allQuotesInfos = new AllQuotesInfos();		
 		try {
 
-			FileObject to = home.getInportFile().resolveFile("sina");
+			FileObject to = home.getInputFolder().resolveFile("sina");
 			if (to.exists()) {
 				//LOG.warn("loading all-quotes from folder:" + to.getURL());
 				MemoryAllQuotesWashedDataLoader loader = new MemoryAllQuotesWashedDataLoader(to, allQuotesInfos);

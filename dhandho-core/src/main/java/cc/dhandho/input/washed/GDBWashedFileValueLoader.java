@@ -21,9 +21,9 @@ import cc.dhandho.RtException;
 import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.rest.server.DbProvider;
-import cc.dhandho.util.DbInitUtil;
 
 public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 
@@ -132,7 +132,7 @@ public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 
 	protected OVertex getMasterReport(String corpId, Date reportDate) {
 
-		String sql = "select from " + DbInitUtil.V_MASTER_REPORT + " where corpId = ? and reportDate = ?";
+		String sql = "select from " + DbUpgrader0_0_1.V_MASTER_REPORT + " where corpId = ? and reportDate = ?";
 		return DbUtil.executeQuery(session, sql, new Object[] { corpId, reportDate },
 				new OResultSetHandler<OVertex>() {
 
@@ -161,7 +161,7 @@ public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 			OVertex prev = getMasterReport(corpId, prevDate);
 			OVertex next = getMasterReport(corpId, nextDate);
 
-			row = this.session.newVertex(DbInitUtil.V_MASTER_REPORT);
+			row = this.session.newVertex(DbUpgrader0_0_1.V_MASTER_REPORT);
 			row.setProperty("corpId", corpId);
 			row.setProperty("reportDate", reportDate);
 			row.save();

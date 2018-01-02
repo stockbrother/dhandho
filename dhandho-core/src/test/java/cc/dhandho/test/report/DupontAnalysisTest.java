@@ -3,13 +3,13 @@ package cc.dhandho.test.report;
 import java.util.List;
 
 import cc.dhandho.report.ReportEngine;
-import cc.dhandho.report.dupont.AnalysisContext;
-import cc.dhandho.report.dupont.AssetTurnover;
-import cc.dhandho.report.dupont.DefineNode;
 import cc.dhandho.report.dupont.DupontAnalysis;
-import cc.dhandho.report.dupont.EquityMultiplier;
-import cc.dhandho.report.dupont.ProfitMarginNode;
-import cc.dhandho.report.dupont.ValueNode;
+import cc.dhandho.report.dupont.DupontAnalysis.Context;
+import cc.dhandho.report.dupont.node.AssetTurnover;
+import cc.dhandho.report.dupont.node.DefineNode;
+import cc.dhandho.report.dupont.node.EquityMultiplier;
+import cc.dhandho.report.dupont.node.ProfitMarginNode;
+import cc.dhandho.report.dupont.node.ValueNode;
 import cc.dhandho.test.util.TestUtil;
 import junit.framework.TestCase;
 
@@ -42,7 +42,7 @@ public class DupontAnalysisTest extends TestCase {
 
 		DupontAnalysis da = new DupontAnalysis(re);
 
-		AnalysisContext ac = da.execute(new AnalysisContext("000100", 2016));
+		Context ac = da.execute(new Context("000100", 2016));
 		ValueNode vNode = ac.getValueNode();
 		TestCase.assertNotNull("", vNode);
 		if (true) {

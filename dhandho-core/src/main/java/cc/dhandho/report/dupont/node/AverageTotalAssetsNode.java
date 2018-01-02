@@ -1,6 +1,7 @@
-package cc.dhandho.report.dupont;
+package cc.dhandho.report.dupont.node;
 
 import cc.dhandho.Metrics;
+import cc.dhandho.report.dupont.DupontAnalysis;
 
 public class AverageTotalAssetsNode extends MetricNode {
 

@@ -1,4 +1,4 @@
-package cc.dhandho.rest.server;
+package cc.dhandho.input.loader;
 
 import java.io.IOException;
 
@@ -18,15 +18,16 @@ import cc.dhandho.RtException;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.input.washed.GDBWashedFileSchemaLoader;
 import cc.dhandho.input.washed.GDBWashedFileValueLoader;
+import cc.dhandho.rest.server.DbProvider;
 
 /**
  * Load CorpInfo data from file to DB.
  * 
  * @author wu TODO add virtual file system,for easiser testing.
  */
-public class WashedDataUpgrader extends DbUpgrader {
+public class WashedInputDataLoader extends InputDataLoader {
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	private static final Logger LOG = LoggerFactory.getLogger(WashedDataUpgrader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WashedInputDataLoader.class);
 	// public static String DATA_VERSION_CORP_INFO = "dataVersion_corpInfo";
 
 	private DhandhoHome home;

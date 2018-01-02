@@ -1,4 +1,7 @@
-package cc.dhandho.report.dupont;
+package cc.dhandho.report.dupont.node;
+
+import cc.dhandho.report.dupont.DupontAnalysis;
+import cc.dhandho.report.dupont.DupontAnalysis.Context;
 
 public class MetricNode extends DefineNode {
 
@@ -10,7 +13,7 @@ public class MetricNode extends DefineNode {
 	}
 
 	@Override
-	public ValueNode calculate(AnalysisContext ac) {
+	public ValueNode calculate(Context ac) {
 		Double value = this.tree.getReportEngine().getMetricValue(ac.getCorpId(), ac.getYear(), metric);
 		return new ValueNode(this, value);
 	}

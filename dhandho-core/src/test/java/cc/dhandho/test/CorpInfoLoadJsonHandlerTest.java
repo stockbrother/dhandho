@@ -18,10 +18,8 @@ import com.google.gson.stream.JsonWriter;
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.commons.container.Container;
 import cc.dhandho.commons.container.ContainerImpl;
-import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.handler.LoadCorpInfoJsonHandler;
-import cc.dhandho.util.DbInitUtil;
 import cc.dhandho.util.JsonUtil;
 
 @Ignore

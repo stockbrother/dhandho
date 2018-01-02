@@ -2,15 +2,12 @@ package cc.dhandho.test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.RtException;
 import cc.dhandho.report.MetricDefines;
-import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
 import cc.dhandho.test.util.TestUtil;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;

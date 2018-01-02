@@ -12,13 +12,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.sun.istack.internal.NotNull;
 
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.rest.JsonWrapper;
-import cc.dhandho.util.DbInitUtil;
 
 /**
  * 
@@ -39,7 +38,7 @@ public class QueryJsonWrapper extends JsonWrapper {
 
 	Map<Integer, String> metricIndex2NameMap;
 
-	public QueryJsonWrapper(@NotNull JsonObject obj) {
+	public QueryJsonWrapper(JsonObject obj) {
 		this.obj = obj;
 	}
 
@@ -135,7 +134,7 @@ public class QueryJsonWrapper extends JsonWrapper {
 
 		}
 
-		sql.append(" from ").append(DbInitUtil.V_MASTER_REPORT);
+		sql.append(" from ").append(DbUpgrader0_0_1.V_MASTER_REPORT);
 
 		sql.append(" where corpId=? ");
 		List<Date> dL = this.getDateList();

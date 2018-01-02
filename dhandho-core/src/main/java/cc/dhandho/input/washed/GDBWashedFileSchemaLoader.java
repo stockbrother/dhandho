@@ -19,13 +19,12 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
-import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.RtException;
 import cc.dhandho.commons.handler.Handler2;
+import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.CsvHeaderRowMap;
 import cc.dhandho.input.CsvRowMap;
 import cc.dhandho.rest.server.DbProvider;
-import cc.dhandho.util.DbInitUtil;
 
 /**
  * The 1st stage before loading data into db. This loader scan the specified
@@ -99,7 +98,7 @@ public class GDBWashedFileSchemaLoader extends QuarterWahsedFileLoader {
 				if (reportClazz == null) {
 					reportClazz = this.session.createClass(type, "CorpReport");
 					// add link property for masterReport
-					OClass masterClazz = this.session.getClass(DbInitUtil.V_MASTER_REPORT);
+					OClass masterClazz = this.session.getClass(DbUpgrader0_0_1.V_MASTER_REPORT);
 					masterClazz.createProperty(type.toLowerCase(), OType.LINK);// lower case as property of link.
 
 					reportClazz.createIndex("Idx_" + type + "_key", OClass.INDEX_TYPE.UNIQUE, "corpId", "reportDate");
