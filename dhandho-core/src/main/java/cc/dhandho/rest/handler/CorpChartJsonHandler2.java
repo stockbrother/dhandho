@@ -3,6 +3,7 @@ package cc.dhandho.rest.handler;
 import java.io.IOException;
 import java.util.Iterator;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,7 +13,6 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.rest.RestRequestContext;
@@ -53,7 +53,7 @@ public class CorpChartJsonHandler2 extends DbSessionJsonHandler {
 					}
 					writer.endArray();
 				} catch (IOException e) {
-					throw RtException.toRtException(e);
+					throw JcpsException.toRtException(e);
 				}
 				return null;
 			}

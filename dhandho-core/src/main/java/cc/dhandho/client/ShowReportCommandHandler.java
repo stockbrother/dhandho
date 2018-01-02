@@ -3,9 +3,9 @@ package cc.dhandho.client;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonObject;
 
-import cc.dhandho.RtException;
 import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.rest.handler.ReportDataJsonHandler;
 import cc.dhandho.util.JsonUtil;
@@ -60,7 +60,7 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 			cc.getWriter().writeLine(writer.getBuffer().toString());
 
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

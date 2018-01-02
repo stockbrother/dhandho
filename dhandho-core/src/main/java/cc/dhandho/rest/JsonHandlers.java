@@ -11,6 +11,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -18,8 +20,6 @@ import com.google.gson.JsonNull;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
-import cc.dhandho.commons.container.Container;
 import cc.dhandho.util.JsonUtil;
 
 public class JsonHandlers {
@@ -94,7 +94,7 @@ public class JsonHandlers {
 			Class handlerClass = Class.forName(handlerS);
 			handler = (RestRequestHandler) app.newInstance(handlerClass);
 		} catch (ClassNotFoundException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 		return handler;
 	}

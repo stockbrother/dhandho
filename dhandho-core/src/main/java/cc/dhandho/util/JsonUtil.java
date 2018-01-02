@@ -15,7 +15,7 @@ import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 
 public class JsonUtil {
 	protected static Gson GSON4LOG = new GsonBuilder().setPrettyPrinting().create();
@@ -42,7 +42,7 @@ public class JsonUtil {
 		try {
 			return GSON.newJsonWriter(writer);
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

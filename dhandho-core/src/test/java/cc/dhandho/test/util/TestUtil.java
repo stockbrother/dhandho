@@ -10,15 +10,15 @@ import org.apache.commons.vfs2.VFS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
+import com.age5k.jcps.framework.container.impl.ContainerImpl;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
 import cc.dhandho.client.DhandhoCliConsole;
-import cc.dhandho.commons.container.Container;
-import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.graphdb.MyDataUpgraders;
@@ -83,7 +83,7 @@ public class TestUtil {
 				FileObject fromF = fsm.resolveFile(from);
 				FileObject homeF = fsm.resolveFile(home);
 				if (homeF.exists()) {
-					throw new RtException("home already there:" + home);
+					throw new JcpsException("home already there:" + home);
 				}
 				LOG.info("test home:" + home + " is ready.");
 
@@ -93,7 +93,7 @@ public class TestUtil {
 			}
 			return HOME;
 		} catch (FileSystemException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}
@@ -105,7 +105,7 @@ public class TestUtil {
 			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");
 			return MetricDefines.load(file.getContent().getInputStream());
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 
@@ -128,9 +128,9 @@ public class TestUtil {
 		return new DhandhoCliConsole().server(newInMemoryTestDhandhoServer());
 	}
 
-	public static ReportEngine newInMemoryReportEgine() {
+	public static ReportEngine newInMemoryReportEgine(DbProvider dbProvider) {
 		try {
-			DbProvider dbProvider = TestUtil.newInMemoryTestDbProvider(true);
+			
 			DhandhoHome home = getHome();
 			Container app = new ContainerImpl();
 			ReportMetaInfos metaInfos = new DbReportMetaInfos();
@@ -154,7 +154,7 @@ public class TestUtil {
 
 			return reportEngine;
 		} catch (IOException e) {
-			throw new RtException(e);
+			throw new JcpsException(e);
 		}
 	}
 }

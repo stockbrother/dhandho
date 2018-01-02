@@ -5,12 +5,10 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
-import cc.dhandho.commons.commandline.CommandAndLine;
-import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.rest.handler.CorpChartJsonHandler;
 import cc.dhandho.util.JsonUtil;
@@ -52,7 +50,7 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 			cc.getConsole().htmlRenderer.showHtml(sWriter3.getBuffer().toString());
 			
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

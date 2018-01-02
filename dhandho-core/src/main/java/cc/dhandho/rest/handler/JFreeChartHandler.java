@@ -16,14 +16,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
-import com.google.gson.Gson;
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.internal.Streams;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.RestRequestHandler;
 
@@ -76,7 +73,7 @@ public class JFreeChartHandler implements RestRequestHandler {
 
 			}
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

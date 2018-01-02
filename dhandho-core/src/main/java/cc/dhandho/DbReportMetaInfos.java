@@ -7,13 +7,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
 
@@ -104,7 +105,7 @@ public class DbReportMetaInfos extends AbstractReportMetaInfos {
 
 	@Override
 	public Integer addColumnIndex(String reportType, String alias) {
-		throw new RtException("not supported.");
+		throw new JcpsException("not supported.");
 	}
 
 	private Integer addColumnIndex(String reportType, String alias, ODatabaseSession con) {

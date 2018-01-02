@@ -9,7 +9,7 @@ import org.apache.commons.vfs2.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.washed.WashedCorpDataFileLoader;
 
 public abstract class FilesIterator {
@@ -35,7 +35,7 @@ public abstract class FilesIterator {
 
 	private void doLoadInternal(FileObject dir) throws IOException {
 		if (!dir.exists()) {
-			throw new RtException("dir:" + dir.getURL() + " does not exists.");
+			throw new JcpsException("dir:" + dir.getURL() + " does not exists.");
 		}
 
 		if (dir.getType() == FileType.FILE) {
@@ -57,7 +57,7 @@ public abstract class FilesIterator {
 						LOG.info(baos.toString("utf8"));
 
 					}
-					throw new RtException("exeception got when process file:" + f.getURL(), t);
+					throw new JcpsException("exeception got when process file:" + f.getURL(), t);
 				}
 
 			}
@@ -72,7 +72,7 @@ public abstract class FilesIterator {
 			FileObject[] fs = dir.getChildren();
 
 			if (fs == null) {
-				throw new RtException("??");
+				throw new JcpsException("??");
 			}
 
 			for (FileObject f : fs) {

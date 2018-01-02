@@ -2,10 +2,10 @@ package cc.dhandho.rest.handler;
 
 import java.io.IOException;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.RtException;
-import cc.dhandho.commons.handler.Handler2;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
 
@@ -26,7 +26,7 @@ public abstract class DbSessionJsonHandler extends AbstractRestRequestHandler {
 				try {
 					execute(rrc, db);
 				} catch (IOException e) {
-					throw RtException.toRtException(e);
+					throw JcpsException.toRtException(e);
 				}
 			}
 		});

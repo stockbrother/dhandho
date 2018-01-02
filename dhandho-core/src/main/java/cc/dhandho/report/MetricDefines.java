@@ -19,10 +19,10 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
 import cc.dhandho.util.JsonUtil;
 
 /**
@@ -114,7 +114,7 @@ public class MetricDefines {
 		try {
 			return load(fo.getContent().getInputStream());
 		} catch (FileSystemException e) {
-			throw new RtException(e);
+			throw new JcpsException(e);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class MetricDefines {
 			rt.init();
 			return rt;
 		} catch (DocumentException e) {
-			throw new RtException("", e);
+			throw new JcpsException("", e);
 		}
 
 	}
@@ -192,7 +192,7 @@ public class MetricDefines {
 
 		MetricDefine old = this.metricNameMap.put(m.name, m);
 		if (old != null) {
-			throw new RtException("duplicated metric:" + m.name);
+			throw new JcpsException("duplicated metric:" + m.name);
 		}
 		this.metricIdMap.put(m.id, m);
 	}
@@ -219,7 +219,7 @@ public class MetricDefines {
 			buildMetricArrayAsJson(metrics, writer);
 			writer.endObject();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 
@@ -248,7 +248,7 @@ public class MetricDefines {
 		}
 		// non-leaf metric,composite metric.
 		if (stack.contains(metric)) {
-			throw new RtException("loop dependence, stack:" + stack);
+			throw new JcpsException("loop dependence, stack:" + stack);
 		}
 		stack.push(metric);
 		writer.beginObject();

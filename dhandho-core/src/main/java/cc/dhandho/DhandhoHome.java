@@ -6,6 +6,8 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 
+import com.age5k.jcps.JcpsException;
+
 public class DhandhoHome {
 
 	FileSystemManager fileSystem;
@@ -24,7 +26,7 @@ public class DhandhoHome {
 			this.fileSystem = fileSystem;
 			this.homeFile = fileSystem.resolveFile(home);
 		} catch (FileSystemException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

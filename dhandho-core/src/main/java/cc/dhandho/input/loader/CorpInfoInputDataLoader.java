@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.sse.SseCorpInfo2Loader;
 import cc.dhandho.input.sse.SseCorpInfoLoader;
 import cc.dhandho.input.szse.SzseCorpInfoLoader;
@@ -35,7 +35,7 @@ public class CorpInfoInputDataLoader extends InputDataLoader {
 		try {
 			loadCorpInfo(db);
 		} catch (IOException e) {
-			throw new RtException(e);
+			throw new JcpsException(e);
 		}
 
 	}

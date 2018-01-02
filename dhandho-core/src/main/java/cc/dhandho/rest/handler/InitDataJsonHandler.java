@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.stream.JsonWriter;
 
 import au.com.bytecode.opencsv.CSVReader;
-import cc.dhandho.RtException;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.RestRequestHandler;
 
@@ -36,7 +36,7 @@ public class InitDataJsonHandler implements RestRequestHandler {
 			this.loadTableCsv("C:\\dhandho\\client\\init\\metric-define-group-table.csv", rrc, false);
 			writer.endObject();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class InitDataJsonHandler implements RestRequestHandler {
 			} else if (type.equals("Boolean")) {
 				return new BooleanColumn(name);
 			} else {
-				throw new RtException("type not supported:" + type);
+				throw new JcpsException("type not supported:" + type);
 			}
 		}
 	}

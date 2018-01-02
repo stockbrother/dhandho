@@ -6,7 +6,7 @@ import java.io.StringWriter;
 
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.test.util.TestUtil;
 import cc.dhandho.util.JsonUtil;
@@ -27,7 +27,7 @@ public class MetricDefineTest extends TestCase {
 			System.out.println(sWriter.getBuffer());
 
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

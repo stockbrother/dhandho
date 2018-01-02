@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.CsvHeaderRowMap;
 import cc.dhandho.input.CsvReaderIterator;
 import cc.dhandho.input.CsvRow;
@@ -62,7 +62,7 @@ public class MemoryAllQuotesWashedDataLoader extends CsvReaderIterator {
 			// header area
 
 			if (headers == null) {
-				throw new RtException("This is header area but no 'Header' mark.");
+				throw new JcpsException("This is header area but no 'Header' mark.");
 			}
 
 			String key = row.getString(0, true);

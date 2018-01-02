@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.rest.JsonWrapper;
@@ -90,10 +90,10 @@ public class QueryJsonWrapper extends JsonWrapper {
 					int year = jP.getAsInt();
 					dI = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
 				} else {
-					throw new RtException("todo");
+					throw new JcpsException("todo");
 				}
 			} else {
-				throw new RtException("todo");
+				throw new JcpsException("todo");
 			}
 
 			rt.add(dI);

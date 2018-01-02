@@ -3,18 +3,17 @@ package cc.dhandho.report;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.chart.SvgChartWriter;
 import cc.dhandho.util.JsonUtil;
@@ -125,7 +124,7 @@ public class CorpDatedMetricReportData extends DoubleTable {
 		try {
 			sb.append(sWriter.getBuffer());
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 
@@ -154,7 +153,7 @@ public class CorpDatedMetricReportData extends DoubleTable {
 			writer.endArray();
 			writer.endObject();
 		} catch (IOException e) {
-			throw new RtException(e);
+			throw new JcpsException(e);
 		}
 
 	}
@@ -174,7 +173,7 @@ public class CorpDatedMetricReportData extends DoubleTable {
 			}
 			writer.endArray();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

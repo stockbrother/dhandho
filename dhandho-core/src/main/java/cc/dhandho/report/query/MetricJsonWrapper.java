@@ -8,7 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.rest.JsonWrapper;
 
 /**
@@ -77,7 +77,7 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 			} else if (reportType_Alias.length == 1) {
 				alias = reportType_Alias[0];
 			} else {
-				throw new RtException("illegal alias format:" + alias);
+				throw new JcpsException("illegal alias format:" + alias);
 			}
 
 			int idx = alias.indexOf('[');
@@ -92,13 +92,13 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 				// resolve it
 				reportType = aliasInfos.getFirstReportTypeByAlias(alias);
 				if (reportType == null) {
-					throw new RtException("not fount alias:" + alias);
+					throw new JcpsException("not fount alias:" + alias);
 				}
 				
 			}
 			String cI = aliasInfos.getColumnNameByAlias(reportType, alias);
 			if (cI == null) {
-				throw new RtException("no this alias:" + reportType + "." + alias);
+				throw new JcpsException("no this alias:" + reportType + "." + alias);
 			}
 
 			String link = reportType.toLowerCase();
@@ -184,7 +184,7 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 			} else if ("avg".equals(operator)) {
 				doBuildAvg(sql, aliasInfos);
 			} else {
-				throw new RtException("todo:" + operator);
+				throw new JcpsException("todo:" + operator);
 			}
 		}
 
@@ -199,7 +199,7 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 		private void doBuild(String operator, StringBuffer sql, ReportMetaInfos aliasInfos) {
 			List<MetricJsonWrapper> childL = this.getChildren();
 			if (childL.size() < 2) {
-				throw new RtException("total child metrics at least 2 for div op");
+				throw new JcpsException("total child metrics at least 2 for div op");
 			}
 			sql.append("(");
 			for (int i = 0; i < childL.size(); i++) {

@@ -13,7 +13,7 @@ import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 
 /**
  * <code>
@@ -218,19 +218,19 @@ public class JsonMetricSqlJoinQueryBuilder {
 
 				List<String> reportTypeL = builder.aliasInfos.getReportTypeListByAlias(alias);
 				if (reportTypeL.isEmpty()) {
-					throw new RtException("not fount alias:" + alias);
+					throw new JcpsException("not fount alias:" + alias);
 				} else if (reportTypeL.size() > 1) {
-					throw new RtException("too many alias found:" + alias);
+					throw new JcpsException("too many alias found:" + alias);
 				} else {
 					reportType = reportTypeL.get(0);
 				}
 			} else {
-				throw new RtException("illegal alias format:" + alias);
+				throw new JcpsException("illegal alias format:" + alias);
 			}
 
 			String cI = builder.aliasInfos.getColumnNameByAlias(reportType, alias);
 			if (cI == null) {
-				throw new RtException("no this alias:" + reportType + "." + alias);
+				throw new JcpsException("no this alias:" + reportType + "." + alias);
 			}
 
 			String table = reportType;
@@ -279,14 +279,14 @@ public class JsonMetricSqlJoinQueryBuilder {
 			} else if ("*".equals(operator)) {
 				doBuild(operator, builder);
 			} else {
-				throw new RtException();
+				throw new JcpsException();
 			}
 		}
 
 		private void doBuild(String operator, JsonMetricSqlJoinQueryBuilder builder) {
 			List<Metric> childL = this.getChildren();
 			if (childL.size() < 2) {
-				throw new RtException("total child metrics at least 2 for div op");
+				throw new JcpsException("total child metrics at least 2 for div op");
 			}
 			builder.sql.append("(");
 			for (int i = 0; i < childL.size(); i++) {

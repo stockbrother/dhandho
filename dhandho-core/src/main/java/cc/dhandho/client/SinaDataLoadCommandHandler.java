@@ -2,7 +2,8 @@ package cc.dhandho.client;
 
 import java.io.IOException;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
+
 import cc.dhandho.rest.handler.SinaAllQuotesDataLoadRRHandler;
 
 public class SinaDataLoadCommandHandler extends DhandhoCommandHandler {
@@ -13,7 +14,7 @@ public class SinaDataLoadCommandHandler extends DhandhoCommandHandler {
 		try {
 			cc.getServer().handle(SinaAllQuotesDataLoadRRHandler.class.getName());
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

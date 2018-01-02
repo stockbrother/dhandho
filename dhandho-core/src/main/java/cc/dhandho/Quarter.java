@@ -2,8 +2,6 @@ package cc.dhandho;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public enum Quarter {
     Q1, Q2, Q3, Q4;

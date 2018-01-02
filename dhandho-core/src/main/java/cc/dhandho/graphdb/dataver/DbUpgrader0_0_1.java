@@ -73,13 +73,12 @@ public class DbUpgrader0_0_1 extends VersionUpgrader<DbUpgradeContext> {
 		master.createIndex("Idx_" + V_MASTER_REPORT + "_key", OClass.INDEX_TYPE.UNIQUE, "corpId", "reportDate");
 		
 		// Dupont Analysis
-		OClass dupontD = db.createClass(V_DUPONT_VNODE, "V");
-		dupontD.createProperty("name", OType.STRING);
-				
+		
 		OClass dupontV = db.createClass(V_DUPONT_VNODE, "V");
+		dupontV.createProperty("define", OType.STRING);
 		dupontV.createProperty("corpId", OType.STRING);
-		dupontV.createProperty("define", OType.LINK);
 		dupontV.createProperty("reportDate", OType.DATE);
+		dupontV.createProperty("value", OType.DOUBLE);
 		
 	}
 

@@ -5,6 +5,8 @@ import java.util.concurrent.Semaphore;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.age5k.jcps.framework.container.Container;
+import com.age5k.jcps.framework.container.impl.ContainerImpl;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
@@ -14,10 +16,6 @@ import com.orientechnologies.orient.core.record.OEdge;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
-
-import cc.dhandho.commons.container.Container;
-import cc.dhandho.commons.container.ContainerImpl;
-import cc.dhandho.graphdb.DbConfig;
 
 //http://orientdb.com/docs/3.0.x/fiveminute/java-3.html
 

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
@@ -42,7 +42,7 @@ public class WebServer {
         try {
             server.start();
         } catch (Exception e) {
-            throw RtException.toRtException(e);
+            throw JcpsException.toRtException(e);
         }
 
     }
@@ -51,7 +51,7 @@ public class WebServer {
         try {
             server.stop();
         } catch (Exception e) {
-            throw RtException.toRtException(e);
+            throw JcpsException.toRtException(e);
         }
     }
 

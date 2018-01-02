@@ -26,7 +26,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.CorpDatedMetricReportData;
 
@@ -85,7 +85,7 @@ public class SvgChartWriter {
 
 			transformer.transform(new DOMSource(root), new StreamResult(out));
 		} catch (TransformerException e) {
-			throw new RtException(e);
+			throw new JcpsException(e);
 		}
 
 	}

@@ -2,10 +2,10 @@ package cc.dhandho.rest.handler;
 
 import java.io.IOException;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonElement;
 import com.google.gson.internal.Streams;
 
-import cc.dhandho.RtException;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.RestRequestHandler;
 
@@ -18,7 +18,7 @@ public class EchoJsonHandler implements RestRequestHandler {
 		try {
 			Streams.write(json, rrc.getWriter());
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

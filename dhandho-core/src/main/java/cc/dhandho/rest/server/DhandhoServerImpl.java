@@ -13,6 +13,9 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
+import com.age5k.jcps.framework.container.impl.ContainerImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -24,9 +27,6 @@ import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhandhoHome;
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
-import cc.dhandho.commons.container.Container;
-import cc.dhandho.commons.container.ContainerImpl;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.graphdb.MyDataUpgraders;
@@ -74,9 +74,9 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		try {
 			metricDefines = MetricDefines.load(this.home.getClientFile().resolveFile("metric-defines.xml"));
 		} catch (FileSystemException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 		this.executor = Executors.newScheduledThreadPool(1, this);
@@ -102,7 +102,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 				LOG.warn("skip loadin all-quotes since folder not exist:" + to.getURL());
 			}
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 		this.dbProvider.createDbIfNotExist();

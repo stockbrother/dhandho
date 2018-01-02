@@ -6,7 +6,7 @@ import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.DhandhoHome;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.test.util.TestUtil;
 import junit.framework.TestCase;
@@ -28,7 +28,7 @@ public class MemoryAllQuotesWashedDataLoaderTest extends TestCase{
 				//LOG.warn("skip loadin all-quotes since folder not exist:" + to.getURL());
 			}
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 }

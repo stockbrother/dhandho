@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.age5k.jcps.JcpsException;
+
 public class MemoryAliasInfos extends AbstractReportMetaInfos {
 
 	private Map<String, AtomicInteger> maxColumnIndexMap = new HashMap<>();
@@ -20,7 +22,7 @@ public class MemoryAliasInfos extends AbstractReportMetaInfos {
 		}
 
 		if (aliasMap.containsKey(alias)) {
-			throw new RtException("duplicated.");
+			throw new JcpsException("duplicated.");
 		}
 
 		AtomicInteger max = this.maxColumnIndexMap.get(reportType);

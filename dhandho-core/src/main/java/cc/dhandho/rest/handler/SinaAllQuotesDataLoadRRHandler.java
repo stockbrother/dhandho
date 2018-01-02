@@ -4,9 +4,10 @@ import java.io.IOException;
 
 import org.apache.commons.vfs2.FileObject;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
+
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.RtException;
-import cc.dhandho.commons.container.Container;
 import cc.dhandho.input.sina.SinaAllQuotesPreprocessor;
 import cc.dhandho.input.sina.SinaQuotesCollector;
 import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
@@ -44,7 +45,7 @@ public class SinaAllQuotesDataLoadRRHandler extends AbstractRestRequestHandler {
 			MemoryAllQuotesWashedDataLoader loader = new MemoryAllQuotesWashedDataLoader(to, this.allQuotesInfos);
 			loader.start();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

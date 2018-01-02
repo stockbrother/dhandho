@@ -3,7 +3,7 @@ package cc.dhandho.client.jfx;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.commons.commandline.DefaultConsoleReader;
@@ -25,7 +25,7 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 			FileObject historyFile = consoleHome.resolveFile("history.txt");
 			consolePane = new JfxConsolePane(new DefaultHistoryStore(historyFile));
 		} catch (FileSystemException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 		this.pushReader(new DefaultConsoleReader(consolePane.getReader()));

@@ -19,8 +19,9 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
-import cc.dhandho.RtException;
-import cc.dhandho.commons.handler.Handler2;
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.handler.Handler2;
+
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.CsvHeaderRowMap;
 import cc.dhandho.input.CsvRowMap;
@@ -142,7 +143,7 @@ public class GDBWashedFileSchemaLoader extends QuarterWahsedFileLoader {
 	@Override
 	protected void onRowData(String reportType, String corpId, Date reportDate, List<String> keyList,
 			List<BigDecimal> valueList) {
-		throw new RtException("not here");
+		throw new JcpsException("not here");
 	}
 
 }

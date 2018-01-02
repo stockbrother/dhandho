@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.util.JsonUtil;
 
 public class ValueNode {
@@ -64,7 +64,7 @@ public class ValueNode {
 			writer.endArray();
 			writer.endObject();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

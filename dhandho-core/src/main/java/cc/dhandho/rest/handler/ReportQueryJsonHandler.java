@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
@@ -13,7 +14,6 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
@@ -122,7 +122,7 @@ public class ReportQueryJsonHandler extends DbSessionJsonHandler {
 				try {
 					return doProcess(reportType, rst, aliasInfos, rrc.getReader(), rrc.getWriter());
 				} catch (IOException e) {
-					throw RtException.toRtException(e);
+					throw JcpsException.toRtException(e);
 				}
 			}
 		});

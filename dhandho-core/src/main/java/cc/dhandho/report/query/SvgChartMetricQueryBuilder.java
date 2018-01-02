@@ -37,7 +37,7 @@ import com.google.gson.stream.JsonReader;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.util.JsonUtil;
 
@@ -117,7 +117,7 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 
 			transformer.transform(new DOMSource(root), new StreamResult(out));
 		} catch (TransformerException e) {
-			throw new RtException(e);
+			throw new JcpsException(e);
 		}
 
 	}

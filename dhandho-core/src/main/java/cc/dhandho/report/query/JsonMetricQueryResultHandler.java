@@ -8,7 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.util.JsonUtil;
 
@@ -39,7 +39,7 @@ public class JsonMetricQueryResultHandler implements OResultSetHandler<JsonArray
 			}
 			writer.endArray();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 		return (JsonArray) JsonUtil.parse(sWriter.getBuffer().toString());
 	}

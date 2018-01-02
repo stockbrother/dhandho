@@ -8,12 +8,13 @@ import java.util.Map;
 
 import org.apache.commons.vfs2.FileObject;
 
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.handler.Handler;
+
 import cc.dhandho.DhandhoHome;
-import cc.dhandho.RtException;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
-import cc.dhandho.commons.handler.Handler;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.rest.server.DhandhoServer;
 
@@ -82,7 +83,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");
 			return MetricDefines.load(file.getContent().getInputStream());
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

@@ -1,10 +1,10 @@
 package cc.dhandho.input.loader;
 
+import com.age5k.jcps.framework.container.Container;
+import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.DhandhoHome;
-import cc.dhandho.commons.container.Container;
-import cc.dhandho.commons.handler.Handler2;
 
 /**
  * TODO avoid loading twice, move input folder to archive folder.

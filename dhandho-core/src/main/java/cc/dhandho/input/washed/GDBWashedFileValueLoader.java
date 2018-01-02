@@ -17,8 +17,9 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.Quarter;
-import cc.dhandho.RtException;
-import cc.dhandho.commons.handler.Handler2;
+import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.handler.Handler2;
+
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
@@ -54,7 +55,7 @@ public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 				try {
 					doProcess(db);
 				} catch (IOException e) {
-					throw RtException.toRtException(e);
+					throw JcpsException.toRtException(e);
 				}
 			}
 		});

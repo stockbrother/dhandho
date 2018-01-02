@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.cli.HelpFormatter;
 
-import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.commons.commandline.CommandType;
 

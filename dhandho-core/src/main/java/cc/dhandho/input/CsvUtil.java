@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 
 public class CsvUtil {
 
@@ -27,7 +27,7 @@ public class CsvUtil {
 		try {
 			return df.parse(str);
 		} catch (ParseException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class CsvUtil {
 	public static String getValueByColumn(String[] line, Map<String, Integer> colIndexMap, String col, String asNull) {
 		Integer idx = colIndexMap.get(col);
 		if (idx == null) {
-			throw new RtException("no column found:" + col + ",all are:" + colIndexMap);
+			throw new JcpsException("no column found:" + col + ",all are:" + colIndexMap);
 		}
 
 		String rt = line[idx];

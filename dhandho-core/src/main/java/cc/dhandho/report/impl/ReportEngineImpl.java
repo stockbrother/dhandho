@@ -2,16 +2,16 @@ package cc.dhandho.report.impl;
 
 import java.io.StringReader;
 
+import com.age5k.jcps.framework.container.Container;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.commons.container.Container;
-import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.report.CorpDupontProfileReport;
+import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.report.query.ReportDataMetricQuery;
@@ -51,12 +51,14 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 		JsonArrayMetricsQuery jb = new JsonArrayMetricsQuery(reader, this.reportMetaInfos);
 
 		JsonArray mvalues = jb.query(dbProvider);
+		Double d = null;
+		if (mvalues.size() > 0) {
 
-		JsonObject row1 = (JsonObject) mvalues.get(0);
+			JsonObject row1 = (JsonObject) mvalues.get(0);
 
-		JsonElement m1 = row1.get("m1");
-		Double d = m1.isJsonNull() ? null : m1.getAsDouble();
-
+			JsonElement m1 = row1.get("m1");
+			d = m1.isJsonNull() ? null : m1.getAsDouble();
+		}
 		return d;
 	}
 
@@ -70,7 +72,7 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 
 	@Override
 	public CorpDupontProfileReport getDupontProfileReport(String corpId, int[] years) {
-		
+
 		return null;
 	}
 

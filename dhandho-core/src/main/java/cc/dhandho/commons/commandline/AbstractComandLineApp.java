@@ -23,7 +23,7 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 import cc.dhandho.client.CommandHandler;
 import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
 
@@ -211,7 +211,7 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 		CommandType type = this.commandMap.get("help");//
 		if (type == null) {
-			throw new RtException("no help command found.");
+			throw new JcpsException("no help command found.");
 		}
 		return type;
 	}
@@ -248,11 +248,11 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 		try {
 			this.fs.get(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		} catch (ExecutionException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		} catch (TimeoutException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 	}
 

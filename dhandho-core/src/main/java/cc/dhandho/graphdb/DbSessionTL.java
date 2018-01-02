@@ -2,7 +2,7 @@ package cc.dhandho.graphdb;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 
 public class DbSessionTL {
 
@@ -19,7 +19,7 @@ public class DbSessionTL {
 	public static ODatabaseSession get(boolean force) {
 		ODatabaseSession dbs = TL.get();
 		if (force && dbs == null) {
-			throw new RtException("no db session found for thread:" + Thread.currentThread());
+			throw new JcpsException("no db session found for thread:" + Thread.currentThread());
 		}
 		return dbs;
 

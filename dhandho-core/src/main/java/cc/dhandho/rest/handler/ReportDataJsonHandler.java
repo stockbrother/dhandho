@@ -1,14 +1,13 @@
 package cc.dhandho.rest.handler;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.RtException;
 import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.report.query.ReportDataMetricQuery;
 import cc.dhandho.rest.AbstractRestRequestHandler;
@@ -64,7 +63,7 @@ public class ReportDataJsonHandler extends AbstractRestRequestHandler {
 			rdata2.writeToJson(writer);
 			writer.endObject();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}

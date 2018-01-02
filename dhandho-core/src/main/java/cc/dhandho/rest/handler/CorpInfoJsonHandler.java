@@ -2,6 +2,7 @@ package cc.dhandho.rest.handler;
 
 import java.io.IOException;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
@@ -10,7 +11,6 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import cc.dhandho.RtException;
 import cc.dhandho.graphdb.DbUtil;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
@@ -43,7 +43,7 @@ public class CorpInfoJsonHandler extends DbSessionJsonHandler {
 						writer.name("corpName").value(corpName);
 						writer.name("category").value(category);
 					} catch (IOException e) {
-						throw new RtException(e);
+						throw new JcpsException(e);
 					}
 
 				}

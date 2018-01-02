@@ -8,6 +8,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.JcpsException;
+
 public abstract class AbstractReportMetaInfos implements ReportMetaInfos {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractReportMetaInfos.class);
@@ -65,7 +67,7 @@ public abstract class AbstractReportMetaInfos implements ReportMetaInfos {
 					return type;
 				}
 			}
-			throw new RtException("too many report types:" + list + " and none of them are recognized.");
+			throw new JcpsException("too many report types:" + list + " and none of them are recognized.");
 		}
 	}
 

@@ -1,11 +1,11 @@
 package cc.dhandho.graphdb;
 
+import com.age5k.jcps.framework.handler.Handler2;
+import com.age5k.jcps.framework.handler.Handler3;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
 
-import cc.dhandho.commons.handler.Handler2;
-import cc.dhandho.commons.handler.Handler3;
 import cc.dhandho.rest.server.DbProvider;
 
 public class DefaultDbProvider implements DbProvider {

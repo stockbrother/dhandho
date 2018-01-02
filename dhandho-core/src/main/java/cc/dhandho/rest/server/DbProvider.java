@@ -1,9 +1,9 @@
 package cc.dhandho.rest.server;
 
+import com.age5k.jcps.framework.handler.Handler2;
+import com.age5k.jcps.framework.handler.Handler3;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.commons.handler.Handler2;
-import cc.dhandho.commons.handler.Handler3;
 import cc.dhandho.graphdb.DbConfig;
 
 /**

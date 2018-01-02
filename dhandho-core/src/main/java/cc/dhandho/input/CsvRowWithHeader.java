@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
 
 public class CsvRowWithHeader extends CsvRow {
 
@@ -28,7 +28,7 @@ public class CsvRowWithHeader extends CsvRow {
 		Integer idx = headerMap.get(name);
 		if (idx == null) {
 			if (force) {
-				throw new RtException("no column:" + name);
+				throw new JcpsException("no column:" + name);
 			} else {
 				return null;
 			}

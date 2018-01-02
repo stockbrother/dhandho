@@ -6,7 +6,8 @@ import java.io.IOException;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileUtil;
 
-import cc.dhandho.RtException;
+import com.age5k.jcps.JcpsException;
+
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 
 /**
@@ -29,7 +30,7 @@ public class CatCommandHandler extends DhandhoCommandHandler {
 			cc.getConsole().peekWriter().write(os.toString("utf-8"));
 			cc.getConsole().peekWriter().writeLine();
 		} catch (IOException e) {
-			throw RtException.toRtException(e);
+			throw JcpsException.toRtException(e);
 		}
 
 	}
