@@ -104,7 +104,7 @@ public class DupontAnalysisTest extends TestCase {
 
 	public void testDupontAnalysisMore() throws Exception {
 
-		dupontAnalysis.execute(2016, dbProvider);
+		dupontAnalysis.analysisAndStore(2016, dbProvider);
 
 		Map<String, Map<String, OVertex>> vNodeMapMap = new HashMap<>();
 

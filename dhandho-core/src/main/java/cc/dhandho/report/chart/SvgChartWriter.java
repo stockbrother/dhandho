@@ -22,11 +22,13 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYDataset;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.age5k.jcps.JcpsException;
+
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.CorpDatedMetricReportData;
 
@@ -34,6 +36,36 @@ public class SvgChartWriter {
 
 	public SvgChartWriter() {
 
+	}
+	
+	public void writeSvg(List<Double[]> xyPoints,Writer writer) {
+		String title = "[" + "todo" + "]";
+		XYDataset dataSet = createDataset(xyPoints);
+		
+		JFreeChart chart = ChartFactory.createScatterPlot(title, null, null, dataSet, PlotOrientation.VERTICAL, true,
+				true, false);
+
+		//
+
+		int width = 600;
+		int height = 320;
+
+		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+		Document doc = domImpl.createDocument(SVGConstants.SVG_NAMESPACE_URI, "svg", null);
+		SVGGraphics2D svgGenerator = new SVGGraphics2D(doc);
+		svgGenerator.getGeneratorContext().setPrecision(6);
+		chart.draw(svgGenerator, new Rectangle2D.Double(0, 0, width, height), null);
+		Element root = svgGenerator.getRoot();
+		root.setAttribute("viewBox", "0 0 " + width + " " + height);
+
+		// writeXmlWithDiv(width / 1, height / 1, root, writer);
+
+		writeXml2(root, writer);
+	}
+	
+	private XYDataset createDataset(List<Double[]> xyPoints) {
+		
+		return null;
 	}
 
 	public void writeSvg(CorpDatedMetricReportData rdata, StringBuilder sb) {

@@ -17,6 +17,8 @@ import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.ReportEngine;
+import cc.dhandho.report.chart.SvgChartWriter;
+import cc.dhandho.report.dupont.node.DefineNode;
 import cc.dhandho.report.dupont.node.RoeNode;
 import cc.dhandho.report.dupont.node.ValueNode;
 import cc.dhandho.rest.server.DbProvider;
@@ -92,7 +94,13 @@ public class DupontAnalysis {
 		}).stream();
 	}
 
-	public void execute(int year, DbProvider dbProvider) {
+	/**
+	 * Execute analysis on all corps with the year specified.
+	 * 
+	 * @param year
+	 * @param dbProvider
+	 */
+	public void analysisAndStore(int year, DbProvider dbProvider) {
 		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
 
 		dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
@@ -106,7 +114,7 @@ public class DupontAnalysis {
 
 					@Override
 					public void accept(String corpId) {
-						Context ac = execute(corpId, year);
+						Context ac = DupontAnalysis.this.execute(corpId, year);
 						ValueNode top = ac.getValueNode();// ROE node
 						// 3 component node:Netprofit-margin/Asset-turnover/Equity-multiplier.
 						for (ValueNode vNode : top.getChildList()) {
@@ -125,6 +133,40 @@ public class DupontAnalysis {
 			}
 		});
 
+	}
+
+	/**
+	 * Build a svg 2D point chart based on the value node for all corpIds.
+	 * 
+	 * @param xDefine
+	 * @param yDefine
+	 * @param year
+	 */
+	public <X extends DefineNode, Y extends DefineNode> void buildSvg(Class<X> xDefine, Class<Y> yDefine, int year,
+			DbProvider dbProvider) {
+		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
+		String typeX = xDefine.getName();
+		String typeY = yDefine.getName();
+		StringBuilder sb = new StringBuilder();
+		SvgChartWriter writer = new SvgChartWriter();
+		
+		dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
+
+			@Override
+			public void handle(ODatabaseSession t) {
+
+				DbUtil.executeQuery(t,
+						"select from " + DbUpgrader0_0_1.V_DUPONT_VNODE + " where reportDate=? and (type=? or type=?)",
+						new Object[] { reportDate, typeX, typeY }, new OResultSetHandler<StringBuilder>() {
+
+							@Override
+							public StringBuilder handle(OResultSet arg0) {
+								
+								return null;
+							}
+						});
+			}
+		});
 	}
 
 }
