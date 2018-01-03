@@ -4,8 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.geom.Rectangle2D;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -22,6 +26,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -37,12 +42,24 @@ public class SvgChartWriter {
 	public SvgChartWriter() {
 
 	}
-	
-	public void writeSvg(List<Double[]> xyPoints,Writer writer) {
+
+	/**
+	 * 
+	 * @param xyPoints
+	 *            A map: corpId => Point(x,y)
+	 * @param sb
+	 */
+	public void writeScatterSvg(String xLabel, String yLabel, Map<String, Double[]> xyPoints, String[] heighLightKey, StringBuilder sb) {
+		StringWriter sWriter = new StringWriter();
+		writeScatterSvg(xLabel,yLabel, xyPoints, heighLightKey, sWriter);
+		sb.append(sWriter.getBuffer().toString());
+	}
+
+	public void writeScatterSvg(String xLabel, String yLabel, Map<String, Double[]> xyPoints, String[] heighLightKey, Writer writer) {
 		String title = "[" + "todo" + "]";
-		XYDataset dataSet = createDataset(xyPoints);
-		
-		JFreeChart chart = ChartFactory.createScatterPlot(title, null, null, dataSet, PlotOrientation.VERTICAL, true,
+		XYDataset dataSet = createDataset(xyPoints, heighLightKey);
+
+		JFreeChart chart = ChartFactory.createScatterPlot(title, xLabel, yLabel, dataSet, PlotOrientation.VERTICAL, true,
 				true, false);
 
 		//
@@ -62,10 +79,29 @@ public class SvgChartWriter {
 
 		writeXml2(root, writer);
 	}
-	
-	private XYDataset createDataset(List<Double[]> xyPoints) {
-		
-		return null;
+
+	private XYDataset createDataset(Map<String, Double[]> xyPoints, String[] heighLightKey) {
+		DefaultXYDataset rt = new DefaultXYDataset();
+		Set<String> set = new HashSet<>(Arrays.asList(heighLightKey));
+		double[][] otherData = new double[2][xyPoints.size() - set.size()];
+		int otherIdx = 0;
+		for (Map.Entry<String, Double[]> entry : xyPoints.entrySet()) {
+			String key = entry.getKey();
+			Double[] point = entry.getValue();
+			if (set.contains(key)) {// heighLightCorpId
+				double[][] data = new double[2][1];
+				data[0][0] = point[0] == null ? 0D : point[0];
+				data[1][0] = point[1] == null ? 0D : point[1];
+				rt.addSeries(key, data);
+			} else {
+				otherData[0][otherIdx] = point[0] == null ? 0D : point[0];
+				otherData[1][otherIdx] = point[1] == null ? 0D : point[1];
+				otherIdx++;
+			}
+		}
+		rt.addSeries("Other", otherData);
+
+		return rt;
 	}
 
 	public void writeSvg(CorpDatedMetricReportData rdata, StringBuilder sb) {

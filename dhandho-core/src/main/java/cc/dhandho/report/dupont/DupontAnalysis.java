@@ -2,14 +2,18 @@ package cc.dhandho.report.dupont;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
+import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.graphdb.DbUtil;
@@ -142,13 +146,14 @@ public class DupontAnalysis {
 	 * @param yDefine
 	 * @param year
 	 */
-	public <X extends DefineNode, Y extends DefineNode> void buildSvg(Class<X> xDefine, Class<Y> yDefine, int year,
-			DbProvider dbProvider) {
+	public <X extends DefineNode, Y extends DefineNode> StringBuilder buildScatterSvg(Class<X> xDefine,
+			Class<Y> yDefine, int year, String[] heighLightCorpId, DbProvider dbProvider, StringBuilder sb) {
 		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
 		String typeX = xDefine.getName();
 		String typeY = yDefine.getName();
-		StringBuilder sb = new StringBuilder();
-		SvgChartWriter writer = new SvgChartWriter();
+		
+		String xLabel = xDefine.getSimpleName();
+		String yLabel = yDefine.getSimpleName();
 		
 		dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
 
@@ -156,17 +161,42 @@ public class DupontAnalysis {
 			public void handle(ODatabaseSession t) {
 
 				DbUtil.executeQuery(t,
-						"select from " + DbUpgrader0_0_1.V_DUPONT_VNODE + " where reportDate=? and (type=? or type=?)",
+						"select from " + DbUpgrader0_0_1.V_DUPONT_VNODE
+								+ " where reportDate = ? and (define = ? or define = ?)",
 						new Object[] { reportDate, typeX, typeY }, new OResultSetHandler<StringBuilder>() {
 
 							@Override
 							public StringBuilder handle(OResultSet arg0) {
-								
+								Map<String, Double[]> pointMap = new HashMap<>();
+								while (arg0.hasNext()) {
+									OResult rI = arg0.next();
+									OVertex vI = rI.getVertex().get();
+									String corpId = vI.getProperty("corpId");
+									String type = vI.getProperty("define");
+									Double value = vI.getProperty("value");
+									Double[] point = pointMap.get(corpId);
+									if (point == null) {
+										point = new Double[2];
+										pointMap.put(corpId, point);
+									}
+									if (typeX.equals(type)) {
+										point[0] = value;
+									} else if (typeY.equals(type)) {
+										point[1] = value;
+									} else {
+										throw new JcpsException("type mismatch:" + type);
+									}
+								}
+								SvgChartWriter writer = new SvgChartWriter();
+
+								writer.writeScatterSvg(xLabel, yLabel, pointMap, heighLightCorpId, sb);
+
 								return null;
 							}
 						});
 			}
 		});
+		return sb;
 	}
 
 }

@@ -1,18 +1,9 @@
 package cc.dhandho.test.report;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.age5k.jcps.framework.handler.Handler2;
-import com.orientechnologies.orient.core.db.ODatabaseSession;
-import com.orientechnologies.orient.core.record.OVertex;
-import com.orientechnologies.orient.core.sql.executor.OResult;
-import com.orientechnologies.orient.core.sql.executor.OResultSet;
+import com.age5k.jcps.framework.reference.ReferenceCounter;
 
-import cc.dhandho.graphdb.DbUtil;
-import cc.dhandho.graphdb.OResultSetHandler;
-import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.dupont.DupontAnalysis;
 import cc.dhandho.report.dupont.DupontAnalysis.Context;
@@ -42,14 +33,14 @@ public class DupontAnalysisTest extends TestCase {
 	DbProvider dbProvider;
 	ReportEngine reportEngine;
 	DupontAnalysis dupontAnalysis;
-
+	
+	int setUp = 0;
+			
 	@Override
 	protected void setUp() throws Exception {
 		dbProvider = TestUtil.newInMemoryTestDbProvider(true);
 		reportEngine = TestUtil.newInMemoryReportEgine(dbProvider);
-
 		dupontAnalysis = new DupontAnalysis(reportEngine);
-
 	}
 
 	@Override
@@ -57,7 +48,7 @@ public class DupontAnalysisTest extends TestCase {
 
 	}
 
-	public void testDupontAnalysis() throws Exception {
+	public void testDupontAnalysisSimple() throws Exception {
 
 		Context ac = dupontAnalysis.execute(new Context(corpId, 2016));
 		ValueNode vNode = ac.getValueNode();
@@ -102,62 +93,4 @@ public class DupontAnalysisTest extends TestCase {
 
 	}
 
-	public void testDupontAnalysisMore() throws Exception {
-
-		dupontAnalysis.analysisAndStore(2016, dbProvider);
-
-		Map<String, Map<String, OVertex>> vNodeMapMap = new HashMap<>();
-
-		// find the result from DB.
-		this.dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
-
-			@Override
-			public void handle(ODatabaseSession t) {
-				String sql = "select from " + DbUpgrader0_0_1.V_DUPONT_VNODE;
-
-				DbUtil.executeQuery(t, sql, new OResultSetHandler<Void>() {
-
-					@Override
-					public Void handle(OResultSet rs) {
-						TestCase.assertTrue("empty result, no value vode genereated.", rs.hasNext());
-						while (rs.hasNext()) {
-							OResult rI = rs.next();
-							OVertex vI = rI.getVertex().get();
-							String corpId = vI.getProperty("corpId");
-							String define = vI.getProperty("define");
-							Map<String, OVertex> map = vNodeMapMap.get(corpId);
-							if (map == null) {
-								map = new HashMap<>();
-								vNodeMapMap.put(corpId, map);
-							}
-							map.put(define, vI);
-						}
-						return null;
-					}
-				});
-			}
-		});
-		Map<String, OVertex> vNodeMap = vNodeMapMap.get(corpId);
-		TestCase.assertNotNull(vNodeMap);
-		OVertex profitMarginV = vNodeMap.get(ProfitMarginNode.class.getName());
-		OVertex assertTurnoverV = vNodeMap.get(AssetTurnover.class.getName());
-		OVertex equityMultiplierV = vNodeMap.get(EquityMultiplier.class.getName());
-
-		TestCase.assertNotNull("", profitMarginV);
-		TestCase.assertNotNull("", assertTurnoverV);
-		TestCase.assertNotNull("", equityMultiplierV);
-
-		// TestCase.assertEquals(expected, actual);
-		Double profitMarginA = profitMarginV.getProperty("value");
-		Double assertTurnoverA = assertTurnoverV.getProperty("value");
-		Double equityMultiplierA = equityMultiplierV.getProperty("value");
-
-		TestCase.assertNotNull(profitMarginA);
-		TestCase.assertNotNull(assertTurnoverA);
-		TestCase.assertNotNull(equityMultiplierA);
-
-		TestCase.assertEquals(profitMargin, profitMarginA.doubleValue(), delta);
-		TestCase.assertEquals(assertTurnover, assertTurnoverA.doubleValue(), delta);
-		TestCase.assertEquals(equityMultiplier, equityMultiplierA.doubleValue(), delta);
-	}
 }
