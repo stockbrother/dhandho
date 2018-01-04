@@ -22,19 +22,19 @@ public class Main {
 
 	public static void main(String[] args) {
 		DhoDataHome home = getHome();
-		
+
 		DhoServer server = new DhandhoServerImpl(getDbProvider(home)).home(home);
 		server.start();
-		
+
 		FileObject consoleHome = getConsoleHome();
-		
+
 		DhandhoJfxApplication.launch(server, consoleHome);
-//		
-//		DhandhoJfxConsole console = new DhandhoJfxConsole(consoleHome);
-//		console.server(server);
-//		console.getServer().start();
-//		console.start();
-//		console.prompt();
+		//
+		// DhandhoJfxConsole console = new DhandhoJfxConsole(consoleHome);
+		// console.server(server);
+		// console.getServer().start();
+		// console.start();
+		// console.prompt();
 	}
 
 	private static DbProvider getDbProvider(DhoDataHome home) {
@@ -42,13 +42,24 @@ public class Main {
 	}
 
 	private static DbConfig getDbConfig(DhoDataHome home) {
+		String dbUrl = getDbUrl(home);
 		return new DbConfig()//
+				.dbUrl(dbUrl)//
 				.dbName("test")//
-				.dbUrl("plocal:dhandho")//
 				.dbUser("admin")//
 				.dbPassword("admin")//
 				.dbType(ODatabaseType.PLOCAL)//
 		;
+	}
+
+	private static String getDbUrl(DhoDataHome home) {
+		String url = System.getProperty("dhandho.db.url");
+		if (url == null) {
+			String userHome = System.getProperty("user.home");
+			userHome = userHome.replace('\\', '/');
+			url = "plocal://"+userHome + "/.dhandho/orientdb";
+		}
+		return url;
 	}
 
 	private static FileObject getConsoleHome() {
