@@ -11,15 +11,15 @@ import org.apache.commons.vfs2.FileObject;
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.handler.Handler;
 
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
 import cc.dhandho.report.MetricDefines;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 
 public class DhandhoCliConsole extends AbstractComandLineApp {
-	protected DhandhoServer server;
+	protected DhoServer server;
 
 	protected List<Handler> beforeShutdownHandlerList = new ArrayList<>();
 
@@ -30,11 +30,11 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	protected HtmlRenderer htmlRenderer;
 
-	public DhandhoServer getServer() {
+	public DhoServer getServer() {
 		return server;
 	}
 
-	public DhandhoCliConsole server(DhandhoServer server) {
+	public DhandhoCliConsole server(DhoServer server) {
 		this.server = server;
 		return this;
 	}
@@ -77,7 +77,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		return this.metrics;
 	}
 
-	private MetricDefines load(DhandhoHome home) {
+	private MetricDefines load(DhoDataHome home) {
 		FileObject file;
 		try {
 			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");

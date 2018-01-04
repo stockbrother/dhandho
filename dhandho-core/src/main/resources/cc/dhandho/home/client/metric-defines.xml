@@ -1,0 +1,88 @@
+<metrics for="xueqiu">
+
+	<group name="COMMON">
+		<metric name="权益乘数" op="/">
+			<metric ref="资产总计" />
+			<metric ref="所有者权益_或股东权益_合计" />
+		</metric>
+	</group>
+
+	<group name="NJR">
+		<metric name="净资产收益率" op="*">
+			<metric ref="总资产收益率" />
+			<metric ref="权益乘数" />
+		</metric>
+		<metric name="毛利率" op="/">
+			<metric ref="营业总收入" />
+			<metric ref="营业成本" />
+		</metric>
+		<metric name="总资产收益率" op="/">
+			<metric ref="净利润" />
+			<metric ref="资产总计" />
+		</metric>
+		<metric name="期间费用" op="+">
+			<metric ref="销售费用" />
+			<metric ref="管理费用" />
+			<metric ref="财务费用" />
+		</metric>
+		<metric name="期间费用率" op="/">
+			<metric ref="期间费用" />
+			<metric ref="营业总收入" />
+		</metric>
+		<metric name="有息负债" op="+">
+			<metric ref="长期借款" />
+			<metric ref="短期借款" />
+			<metric ref="应付债券" />
+			<metric ref="一年内到期的非流动资产" />
+		</metric>
+		<metric name="有息负债率" op="/">
+			<metric ref="有息负债" />
+			<metric ref="资产总计" />
+		</metric>
+		<metric name="有息负债成本" op="/">
+			<metric ref="财务费用" />
+			<metric ref="有息负债" />
+		</metric>
+		<metric name="营运资本" op="-">
+			<metric ref="流动资产合计" />
+			<metric ref="流动负债合计" />
+		</metric>
+		<metric name="经营现金流量净额" op="-">
+			<metric ref="经营活动现金流入小计" />
+			<metric ref="经营活动现金流出小计" />
+		</metric>
+		<metric name="投资现金流量净额" op="-">
+			<metric ref="投资活动现金流入小计" />
+			<metric ref="投资活动现金流出小计" />
+		</metric>
+		<metric name="筹资现金流量净额" op="-">
+			<metric ref="筹资活动现金流入小计" />
+			<metric ref="筹资活动现金流出小计" />
+		</metric>
+		<metric name="现金流量净额" op="+">
+			<metric ref="经营现金流量净额" />
+			<metric ref="投资现金流量净额" />
+			<metric ref="筹资现金流量净额" />
+		</metric>
+	</group>
+
+	<group name="JR">
+		<metric name="JR净资产收益率" op="*">
+			<metric ref="JR总资产收益率" />
+			<metric ref="权益乘数" />
+		</metric>
+		<metric name="JR总资产收益率" op="/">
+			<metric ref="五_净利润" />
+			<metric ref="资产总计" />
+		</metric>
+		<metric name="非息收入" op="-">
+			<metric ref="一_营业收入" />
+			<metric ref="净利息收入" />
+		</metric>
+		<metric name="非息收入比重" op="/">
+			<metric ref="非息收入" />
+			<metric ref="一_营业收入" />
+		</metric>
+	</group>
+
+</metrics>

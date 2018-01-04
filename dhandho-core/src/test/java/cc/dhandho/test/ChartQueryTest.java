@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.google.gson.stream.JsonReader;
 
 import cc.dhandho.rest.handler.CorpChartJsonHandler;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.test.util.TestUtil;
 import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
@@ -28,7 +28,7 @@ public class ChartQueryTest extends TestCase {
 
 	@Test
 	public void testNoTx() throws IOException {
-		DhandhoServer ds = TestUtil.newInMemoryTestDhandhoServer();
+		DhoServer ds = TestUtil.newInMemoryTestDhandhoServer();
 		ds.start();
 
 		String jsonS = ("{" //

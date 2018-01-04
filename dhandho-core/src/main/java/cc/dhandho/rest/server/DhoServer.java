@@ -6,7 +6,7 @@ import java.io.Writer;
 
 import com.google.gson.JsonElement;
 
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.graphdb.DbConfig;
 
 /**
@@ -14,7 +14,7 @@ import cc.dhandho.graphdb.DbConfig;
  * @author Wu
  *
  */
-public interface DhandhoServer {
+public interface DhoServer {
 
 	/**
 	 * 
@@ -22,9 +22,9 @@ public interface DhandhoServer {
 	 *            the Home folder in the VFS file system.
 	 * @return
 	 */
-	public DhandhoServer home(DhandhoHome home);
+	public DhoServer home(DhoDataHome home);
 
-	public DhandhoHome getHome();
+	public DhoDataHome getHome();
 
 	public void start();
 
@@ -35,8 +35,5 @@ public interface DhandhoServer {
 	public void handle(final String handlerS) throws IOException;
 
 	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException;
-
-	public DhandhoServer dbConfig(DbConfig newInMemoryTestDbConfig);
-	
 
 }

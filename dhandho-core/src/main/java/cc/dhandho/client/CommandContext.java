@@ -2,7 +2,7 @@ package cc.dhandho.client;
 
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandLineWriter;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 
 public class CommandContext {
 	private CommandAndLine commandLine;
@@ -27,7 +27,7 @@ public class CommandContext {
 		return commandLine.getArgs();
 	}
 
-	public DhandhoServer getServer() {
+	public DhoServer getServer() {
 		return this.getConsole().getServer();
 	}
 

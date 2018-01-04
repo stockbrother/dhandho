@@ -4,7 +4,7 @@ import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.container.impl.ContainerImpl;
 
 import cc.dhandho.DbReportMetaInfos;
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.graphdb.MyDataUpgraders;
 import cc.dhandho.input.loader.CorpInfoInputDataLoader;
@@ -30,7 +30,7 @@ public class ReportEngineTest extends TestCase {
 
 		MetricDefines metricDefines = TestUtil.newMetricDefines();
 
-		app.addComponent(DhandhoHome.class, TestUtil.getHome());
+		app.addComponent(DhoDataHome.class, TestUtil.getHome());
 		app.addComponent(DbProvider.class, dbProvider);
 		app.addComponent(ReportMetaInfos.class, metaInfos);
 		app.addComponent(MetricDefines.class, metricDefines);

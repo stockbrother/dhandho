@@ -2,7 +2,7 @@ package cc.dhandho.rest;
 
 import com.age5k.jcps.framework.container.Container;
 
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
@@ -20,7 +20,7 @@ public abstract class AbstractRestRequestHandler implements RestRequestHandler, 
 
 	protected DbProvider dbProvider;
 
-	protected DhandhoHome home;
+	protected DhoDataHome home;
 
 	protected ReportMetaInfos metaInfos;
 
@@ -32,7 +32,7 @@ public abstract class AbstractRestRequestHandler implements RestRequestHandler, 
 	public void setContainer(Container app) {
 		this.app = app;
 		this.dbProvider = app.findComponent(DbProvider.class, true);
-		this.home = app.findComponent(DhandhoHome.class, true);
+		this.home = app.findComponent(DhoDataHome.class, true);
 		this.metaInfos = app.findComponent(ReportMetaInfos.class, true);
 		this.metricDefines = app.findComponent(MetricDefines.class, true);
 		this.reportEngine = app.findComponent(ReportEngine.class, true);

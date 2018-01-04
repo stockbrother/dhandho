@@ -6,19 +6,19 @@ import java.io.Writer;
 
 import com.google.gson.JsonElement;
 
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.graphdb.DbConfig;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 
-public class EmptyDhandhoServer implements DhandhoServer {
+public class EmptyDhandhoServer implements DhoServer {
 
 	@Override
-	public DhandhoServer home(DhandhoHome home) {
+	public DhoServer home(DhoDataHome home) {
 		return null;
 	}
 
 	@Override
-	public DhandhoHome getHome() {
+	public DhoDataHome getHome() {
 		return null;
 	}
 
@@ -46,11 +46,6 @@ public class EmptyDhandhoServer implements DhandhoServer {
 	@Override
 	public void handle(String handlerS, Reader reader, Writer writer) throws IOException {
 
-	}
-
-	@Override
-	public DhandhoServer dbConfig(DbConfig newInMemoryTestDbConfig) {
-		return null;
 	}
 
 }

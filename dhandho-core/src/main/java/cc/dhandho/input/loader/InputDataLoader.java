@@ -4,7 +4,7 @@ import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 
 /**
  * TODO avoid loading twice, move input folder to archive folder.
@@ -14,12 +14,12 @@ import cc.dhandho.DhandhoHome;
  */
 public abstract class InputDataLoader implements Container.Aware, Handler2<ODatabaseSession> {
 	protected Container app;
-	protected DhandhoHome home;
+	protected DhoDataHome home;
 
 	@Override
 	public void setContainer(Container app) {
 		this.app = app;
-		this.home = app.findComponent(DhandhoHome.class, true);
+		this.home = app.findComponent(DhoDataHome.class, true);
 	}
 
 }

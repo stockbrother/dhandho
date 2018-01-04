@@ -8,12 +8,13 @@ import com.orientechnologies.orient.core.db.OrientDBConfig;
 
 import cc.dhandho.rest.server.DbProvider;
 
-public class DefaultDbProvider implements DbProvider {
-	DbConfig dbConfig;
+public class DefaultDbProvider extends AbstractDbProvider {
+	protected DbConfig dbConfig;
 
-	OrientDB orient;
-
-	private OrientDB getOrient() {
+	protected OrientDB orient;
+	
+	@Override
+	protected OrientDB getOrient() {
 		if (orient == null) {
 			orient = new OrientDB(this.dbConfig.getDbUrl(), OrientDBConfig.defaultConfig());
 		}
@@ -31,7 +32,8 @@ public class DefaultDbProvider implements DbProvider {
 		return this.getOrient().createIfNotExists(this.dbConfig.getDbName(), this.dbConfig.getDbType());
 	}
 
-	private ODatabaseSession openDB() {
+	@Override
+	protected ODatabaseSession openDB() {
 		// TODO avoid openDB twice.
 		// TODO if dbName = null, it will block here. why?
 		if (this.dbConfig.getDbName() == null) {

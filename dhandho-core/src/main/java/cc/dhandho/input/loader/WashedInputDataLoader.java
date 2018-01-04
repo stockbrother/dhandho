@@ -13,7 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.DbReportMetaInfos;
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.Quarter;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.input.washed.GDBWashedFileSchemaLoader;
@@ -30,7 +30,7 @@ public class WashedInputDataLoader extends InputDataLoader {
 	private static final Logger LOG = LoggerFactory.getLogger(WashedInputDataLoader.class);
 	// public static String DATA_VERSION_CORP_INFO = "dataVersion_corpInfo";
 
-	private DhandhoHome home;
+	protected DhoDataHome home;
 	DbProvider dbp;
 	ReportMetaInfos reportMetaInfos;
 
@@ -38,7 +38,7 @@ public class WashedInputDataLoader extends InputDataLoader {
 	public void setContainer(Container app) {
 		super.setContainer(app);
 		this.dbp = app.findComponent(DbProvider.class, true);
-		this.home = app.findComponent(DhandhoHome.class, true);
+		this.home = app.findComponent(DhoDataHome.class, true);
 		this.reportMetaInfos = app.findComponent(ReportMetaInfos.class, true);
 	}
 
@@ -52,6 +52,7 @@ public class WashedInputDataLoader extends InputDataLoader {
 					/* .limit(10) */.start();
 
 			new GDBWashedFileValueLoader(this.dbp, dir, Quarter.Q4)/* .limit(10) */.start();
+
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}

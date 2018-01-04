@@ -9,6 +9,7 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
+import com.orientechnologies.orient.core.exception.OSchemaException;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.record.OEdge;
 import com.orientechnologies.orient.core.record.OVertex;
@@ -28,7 +29,50 @@ public class OrientDbTest extends TestCase {
 
 	}
 
-	@Test
+	public void testTwoMemoryDB() {
+		String dbName = "db1";
+		String user = "admin";
+		String password = "admin";
+		String url = "memory:test";
+		String class1 = "class1";
+		{
+
+			OrientDB odb = new OrientDB(url, OrientDBConfig.defaultConfig());
+			odb.create(dbName, ODatabaseType.MEMORY);
+			{
+				ODatabaseSession dbs = odb.open(dbName, user, password);
+				OClass oclazz1 = dbs.createVertexClass(class1);
+				dbs.close();
+			}
+			{
+				OSchemaException ex = null;
+				ODatabaseSession dbs = odb.open(dbName, user, password);
+				try {
+					OClass oclazz1 = dbs.createVertexClass(class1);
+				} catch (OSchemaException e) {
+					ex = e;
+				}
+				TestCase.assertNotNull("", ex);
+
+				dbs.close();
+			}
+			odb.close();
+		}
+		
+		{
+
+			OrientDB odb = new OrientDB(url, OrientDBConfig.defaultConfig());
+			odb.create(dbName, ODatabaseType.MEMORY);
+			{
+				ODatabaseSession dbs = odb.open(dbName, user, password);
+				OClass oclazz1 = dbs.createVertexClass(class1);
+				dbs.close();
+			}
+			odb.close();
+		}
+
+	}
+
 	public void testOpenClose() throws IOException {
 		String dbName = "db1";
 		String user = "admin";
@@ -45,7 +89,6 @@ public class OrientDbTest extends TestCase {
 
 	}
 
-	@Test
 	public void testNoTx() throws IOException {
 		String dbName = "db1";
 		String user = "admin";

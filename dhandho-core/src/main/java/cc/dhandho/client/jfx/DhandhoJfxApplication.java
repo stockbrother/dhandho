@@ -2,10 +2,10 @@ package cc.dhandho.client.jfx;
 
 import org.apache.commons.vfs2.FileObject;
 
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.client.HtmlRenderer;
 import cc.dhandho.commons.util.JfxUtil;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -18,8 +18,9 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	// this SERVER must be started and set before launch this application.
 
-	private static DhandhoServer SERVER;
+	private static DhoServer SERVER;
 
+	private static FileObject CONSOLE_HOME;
 	DhandhoJfxConsole console;
 	Stage htmlStage;
 
@@ -31,14 +32,18 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	}
 
+	public static void launch(DhoServer server, FileObject consoleHome) {
+		SERVER = server;
+		CONSOLE_HOME = consoleHome;
+		Application.launch(DhandhoJfxApplication.class);
+
+	}
+
 	@Override
 	public void init() throws Exception {
-		DhandhoHome home = SERVER.getHome();
-		FileObject consoleHome = home.resolveFile("console");
-		if (!consoleHome.exists()) {
-			consoleHome.createFolder();
-		}
-		console = new DhandhoJfxConsole(consoleHome);
+		DhoDataHome home = SERVER.getHome();
+
+		console = new DhandhoJfxConsole(CONSOLE_HOME);
 		console.server(SERVER);
 		console.htmlRenderer(this);
 
@@ -98,7 +103,7 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	}
 
-	public static void setServer(DhandhoServer server) {
+	public static void setServer(DhoServer server) {
 		SERVER = server;
 	}
 

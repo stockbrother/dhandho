@@ -16,7 +16,7 @@ import com.age5k.jcps.framework.container.impl.ContainerImpl;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
 import cc.dhandho.DbReportMetaInfos;
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.graphdb.DbConfig;
@@ -28,17 +28,22 @@ import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.server.DbProvider;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.rest.server.DhandhoServerImpl;
 
 public class TestUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);
 
-	private static DhandhoHome HOME;
+	private static DhoDataHome HOME;
 
 	public static DbConfig newInMemoryTestDbConfig() {
 		return new DbConfig().dbName("test").dbUrl("memory:test").dbUser("admin").dbPassword("admin")
 				.dbType(ODatabaseType.MEMORY);
+	}
+
+	public static DbProvider newInMemoryTestDb() {
+		DbProvider rt = new DefaultDbProvider().dbConfig(newInMemoryTestDbConfig());
+		return rt;
 	}
 
 	public static DbConfig newRemoteLocalhostDbConfig() {
@@ -46,13 +51,18 @@ public class TestUtil {
 				.dbType(ODatabaseType.PLOCAL);
 	}
 
-	public static FileObject newRamFile() throws IOException {
-		FileObject rt = newRamFolder().resolveFile("ram.file");
-		rt.createFile();
-		return rt;
+	public static FileObject newRamFile() {
+		try {
+
+			FileObject rt = newRamFolder().resolveFile("ram.file");
+			rt.createFile();
+			return rt;
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
+		}
 	}
 
-	public static FileObject newRamFolder() throws IOException {
+	public static FileObject newRamFolder() {
 		return newAnyFolder("ram://tmp-folder-");
 	}
 
@@ -60,19 +70,34 @@ public class TestUtil {
 		return newAnyFolder("tmp://tmp-folder-");
 	}
 
-	private static FileObject newAnyFolder(String prefix) throws IOException {
-		FileSystemManager fsm = VFS.getManager();
-		int i = 0;
-		while (true) {
-			FileObject rt = fsm.resolveFile(prefix + (i++));
-			if (!rt.exists()) {
-				rt.createFolder();
-				return rt;
+	private static FileObject newAnyFolder(String prefix) {
+		try {
+
+			FileSystemManager fsm = VFS.getManager();
+			int i = 0;
+			while (true) {
+				FileObject rt = fsm.resolveFile(prefix + (i++));
+				if (!rt.exists()) {
+					rt.createFolder();
+					return rt;
+				}
 			}
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
 		}
 	}
 
-	public static DhandhoHome getHome() {
+	public static DhoDataHome newEmptyRamHome() {
+		try {
+			FileSystemManager fsm = VFS.getManager();
+			FileObject homeF = TestUtil.newAnyFolder("ram://dho-home-");
+			return new DhoDataHome(fsm, homeF);
+		} catch (FileSystemException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
+
+	public static DhoDataHome getHome() {
 
 		try {
 			if (HOME == null) {
@@ -89,7 +114,7 @@ public class TestUtil {
 
 				homeF.copyFrom(fromF, new AllFileSelector());
 
-				HOME = new DhandhoHome(fsm, home);
+				HOME = new DhoDataHome(fsm, home);
 			}
 			return HOME;
 		} catch (FileSystemException e) {
@@ -99,7 +124,7 @@ public class TestUtil {
 	}
 
 	public static MetricDefines newMetricDefines() {
-		DhandhoHome home = getHome();
+		DhoDataHome home = getHome();
 		FileObject file;
 		try {
 			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");
@@ -118,9 +143,21 @@ public class TestUtil {
 
 	}
 
-	public static DhandhoServer newInMemoryTestDhandhoServer() {
+	public static DhoServer newInMemoryTestDhandhoServer() {
+		return newInMemoryTestDhandhoServer(TestUtil.newInMemoryTestDb());
+	}
 
-		return new DhandhoServerImpl().home(getHome()).dbConfig(newInMemoryTestDbConfig());
+	public static DhoServer newInMemoryTestDhandhoServer(DbProvider dbp) {
+		return newInMemoryTestDhandhoServer(dbp, getHome());
+	}
+
+	public static DhoServer newInMemoryTestDhandhoServer(DhoDataHome home) {
+		return newInMemoryTestDhandhoServer(TestUtil.newInMemoryTestDb(), home);
+	}
+
+	public static DhoServer newInMemoryTestDhandhoServer(DbProvider dbp, DhoDataHome home) {
+
+		return new DhandhoServerImpl(dbp).home(home);
 	}
 
 	public static DhandhoCliConsole newInMemoryTestDhandhoServerConsole() {
@@ -130,17 +167,17 @@ public class TestUtil {
 
 	public static ReportEngine newInMemoryReportEgine(DbProvider dbProvider) {
 		try {
-			
-			DhandhoHome home = getHome();
+
+			DhoDataHome home = getHome();
 			Container app = new ContainerImpl();
 			ReportMetaInfos metaInfos = new DbReportMetaInfos();
 			MetricDefines metricDefines = MetricDefines.load(home.getClientFile().resolveFile("metric-defines.xml"));
-			app.addComponent(DhandhoHome.class, home);
+			app.addComponent(DhoDataHome.class, home);
 			app.addComponent(MetricDefines.class, metricDefines);
 			app.addComponent(ReportMetaInfos.class, metaInfos);
 			app.addComponent(DbProvider.class, dbProvider);
 			ReportEngine reportEngine = app.addNewComponent(ReportEngine.class, ReportEngineImpl.class);
-			
+
 			dbProvider.createDbIfNotExist();
 
 			dbProvider.executeWithDbSession(new MyDataUpgraders());

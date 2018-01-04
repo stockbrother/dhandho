@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.vfs2.AllFileSelector;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
@@ -21,17 +22,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.orientechnologies.orient.core.db.OrientDB;
 
 import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.DbReportMetaInfos;
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.ReportMetaInfos;
-import cc.dhandho.graphdb.DbConfig;
-import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.graphdb.MyDataUpgraders;
-import cc.dhandho.input.loader.CorpInfoInputDataLoader;
-import cc.dhandho.input.loader.WashedInputDataLoader;
+import cc.dhandho.input.loader.ArchivableCorpInfoInputDataLoader;
+import cc.dhandho.input.loader.ArchivableWashedInputDataLoader;
 import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
@@ -43,25 +41,23 @@ import cc.dhandho.rest.JsonHandlers;
  * @author Wu
  *
  */
-public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptionHandler, ThreadFactory {
+public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHandler, ThreadFactory {
 	// private static final Logger LOG = LoggerFactory.getLogger();
 	private static final Logger LOG = LoggerFactory.getLogger(DhandhoServerImpl.class);
 
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	JsonHandlers handlers;
 
-	private OrientDB orient;
-
 	Container app;
 
-	protected DhandhoHome home;
+	protected DhoDataHome home;
 
-	protected DefaultDbProvider dbProvider;
+	protected DbProvider dbProvider;
 
 	private ScheduledExecutorService executor;
 
-	public DhandhoServerImpl() {
-		this.dbProvider = new DefaultDbProvider();
+	public DhandhoServerImpl(DbProvider dbProvider) {
+		this.dbProvider = dbProvider;
 	}
 
 	@Override
@@ -69,28 +65,23 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start...");
 		}
-		ReportMetaInfos metaInfos = new DbReportMetaInfos();
-		MetricDefines metricDefines = null;
-		try {
-			metricDefines = MetricDefines.load(this.home.getClientFile().resolveFile("metric-defines.xml"));
-		} catch (FileSystemException e) {
-			throw JcpsException.toRtException(e);
-		} catch (IOException e) {
-			throw JcpsException.toRtException(e);
-		}
 
+		initHomeFolder();
+
+		ReportMetaInfos metaInfos = new DbReportMetaInfos();
+		MetricDefines metricDefines = new MetricDefinesLoader().load(home);
 		this.executor = Executors.newScheduledThreadPool(1, this);
 		app = new ContainerImpl();
-		app.addComponent(DhandhoHome.class, home);
+		app.addComponent(DhoDataHome.class, home);
 		app.addComponent(MetricDefines.class, metricDefines);
 		app.addComponent(ReportMetaInfos.class, metaInfos);
 		app.addComponent(DbProvider.class, this.dbProvider);
-		
+
 		ReportEngine reportEngine = app.newInstance(ReportEngineImpl.class);
 		app.addComponent(ReportEngine.class, reportEngine);
 		AllQuotesInfos allQuotesInfos = new AllQuotesInfos();
 		app.addComponent(AllQuotesInfos.class, allQuotesInfos);
-		
+
 		try {
 
 			FileObject to = home.getInputFolder().resolveFile("sina");
@@ -109,16 +100,56 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		this.dbProvider.executeWithDbSession(new MyDataUpgraders());
 
 		// load corp info to DB.
-		CorpInfoInputDataLoader dbu = app.newInstance(CorpInfoInputDataLoader.class);
+		ArchivableCorpInfoInputDataLoader dbu = app.newInstance(ArchivableCorpInfoInputDataLoader.class);
 		this.dbProvider.executeWithDbSession(dbu);
 		// load washed data to DB.
-		WashedInputDataLoader wdu = app.newInstance(WashedInputDataLoader.class);
+		ArchivableWashedInputDataLoader wdu = app.newInstance(ArchivableWashedInputDataLoader.class);
 		this.dbProvider.executeWithDbSession(wdu);
 
 		handlers = new JsonHandlers(app);
 
 		if (LOG.isInfoEnabled()) {
-			LOG.info("start done");
+			LOG.info("done of start.");
+		}
+
+	}
+
+	/**
+	 * If the home folder is not init before. And it is empty, then init it with the
+	 * default content from res:// folder.
+	 */
+	private void initHomeFolder() {
+		FileObject homeF = this.home.getHomeFile();
+		try {
+			FileObject initF = homeF.resolveFile(".dho.init");
+			if (initF.exists()) {
+				return;
+			}
+
+			FileObject[] children = homeF.getChildren();
+			if (children.length > 0) {
+				throw new JcpsException(
+						"home folder is not empty, since it is not inited, it must be empty:" + homeF.getURL());
+			}
+
+			FileObject fromF = this.home.getFileSystem().resolveFile("res:cc/dhandho/home");
+			LOG.info("test home:" + home + " is ready.");
+
+			homeF.copyFrom(fromF, new AllFileSelector());
+			// check archive folder
+			FileObject archiveF = home.getArchiveRootFolder();
+			if (!archiveF.exists()) {
+				archiveF.createFolder();
+			}
+			// check washed folder.
+			FileObject washedF = home.getInportWashedDataFolder();
+			if (!washedF.exists()) {
+				washedF.createFolder();
+			}
+			initF.createFile();
+
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
 		}
 
 	}
@@ -131,7 +162,6 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 		} catch (InterruptedException e) {
 			throw new RuntimeException("", e);
 		}
-		this.orient.close();
 	}
 
 	@Override
@@ -154,7 +184,7 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	}
 
 	@Override
-	public DhandhoServer home(DhandhoHome home) {
+	public DhoServer home(DhoDataHome home) {
 		this.home = home;
 		return this;
 	}
@@ -186,14 +216,8 @@ public class DhandhoServerImpl implements DhandhoServer, Thread.UncaughtExceptio
 	}
 
 	@Override
-	public DhandhoHome getHome() {
+	public DhoDataHome getHome() {
 		return home;
-	}
-
-	@Override
-	public DhandhoServer dbConfig(DbConfig config) {
-		this.dbProvider.dbConfig(config);
-		return this;
 	}
 
 }

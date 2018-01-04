@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.AllQuotesInfos;
-import cc.dhandho.DhandhoHome;
+import cc.dhandho.DhoDataHome;
 import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.test.util.TestUtil;
@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 public class MemoryAllQuotesWashedDataLoaderTest extends TestCase{
 
 	public void test() {
-		DhandhoHome home = TestUtil.getHome();
+		DhoDataHome home = TestUtil.getHome();
 		
 		AllQuotesInfos allQuotesInfos = new AllQuotesInfos();		
 		try {

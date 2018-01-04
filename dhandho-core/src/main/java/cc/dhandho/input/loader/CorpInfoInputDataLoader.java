@@ -18,7 +18,7 @@ import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.sse.SseCorpInfo2Loader;
 import cc.dhandho.input.sse.SseCorpInfoLoader;
 import cc.dhandho.input.szse.SzseCorpInfoLoader;
-import cc.dhandho.rest.server.DhandhoServer;
+import cc.dhandho.rest.server.DhoServer;
 
 /**
  * Load CorpInfo data from file to DB.
@@ -27,7 +27,7 @@ import cc.dhandho.rest.server.DhandhoServer;
  */
 public class CorpInfoInputDataLoader extends InputDataLoader {
 	protected static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	private static final Logger LOG = LoggerFactory.getLogger(DhandhoServer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DhoServer.class);
 
 	@Override
 	public void handle(ODatabaseSession db) {
@@ -41,24 +41,49 @@ public class CorpInfoInputDataLoader extends InputDataLoader {
 	}
 
 	private void loadCorpInfo(ODatabaseSession db) throws IOException {
-		SseCorpInfoLoader l1 = new SseCorpInfoLoader("sse.corplist.csv");
-		l1.setDb(db);
-		l1.execute(getFileReader("sse.corplist.csv"));
+		{
+			String name = "sse.corplist.csv";
+			Reader r = getFileReader(name);
+			if (r != null) {
 
-		SseCorpInfo2Loader l2 = new SseCorpInfo2Loader("sse.corplist2.csv");
-		l2.setDb(db);
-		l2.execute(getFileReader("sse.corplist2.csv"));
+				SseCorpInfoLoader l1 = new SseCorpInfoLoader(name);
+				l1.setDb(db);
+				l1.execute(r);
+			}
+		}
+		{
+			String name = "sse.corplist2.csv";
+			Reader r = getFileReader(name);
+			if (r != null) {
 
-		SzseCorpInfoLoader l3 = new SzseCorpInfoLoader("szse.corplist.csv");
-		l3.setDb(db);
-		l3.execute(getFileReader("szse.corplist.csv"));
+				SseCorpInfo2Loader l2 = new SseCorpInfo2Loader(name);
+				l2.setDb(db);
+				l2.execute(r);
+			}
+		}
+		{
+			String name = "szse.corplist.csv";
+			Reader r = getFileReader(name);
+			if (r != null) {
+				SzseCorpInfoLoader l3 = new SzseCorpInfoLoader(name);
+				l3.setDb(db);
+				l3.execute(r);
+			}
+		}
 
 	}
 
 	private Reader getFileReader(String file) throws IOException {
 		FileObject fileO = this.home.getInputCorpsFolder().resolveFile(file);
-		InputStream is = fileO.getContent().getInputStream();
-		return new InputStreamReader(is, Charset.forName("UTF-8"));
+		if (fileO.exists()) {
+
+			InputStream is = fileO.getContent().getInputStream();
+			return new InputStreamReader(is, Charset.forName("UTF-8"));
+		} else {
+			LOG.warn("file not exists:" + fileO.getURL());
+			return null;
+		}
+		
 	}
 
 }
