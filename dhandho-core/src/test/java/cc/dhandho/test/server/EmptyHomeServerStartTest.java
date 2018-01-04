@@ -14,12 +14,15 @@ import junit.framework.TestCase;
 public class EmptyHomeServerStartTest extends TestCase {
 
 	public void testEmptyHome() throws IOException {
+
 		DhoDataHome home = TestUtil.newEmptyRamHome();
+		// an empty data home should be filled with the default content from
+		// res://cc/dhandho/home/data
 		DhoServer server = TestUtil.newInMemoryTestDhandhoServer(home);
 		server.start();
 		{
 
-			FileObject initF = home.getHomeFile().resolveFile(".dho.init");
+			FileObject initF = home.getDataHomeFolder().resolveFile(".dho.init");
 			TestCase.assertTrue(initF.exists());
 		}
 
@@ -29,8 +32,13 @@ public class EmptyHomeServerStartTest extends TestCase {
 			TestCase.assertTrue(inputF.exists());
 			{
 
-				FileObject fo = home.getInputFolder().resolveFile("corps");
-				TestCase.assertTrue(fo.exists());
+				FileObject corpsF = home.getInputFolder().resolveFile("corps");
+				TestCase.assertTrue(corpsF.exists());
+				{
+					TestCase.assertFalse("should be archived", corpsF.resolveFile("sse.corplist.csv").exists());
+					TestCase.assertFalse("should be archived", corpsF.resolveFile("sse.corplist2.csv").exists());
+					TestCase.assertFalse("should be archived", corpsF.resolveFile("szse.corplist.csv").exists());
+				}
 			}
 			{
 
@@ -40,8 +48,11 @@ public class EmptyHomeServerStartTest extends TestCase {
 		}
 		{//
 
-			FileObject fo = home.getHomeFile().resolveFile("client");
-			TestCase.assertTrue(fo.exists());
+			FileObject clientF = home.getDataHomeFolder().resolveFile("client");
+			TestCase.assertTrue(clientF.exists());
+			{
+				TestCase.assertTrue(clientF.resolveFile("metric-defines.xml").exists());
+			}
 		}
 		{
 
@@ -51,7 +62,7 @@ public class EmptyHomeServerStartTest extends TestCase {
 
 		{
 
-			FileObject[] childA = home.getHomeFile().getChildren();
+			FileObject[] childA = home.getDataHomeFolder().getChildren();
 			Map<String, FileObject> map = new HashMap<>();
 			for (FileObject fo : childA) {
 				map.put(fo.getName().getBaseName(), fo);

@@ -1,4 +1,4 @@
-package cc.dhandho.client;
+package cc.dhandho.client.handler;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.cli.HelpFormatter;
 
+import cc.dhandho.client.CommandContext;
 import cc.dhandho.commons.commandline.CommandLineWriter;
 import cc.dhandho.commons.commandline.CommandType;
 

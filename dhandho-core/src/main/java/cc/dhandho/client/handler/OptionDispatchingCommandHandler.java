@@ -1,10 +1,12 @@
-package cc.dhandho.client;
+package cc.dhandho.client.handler;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import cc.dhandho.client.CommandContext;
 
 public class OptionDispatchingCommandHandler extends DhandhoCommandHandler {
 

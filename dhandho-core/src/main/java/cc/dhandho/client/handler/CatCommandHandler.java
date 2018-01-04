@@ -1,4 +1,4 @@
-package cc.dhandho.client;
+package cc.dhandho.client.handler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import org.apache.commons.vfs2.FileUtil;
 
 import com.age5k.jcps.JcpsException;
 
+import cc.dhandho.client.CommandContext;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 
 /**
@@ -22,7 +23,7 @@ public class CatCommandHandler extends DhandhoCommandHandler {
 		String file = cc.getCommandLine().getLine().getOptionValue(OPT_f);
 
 		try {
-			FileObject fo = cc.getServer().getHome().resolveFile(file);
+			FileObject fo = cc.getServer().getDataHome().resolveFile(file);
 
 			// TODO performance.
 			ByteArrayOutputStream os = new ByteArrayOutputStream();

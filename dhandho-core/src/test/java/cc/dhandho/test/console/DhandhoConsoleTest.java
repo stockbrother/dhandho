@@ -1,4 +1,4 @@
-package cc.dhandho.test;
+package cc.dhandho.test.console;
 
 import cc.dhandho.client.DhandhoCliConsole;
 import cc.dhandho.test.util.TestUtil;

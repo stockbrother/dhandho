@@ -18,6 +18,12 @@ import cc.dhandho.EnvUtil;
 import cc.dhandho.commons.http.HttpClientFactory;
 import cc.dhandho.commons.http.HttpResponseCallback;
 
+/**
+ * collect quotes data from web site.
+ * 
+ * @author wu
+ *
+ */
 public class SinaQuotesCollector {
 	private static final Logger LOG = LoggerFactory.getLogger(SinaQuotesCollector.class);
 

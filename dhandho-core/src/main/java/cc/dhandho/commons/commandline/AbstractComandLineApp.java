@@ -24,7 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.age5k.jcps.JcpsException;
-import cc.dhandho.client.CommandHandler;
+
+import cc.dhandho.client.handler.CommandHandler;
 import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
 
 /**

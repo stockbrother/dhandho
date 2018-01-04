@@ -12,6 +12,15 @@ import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.handler.Handler;
 
 import cc.dhandho.DhoDataHome;
+import cc.dhandho.client.handler.CatCommandHandler;
+import cc.dhandho.client.handler.ClearScreenCommandHandler;
+import cc.dhandho.client.handler.CommandHandler;
+import cc.dhandho.client.handler.CorpChartCommandHandler;
+import cc.dhandho.client.handler.ExitCommandHandler;
+import cc.dhandho.client.handler.HelpCommandHandler;
+import cc.dhandho.client.handler.InputDataLoadCommandHandler;
+import cc.dhandho.client.handler.ShowCommandHandler;
+import cc.dhandho.client.handler.SinaDataLoadCommandHandler;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
@@ -28,7 +37,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	@Deprecated // move to server side.
 	protected MetricDefines metrics;
 
-	protected HtmlRenderer htmlRenderer;
+	public HtmlRenderer htmlRenderer;
 
 	public DhoServer getServer() {
 		return server;
@@ -49,6 +58,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
+		this.addCommand(new CommandType("load", "Load input data from folder!"), new InputDataLoadCommandHandler());
 		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
 				.addOption(ShowCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
 				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
@@ -66,7 +76,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("sina", "Collect/wash/load all-quotes data from sina."),
 				new SinaDataLoadCommandHandler());
 
-		this.metrics = load(server.getHome());
+		this.metrics = load(server.getDataHome());
 		if (this.htmlRenderer == null) {
 			this.htmlRenderer = new EmptyHtmlRenderer();
 		}

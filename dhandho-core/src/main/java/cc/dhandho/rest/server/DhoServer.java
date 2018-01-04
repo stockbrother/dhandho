@@ -1,13 +1,11 @@
 package cc.dhandho.rest.server;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
 import com.google.gson.JsonElement;
 
 import cc.dhandho.DhoDataHome;
-import cc.dhandho.graphdb.DbConfig;
 
 /**
  * 
@@ -22,18 +20,18 @@ public interface DhoServer {
 	 *            the Home folder in the VFS file system.
 	 * @return
 	 */
-	public DhoServer home(DhoDataHome home);
+	public DhoServer dataHome(DhoDataHome home);
 
-	public DhoDataHome getHome();
+	public DhoDataHome getDataHome();
 
 	public void start();
 
 	public void shutdown();
 
-	public JsonElement handle(final String handlerS, JsonElement request) throws IOException;
+	public JsonElement handle(final String handlerS, JsonElement request) ;
 
-	public void handle(final String handlerS) throws IOException;
+	public void handle(final String handlerS) ;
 
-	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException;
+	public void handle(final String handlerS, Reader reader, final Writer writer) ;
 
 }

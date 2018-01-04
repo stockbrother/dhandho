@@ -40,22 +40,22 @@ public class JsonHandlers {
 		handle(handlerS.getName(), reader, writer);
 	}
 
-	public void handle(String handlerS) throws IOException {
+	public void handle(String handlerS) {
 		handle(handlerS, JsonNull.INSTANCE);
 	}
 
-	public JsonElement handle(String handlerS, JsonElement request) throws IOException {
+	public JsonElement handle(String handlerS, JsonElement request) {
 		Reader reader = new StringReader(request.toString());
 		StringWriter writer = new StringWriter();
 		this.handle(handlerS, reader, writer);
 		return JsonUtil.parse(writer.getBuffer().toString());
 	}
 
-	public void handle(String handlerS, Reader reader, Writer writer) throws IOException {
-		this.handle(handlerS, gson.newJsonReader(reader), gson.newJsonWriter(writer));
+	public void handle(String handlerS, Reader reader, Writer writer) {
+		this.handle(handlerS, gson.newJsonReader(reader), JsonUtil.newJsonWriter(writer));
 	}
 
-	public void handle(String handlerS, JsonReader reader, JsonWriter writer) throws IOException {
+	public void handle(String handlerS, JsonReader reader, JsonWriter writer) {
 
 		RestRequestHandler handler = this.resolveHandler(handlerS);
 

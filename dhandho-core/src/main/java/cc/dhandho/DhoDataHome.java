@@ -9,13 +9,15 @@ import org.apache.commons.vfs2.FileType;
 
 import com.age5k.jcps.JcpsException;
 
+import cc.dhandho.util.VfsUtil;
+
 public class DhoDataHome {
 
 	FileSystemManager fileSystem;
 
 	FileObject homeFile;
 
-	FileObject dataFile;
+	// FileObject dataFile;
 
 	public DhoDataHome(FileSystemManager fileSystem, String home) {
 		this.fileSystem = fileSystem;
@@ -32,12 +34,12 @@ public class DhoDataHome {
 		this.homeFile = homeFile;
 
 	}
-		
+
 	public FileSystemManager getFileSystem() {
 		return fileSystem;
 	}
 
-	public FileObject getHomeFile() {
+	public FileObject getDataHomeFolder() {
 		return this.homeFile;
 	}
 
@@ -91,6 +93,13 @@ public class DhoDataHome {
 		return resolveFile(this.homeFile, path);
 	}
 
+	public FileObject archiveIfNotEmpty(FileObject from, boolean remainTopFolder) {
+		if (VfsUtil.containsAnyFile(from)) {
+			return archive(from, remainTopFolder);
+		}		
+		return null;
+	}
+
 	public FileObject archive(FileObject from, boolean remainTopFolder) {
 		try {
 			boolean isFolder = from.getType().equals(FileType.FOLDER);
@@ -102,6 +111,7 @@ public class DhoDataHome {
 			}
 			from.moveTo(to);
 			if (remainTopFolder && isFolder) {
+				//
 				from.createFolder();
 			}
 			return to;

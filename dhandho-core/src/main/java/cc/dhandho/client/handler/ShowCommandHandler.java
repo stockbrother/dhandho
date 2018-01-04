@@ -1,4 +1,4 @@
-package cc.dhandho.client;
+package cc.dhandho.client.handler;
 
 public class ShowCommandHandler extends OptionDispatchingCommandHandler {
 	

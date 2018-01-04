@@ -28,7 +28,7 @@ public class DhandhoServerTest extends TestCase {
 
 		DhoServer ds = TestUtil.newInMemoryTestDhandhoServer();
 		ds.start();
-		DhoDataHome home = ds.getHome();
+		DhoDataHome home = ds.getDataHome();
 		{
 			// check archive folder
 			FileObject ar = home.getArchiveRootFolder();

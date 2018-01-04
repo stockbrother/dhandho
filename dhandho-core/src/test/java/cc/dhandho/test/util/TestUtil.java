@@ -157,7 +157,7 @@ public class TestUtil {
 
 	public static DhoServer newInMemoryTestDhandhoServer(DbProvider dbp, DhoDataHome home) {
 
-		return new DhandhoServerImpl(dbp).home(home);
+		return new DhandhoServerImpl(dbp).dataHome(home);
 	}
 
 	public static DhandhoCliConsole newInMemoryTestDhandhoServerConsole() {
@@ -176,7 +176,7 @@ public class TestUtil {
 			app.addComponent(MetricDefines.class, metricDefines);
 			app.addComponent(ReportMetaInfos.class, metaInfos);
 			app.addComponent(DbProvider.class, dbProvider);
-			ReportEngine reportEngine = app.addNewComponent(ReportEngine.class, ReportEngineImpl.class);
+			ReportEngine reportEngine = app.addComponent(ReportEngine.class, ReportEngineImpl.class);
 
 			dbProvider.createDbIfNotExist();
 

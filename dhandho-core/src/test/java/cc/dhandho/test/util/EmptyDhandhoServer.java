@@ -13,12 +13,12 @@ import cc.dhandho.rest.server.DhoServer;
 public class EmptyDhandhoServer implements DhoServer {
 
 	@Override
-	public DhoServer home(DhoDataHome home) {
+	public DhoServer dataHome(DhoDataHome home) {
 		return null;
 	}
 
 	@Override
-	public DhoDataHome getHome() {
+	public DhoDataHome getDataHome() {
 		return null;
 	}
 
@@ -33,18 +33,18 @@ public class EmptyDhandhoServer implements DhoServer {
 	}
 
 	@Override
-	public JsonElement handle(String handlerS, JsonElement request) throws IOException {
+	public JsonElement handle(String handlerS, JsonElement request) {
 
 		return null;
 	}
 
 	@Override
-	public void handle(String handlerS) throws IOException {
+	public void handle(String handlerS) {
 
 	}
 
 	@Override
-	public void handle(String handlerS, Reader reader, Writer writer) throws IOException {
+	public void handle(String handlerS, Reader reader, Writer writer) {
 
 	}
 

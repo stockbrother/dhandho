@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.vfs2.AllFileSelector;
 import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +27,6 @@ import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhoDataHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.graphdb.MyDataUpgraders;
-import cc.dhandho.input.loader.ArchivableCorpInfoInputDataLoader;
-import cc.dhandho.input.loader.ArchivableWashedInputDataLoader;
-import cc.dhandho.input.washed.MemoryAllQuotesWashedDataLoader;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
@@ -50,7 +46,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 
 	Container app;
 
-	protected DhoDataHome home;
+	protected DhoDataHome dataHome;
 
 	protected DbProvider dbProvider;
 
@@ -66,13 +62,13 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 			LOG.info("start...");
 		}
 
-		initHomeFolder();
+		new HomeFolderInitializer().initHomeFolder(dataHome);
 
 		ReportMetaInfos metaInfos = new DbReportMetaInfos();
-		MetricDefines metricDefines = new MetricDefinesLoader().load(home);
+		MetricDefines metricDefines = new MetricDefinesLoader().load(dataHome);
 		this.executor = Executors.newScheduledThreadPool(1, this);
 		app = new ContainerImpl();
-		app.addComponent(DhoDataHome.class, home);
+		app.addComponent(DhoDataHome.class, dataHome);
 		app.addComponent(MetricDefines.class, metricDefines);
 		app.addComponent(ReportMetaInfos.class, metaInfos);
 		app.addComponent(DbProvider.class, this.dbProvider);
@@ -81,32 +77,13 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 		app.addComponent(ReportEngine.class, reportEngine);
 		AllQuotesInfos allQuotesInfos = new AllQuotesInfos();
 		app.addComponent(AllQuotesInfos.class, allQuotesInfos);
-
-		try {
-
-			FileObject to = home.getInputFolder().resolveFile("sina");
-			if (to.exists()) {
-				LOG.warn("loading all-quotes from folder:" + to.getURL());
-				MemoryAllQuotesWashedDataLoader loader = new MemoryAllQuotesWashedDataLoader(to, allQuotesInfos);
-				loader.start();
-			} else {
-				LOG.warn("skip loadin all-quotes since folder not exist:" + to.getURL());
-			}
-		} catch (IOException e) {
-			throw JcpsException.toRtException(e);
-		}
-
+		InputDataMainLoader loader = app.addComponent(InputDataMainLoader.class, InputDataMainLoader.class);
 		this.dbProvider.createDbIfNotExist();
 		this.dbProvider.executeWithDbSession(new MyDataUpgraders());
-
-		// load corp info to DB.
-		ArchivableCorpInfoInputDataLoader dbu = app.newInstance(ArchivableCorpInfoInputDataLoader.class);
-		this.dbProvider.executeWithDbSession(dbu);
-		// load washed data to DB.
-		ArchivableWashedInputDataLoader wdu = app.newInstance(ArchivableWashedInputDataLoader.class);
-		this.dbProvider.executeWithDbSession(wdu);
-
 		handlers = new JsonHandlers(app);
+
+		// load it at server start.
+		loader.execute();
 
 		if (LOG.isInfoEnabled()) {
 			LOG.info("done of start.");
@@ -118,41 +95,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 	 * If the home folder is not init before. And it is empty, then init it with the
 	 * default content from res:// folder.
 	 */
-	private void initHomeFolder() {
-		FileObject homeF = this.home.getHomeFile();
-		try {
-			FileObject initF = homeF.resolveFile(".dho.init");
-			if (initF.exists()) {
-				return;
-			}
-
-			FileObject[] children = homeF.getChildren();
-			if (children.length > 0) {
-				throw new JcpsException(
-						"home folder is not empty, since it is not inited, it must be empty:" + homeF.getURL());
-			}
-
-			FileObject fromF = this.home.getFileSystem().resolveFile("res:cc/dhandho/home");
-			LOG.info("test home:" + home + " is ready.");
-
-			homeF.copyFrom(fromF, new AllFileSelector());
-			// check archive folder
-			FileObject archiveF = home.getArchiveRootFolder();
-			if (!archiveF.exists()) {
-				archiveF.createFolder();
-			}
-			// check washed folder.
-			FileObject washedF = home.getInportWashedDataFolder();
-			if (!washedF.exists()) {
-				washedF.createFolder();
-			}
-			initF.createFile();
-
-		} catch (IOException e) {
-			throw JcpsException.toRtException(e);
-		}
-
-	}
+	
 
 	@Override
 	public void shutdown() {
@@ -165,27 +108,27 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 	}
 
 	@Override
-	public void handle(final String handlerS, Reader reader, final Writer writer) throws IOException {
+	public void handle(final String handlerS, Reader reader, final Writer writer) {
 		handlers.handle(handlerS, reader, writer);
 	}
 
 	@Override
-	public void handle(final String handlerS) throws IOException {
+	public void handle(final String handlerS) {
 		handlers.handle(handlerS);
 	}
 
-	public void handle(final String handlerS, JsonReader reader, final JsonWriter writer) throws IOException {
+	public void handle(final String handlerS, JsonReader reader, final JsonWriter writer) {
 		handlers.handle(handlerS, reader, writer);
 	}
 
 	@Override
-	public JsonElement handle(String handlerS, JsonElement request) throws IOException {
+	public JsonElement handle(String handlerS, JsonElement request) {
 		return handlers.handle(handlerS, request);
 	}
 
 	@Override
-	public DhoServer home(DhoDataHome home) {
-		this.home = home;
+	public DhoServer dataHome(DhoDataHome home) {
+		this.dataHome = home;
 		return this;
 	}
 
@@ -216,8 +159,8 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 	}
 
 	@Override
-	public DhoDataHome getHome() {
-		return home;
+	public DhoDataHome getDataHome() {
+		return dataHome;
 	}
 
 }

@@ -1,5 +1,6 @@
-package cc.dhandho.client;
+package cc.dhandho.client.handler;
 
+import cc.dhandho.client.CommandContext;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 
 /**

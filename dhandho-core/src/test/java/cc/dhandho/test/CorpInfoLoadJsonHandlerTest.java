@@ -19,7 +19,7 @@ import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.rest.RestRequestContext;
-import cc.dhandho.rest.handler.LoadCorpInfoJsonHandler;
+import cc.dhandho.rest.handler.InputDataLoadJsonHandler;
 import cc.dhandho.util.JsonUtil;
 
 @Ignore
@@ -58,7 +58,7 @@ public class CorpInfoLoadJsonHandlerTest {
 		JsonReader reader = JsonUtil.toJsonReader(jsonS);
 		StringWriter sWriter = new StringWriter();
 		JsonWriter writer = JsonUtil.newJsonWriter(sWriter);
-		LoadCorpInfoJsonHandler h  = new LoadCorpInfoJsonHandler();		
+		InputDataLoadJsonHandler h  = new InputDataLoadJsonHandler();		
 		h.handle(new RestRequestContext(GSON, reader, writer));
 
 		System.out.println(sWriter.getBuffer());

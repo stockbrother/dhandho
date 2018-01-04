@@ -41,7 +41,7 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	@Override
 	public void init() throws Exception {
-		DhoDataHome home = SERVER.getHome();
+		DhoDataHome home = SERVER.getDataHome();
 
 		console = new DhandhoJfxConsole(CONSOLE_HOME);
 		console.server(SERVER);

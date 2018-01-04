@@ -21,9 +21,9 @@ public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
-		DhoDataHome home = getHome();
+		DhoDataHome home = getDataHome();
 
-		DhoServer server = new DhandhoServerImpl(getDbProvider(home)).home(home);
+		DhoServer server = new DhandhoServerImpl(getDbProvider(home)).dataHome(home);
 		server.start();
 
 		FileObject consoleHome = getConsoleHome();
@@ -83,7 +83,7 @@ public class Main {
 		}
 	}
 
-	private static DhoDataHome getHome() {
+	private static DhoDataHome getDataHome() {
 		String home = System.getProperty("dhandho.data.home");
 
 		if (home == null) {

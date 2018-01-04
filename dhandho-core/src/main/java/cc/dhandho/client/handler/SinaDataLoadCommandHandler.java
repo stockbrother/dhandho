@@ -1,9 +1,10 @@
-package cc.dhandho.client;
+package cc.dhandho.client.handler;
 
 import java.io.IOException;
 
 import com.age5k.jcps.JcpsException;
 
+import cc.dhandho.client.CommandContext;
 import cc.dhandho.rest.handler.SinaAllQuotesDataLoadRRHandler;
 
 public class SinaDataLoadCommandHandler extends DhandhoCommandHandler {
@@ -11,11 +12,7 @@ public class SinaDataLoadCommandHandler extends DhandhoCommandHandler {
 	@Override
 	public void execute(CommandContext cc) {
 
-		try {
-			cc.getServer().handle(SinaAllQuotesDataLoadRRHandler.class.getName());
-		} catch (IOException e) {
-			throw JcpsException.toRtException(e);
-		}
+		cc.getServer().handle(SinaAllQuotesDataLoadRRHandler.class.getName());
 
 	}
 

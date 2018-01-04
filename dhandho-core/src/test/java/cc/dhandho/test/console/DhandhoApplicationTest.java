@@ -1,4 +1,4 @@
-package cc.dhandho.test;
+package cc.dhandho.test.console;
 
 import cc.dhandho.client.jfx.DhandhoJfxApplication;
 import cc.dhandho.rest.server.DhoServer;
