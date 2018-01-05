@@ -21,4 +21,6 @@ public interface DbProvider {
 
 	public <R> R executeWithDbSession(Handler3<ODatabaseSession, R> processor);
 
+	public void close();
+	
 }

@@ -9,6 +9,9 @@ import java.util.TimeZone;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
@@ -28,6 +31,8 @@ import cc.dhandho.report.dupont.node.ValueNode;
 import cc.dhandho.rest.server.DbProvider;
 
 public class DupontAnalysis {
+	private static final Logger LOG = LoggerFactory.getLogger(DupontAnalysis.class);
+
 	public static class Context {
 
 		private String corpId;
@@ -77,8 +82,10 @@ public class DupontAnalysis {
 	}
 
 	public Context execute(Context ac) {
+
 		ValueNode vNode = roeNode.calculate(ac);
 		ac.setValueNode(vNode);
+
 		return ac;
 	}
 
@@ -106,6 +113,7 @@ public class DupontAnalysis {
 	 */
 	public void analysisAndStore(int year, DbProvider dbProvider) {
 		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
+		LOG.info("goint to do dupont analysis for report date:" + reportDate);
 
 		dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
 
@@ -113,6 +121,7 @@ public class DupontAnalysis {
 			public void handle(ODatabaseSession t) {
 				DbUtil.executeUpdate(t, "delete from " + DbUpgrader0_0_1.V_DUPONT_VNODE + " where reportDate=?",
 						new Object[] { reportDate });
+
 				Stream<String> corpIds = corpIdStream(t);
 				corpIds.forEach(new Consumer<String>() {
 
@@ -120,15 +129,17 @@ public class DupontAnalysis {
 					public void accept(String corpId) {
 						Context ac = DupontAnalysis.this.execute(corpId, year);
 						ValueNode top = ac.getValueNode();// ROE node
-						// 3 component node:Netprofit-margin/Asset-turnover/Equity-multiplier.
-						for (ValueNode vNode : top.getChildList()) {
 
+						// 3 component node:Netprofit-margin/Asset-turnover/Equity-multiplier.
+
+						for (ValueNode vNode : top.getChildList()) {
 							OVertex v = t.newVertex(DbUpgrader0_0_1.V_DUPONT_VNODE);
 							v.setProperty("corpId", ac.corpId);
 							v.setProperty("reportDate", reportDate);
 							v.setProperty("define", vNode.getDefine().getClass().getName());
 							v.setProperty("value", vNode.getValue());
 							v.save();
+							LOG.info("save vnode:" + v.toJSON());
 						}
 					}
 
@@ -137,6 +148,7 @@ public class DupontAnalysis {
 			}
 		});
 
+		LOG.info("end of dupont analysis for report date:" + reportDate);
 	}
 
 	/**
@@ -151,10 +163,10 @@ public class DupontAnalysis {
 		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
 		String typeX = xDefine.getName();
 		String typeY = yDefine.getName();
-		
+
 		String xLabel = xDefine.getSimpleName();
 		String yLabel = yDefine.getSimpleName();
-		
+
 		dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
 
 			@Override

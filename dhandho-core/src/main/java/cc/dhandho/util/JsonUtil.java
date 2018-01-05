@@ -53,7 +53,9 @@ public class JsonUtil {
 	public static JsonReader newJsonReader(Reader reader) {
 		return GSON.newJsonReader(reader);
 	}
-
+	public static JsonElement parse(JsonReader reader) {
+		return new JsonParser().parse(reader);
+	}
 	public static JsonElement parse(String jsonS) {
 		return new JsonParser().parse(jsonS);
 	}

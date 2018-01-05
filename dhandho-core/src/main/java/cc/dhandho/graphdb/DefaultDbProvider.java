@@ -79,4 +79,9 @@ public class DefaultDbProvider extends AbstractDbProvider {
 		}
 	}
 
+	@Override
+	public void close() {
+		this.orient.close();
+	}
+
 }

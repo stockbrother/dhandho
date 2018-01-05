@@ -1,6 +1,5 @@
 package cc.dhandho.rest.server;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.concurrent.Executors;
@@ -8,12 +7,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.vfs2.AllFileSelector;
-import org.apache.commons.vfs2.FileObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.container.impl.ContainerImpl;
 import com.google.gson.Gson;
@@ -84,7 +80,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 
 		// load it at server start.
 		loader.execute();
-
+		this.dbProvider.executeWithDbSession(((DbReportMetaInfos) metaInfos).initializer());
 		if (LOG.isInfoEnabled()) {
 			LOG.info("done of start.");
 		}
@@ -95,7 +91,6 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 	 * If the home folder is not init before. And it is empty, then init it with the
 	 * default content from res:// folder.
 	 */
-	
 
 	@Override
 	public void shutdown() {
@@ -105,6 +100,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 		} catch (InterruptedException e) {
 			throw new RuntimeException("", e);
 		}
+		this.dbProvider.close();
 	}
 
 	@Override

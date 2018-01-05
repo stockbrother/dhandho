@@ -7,11 +7,13 @@ import cc.dhandho.client.HtmlRenderer;
 import cc.dhandho.commons.util.JfxUtil;
 import cc.dhandho.rest.server.DhoServer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 	WebEngine webEngine;
@@ -66,6 +68,13 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 		Scene root = new Scene(console.consolePane, this.width, this.height);
 		stage.setScene(root);
 		stage.show();
+		stage.setOnHidden(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				SERVER.shutdown();
+			}
+		});
 	}
 
 	private void startHtmlStage(Stage stage) {
@@ -85,6 +94,9 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 		if (this.htmlStage == null) {
 			this.htmlStage = new Stage();
 			this.startHtmlStage(this.htmlStage);
+		}
+		if (!this.htmlStage.isShowing()) {
+			this.htmlStage.show();
 		}
 
 		webEngine.loadContent(html);

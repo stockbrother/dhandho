@@ -16,6 +16,7 @@ import cc.dhandho.client.handler.CatCommandHandler;
 import cc.dhandho.client.handler.ClearScreenCommandHandler;
 import cc.dhandho.client.handler.CommandHandler;
 import cc.dhandho.client.handler.CorpChartCommandHandler;
+import cc.dhandho.client.handler.DupontAnalysisCommandHandler;
 import cc.dhandho.client.handler.ExitCommandHandler;
 import cc.dhandho.client.handler.HelpCommandHandler;
 import cc.dhandho.client.handler.InputDataLoadCommandHandler;
@@ -58,6 +59,14 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
+		this.addCommand(new CommandType("dupont", "Dupont Analysis or show the result as SVG chart!")//
+				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
+						"Execute analysis and store the result to DB.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show svg through html renderer.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_y, "year", true, "year when analysis or showing svg.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_c, "corpId", true, "Corp id when showing svg.")//
+				, new DupontAnalysisCommandHandler());
+
 		this.addCommand(new CommandType("load", "Load input data from folder!"), new InputDataLoadCommandHandler());
 		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
 				.addOption(ShowCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
@@ -65,8 +74,8 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 				.addOption(ShowCommandHandler.OPT_r, "report", false, "Show report.") //
 				.addOption(ShowCommandHandler.OPT_c, "code", true, "For the show command that require a corp code.") //
 				.addOption(ShowCommandHandler.OPT_m, "metrics", true,
-						"For the show command that requires a metric list."), //
-				new ShowCommandHandler()//
+						"For the show command that requires a metric list.") //
+				, new ShowCommandHandler()//
 		);
 
 		this.addCommand(new CommandType("cat", "Print file content!")//

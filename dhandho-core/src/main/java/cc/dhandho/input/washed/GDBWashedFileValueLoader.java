@@ -67,6 +67,7 @@ public class GDBWashedFileValueLoader extends QuarterWahsedFileLoader {
 		// intent.setEnableCache(false);
 		this.session.declareIntent(intent);
 
+		//TODO share instance.
 		this.aliasInfos = new DbReportMetaInfos();
 		try {
 			this.aliasInfos.initialize(this.session);
