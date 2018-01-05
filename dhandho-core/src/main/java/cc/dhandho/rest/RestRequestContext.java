@@ -1,5 +1,8 @@
 package cc.dhandho.rest;
 
+import java.io.IOException;
+
+import com.age5k.jcps.JcpsException;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.internal.Streams;
@@ -31,5 +34,13 @@ public class RestRequestContext {
 	
 	public JsonElement parseReader() {
 		return Streams.parse(reader);
+	}
+	
+	public void write(JsonElement res) {
+		try {
+			writer.jsonValue(res.toString());
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
+		}
 	}
 }

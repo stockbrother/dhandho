@@ -93,14 +93,14 @@ public class DhoDataHome {
 		return resolveFile(this.homeFile, path);
 	}
 
-	public FileObject archiveIfNotEmpty(FileObject from, boolean remainTopFolder) {
+	public FileObject archive(FileObject from, boolean remainTopFolder) {
 		if (VfsUtil.containsAnyFile(from)) {
-			return archive(from, remainTopFolder);
+			return doArchive(from, remainTopFolder);
 		}		
 		return null;
 	}
 
-	public FileObject archive(FileObject from, boolean remainTopFolder) {
+	private FileObject doArchive(FileObject from, boolean remainTopFolder) {
 		try {
 			boolean isFolder = from.getType().equals(FileType.FOLDER);
 			FileObject af = this.newArchiveFolder();

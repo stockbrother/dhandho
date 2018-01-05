@@ -29,7 +29,7 @@ public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
 		JsonWriter w = arg0.getWriter();
 		try {
 			w.beginObject();
-			writeSvgField("svg1", corpId, year, ProfitMarginNode.class, AssetTurnover.class, w, dupontAnalysis);
+			writeSvgField("svg1", corpId, year, AssetTurnover.class, ProfitMarginNode.class, w, dupontAnalysis);
 			writeSvgField("svg2", corpId, year, AssetTurnover.class, EquityMultiplier.class, w, dupontAnalysis);
 			w.endObject();
 		} catch (IOException e) {

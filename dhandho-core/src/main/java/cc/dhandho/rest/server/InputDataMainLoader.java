@@ -4,10 +4,11 @@ import com.age5k.jcps.framework.container.Container;
 
 import cc.dhandho.AllQuotesInfos;
 import cc.dhandho.DhoDataHome;
+import cc.dhandho.InputDataLoader;
 import cc.dhandho.input.loader.ArchivableCorpInfoInputDataLoader;
 import cc.dhandho.input.loader.ArchivableWashedInputDataLoader;
 
-public class InputDataMainLoader implements Container.Aware {
+public class InputDataMainLoader implements Container.Aware, InputDataLoader {
 
 	Container app;
 	DhoDataHome home;
@@ -25,7 +26,8 @@ public class InputDataMainLoader implements Container.Aware {
 		this.allQuotesInfos = app.findComponent(AllQuotesInfos.class, true);
 	}
 
-	public void execute() {
+	@Override
+	public void load() {
 		// all quotesInfos should not be archived, for that it is in RAM.
 		new AllQuotesLoader().load(this.home, allQuotesInfos);
 

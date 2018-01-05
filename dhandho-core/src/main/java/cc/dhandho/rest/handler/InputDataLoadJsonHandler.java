@@ -18,7 +18,7 @@ public class InputDataLoadJsonHandler extends DbSessionJsonHandler {
 	@Override
 	public void execute(RestRequestContext rrc, ODatabaseSession db) throws IOException {
 		InputDataMainLoader l = this.app.findComponent(InputDataMainLoader.class, true);
-		l.execute();
+		l.load();
 	}
 
 }

@@ -42,7 +42,7 @@ public class DefaultDbProvider extends AbstractDbProvider {
 
 		ODatabaseSession databaseSession = this.getOrient().open(this.dbConfig.getDbName(), this.dbConfig.getUser(),
 				this.dbConfig.getPassword());
-
+		
 		return databaseSession;
 	}
 

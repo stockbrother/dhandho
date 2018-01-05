@@ -17,4 +17,5 @@ public interface CommandLineWriter {
 	
 	public CommandLineWriter writeLine(String line);
 	
+	
 }

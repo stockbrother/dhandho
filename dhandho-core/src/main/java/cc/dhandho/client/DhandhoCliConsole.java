@@ -22,6 +22,7 @@ import cc.dhandho.client.handler.HelpCommandHandler;
 import cc.dhandho.client.handler.InputDataLoadCommandHandler;
 import cc.dhandho.client.handler.ShowCommandHandler;
 import cc.dhandho.client.handler.SinaDataLoadCommandHandler;
+import cc.dhandho.client.handler.SqlQueryCommandHandler;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
@@ -59,6 +60,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
+
 		this.addCommand(new CommandType("dupont", "Dupont Analysis or show the result as SVG chart!")//
 				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
 						"Execute analysis and store the result to DB.")//
@@ -68,8 +70,11 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 				, new DupontAnalysisCommandHandler());
 
 		this.addCommand(new CommandType("load", "Load input data from folder!"), new InputDataLoadCommandHandler());
+		this.addCommand(new CommandType("query", "Execute query with sql!"), new SqlQueryCommandHandler());
+
 		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
 				.addOption(ShowCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
+				.addOption(ShowCommandHandler.OPT_D, "db-meta", false, "Show DB meta info.") //
 				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
 				.addOption(ShowCommandHandler.OPT_r, "report", false, "Show report.") //
 				.addOption(ShowCommandHandler.OPT_c, "code", true, "For the show command that require a corp code.") //

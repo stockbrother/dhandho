@@ -16,7 +16,9 @@
 	load  Load input data from folder!
 	show  Show some thing. 'help show' for detail!
 	sina  Collect/wash/load all-quotes data from sina.
+>.TODO
 
+>>.close DB properly when console exit.
 
 
 

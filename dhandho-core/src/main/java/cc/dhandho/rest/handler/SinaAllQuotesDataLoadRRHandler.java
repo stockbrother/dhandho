@@ -33,7 +33,7 @@ public class SinaAllQuotesDataLoadRRHandler extends AbstractRestRequestHandler {
 			new SinaAllQuotesPreprocessor(raw, to).process();
 			// TODO only load sina,not all loaded.
 			InputDataMainLoader l = app.findComponent(InputDataMainLoader.class, true);
-			l.execute();
+			l.load();
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}

@@ -5,6 +5,7 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 public class DbUtil {
 
+	@Deprecated // use DbQueryHandler instead.
 	public static <T> T executeQuery(ODatabaseSession session, String sql, OResultSetHandler<T> resultProcessor) {
 		return executeQuery(session, sql, new Object[] {}, resultProcessor);
 	}

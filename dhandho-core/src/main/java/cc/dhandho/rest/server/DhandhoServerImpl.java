@@ -79,7 +79,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 		handlers = new JsonHandlers(app);
 
 		// load it at server start.
-		loader.execute();
+		loader.load();
 		this.dbProvider.executeWithDbSession(((DbReportMetaInfos) metaInfos).initializer());
 		if (LOG.isInfoEnabled()) {
 			LOG.info("done of start.");

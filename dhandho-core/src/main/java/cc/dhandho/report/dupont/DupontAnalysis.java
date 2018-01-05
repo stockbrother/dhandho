@@ -119,7 +119,8 @@ public class DupontAnalysis {
 
 			@Override
 			public void handle(ODatabaseSession t) {
-				DbUtil.executeUpdate(t, "delete from " + DbUpgrader0_0_1.V_DUPONT_VNODE + " where reportDate=?",
+				// TODO make sure unsafe means?
+				DbUtil.executeUpdate(t, "delete from " + DbUpgrader0_0_1.V_DUPONT_VNODE + " where reportDate=? unsafe",
 						new Object[] { reportDate });
 
 				Stream<String> corpIds = corpIdStream(t);
