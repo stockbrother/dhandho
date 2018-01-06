@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -24,9 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.server.ExecutorUtil;
 
-import cc.dhandho.client.handler.CommandHandler;
 import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
+import cc.dhandho.util.SemaphoreFuture;
 
 /**
  * Sample code of usage: <br>
@@ -85,15 +85,13 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 	private Map<String, String> attributeMap = new HashMap<String, String>();
 
 	Future<String> fs;
+	SemaphoreFuture<Object> startFuture;
 
 	public AbstractComandLineApp() {
 
 		this.reader = new StackConsoleReader();
 		this.writer = new StackConsoleWriter();
-		this.executor = Executors.newSingleThreadExecutor();//
-		this.reader.push(new DefaultConsoleReader());
-		this.writer.push(new DefaultConsoleWriter());
-
+		this.executor = ExecutorUtil.newSingleThreadExecutor(AbstractComandLineApp.class.getName());//
 	}
 
 	@Override
@@ -116,7 +114,18 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 				this.writer.write(this.prompt);
 
+				if (!this.startFuture.isDone()) {
+					this.startFuture.done("ready to input.");
+				}
+
 				LineRead line = this.reader.readLine();
+				if (line == null) {
+					if (this.isRunning) {
+						throw new JcpsException("reader is closed while app is running.");
+					} else {
+						continue;
+					}
+				}
 				if (this.echo) {
 					this.writer.writeLine(line.getLine());
 				}
@@ -222,9 +231,10 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 	}
 
 	@Override
-	public void start() {
+	public Future<Object> start() {
 
 		this.isRunning = true;
+		this.startFuture = new SemaphoreFuture<>();
 
 		fs = this.executor.submit(new Callable<String>() {
 
@@ -235,17 +245,19 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 			}
 		});
-
+		return this.startFuture;
 	}
 
 	@Override
 	public void shutdownAsync() {
 		this.isRunning = false;
+		this.reader.close();
+		this.executor.shutdown();
 	}
 
 	@Override
 	public void shutdown() {
-		this.isRunning = false;
+		this.shutdownAsync();
 		try {
 			this.fs.get(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {

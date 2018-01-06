@@ -15,7 +15,7 @@ public class DefaultConsoleReader implements CommandLineReader {
 
 	private Reader r;
 
-	public DefaultConsoleReader() {
+	private DefaultConsoleReader() {
 		this(new InputStreamReader(System.in));
 	}
 
@@ -27,10 +27,17 @@ public class DefaultConsoleReader implements CommandLineReader {
 	public String readLine() {
 
 		StringBuffer sb = new StringBuffer();
-		while (true) {
+		boolean eof = true;
+		try {
+			while (true) {
 
-			try {
-				char c = (char) r.read();
+				int b = r.read();
+				if (b == -1) {
+					eof = true;
+					break;
+				}
+				char c = (char) b;
+
 				if (c == '\r') {
 					// ignore?
 					continue;
@@ -39,16 +46,23 @@ public class DefaultConsoleReader implements CommandLineReader {
 					break;
 				}
 				sb.append(c);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		if (eof && sb.length() == 0) {
+			return null;
 		}
 		return sb.toString();
 	}
 
 	@Override
 	public void close() {
-
+//		try {
+//			this.r.close();
+//		} catch (IOException e) {
+//			throw JcpsException.toRtException(e);
+//		}
 	}
 
 }

@@ -9,8 +9,12 @@ package cc.dhandho.commons.commandline;
  */
 public interface CommandLineReader {
 
+	/**
+	 * 
+	 * @return null if reader is closed.
+	 */
 	public String readLine();
-	
+
 	public void close();
 
 }

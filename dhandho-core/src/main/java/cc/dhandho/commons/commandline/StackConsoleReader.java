@@ -4,7 +4,6 @@ import java.util.Stack;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -12,11 +11,11 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.framework.server.ExecutorUtil;
+
 public class StackConsoleReader {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StackConsoleReader.class);
-
-	private Stack<ReaderWrapper> stack = new Stack<ReaderWrapper>();
 
 	public static class LineRead {
 		private String line;
@@ -42,17 +41,19 @@ public class StackConsoleReader {
 
 		private BlockingQueue<String> buffer = new LinkedBlockingQueue<String>();
 
-		private ExecutorService executor = Executors.newSingleThreadExecutor();
+		private ExecutorService executor = ExecutorUtil.newSingleThreadExecutor(ReaderWrapper.class.getName());
 
 		private Future<String> worker;
 
-		private boolean produceFinished;
+		private boolean producerClosed;
 
 		private int producted;
 
 		private int consumed;
 
 		private CommandLineReader target;
+
+		private boolean closed;
 
 		public ReaderWrapper(CommandLineReader t, boolean pop) {
 			this.target = t;
@@ -69,10 +70,10 @@ public class StackConsoleReader {
 
 		protected void run() {
 
-			while (true) {
+			while (!this.closed) {
 				String line = this.target.readLine();
 				if (line == null) {
-					this.produceFinished = true;
+					this.producerClosed = true;
 					break;
 				}
 
@@ -83,16 +84,22 @@ public class StackConsoleReader {
 					throw new RuntimeException(e);
 				}
 			}
-
+			LOG.warn("closed or producer is closed.");
 		}
 
-		private boolean isFinished() {
-			return this.produceFinished && this.consumed == this.producted;
+		private boolean isProducerClosedAndAllConsumed() {
+			return this.producerClosed && this.consumed == this.producted;
+		}
+
+		private void close() {
+			this.closed = true;
+			this.target.close();
+			this.executor.shutdown();
 		}
 
 		private String tryReadLine(long time, TimeUnit tu) {
 			String rt = null;
-			if (!this.isFinished()) {
+			if (!this.isProducerClosedAndAllConsumed()) {
 				try {
 					rt = buffer.poll(time, tu);
 					if (rt != null) {
@@ -109,6 +116,10 @@ public class StackConsoleReader {
 
 	}
 
+	private Stack<ReaderWrapper> stack = new Stack<ReaderWrapper>();
+
+	private boolean closed;
+
 	public StackConsoleReader push(CommandLineReader rd) {
 		return this.push(rd, true);
 	}
@@ -120,17 +131,23 @@ public class StackConsoleReader {
 		return this;
 	}
 
+	public void close() {
+		this.closed = true;
+		for (ReaderWrapper rw : this.stack) {
+			rw.close();
+		}
+	}
+
 	public LineRead readLine() {
 		if (this.stack.isEmpty()) {
 			return null;
 		}
 		LineRead rt = null;
 
-		while (true) {
+		while (!this.closed) {
 			ReaderWrapper top = this.stack.peek();
-			if (top.isFinished()) {
-				this.pop();
-				continue;
+			if (top.isProducerClosedAndAllConsumed()) {
+				break;
 			}
 
 			String line = top.tryReadLine(1, TimeUnit.SECONDS);

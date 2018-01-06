@@ -53,7 +53,7 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	@Override
 	public void stop() throws Exception {
-
+		console.shutdown();
 	}
 
 	@Override

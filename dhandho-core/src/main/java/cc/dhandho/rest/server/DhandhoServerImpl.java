@@ -2,9 +2,8 @@ package cc.dhandho.rest.server;
 
 import java.io.Reader;
 import java.io.Writer;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -12,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.container.impl.ContainerImpl;
+import com.age5k.jcps.framework.server.ExecutorBasedServer;
+import com.age5k.jcps.framework.server.ExecutorUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -33,7 +34,7 @@ import cc.dhandho.rest.JsonHandlers;
  * @author Wu
  *
  */
-public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHandler, ThreadFactory {
+public class DhandhoServerImpl extends ExecutorBasedServer implements DhoServer {
 	// private static final Logger LOG = LoggerFactory.getLogger();
 	private static final Logger LOG = LoggerFactory.getLogger(DhandhoServerImpl.class);
 
@@ -45,8 +46,6 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 	protected DhoDataHome dataHome;
 
 	protected DbProvider dbProvider;
-
-	private ScheduledExecutorService executor;
 
 	public DhandhoServerImpl(DbProvider dbProvider) {
 		this.dbProvider = dbProvider;
@@ -62,7 +61,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 
 		ReportMetaInfos metaInfos = new DbReportMetaInfos();
 		MetricDefines metricDefines = new MetricDefinesLoader().load(dataHome);
-		this.executor = Executors.newScheduledThreadPool(1, this);
+
 		app = new ContainerImpl();
 		app.addComponent(DhoDataHome.class, dataHome);
 		app.addComponent(MetricDefines.class, metricDefines);
@@ -94,12 +93,7 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 
 	@Override
 	public void shutdown() {
-		this.executor.shutdown();
-		try {
-			this.executor.awaitTermination(100, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			throw new RuntimeException("", e);
-		}
+		super.shutdown();		
 		this.dbProvider.close();
 	}
 
@@ -128,35 +122,15 @@ public class DhandhoServerImpl implements DhoServer, Thread.UncaughtExceptionHan
 		return this;
 	}
 
-	public static class AppThread extends Thread {
-		DhandhoServerImpl ddr;
-
-		public AppThread(Runnable r, DhandhoServerImpl ddr) {
-			super(r);
-			this.ddr = ddr;
-			this.setUncaughtExceptionHandler(ddr);
-		}
-
-		@Override
-		public void run() {
-			// AppContextImpl.set(this.ddr);
-			super.run();
-		}
-	}
-
-	@Override
-	public void uncaughtException(Thread thread, Throwable throwable) {
-		LOG.error("uncaughtException in thread:" + thread.getName(), throwable);
-	}
-
-	@Override
-	public Thread newThread(Runnable r) {
-		return new AppThread(r, this);
-	}
-
 	@Override
 	public DhoDataHome getDataHome() {
 		return dataHome;
+	}
+
+	@Override
+	protected ExecutorService newExecutor() {
+		//
+		return ExecutorUtil.newScheduledThreadPool(DhandhoServerImpl.class.getName(), 1);
 	}
 
 }

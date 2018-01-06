@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 public class MemoryAllQuotesWashedDataLoaderTest extends TestCase {
 
 	public void test() {
-		DhoDataHome home = TestUtil.getHome();
+		DhoDataHome home = TestUtil.newEmptyHome();
 
 		AllQuotesInfos allQuotesInfos = new AllQuotesInfos();
 		AllQuotesLoader l = new AllQuotesLoader();

@@ -70,7 +70,7 @@ public class TestUtil {
 		return newAnyFolder("tmp://tmp-folder-");
 	}
 
-	private static FileObject newAnyFolder(String prefix) {
+	public static FileObject newAnyFolder(String prefix) {
 		try {
 
 			FileSystemManager fsm = VFS.getManager();
@@ -97,14 +97,13 @@ public class TestUtil {
 		}
 	}
 
-	public static DhoDataHome getHome() {
-
+	public static DhoDataHome getDefaultPopulatedHome() {
 		try {
 			if (HOME == null) {
 
 				FileSystemManager fsm = VFS.getManager();
 				String from = "res:cc/dhandho/test/dhandho";
-				String home = "tmp://dahandho-test-home";
+				String home = "tmp://dahandho-test-home-default";
 				FileObject fromF = fsm.resolveFile(from);
 				FileObject homeF = fsm.resolveFile(home);
 				if (homeF.exists()) {
@@ -120,11 +119,28 @@ public class TestUtil {
 		} catch (FileSystemException e) {
 			throw JcpsException.toRtException(e);
 		}
+	}
+
+	public static DhoDataHome newEmptyHome() {
+
+		try {
+			if (HOME == null) {
+
+				FileSystemManager fsm = VFS.getManager();
+
+				String home = "tmp://dahandho-test-home-";
+				FileObject fo = TestUtil.newAnyFolder(home);
+				HOME = new DhoDataHome(fsm, fo);
+			}
+			return HOME;
+		} catch (FileSystemException e) {
+			throw JcpsException.toRtException(e);
+		}
 
 	}
 
 	public static MetricDefines newMetricDefines() {
-		DhoDataHome home = getHome();
+		DhoDataHome home = newEmptyHome();
 		FileObject file;
 		try {
 			file = home.resolveFile(home.getClientFile(), "metric-defines.xml");
@@ -148,7 +164,7 @@ public class TestUtil {
 	}
 
 	public static DhoServer newInMemoryTestDhandhoServer(DbProvider dbp) {
-		return newInMemoryTestDhandhoServer(dbp, getHome());
+		return newInMemoryTestDhandhoServer(dbp, newEmptyHome());
 	}
 
 	public static DhoServer newInMemoryTestDhandhoServer(DhoDataHome home) {
@@ -168,7 +184,7 @@ public class TestUtil {
 	public static ReportEngine newInMemoryReportEgine(DbProvider dbProvider) {
 		try {
 
-			DhoDataHome home = getHome();
+			DhoDataHome home = newEmptyHome();
 			Container app = new ContainerImpl();
 			ReportMetaInfos metaInfos = new DbReportMetaInfos();
 			MetricDefines metricDefines = MetricDefines.load(home.getClientFile().resolveFile("metric-defines.xml"));
@@ -194,4 +210,10 @@ public class TestUtil {
 			throw new JcpsException(e);
 		}
 	}
+
+	public static FileObject newConsoleHome() {
+		//
+		return TestUtil.newRamFolder();
+	}
+
 }

@@ -1,9 +1,8 @@
-package cc.dhandho.test;
+package cc.dhandho.test.odb;
 
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.ODatabaseType;
@@ -21,11 +20,24 @@ import junit.framework.TestCase;
 
 public class OrientDbTest extends TestCase {
 
-	public void setUp() {
+	public void testOpenClose() throws IOException {
+		String dbName = "db1";
+		String user = "admin";
+		String password = "admin";
+		String url = "memory:test";
 
-	}
+		OrientDB odb = new OrientDB(url, OrientDBConfig.defaultConfig());
 
-	public void tearDown() {
+		try {
+			odb.create(dbName, ODatabaseType.MEMORY);
+
+			for (int i = 0; i < 10; i++) {
+				ODatabaseSession dbs = odb.open(dbName, user, password);
+				dbs.close();
+			}
+		} finally {
+			odb.close();
+		}
 
 	}
 
@@ -58,7 +70,7 @@ public class OrientDbTest extends TestCase {
 			}
 			odb.close();
 		}
-		
+
 		{
 
 			OrientDB odb = new OrientDB(url, OrientDBConfig.defaultConfig());
@@ -69,22 +81,6 @@ public class OrientDbTest extends TestCase {
 				dbs.close();
 			}
 			odb.close();
-		}
-
-	}
-
-	public void testOpenClose() throws IOException {
-		String dbName = "db1";
-		String user = "admin";
-		String password = "admin";
-		String url = "memory:test";
-
-		OrientDB odb = new OrientDB(url, OrientDBConfig.defaultConfig());
-		odb.create(dbName, ODatabaseType.MEMORY);
-
-		for (int i = 0; i < 10; i++) {
-			ODatabaseSession dbs = odb.open(dbName, user, password);
-			dbs.close();
 		}
 
 	}
@@ -139,7 +135,6 @@ public class OrientDbTest extends TestCase {
 
 	}
 
-	@Test
 	public void testDefaultTx() throws IOException {
 		String dbName = "db1";
 		String user = "admin";

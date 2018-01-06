@@ -1,6 +1,7 @@
 package cc.dhandho.commons.commandline;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * 
@@ -41,7 +42,7 @@ public interface CommandLineApp {
 	/**
 	 * start the thread for running with.
 	 */
-	public void start();
+	public Future<Object> start();
 
 	/**
 	 * Shutdown and block until finished.

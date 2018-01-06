@@ -33,7 +33,7 @@ public class DhandhoServerTest extends TestCase {
 			// check archive folder
 			FileObject ar = home.getArchiveRootFolder();
 			FileObject[] children = ar.getChildren();
-			TestCase.assertEquals(2, children.length);
+			TestCase.assertEquals(1, children.length);
 			// name
 
 		}

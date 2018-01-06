@@ -8,6 +8,8 @@ import java.io.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.age5k.jcps.JcpsException;
+
 import cc.dhandho.commons.console.Console;
 import cc.dhandho.commons.console.MemoryHistoryStore;
 import cc.dhandho.commons.util.JfxUtil;
@@ -28,7 +30,7 @@ public class JfxConsolePane extends StackPane implements Console {
 	private PipedWriter outPipe;
 
 	// the reader for client to reade from.
-	private Reader reader;
+	private PipedReader reader;
 
 	// the position in the text area which the command is inputing right now.
 	int positionOfCmdStart = 0;
@@ -120,7 +122,14 @@ public class JfxConsolePane extends StackPane implements Console {
 
 	@Override
 	public void close() {
+		LOG.info("closing....");
 		this.historyStore.save();
+		try {
+			this.outPipe.close();
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
+		}
+		LOG.info("closed.");
 	}
 
 	public void print(Object s, Font font) {

@@ -59,4 +59,11 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 	public void clear() {
 		consolePane.clear();
 	}
+
+	@Override
+	public void shutdown() {		
+		this.consolePane.close();
+		super.shutdown();
+	}
+	
 }

@@ -36,7 +36,7 @@ public class ServerRestartTest extends TestCase {
 	}
 
 	public void testServerRestartOnSameDbAndHome() {
-		DhoDataHome home = TestUtil.getHome();
+		DhoDataHome home = TestUtil.newEmptyHome();
 
 		DbProvider dbp = new MyDbProvider().dbConfig(TestUtil.newInMemoryTestDbConfig());
 		DhoServer server = TestUtil.newInMemoryTestDhandhoServer(dbp);

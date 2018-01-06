@@ -15,7 +15,7 @@ public class DefaultDbProvider extends AbstractDbProvider {
 	
 	@Override
 	protected OrientDB getOrient() {
-		if (orient == null) {
+		if (orient == null) {			
 			orient = new OrientDB(this.dbConfig.getDbUrl(), OrientDBConfig.defaultConfig());
 		}
 		return orient;
@@ -29,6 +29,7 @@ public class DefaultDbProvider extends AbstractDbProvider {
 
 	@Override
 	public boolean createDbIfNotExist() {
+		
 		return this.getOrient().createIfNotExists(this.dbConfig.getDbName(), this.dbConfig.getDbType());
 	}
 

@@ -30,7 +30,7 @@ public class ReportEngineTest extends TestCase {
 
 		MetricDefines metricDefines = TestUtil.newMetricDefines();
 
-		app.addComponent(DhoDataHome.class, TestUtil.getHome());
+		app.addComponent(DhoDataHome.class, TestUtil.newEmptyHome());
 		app.addComponent(DbProvider.class, dbProvider);
 		app.addComponent(ReportMetaInfos.class, metaInfos);
 		app.addComponent(MetricDefines.class, metricDefines);

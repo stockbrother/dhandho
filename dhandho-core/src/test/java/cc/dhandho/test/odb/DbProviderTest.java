@@ -1,18 +1,15 @@
-package tmp;
+package cc.dhandho.test.odb;
 
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.test.util.TestUtil;
+import junit.framework.TestCase;
 
-public class Tmp {
-	public static class A {
+public class DbProviderTest extends TestCase {
 
-	}
-
-	public static void main(String[] args) {
-	//	System.out.println(A.class.getName());
-	//	System.out.println(A.class.getSimpleName());
+	public void test() {
 		DbProvider dbp = TestUtil.newInMemoryTestDb();
 		dbp.createDbIfNotExist();
 		System.out.println("done.");
+
 	}
 }

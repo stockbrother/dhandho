@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.apache.commons.vfs2.FileObject;
 
@@ -51,8 +52,8 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	}
 
 	@Override
-	public void start() {
-		super.start();
+	public Future<Object> start() {
+		Future<Object> rt = super.start();
 
 		this.echo(false);
 		this.addCommand(new CommandType("help", "Print this message!"), new HelpCommandHandler());
@@ -95,6 +96,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 			this.htmlRenderer = new EmptyHtmlRenderer();
 		}
 
+		return rt;
 	}
 
 	public MetricDefines getMetricsDefine() {
