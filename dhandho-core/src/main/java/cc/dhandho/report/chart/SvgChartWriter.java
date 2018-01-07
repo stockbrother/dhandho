@@ -55,7 +55,7 @@ public class SvgChartWriter {
 
 		String xLabel = xType.substring(xType.lastIndexOf(".") + 1);
 		String yLabel = yType.substring(xType.lastIndexOf(".") + 1);
-		writeScatterSvg(xLabel, xIdx, yLabel, yIdx, finder.corpPointMap(), heighLightCorpIds, sb);
+		writeScatterSvg(xLabel, xIdx, yLabel, yIdx, finder.find(), heighLightCorpIds, sb);
 	}
 
 	/**

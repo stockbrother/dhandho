@@ -11,5 +11,7 @@ public interface ReportEngine {
 	public CorpDatedMetricReportData getReport(String corpId, int[] years, String[] metrics);
 
 	public CorpDupontProfileReport getDupontProfileReport(String corpId, int[] years);
-	
+
+	public String getCorpName(String corpId);
+		
 }

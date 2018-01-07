@@ -9,27 +9,26 @@ import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cc.dhandho.report.dupont.node.DefineNode;
 import cc.dhandho.rest.server.DbProvider;
 
-public class PointsFilterDupontSvgBuilder extends DupontPointFinder {
+public class CenterPointDistanceBasedFilterDupontPointFinder extends DupontPointFinder {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PointsFilterDupontSvgBuilder.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CenterPointDistanceBasedFilterDupontPointFinder.class);
 
 	private double filter = 1.0D;
 
 	private String centerCorpId;
 
-	public PointsFilterDupontSvgBuilder(int year, String[] clazzA, DbProvider dbProvider) {
+	public CenterPointDistanceBasedFilterDupontPointFinder(int year, String[] clazzA, DbProvider dbProvider) {
 		super(year, clazzA, dbProvider);
 	}
 
-	public PointsFilterDupontSvgBuilder centerCorpId(String corpId) {
+	public CenterPointDistanceBasedFilterDupontPointFinder centerCorpId(String corpId) {
 		this.centerCorpId = corpId;
 		return this;
 	}
 
-	public PointsFilterDupontSvgBuilder filter(double filter) {
+	public CenterPointDistanceBasedFilterDupontPointFinder filter(double filter) {
 		assert filter >= 0.0D && filter <= 1D;
 		this.filter = filter;
 		return this;

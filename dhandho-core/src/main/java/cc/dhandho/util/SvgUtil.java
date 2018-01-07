@@ -5,8 +5,14 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.provider.Provider;
 
 public class SvgUtil {
+	
+	public static StringBuilder writeSvg2Html(int width, int height, Provider<String> svg, StringBuilder sb) {
+		return SvgUtil.writeSvg2Html(width, height, svg.get(), sb);
+	}
+	
 	public static StringBuilder writeSvg2Html(int width, int height, String svg, StringBuilder sb) {
 		StringWriter sWriter = new StringWriter();
 		writeSvg2Html(width, height, svg, sWriter);

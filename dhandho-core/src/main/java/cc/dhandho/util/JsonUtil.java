@@ -98,4 +98,37 @@ public class JsonUtil {
 		return sb.toString();
 	}
 
+	public static void value(String value, JsonWriter w) {
+		try {
+			w.value(value);
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
+
+	public static void beginArray(JsonWriter w) {
+		try {
+			w.beginArray();
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
+
+	public static void endArray(JsonWriter w) {
+		try {
+			w.endArray();
+		} catch (IOException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
+
+	public static void array(String[] types, JsonWriter w) {
+		beginArray(w);
+		for (String v : types) {
+
+			JsonUtil.value(v, w);
+		}
+		endArray(w);
+	}
+
 }

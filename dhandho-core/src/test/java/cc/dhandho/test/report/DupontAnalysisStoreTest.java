@@ -18,7 +18,7 @@ import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.chart.SvgChartWriter;
 import cc.dhandho.report.dupont.DupontAnalysis;
-import cc.dhandho.report.dupont.PointsFilterDupontSvgBuilder;
+import cc.dhandho.report.dupont.CenterPointDistanceBasedFilterDupontPointFinder;
 import cc.dhandho.report.dupont.node.AssetTurnover;
 import cc.dhandho.report.dupont.node.EquityMultiplier;
 import cc.dhandho.report.dupont.node.ProfitMarginNode;
@@ -126,7 +126,7 @@ public class DupontAnalysisStoreTest extends TestCase {
 
 		SvgChartWriter writer = new SvgChartWriter();
 		StringBuilder sb = new StringBuilder();
-		writer.writeScatterSvg(new PointsFilterDupontSvgBuilder(year, new String[] { xDefine, yDefine }, dbProvider)
+		writer.writeScatterSvg(new CenterPointDistanceBasedFilterDupontPointFinder(year, new String[] { xDefine, yDefine }, dbProvider)
 				.centerCorpId(corpId)//
 				.filter(1D)//
 				, xDefine, yDefine, new String[] { corpId }, sb);

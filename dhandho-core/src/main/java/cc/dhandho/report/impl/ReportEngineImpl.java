@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import cc.dhandho.ReportMetaInfos;
+import cc.dhandho.graphdb.handler.CorpNameQueryHandler;
 import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.report.CorpDupontProfileReport;
 import cc.dhandho.report.MetricDefines;
@@ -74,6 +75,11 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 	public CorpDupontProfileReport getDupontProfileReport(String corpId, int[] years) {
 
 		return null;
+	}
+
+	@Override
+	public String getCorpName(String corpId) {
+		return this.dbProvider.executeWithDbSession(new CorpNameQueryHandler(corpId));		
 	}
 
 }

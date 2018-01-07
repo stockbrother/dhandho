@@ -24,7 +24,6 @@ public class DupontPointFinder {
 	private Map<String, Integer> typeIndexMap;// index of type in array.
 	private DbProvider dbProvider;
 	private int year;
-	private int total;
 	
 	public DupontPointFinder(int year, String[] clazzA, DbProvider dbProvider) {
 		this.year = year;
@@ -40,7 +39,7 @@ public class DupontPointFinder {
 		return this.typeIndexMap.get(type);
 	}
 
-	public Map<String,CorpPoint> corpPointMap() {
+	public Map<String,CorpPoint> find() {
 		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
 		Object[] argA = new Object[this.typeArray.length + 1];
 		argA[0] = reportDate;
