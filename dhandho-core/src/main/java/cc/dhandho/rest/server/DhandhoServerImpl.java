@@ -56,6 +56,7 @@ public class DhandhoServerImpl extends ExecutorBasedServer implements DhoServer 
 		if (LOG.isInfoEnabled()) {
 			LOG.info("start...");
 		}
+		super.start();
 
 		new HomeFolderInitializer().initHomeFolder(dataHome);
 

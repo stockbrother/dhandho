@@ -205,18 +205,11 @@ public class JfxConsolePane extends StackPane implements Console {
 	}
 
 	void forceCaretMoveToEnd() {
-		if (text.getCaretPosition() < positionOfCmdStart) {
-			// move caret first!
-			text.positionCaret(textLength());
-		}
-		// text.repaint();
+		text.positionCaret(textLength());
 	}
 
 	void forceCaretMoveToStart() {
-		if (text.getCaretPosition() < positionOfCmdStart) {
-			// move caret first!
-		}
-		// text.repaint();
+		text.positionCaret(this.positionOfCmdStart);
 	}
 
 	void enter() {

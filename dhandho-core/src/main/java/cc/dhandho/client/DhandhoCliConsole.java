@@ -56,24 +56,41 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		Future<Object> rt = super.start();
 
 		this.echo(false);
-		this.addCommand(new CommandType("help", "Print this message!"), new HelpCommandHandler());
+		this.addCommand(new CommandType("help", "Print this message!").addDesc("\n"), new HelpCommandHandler());
+
 		this.addCommand(new CommandType("cls", "Clear screen!"), new ClearScreenCommandHandler());
 		this.addCommand(new CommandType("exit", "Exit!"), new ExitCommandHandler());
+
+		this.addCommand(new CommandType("cat", "Print file content!")//
+				.addOption(CatCommandHandler.OPT_f, "file", true, "Show file content.", true) //
+				, new CatCommandHandler());
+
 		this.addCommand(new CommandType("chart", "Show metric value as SVG chart for corpId, years and metrics!"),
 				new CorpChartCommandHandler());
 
 		this.addCommand(new CommandType("dupont", "Dupont Analysis or show the result as SVG chart!")//
+				.addDesc("\nFor instance,")//
+				.addDesc("\nCommand below perform analysis on year 2016 and save the data to DB.")//
+				.addDesc("\n  dupont -a -y 2016")//
+				.addDesc("\nCommand below will show the analysis as SVG with a corpId high-lighted.")//
+				.addDesc("\n  dupont -s -c 000002 -y 2016")//
+				.addDesc("\nCommand below with a filter 0.5 that show 50% points around the corpId high-lighted.")//
+				.addDesc("\n  dupont -s -c 000002 -y 2016 -f 0.5")//
 				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
 						"Execute analysis and store the result to DB.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show svg through html renderer.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_y, "year", true, "year when analysis or showing svg.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_c, "corpId", true, "Corp id when showing svg.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_f, "filter", true, "Show svg with a filter on the points.")//
+				
 				, new DupontAnalysisCommandHandler());
 
 		this.addCommand(new CommandType("load", "Load input data from folder!"), new InputDataLoadCommandHandler());
 		this.addCommand(new CommandType("query", "Execute query with sql!"), new SqlQueryCommandHandler());
 
-		this.addCommand(new CommandType("show", "Show some thing. 'help show' for detail!")//
+		this.addCommand(new CommandType("show", "Show some thing.").addDesc("\nFor instance:")//
+				.addDesc("\nshow -M")//
+				.addDesc("\nshow -r -c 000002 -m 资产总计/净利润")//
 				.addOption(ShowCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
 				.addOption(ShowCommandHandler.OPT_D, "db-meta", false, "Show DB meta info.") //
 				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
@@ -83,10 +100,6 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 						"For the show command that requires a metric list.") //
 				, new ShowCommandHandler()//
 		);
-
-		this.addCommand(new CommandType("cat", "Print file content!")//
-				.addOption(CatCommandHandler.OPT_f, "file", true, "Show file content.") //
-				, new CatCommandHandler());
 
 		this.addCommand(new CommandType("sina", "Collect/wash/load all-quotes data from sina."),
 				new SinaDataLoadCommandHandler());

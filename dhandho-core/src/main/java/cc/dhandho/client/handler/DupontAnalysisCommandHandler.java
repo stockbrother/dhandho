@@ -17,6 +17,7 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 	public static final String OPT_s = "s";
 	public static final String OPT_c = "c";
 	public static final String OPT_y = "y";
+	public static final String OPT_f = "f";
 
 	@Override
 	public void execute(CommandContext cc) {
@@ -27,23 +28,30 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 			JsonObject req = new JsonObject();
 			req.addProperty("year", year);
 			cc.getServer().handle(DupontAnalysisJsonHandler.class.getName(), req);
+			cc.consume();
 		} else if (cc.getCommandLine().hasOption(OPT_s)) {
 
 			String code = cc.getCommandLine().getOptionValue(OPT_c);
 			String yearS = cc.getCommandLine().getOptionValue(OPT_y);
+			String filterS = cc.getCommandLine().getOptionValue(OPT_f);
+			float filter = filterS == null ? 1.0f : Float.parseFloat(filterS);
 			int year = yearS == null ? 2016 : Integer.parseInt(yearS);
 			JsonObject req = new JsonObject();
 			req.addProperty("corpId", code);
 			req.addProperty("year", year);
+			req.addProperty("filter", filter);
 
 			JsonObject res = (JsonObject) cc.getServer().handle(DupontSvgJsonHandler.class.getName(), req);
 
 			String svg1 = res.get("svg1").getAsString();
 			String svg2 = res.get("svg2").getAsString();
+			String svg3 = res.get("svg3").getAsString();
 			StringWriter sW = new StringWriter();
-			writeSvg2Html(600, 320, new String[] { svg1, svg2 }, sW);
+			writeSvg2Html(600, 320, new String[] { svg1, svg2, svg3 }, sW);
 			cc.getConsole().htmlRenderer.showHtml(sW.getBuffer().toString());
+			cc.consume();
 		}
+
 	}
 
 	private static void writeSvg2Html(int width, int height, String[] svgA, Writer out) {

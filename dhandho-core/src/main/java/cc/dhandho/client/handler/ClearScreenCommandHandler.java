@@ -8,7 +8,7 @@ public class ClearScreenCommandHandler implements CommandHandler {
 	public void execute(CommandContext cc) {
 		
 		cc.getConsole().clear();
-		
+		cc.consume();
 	}
 
 }

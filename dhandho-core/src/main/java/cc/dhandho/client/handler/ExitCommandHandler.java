@@ -8,7 +8,7 @@ public class ExitCommandHandler implements CommandHandler {
 	public void execute(CommandContext cc) {
 		
 		cc.getConsole().shutdownAsync();
-		
+		cc.consume();
 	}
 
 }

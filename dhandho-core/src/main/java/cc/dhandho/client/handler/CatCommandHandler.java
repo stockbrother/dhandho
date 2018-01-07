@@ -34,6 +34,7 @@ public class CatCommandHandler extends DhandhoCommandHandler {
 			throw JcpsException.toRtException(e);
 		}
 
+		cc.consume();
 	}
 
 }

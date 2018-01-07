@@ -9,7 +9,7 @@ public class InputDataLoadCommandHandler extends DhandhoCommandHandler {
 	public void execute(CommandContext cc) {
 
 		cc.getServer().handle(InputDataLoadJsonHandler.class.getName());
-		
+		cc.consume();
 	}
 
 }

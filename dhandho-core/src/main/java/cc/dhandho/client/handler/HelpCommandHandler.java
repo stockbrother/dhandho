@@ -30,7 +30,7 @@ public class HelpCommandHandler implements CommandHandler {
 			// print all command list.
 			this.helpAll(cc, writer);
 		}
-
+		cc.consume();
 	}
 
 	protected void helpForCommand(CommandContext cl, CommandLineWriter writer, CommandType cmd) {
@@ -49,15 +49,29 @@ public class HelpCommandHandler implements CommandHandler {
 		int maxLength = this.getMaxLength(cmdL);
 		for (int i = 0; i < cmdL.size(); i++) {
 			CommandType cmd = cmdL.get(i);
+			StringBuilder line = new StringBuilder();
 			String name = cmd.getName();
-			cc.write(" ");
-			cc.write(name);
+			line.append(" ");
+			line.append(name);
 			for (int x = name.length(); x < maxLength; x++) {
-				cc.write(" ");
+				line.append(" ");
 			}
-			cc.write(" ");
-			cc.write(cmd.getDescription());
-			cc.writeLine();
+			line.append(" ");
+
+			int leftColumnSize = line.length();
+			String[] descA = cmd.getDescription().split("\n");
+			for (int j = 0; j < descA.length; j++) {
+
+				if (j > 0) {
+					line = new StringBuilder();
+					for (int x = 0; x < leftColumnSize; x++) {
+						line.append(" ");
+					}
+				}
+				line.append(descA[j]);				
+
+				cc.writeLine(line.toString());
+			}			
 		}
 
 	}

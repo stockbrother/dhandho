@@ -271,7 +271,7 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 	@Override
 	public CommandLineApp pushReader(CommandLineReader cr) {
-		return this.pushReader(cr, true);
+		return this.pushReader(cr, false);
 	}
 
 	@Override

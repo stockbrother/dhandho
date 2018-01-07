@@ -6,9 +6,9 @@ import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
-import cc.dhandho.report.dupont.DupontAnalysis;
+import cc.dhandho.report.chart.SvgChartWriter;
+import cc.dhandho.report.dupont.PointsFilterDupontSvgBuilder;
 import cc.dhandho.report.dupont.node.AssetTurnover;
-import cc.dhandho.report.dupont.node.DefineNode;
 import cc.dhandho.report.dupont.node.EquityMultiplier;
 import cc.dhandho.report.dupont.node.ProfitMarginNode;
 import cc.dhandho.rest.AbstractRestRequestHandler;
@@ -23,26 +23,34 @@ public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
 		JsonObject req = (JsonObject) JsonUtil.parse(arg0.getReader());
 		String corpId = req.get("corpId").getAsString();
 		int year = req.get("year").getAsInt();
-
-		DupontAnalysis dupontAnalysis = new DupontAnalysis(reportEngine);
+		float filter = req.get("filter").getAsFloat();
 
 		JsonWriter w = arg0.getWriter();
 		try {
 			w.beginObject();
-			writeSvgField("svg1", corpId, year, AssetTurnover.class, ProfitMarginNode.class, w, dupontAnalysis);
-			writeSvgField("svg2", corpId, year, AssetTurnover.class, EquityMultiplier.class, w, dupontAnalysis);
+			writeSvgField("svg1", corpId, year, AssetTurnover.class.getName(), ProfitMarginNode.class.getName(), filter,
+					w);
+			writeSvgField("svg2", corpId, year, AssetTurnover.class.getName(), EquityMultiplier.class.getName(), filter,
+					w);
+			writeSvgField("svg3", corpId, year, ProfitMarginNode.class.getName(), EquityMultiplier.class.getName(),
+					filter, w);
+
 			w.endObject();
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}
 	}
 
-	private <X extends DefineNode, Y extends DefineNode> void writeSvgField(String key, String corpId, int year,
-			Class<X> xDefine, Class<Y> yDefine, JsonWriter w, DupontAnalysis dupontAnalysis) {
+	private void writeSvgField(String key, String corpId, int year, String xDefine, String yDefine, float filter,
+			JsonWriter w) {
 
-		String[] heighLightCorpId = new String[] { corpId };
-		StringBuilder sb = dupontAnalysis.buildScatterSvg(xDefine, yDefine, year, heighLightCorpId, dbProvider,
-				new StringBuilder());
+		SvgChartWriter writer = new SvgChartWriter();
+		StringBuilder sb = new StringBuilder();
+		writer.writeScatterSvg(new PointsFilterDupontSvgBuilder(year, new String[] { xDefine, yDefine }, dbProvider)
+				.centerCorpId(corpId)//
+				.filter(filter)//
+				, xDefine, yDefine, new String[] { corpId }, sb);
+
 		sb = SvgUtil.writeSvg2Html(600, 320, sb.toString(), new StringBuilder());
 
 		try {

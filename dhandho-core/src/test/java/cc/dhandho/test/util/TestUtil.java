@@ -29,6 +29,7 @@ import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.DhoServer;
+import cc.dhandho.rest.server.MetricDefinesLoader;
 import cc.dhandho.rest.server.DhandhoServerImpl;
 
 public class TestUtil {
@@ -97,7 +98,7 @@ public class TestUtil {
 		}
 	}
 
-	public static DhoDataHome getDefaultPopulatedHome() {
+	public static DhoDataHome getTheDefaultPopulatedDataHomeForTest() {
 		try {
 			if (HOME == null) {
 
@@ -182,33 +183,30 @@ public class TestUtil {
 	}
 
 	public static ReportEngine newInMemoryReportEgine(DbProvider dbProvider) {
-		try {
 
-			DhoDataHome home = newEmptyHome();
-			Container app = new ContainerImpl();
-			ReportMetaInfos metaInfos = new DbReportMetaInfos();
-			MetricDefines metricDefines = MetricDefines.load(home.getClientFile().resolveFile("metric-defines.xml"));
-			app.addComponent(DhoDataHome.class, home);
-			app.addComponent(MetricDefines.class, metricDefines);
-			app.addComponent(ReportMetaInfos.class, metaInfos);
-			app.addComponent(DbProvider.class, dbProvider);
-			ReportEngine reportEngine = app.addComponent(ReportEngine.class, ReportEngineImpl.class);
+		DhoDataHome dataHome = TestUtil.getTheDefaultPopulatedDataHomeForTest();
+		Container app = new ContainerImpl();
+		ReportMetaInfos metaInfos = new DbReportMetaInfos();
+		MetricDefines metricDefines = new MetricDefinesLoader().load(dataHome);
+		app.addComponent(DhoDataHome.class, dataHome);
+		app.addComponent(MetricDefines.class, metricDefines);
+		app.addComponent(ReportMetaInfos.class, metaInfos);
+		app.addComponent(DbProvider.class, dbProvider);
+		ReportEngine reportEngine = app.addComponent(ReportEngine.class, ReportEngineImpl.class);
 
-			dbProvider.createDbIfNotExist();
+		dbProvider.createDbIfNotExist();
 
-			dbProvider.executeWithDbSession(new MyDataUpgraders());
+		dbProvider.executeWithDbSession(new MyDataUpgraders());
 
-			// load corp info to DB.
-			CorpInfoInputDataLoader dbu = app.newInstance(CorpInfoInputDataLoader.class);
-			dbProvider.executeWithDbSession(dbu);
-			// load washed data to DB.
-			WashedInputDataLoader wdu = app.newInstance(WashedInputDataLoader.class);
-			dbProvider.executeWithDbSession(wdu);
+		// load corp info to DB.
+		CorpInfoInputDataLoader dbu = app.newInstance(CorpInfoInputDataLoader.class);
+		dbProvider.executeWithDbSession(dbu);
+		// load washed data to DB.
+		WashedInputDataLoader wdu = app.newInstance(WashedInputDataLoader.class);
+		dbProvider.executeWithDbSession(wdu);
 
-			return reportEngine;
-		} catch (IOException e) {
-			throw new JcpsException(e);
-		}
+		return reportEngine;
+
 	}
 
 	public static FileObject newConsoleHome() {

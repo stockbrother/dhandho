@@ -34,7 +34,8 @@ public class OptionDispatchingCommandHandler extends DhandhoCommandHandler {
 		if (entry.isPresent()) {
 			entry.get().getValue().execute(cc);
 		} else {
-			cc.getConsole().peekWriter().writeLine("no sub handler found.");
+			cc.usage();
+			cc.consume();
 		}
 	}
 

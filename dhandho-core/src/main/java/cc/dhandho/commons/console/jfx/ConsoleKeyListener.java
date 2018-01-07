@@ -57,18 +57,10 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 		case LEFT:
 		case BACK_SPACE:
 		case DELETE:
-			if (console.text.getCaretPosition() <= console.positionOfCmdStart) {
-				// This doesn't work for backspace.
-				// See default case for workaround
-				e.consume();
-			}
+		case RIGHT:			
 			break;
-
-		case RIGHT:
-			console.forceCaretMoveToStart();
-			break;
-
 		case HOME:
+			console.forceCaretMoveToStart();
 			e.consume();
 			break;
 

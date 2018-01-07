@@ -3,6 +3,7 @@
  */
 package cc.dhandho.commons.commandline;
 
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 /**
@@ -12,15 +13,20 @@ import org.apache.commons.cli.Options;
 public class CommandType {
 
 	private String name;
-		
+
 	private Options options;
 
-	private String description;
+	private StringBuilder description = new StringBuilder();
 
-	public CommandType(String name,String desc) {
+	public CommandType(String name, String desc) {
 		this.name = name;
 		this.options = new Options();
-		this.description = desc;
+		this.addDesc(desc);
+	}
+
+	public CommandType addDesc(String desc) {
+		this.description.append(desc);
+		return this;
 	}
 
 	public Options getOptions() {
@@ -28,7 +34,13 @@ public class CommandType {
 	}
 
 	public CommandType addOption(String opt, String longOpt, boolean hasArg, String description) {
-		this.options.addOption(opt, longOpt, hasArg, description);
+		return this.addOption(opt, longOpt, hasArg, description, false);
+	}
+
+	public CommandType addOption(String opt, String longOpt, boolean hasArg, String description, boolean required) {
+		Option O = new Option(opt, longOpt, hasArg, description);
+		O.setRequired(required);
+		this.options.addOption(O);
 		return this;
 	}
 
@@ -40,7 +52,7 @@ public class CommandType {
 	}
 
 	public String getDescription() {
-		return this.description;
+		return this.description.toString();
 	}
 
 }

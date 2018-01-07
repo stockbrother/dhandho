@@ -53,7 +53,7 @@ public class CorpChartCommandHandler extends DhandhoCommandHandler {
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}
-
+		cc.consume();
 	}
 
 	private static void writeSvg2Html(int width, int height, String svg, Writer out) throws IOException {

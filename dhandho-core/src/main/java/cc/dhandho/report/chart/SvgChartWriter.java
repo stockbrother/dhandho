@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -36,11 +39,23 @@ import com.age5k.jcps.JcpsException;
 
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.CorpDatedMetricReportData;
+import cc.dhandho.report.dupont.CorpPoint;
+import cc.dhandho.report.dupont.DupontPointFinder;
 
 public class SvgChartWriter {
 
 	public SvgChartWriter() {
 
+	}
+
+	public void writeScatterSvg(DupontPointFinder finder, String xType, String yType, String[] heighLightCorpIds,
+			StringBuilder sb) {
+		int xIdx = finder.getTypeIndex(xType);
+		int yIdx = finder.getTypeIndex(yType);
+
+		String xLabel = xType.substring(xType.lastIndexOf(".") + 1);
+		String yLabel = yType.substring(xType.lastIndexOf(".") + 1);
+		writeScatterSvg(xLabel, xIdx, yLabel, yIdx, finder.corpPointMap(), heighLightCorpIds, sb);
 	}
 
 	/**
@@ -49,18 +64,20 @@ public class SvgChartWriter {
 	 *            A map: corpId => Point(x,y)
 	 * @param sb
 	 */
-	public void writeScatterSvg(String xLabel, String yLabel, Map<String, Double[]> xyPoints, String[] heighLightKey, StringBuilder sb) {
+	public void writeScatterSvg(String xLabel, int xIdx, String yLabel, int yIdx, Map<String,CorpPoint> xyPoints,
+			String[] heighLightKey, StringBuilder sb) {
 		StringWriter sWriter = new StringWriter();
-		writeScatterSvg(xLabel,yLabel, xyPoints, heighLightKey, sWriter);
+		writeScatterSvg(xLabel, xIdx, yLabel, yIdx, xyPoints, heighLightKey, sWriter);
 		sb.append(sWriter.getBuffer().toString());
 	}
 
-	public void writeScatterSvg(String xLabel, String yLabel, Map<String, Double[]> xyPoints, String[] heighLightKey, Writer writer) {
+	public void writeScatterSvg(String xLabel, int xIdx, String yLabel, int yIdx, Map<String,CorpPoint> xyPoints,
+			String[] heighLightKey, Writer writer) {
 		String title = "[" + "todo" + "]";
-		XYDataset dataSet = createDataset(xyPoints, heighLightKey);
+		XYDataset dataSet = createDataset(xyPoints, xIdx, yIdx, heighLightKey);
 
-		JFreeChart chart = ChartFactory.createScatterPlot(title, xLabel, yLabel, dataSet, PlotOrientation.VERTICAL, true,
-				true, false);
+		JFreeChart chart = ChartFactory.createScatterPlot(title, xLabel, yLabel, dataSet, PlotOrientation.VERTICAL,
+				true, true, false);
 
 		//
 
@@ -80,25 +97,32 @@ public class SvgChartWriter {
 		writeXml2(root, writer);
 	}
 
-	private XYDataset createDataset(Map<String, Double[]> xyPoints, String[] heighLightKey) {
+	private XYDataset createDataset(Map<String,CorpPoint> xyPoints,  int xIdx, int yIdx, String[] heighLightKey) {
 		DefaultXYDataset rt = new DefaultXYDataset();
 		Set<String> set = new HashSet<>(Arrays.asList(heighLightKey));
+
 		double[][] otherData = new double[2][xyPoints.size() - set.size()];
-		int otherIdx = 0;
-		for (Map.Entry<String, Double[]> entry : xyPoints.entrySet()) {
-			String key = entry.getKey();
-			Double[] point = entry.getValue();
-			if (set.contains(key)) {// heighLightCorpId
-				double[][] data = new double[2][1];
-				data[0][0] = point[0] == null ? 0D : point[0];
-				data[1][0] = point[1] == null ? 0D : point[1];
-				rt.addSeries(key, data);
-			} else {
-				otherData[0][otherIdx] = point[0] == null ? 0D : point[0];
-				otherData[1][otherIdx] = point[1] == null ? 0D : point[1];
-				otherIdx++;
+		AtomicInteger otherIdx = new AtomicInteger(0);
+
+		xyPoints.values().stream().forEach(new Consumer<CorpPoint>() {
+
+			@Override
+			public void accept(CorpPoint t) {
+				String key = t.corpId;
+				Double[] point = t.point;
+				if (set.contains(key)) {// heighLightCorpId
+					double[][] data = new double[2][1];
+					data[0][0] = point[xIdx] == null ? 0D : point[xIdx];
+					data[1][0] = point[yIdx] == null ? 0D : point[yIdx];
+					rt.addSeries(key, data);
+				} else {
+					otherData[0][otherIdx.get()] = point[xIdx] == null ? 0D : point[xIdx];
+					otherData[1][otherIdx.get()] = point[yIdx] == null ? 0D : point[yIdx];
+					otherIdx.incrementAndGet();
+				}
 			}
-		}
+		});
+
 		rt.addSeries("Other", otherData);
 
 		return rt;
@@ -176,4 +200,5 @@ public class SvgChartWriter {
 		}
 		return dataset;
 	}
+
 }

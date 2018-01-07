@@ -4,7 +4,6 @@
 package cc.dhandho.commons.commandline;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
@@ -15,10 +14,6 @@ public class DefaultConsoleReader implements CommandLineReader {
 
 	private Reader r;
 
-	private DefaultConsoleReader() {
-		this(new InputStreamReader(System.in));
-	}
-
 	public DefaultConsoleReader(Reader reader) {
 		this.r = reader;
 	}
@@ -27,7 +22,7 @@ public class DefaultConsoleReader implements CommandLineReader {
 	public String readLine() {
 
 		StringBuffer sb = new StringBuffer();
-		boolean eof = true;
+		boolean eof = false;
 		try {
 			while (true) {
 
