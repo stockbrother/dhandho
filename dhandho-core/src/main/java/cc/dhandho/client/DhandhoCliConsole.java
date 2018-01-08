@@ -21,7 +21,8 @@ import cc.dhandho.client.handler.DupontAnalysisCommandHandler;
 import cc.dhandho.client.handler.ExitCommandHandler;
 import cc.dhandho.client.handler.HelpCommandHandler;
 import cc.dhandho.client.handler.InputDataLoadCommandHandler;
-import cc.dhandho.client.handler.ShowCommandHandler;
+import cc.dhandho.client.handler.MyCorpDispatcherCommandHandler;
+import cc.dhandho.client.handler.ShowDispatcherCommandHandler;
 import cc.dhandho.client.handler.SinaDataLoadCommandHandler;
 import cc.dhandho.client.handler.SqlQueryCommandHandler;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
@@ -82,23 +83,31 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 				.addOption(DupontAnalysisCommandHandler.OPT_y, "year", true, "year when analysis or showing svg.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_c, "corpId", true, "Corp id when showing svg.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_f, "filter", true, "Show svg with a filter on the points.")//
-				
+
 				, new DupontAnalysisCommandHandler());
 
 		this.addCommand(new CommandType("load", "Load input data from folder!"), new InputDataLoadCommandHandler());
+
+		this.addCommand(new CommandType("mycorp", "My corp related operations.").addDesc("\nFor instance:")//
+				.addDesc("\nmycorp -a")//
+				.addOption(MyCorpDispatcherCommandHandler.OPT_a, "add", true, "Add new my corp with a corpId.") //
+				, new MyCorpDispatcherCommandHandler()//
+		);
+
 		this.addCommand(new CommandType("query", "Execute query with sql!"), new SqlQueryCommandHandler());
 
 		this.addCommand(new CommandType("show", "Show some thing.").addDesc("\nFor instance:")//
 				.addDesc("\nshow -M")//
 				.addDesc("\nshow -r -c 000002 -m 资产总计/净利润")//
-				.addOption(ShowCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
-				.addOption(ShowCommandHandler.OPT_D, "db-meta", false, "Show DB meta info.") //
-				.addOption(ShowCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
-				.addOption(ShowCommandHandler.OPT_r, "report", false, "Show report.") //
-				.addOption(ShowCommandHandler.OPT_c, "code", true, "For the show command that require a corp code.") //
-				.addOption(ShowCommandHandler.OPT_m, "metrics", true,
+				.addOption(ShowDispatcherCommandHandler.OPT_M, "metric-defines", false, "Show all metrics define.") //
+				.addOption(ShowDispatcherCommandHandler.OPT_D, "db-meta", false, "Show DB meta info.") //
+				.addOption(ShowDispatcherCommandHandler.OPT_v, "vars", false, "Show all varibles.") //
+				.addOption(ShowDispatcherCommandHandler.OPT_r, "report", false, "Show report.") //
+				.addOption(ShowDispatcherCommandHandler.OPT_c, "code", true,
+						"For the show command that require a corp code.") //
+				.addOption(ShowDispatcherCommandHandler.OPT_m, "metrics", true,
 						"For the show command that requires a metric list.") //
-				, new ShowCommandHandler()//
+				, new ShowDispatcherCommandHandler()//
 		);
 
 		this.addCommand(new CommandType("sina", "Collect/wash/load all-quotes data from sina."),

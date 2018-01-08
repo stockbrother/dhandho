@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 import cc.dhandho.client.CommandContext;
 
-public class OptionDispatchingCommandHandler extends DhandhoCommandHandler {
+public class OptionDispatcherCommandHandler extends DhandhoCommandHandler {
 
 	private Map<String, CommandHandler> childCommandHandlerMap = new HashMap<>();
 

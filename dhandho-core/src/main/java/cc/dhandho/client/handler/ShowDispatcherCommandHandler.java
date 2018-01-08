@@ -1,6 +1,6 @@
 package cc.dhandho.client.handler;
 
-public class ShowCommandHandler extends OptionDispatchingCommandHandler {
+public class ShowDispatcherCommandHandler extends OptionDispatcherCommandHandler {
 
 	public static final String OPT_M = "M";// MetricDefines.
 	public static final String OPT_D = "D";// DB schema
@@ -9,7 +9,7 @@ public class ShowCommandHandler extends OptionDispatchingCommandHandler {
 	public static final String OPT_c = "c";
 	public static final String OPT_m = "m";
 
-	public ShowCommandHandler() {
+	public ShowDispatcherCommandHandler() {
 		this.add(OPT_M, new ShowMetricDefinesCommandHandler());
 		this.add(OPT_v, new ShowVariableCommandHandler());
 		this.add(OPT_r, new ShowReportCommandHandler());

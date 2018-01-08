@@ -1,7 +1,6 @@
 package cc.dhandho.commons.console.jfx;
 
 import javafx.event.EventHandler;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -30,14 +29,14 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 	private synchronized void type(KeyEvent e, boolean pressed, boolean release) {
 		KeyCode code = e.getCode();
 
-		switch (e.getCode()) {
+		switch (code) {
 		case ENTER:
 			if (pressed) {
 				if (console.gotUp) {
 					console.enter();
 				}
+				e.consume();
 			}
-			e.consume();
 			break;
 
 		case UP:
@@ -50,18 +49,25 @@ class ConsoleKeyListener implements EventHandler<KeyEvent> {
 		case DOWN:
 			if (pressed) {
 				console.historyDown();
+				e.consume();
 			}
-			e.consume();
 			break;
 
-		case LEFT:
 		case BACK_SPACE:
+			if (pressed) {
+				console.backward();
+				e.consume();
+			}
+			break;
+		case LEFT:
 		case DELETE:
-		case RIGHT:			
+		case RIGHT:
 			break;
 		case HOME:
-			console.forceCaretMoveToStart();
-			e.consume();
+			if (pressed) {
+				console.positionCaretToCmdStart();
+				e.consume();
+			}
 			break;
 
 		case U: // clear line

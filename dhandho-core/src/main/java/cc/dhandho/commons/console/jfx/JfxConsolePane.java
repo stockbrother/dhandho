@@ -208,7 +208,7 @@ public class JfxConsolePane extends StackPane implements Console {
 		text.positionCaret(textLength());
 	}
 
-	void forceCaretMoveToStart() {
+	void positionCaretToCmdStart() {
 		text.positionCaret(this.positionOfCmdStart);
 	}
 
@@ -308,5 +308,13 @@ public class JfxConsolePane extends StackPane implements Console {
 		}
 
 		replaceRange(showline, positionOfCmdStart, textLength());
+	}
+
+	public boolean backward() {
+		if (this.text.getCaretPosition() > this.positionOfCmdStart) {
+			text.deletePreviousChar();
+			return true;
+		}
+		return false;
 	}
 }

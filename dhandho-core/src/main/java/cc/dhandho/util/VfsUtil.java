@@ -1,5 +1,10 @@
 package cc.dhandho.util;
 
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -78,6 +83,23 @@ public class VfsUtil {
 			}
 			return false;
 
+		} catch (FileSystemException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
+
+	public static Reader getReader(FileObject fo, Charset charSet) {
+		//
+		try {
+			return new InputStreamReader(fo.getContent().getInputStream(), charSet);
+		} catch (FileSystemException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
+	public static Writer getWriter(FileObject fo, Charset charSet) {
+		//
+		try {
+			return new OutputStreamWriter(fo.getContent().getOutputStream(), charSet);
 		} catch (FileSystemException e) {
 			throw JcpsException.toRtException(e);
 		}

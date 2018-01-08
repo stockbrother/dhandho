@@ -7,6 +7,10 @@ import cc.dhandho.rest.server.DhoServer;
 public class CommandContext {
 	private CommandAndLine commandLine;
 
+	/**
+	 * If a command line not consumed, framework will(as the default behavior) print
+	 * usage information.
+	 */
 	private boolean consumed;
 
 	public boolean isConsumed() {

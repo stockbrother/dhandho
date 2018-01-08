@@ -13,8 +13,8 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 
 	@Override
 	public void execute(CommandContext cc) {
-		String code = cc.getCommandLine().getOptionValue(ShowCommandHandler.OPT_c);
-		String metricsS = cc.getCommandLine().getOptionValue(ShowCommandHandler.OPT_m);
+		String code = cc.getCommandLine().getOptionValue(ShowDispatcherCommandHandler.OPT_c);
+		String metricsS = cc.getCommandLine().getOptionValue(ShowDispatcherCommandHandler.OPT_m);
 		String[] metrics = metricsS.split("/");
 		JsonObject req = new JsonObject();
 		req.addProperty("corpId", code);

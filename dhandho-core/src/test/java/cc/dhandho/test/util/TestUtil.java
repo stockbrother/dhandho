@@ -24,13 +24,14 @@ import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.graphdb.MyDataUpgraders;
 import cc.dhandho.input.loader.CorpInfoInputDataLoader;
 import cc.dhandho.input.loader.WashedInputDataLoader;
+import cc.dhandho.mycorp.MyCorps;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.server.DbProvider;
+import cc.dhandho.rest.server.DhandhoServerImpl;
 import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.rest.server.MetricDefinesLoader;
-import cc.dhandho.rest.server.DhandhoServerImpl;
 
 public class TestUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);
@@ -213,5 +214,11 @@ public class TestUtil {
 		//
 		return TestUtil.newRamFolder();
 	}
-
+	public static Container newContainerWithDefaultTestHome() {
+		DhoDataHome dataHome = TestUtil.getTheDefaultPopulatedDataHomeForTest();
+		Container app = new ContainerImpl();
+		app.addComponent(DhoDataHome.class, dataHome);
+		return app;
+	}
+	
 }
