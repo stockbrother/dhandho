@@ -5,11 +5,13 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.age5k.jcps.JcpsException;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.report.chart.SvgChartWriter;
 import cc.dhandho.report.dupont.CenterPointDistanceBasedFilterDupontPointFinder;
+import cc.dhandho.report.dupont.CorpFilter;
 import cc.dhandho.report.dupont.CorpPoint;
 import cc.dhandho.report.dupont.DupontPointFinder;
 import cc.dhandho.report.dupont.node.AssetTurnover;
@@ -27,14 +29,17 @@ public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
 		JsonObject req = (JsonObject) JsonUtil.parse(arg0.getReader());
 		String corpId = req.get("corpId").getAsString();
 		int year = req.get("year").getAsInt();
-		float filter = req.get("filter").getAsFloat();
+		JsonElement filterJ = req.get("filter");
+		CorpFilter filter = CorpFilter.valueOf(filterJ);
 
 		String[] types = new String[] { ProfitMarginNode.class.getName(), AssetTurnover.class.getName(),
 				EquityMultiplier.class.getName() };
 
-		DupontPointFinder dpf = new CenterPointDistanceBasedFilterDupontPointFinder(year, types, dbProvider)
+		DupontPointFinder dpf = new CenterPointDistanceBasedFilterDupontPointFinder(year, types, dbProvider)//
+				.myCorpsProvider(this.myCorpsProvider)//
 				.centerCorpId(corpId)//
-				.filter(filter);
+				.filter(filter)//
+		;
 
 		Map<String, CorpPoint> map = dpf.find();
 
@@ -57,7 +62,7 @@ public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
 	private String getCorpName(String corpId) {
 		return this.reportEngine.getCorpName(corpId);
 	}
-	
+
 	private void writeCorpPoint(String key, Map<String, CorpPoint> map, String corpId, JsonWriter w) {
 		try {
 			w.name(key);

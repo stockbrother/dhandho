@@ -20,22 +20,22 @@ public class StackConsoleWriter implements CommandLineWriter {
 	}
 
 	@Override
-	public CommandLineWriter writeLine() {
+	public CommandLineWriter writeLn() {
 		if (this.stack.isEmpty()) {
 			return null;
 		}
 
 		CommandLineWriter top = this.stack.peek();
 
-		top.writeLine();
+		top.writeLn();
 
 		return this;
 	}
 
 	@Override
-	public CommandLineWriter writeLine(String line) {
+	public CommandLineWriter writeLn(String line) {
 
-		peek(true).writeLine(line);
+		peek(true).writeLn(line);
 
 		return this;
 	}

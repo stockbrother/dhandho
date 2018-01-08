@@ -37,13 +37,20 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 
 			String code = cc.getCommandLine().getOptionValue(OPT_c);
 			String yearS = cc.getCommandLine().getOptionValue(OPT_y);
-			String filterS = cc.getCommandLine().getOptionValue(OPT_f);
-			float filter = filterS == null ? 1.0f : Float.parseFloat(filterS);
 			int year = yearS == null ? 2016 : Integer.parseInt(yearS);
+
 			JsonObject req = new JsonObject();
 			req.addProperty("corpId", code);
 			req.addProperty("year", year);
-			req.addProperty("filter", filter);
+
+			// filter
+			String filterS = cc.getCommandLine().getOptionValue(OPT_f);
+			if ("mycorps".equals(filterS)) {
+				req.addProperty("filter", filterS);
+			} else {
+				float filter = filterS == null ? 1.0f : Float.parseFloat(filterS);
+				req.addProperty("filter", filter);
+			}
 
 			JsonObject res = (JsonObject) cc.getServer().handle(DupontSvgJsonHandler.class.getName(), req);
 
@@ -75,21 +82,21 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 			out.write("  <body>\n");
 			out.write("    <table>");
 			out.write("      <tr><td style='vertical-align:top'>");
-			//Left TD:svg list
+			// Left TD:svg list
 			for (String svg : svgA) {
 				out.write("    <div style=\"width:" + width + "; height:" + height + ";\">\n");
 				out.write("    " + svg + "\n");
 				out.write("    </div>\n");
 			}
 			out.write("      </td>");
-			//Right TD:point list
+			// Right TD:point list
 			out.write("      <td style='vertical-align:top'>");
 			out.write("        <table>");
 			{
 				out.write("      <tr><th>");
 
 				out.write("      </th><th>");
-				
+
 				out.write("      </th><th>");
 
 				out.write("      </th><th>");
@@ -114,7 +121,7 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 				out.write(cp.get("corpId").getAsString());
 				out.write("      </td><td>");
 				out.write(cp.get("corpName").getAsString());
-				out.write("      </td><td>");				
+				out.write("      </td><td>");
 
 				JsonArray vector = cp.get("vector").getAsJsonArray();
 

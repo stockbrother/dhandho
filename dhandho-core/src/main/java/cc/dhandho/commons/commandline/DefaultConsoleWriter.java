@@ -28,7 +28,7 @@ public class DefaultConsoleWriter implements CommandLineWriter {
 	}
 
 	@Override
-	public CommandLineWriter writeLine(String line) {
+	public CommandLineWriter writeLn(String line) {
 		return this.write(line + LBK);
 	}
 
@@ -45,7 +45,7 @@ public class DefaultConsoleWriter implements CommandLineWriter {
 	}
 
 	@Override
-	public CommandLineWriter writeLine() {
+	public CommandLineWriter writeLn() {
 
 		return this.write(LBK);
 

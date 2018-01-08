@@ -127,7 +127,7 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 					}
 				}
 				if (this.echo) {
-					this.writer.writeLine(line.getLine());
+					this.writer.writeLn(line.getLine());
 				}
 
 				this.processLine(this.commandCounter, line);
@@ -186,7 +186,7 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 		} finally {
 			if (this.printLine) {
-				this.writer.writeLine();
+				this.writer.writeLn();
 			}
 		}
 

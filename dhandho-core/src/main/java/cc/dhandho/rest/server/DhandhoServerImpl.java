@@ -3,8 +3,6 @@ package cc.dhandho.rest.server;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +22,7 @@ import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.DhoDataHome;
 import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.graphdb.MyDataUpgraders;
+import cc.dhandho.mycorp.MyCorps;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
@@ -84,7 +83,10 @@ public class DhandhoServerImpl extends ExecutorBasedServer implements DhoServer 
 		if (LOG.isInfoEnabled()) {
 			LOG.info("done of start.");
 		}
-
+		
+		// 
+		app.addComponent(MyCorps.class).load();
+		
 	}
 
 	/**

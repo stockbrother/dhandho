@@ -55,7 +55,7 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 
 		StringWriter writer = new StringWriter();
 		JsonUtil.write(res, writer);
-		cc.getWriter().writeLine(writer.getBuffer().toString());
+		cc.getWriter().writeLn(writer.getBuffer().toString());
 
 	}
 

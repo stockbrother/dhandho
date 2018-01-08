@@ -29,7 +29,7 @@ public class CatCommandHandler extends DhandhoCommandHandler {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			FileUtil.writeContent(fo, os);
 			cc.getConsole().peekWriter().write(os.toString("utf-8"));
-			cc.getConsole().peekWriter().writeLine();
+			cc.getConsole().peekWriter().writeLn();
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}

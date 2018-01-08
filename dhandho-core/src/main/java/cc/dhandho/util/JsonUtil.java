@@ -5,18 +5,17 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Collection;
 
+import com.age5k.jcps.JcpsException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
-import com.age5k.jcps.JcpsException;
 
 public class JsonUtil {
 	protected static Gson GSON4LOG = new GsonBuilder().setPrettyPrinting().create();
@@ -82,7 +81,11 @@ public class JsonUtil {
 		return rt;
 	}
 
-	public static JsonElement toJsonArray(String[] values) {
+	public static <T> JsonArray toJsonArray(Collection<T> values) {
+		return toJsonArray(values.toArray());
+	}
+
+	public static JsonArray toJsonArray(String[] values) {
 		//
 		JsonArray rt = new JsonArray();
 		for (String s : values) {
@@ -91,7 +94,7 @@ public class JsonUtil {
 		return rt;
 	}
 
-	public static String toString(JsonObject json, boolean pretty) {
+	public static String toString(JsonElement json, boolean pretty) {
 		//
 		StringBuilder sb = new StringBuilder();
 		JsonUtil.write(json, sb);
@@ -120,6 +123,27 @@ public class JsonUtil {
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}
+	}
+
+	public static <T> JsonArray toJsonArray(T[] array) {
+		JsonArray rt = new JsonArray();
+		for (T s : array) {
+			if (s instanceof String) {
+				rt.add((String) s);
+			} else if (s instanceof Number) {
+				rt.add((Number) s);
+			} else if (s instanceof Boolean) {
+				rt.add((Boolean) s);
+			} else if (s instanceof Character) {
+				rt.add((Character) s);
+			} else if (s instanceof JsonElement) {
+				rt.add((JsonElement) s);
+			} else {
+				throw new JcpsException("no supported.");
+			}
+		}
+
+		return rt;
 	}
 
 	public static void array(String[] types, JsonWriter w) {

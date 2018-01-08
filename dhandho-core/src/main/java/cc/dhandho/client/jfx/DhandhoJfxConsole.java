@@ -33,7 +33,7 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 	}
 
 	@Override
-	public CommandLineWriter writeLine() {
+	public CommandLineWriter writeLn() {
 		consolePane.println();
 		return this;
 	}
@@ -45,7 +45,7 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 	}
 
 	@Override
-	public CommandLineWriter writeLine(String line) {
+	public CommandLineWriter writeLn(String line) {
 		consolePane.println(line);
 		return this;
 	}

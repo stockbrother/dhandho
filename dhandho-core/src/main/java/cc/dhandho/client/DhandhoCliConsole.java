@@ -43,6 +43,8 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	public HtmlRenderer htmlRenderer;
 
+	private Usage usage = new Usage();
+
 	public DhoServer getServer() {
 		return server;
 	}
@@ -71,12 +73,11 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 		this.addCommand(new CommandType("dupont", "Dupont Analysis or show the result as SVG chart!")//
 				.addDesc("\nFor instance,")//
-				.addDesc("\nCommand below perform analysis on year 2016 and save the data to DB.")//
-				.addDesc("\n  dupont -a -y 2016")//
-				.addDesc("\nCommand below will show the analysis as SVG with a corpId high-lighted.")//
-				.addDesc("\n  dupont -s -c 000002 -y 2016")//
-				.addDesc("\nCommand below with a filter 0.5 that show 50% points around the corpId high-lighted.")//
-				.addDesc("\n  dupont -s -c 000002 -y 2016 -f 0.5")//
+				.addDesc("\ndupont -a -y 2016, perform analysis on year 2016 and save the data to DB.")//
+				.addDesc("\ndupont -s -c 000002 -y 2016, show the analysis result as SVG with a corpId high-lighted.")//
+				.addDesc("\ndupont -s -c 000002 -y 2016 -f 0.01, show 1% points around the corpId high-lighted.")//
+				.addDesc("\ndupont -s -c 000002 -y 2016 -f mycorp, show points with scope of my corps as the background.")//
+				
 				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
 						"Execute analysis and store the result to DB.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show svg through html renderer.")//
@@ -91,6 +92,8 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		this.addCommand(new CommandType("mycorp", "My corp related operations.").addDesc("\nFor instance:")//
 				.addDesc("\nmycorp -a")//
 				.addOption(MyCorpDispatcherCommandHandler.OPT_a, "add", true, "Add new my corp with a corpId.") //
+				.addOption(MyCorpDispatcherCommandHandler.OPT_r, "remove", true, "Remove my corp with a corpId.") //
+				.addOption(MyCorpDispatcherCommandHandler.OPT_s, "show", false, "Show all my corps.") //
 				, new MyCorpDispatcherCommandHandler()//
 		);
 
@@ -157,13 +160,17 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	@Override
 	public void processLine(CommandAndLine cl) {
 		CommandContext cc = new CommandContext(cl);
-		CommandHandler h = this.handlerMap.get(cl.getCommand().getName());
+		CommandType type = cl.getCommand();
+		CommandHandler h = this.handlerMap.get(type.getName());
 		if (h == null) {
-			cl.getConsole().peekWriter().writeLine("not found handler for command:" + cl.getCommand().getName());
+			cl.getConsole().peekWriter().writeLn("not found handler for command:" + cl.getCommand().getName());
 			return;
 		}
 
 		h.execute(cc);
+		if (!cc.isConsumed()) {
+			this.usage.usageOfCommand(cc, type);
+		}
 	}
 
 	public void htmlRenderer(HtmlRenderer htmlRenderer) {
@@ -172,6 +179,10 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	public void clear() {
 
+	}
+
+	public Usage getUsage() {
+		return this.usage;
 	}
 
 }

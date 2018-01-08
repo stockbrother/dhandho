@@ -14,7 +14,7 @@ public class ShowDbSchemaCommandHandler extends DhandhoCommandHandler {
 		JsonObject req = new JsonObject();
 		JsonObject json = (JsonObject) cc.getServer().handle(ShowDbSchemaJsonHandler.class.getName(), req);
 
-		cc.getWriter().writeLine(JsonUtil.toString(json, true));
+		cc.getWriter().writeLn(JsonUtil.toString(json, true));
 	}
 
 }

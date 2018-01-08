@@ -33,9 +33,6 @@ public class OptionDispatcherCommandHandler extends DhandhoCommandHandler {
 				}).findFirst();
 		if (entry.isPresent()) {
 			entry.get().getValue().execute(cc);
-		} else {
-			cc.usage();
-			cc.consume();
 		}
 	}
 

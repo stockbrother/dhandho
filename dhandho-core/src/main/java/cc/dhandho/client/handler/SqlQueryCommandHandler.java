@@ -19,7 +19,7 @@ public class SqlQueryCommandHandler extends DhandhoCommandHandler {
 		JsonObject req = new JsonObject();
 		req.addProperty("sql", sb.toString());
 		JsonObject json = (JsonObject) cc.getServer().handle(SqlQueryJsonHandler.class.getName(), req);
-		cc.getWriter().writeLine(JsonUtil.toString(json, true));
+		cc.getWriter().writeLn(JsonUtil.toString(json, true));
 	}
 
 }

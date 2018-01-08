@@ -9,13 +9,13 @@ package cc.dhandho.commons.commandline;
  */
 public interface CommandLineWriter {
 	
-	public CommandLineWriter writeLine();	
+	public CommandLineWriter writeLn();	
 	
 	public CommandLineWriter write(String str);
 	
 	public CommandLineWriter write(int value);
 	
-	public CommandLineWriter writeLine(String line);
+	public CommandLineWriter writeLn(String line);
 	
 	
 }

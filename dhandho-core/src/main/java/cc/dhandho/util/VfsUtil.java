@@ -104,4 +104,13 @@ public class VfsUtil {
 			throw JcpsException.toRtException(e);
 		}
 	}
+
+	public static boolean exists(FileObject fo) {
+		//
+		try {
+			return fo.exists();
+		} catch (FileSystemException e) {
+			throw JcpsException.toRtException(e);
+		}
+	}
 }

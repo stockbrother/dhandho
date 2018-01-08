@@ -50,7 +50,7 @@ public class ShowMetricDefinesCommandHandler extends DhandhoCommandHandler {
 				});
 				w.write(") \tin group:\t");
 				w.write(t.getGroup().name());
-				w.writeLine();
+				w.writeLn();
 
 			}
 		});
