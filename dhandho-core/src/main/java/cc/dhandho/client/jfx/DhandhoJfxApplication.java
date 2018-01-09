@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class DhandhoJfxApplication extends Application implements HtmlRenderer {
-	WebEngine webEngine;
+	
 
 	// this SERVER must be started and set before launch this application.
 
@@ -29,7 +29,9 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 	protected double width = 800;
 
 	protected double height = 300;
-
+	
+	JfxWebEngineHtmlRenderer htmlRenderer;
+	
 	public DhandhoJfxApplication() {
 
 	}
@@ -79,13 +81,8 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	private void startHtmlStage(Stage stage) {
 		stage.setTitle("Dhandho Html");
-		BorderPane sp = new BorderPane();
-
-		WebView webView = new WebView();
-		webEngine = webView.getEngine();
-
-		sp.setCenter(webView);
-		Scene root = new Scene(sp);
+		this.htmlRenderer = new JfxWebEngineHtmlRenderer();
+		Scene root = new Scene(this.htmlRenderer);
 		stage.setScene(root);
 		stage.show();
 	}
@@ -98,8 +95,8 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 		if (!this.htmlStage.isShowing()) {
 			this.htmlStage.show();
 		}
-
-		webEngine.loadContent(html);
+		this.htmlRenderer.showHtml(html);
+		
 	}
 
 	@Override

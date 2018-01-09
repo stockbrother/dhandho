@@ -22,16 +22,16 @@ public class SvgUtil {
 
 	public static void writeSvg2Html(int width, int height, String svg, Writer out) {
 		try {
-			out.write("<html>\n");
-			out.write("  <head>\n");
-			out.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n");
-			out.write("  </head>\n");
-			out.write("  <body>\n");
+//			out.write("<html>\n");
+//			out.write("  <head>\n");
+//			out.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n");
+//			out.write("  </head>\n");
+//			out.write("  <body>\n");
 			out.write("    <div style=\"width:" + width + "; height:" + height + ";\">\n");
 			out.write("    " + svg + "\n");
 			out.write("    </div>\n");
-			out.write("  </body>\n");
-			out.write("</html>\n");
+//			out.write("  </body>\n");
+//			out.write("</html>\n");
 			out.flush();
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);

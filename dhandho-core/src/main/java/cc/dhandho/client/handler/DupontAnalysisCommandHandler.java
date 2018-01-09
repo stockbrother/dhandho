@@ -82,11 +82,11 @@ public class DupontAnalysisCommandHandler extends RestRequestCommandHandler {
 			Writer out) {
 		try {
 
-			out.write("<html>\n");
-			out.write("  <head>\n");
-			out.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n");
-			out.write("  </head>\n");
-			out.write("  <body>\n");
+//			out.write("<html>\n");
+//			out.write("  <head>\n");
+//			out.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>\n");
+//			out.write("  </head>\n");
+//			out.write("  <body>\n");
 			out.write("    <table>");
 			out.write("      <tr><td style='vertical-align:top'>");
 			// Left TD:svg list
@@ -142,10 +142,10 @@ public class DupontAnalysisCommandHandler extends RestRequestCommandHandler {
 				out.write("      </td></tr>");
 			}
 			out.write("        </table>");
-			out.write("      </td><tr>");
+			out.write("      </td></tr>");
 			out.write("    </table>");
-			out.write("  </body>\n");
-			out.write("</html>\n");
+//			out.write("  </body>\n");
+//			out.write("</html>\n");
 			out.flush();
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
