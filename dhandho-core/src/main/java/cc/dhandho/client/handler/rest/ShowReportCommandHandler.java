@@ -1,27 +1,33 @@
-package cc.dhandho.client.handler;
+package cc.dhandho.client.handler.rest;
 
 import java.io.StringWriter;
 
 import com.google.gson.JsonObject;
 
 import cc.dhandho.client.CommandContext;
+import cc.dhandho.client.RestRequestCommandHandler;
+import cc.dhandho.client.handler.ShowDispatcherCommandHandler;
+import cc.dhandho.client.rest.RestResponseContext;
 import cc.dhandho.report.CorpDatedMetricReportData;
 import cc.dhandho.rest.handler.ReportDataJsonHandler;
 import cc.dhandho.util.JsonUtil;
 
-public class ShowReportCommandHandler extends DhandhoCommandHandler {
+public class ShowReportCommandHandler extends RestRequestCommandHandler {
 
 	@Override
-	public void execute(CommandContext cc) {
+	protected String buildRequest(CommandContext cc, JsonObject req) {
 		String code = cc.getCommandLine().getOptionValue(ShowDispatcherCommandHandler.OPT_c);
 		String metricsS = cc.getCommandLine().getOptionValue(ShowDispatcherCommandHandler.OPT_m);
 		String[] metrics = metricsS.split("/");
-		JsonObject req = new JsonObject();
+		
 		req.addProperty("corpId", code);
 		req.add("metrics", JsonUtil.toJsonArray(metrics));
+		return ReportDataJsonHandler.class.getName();
+	}
 
-		// Request
-		JsonObject res = (JsonObject) cc.getServer().handle(ReportDataJsonHandler.class.getName(), req);
+	@Override
+	protected void onResponse(RestResponseContext rrc) {
+		JsonObject res = rrc.response;
 
 		// Response
 		CorpDatedMetricReportData r = CorpDatedMetricReportData.parseJson(res.get("report").getAsJsonObject());
@@ -51,11 +57,11 @@ public class ShowReportCommandHandler extends DhandhoCommandHandler {
 		toTr(r3, sb, colspan);
 
 		sb.append("</table>");
-		cc.getConsole().htmlRenderer.showHtml(sb);
+		rrc.getConsole().htmlRenderer.showHtml(sb);
 
 		StringWriter writer = new StringWriter();
 		JsonUtil.write(res, writer);
-		cc.getWriter().writeLn(writer.getBuffer().toString());
+		rrc.commandContext.getWriter().writeLn(writer.getBuffer().toString());
 
 	}
 

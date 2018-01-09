@@ -20,11 +20,13 @@ import cc.dhandho.client.handler.CorpChartCommandHandler;
 import cc.dhandho.client.handler.DupontAnalysisCommandHandler;
 import cc.dhandho.client.handler.ExitCommandHandler;
 import cc.dhandho.client.handler.HelpCommandHandler;
-import cc.dhandho.client.handler.InputDataLoadCommandHandler;
 import cc.dhandho.client.handler.MyCorpDispatcherCommandHandler;
 import cc.dhandho.client.handler.ShowDispatcherCommandHandler;
-import cc.dhandho.client.handler.SinaDataLoadCommandHandler;
-import cc.dhandho.client.handler.SqlQueryCommandHandler;
+import cc.dhandho.client.handler.rest.InputDataLoadCommandHandler;
+import cc.dhandho.client.handler.rest.SinaDataLoadCommandHandler;
+import cc.dhandho.client.handler.rest.SqlQueryCommandHandler;
+import cc.dhandho.client.rest.RestResponseHandler;
+import cc.dhandho.client.rest.impl.DefaultRestResponseHandler;
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
 import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
@@ -42,6 +44,8 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	protected MetricDefines metrics;
 
 	public HtmlRenderer htmlRenderer;
+	
+	public RestResponseHandler restResponseHandler;
 
 	private Usage usage = new Usage();
 
@@ -120,7 +124,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 		if (this.htmlRenderer == null) {
 			this.htmlRenderer = new EmptyHtmlRenderer();
 		}
-
+		this.restResponseHandler = new DefaultRestResponseHandler(this.htmlRenderer);
 		return rt;
 	}
 
@@ -183,6 +187,11 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	public Usage getUsage() {
 		return this.usage;
+	}
+
+	public RestResponseHandler getRestResponseHandler() {
+		//
+		return this.restResponseHandler;
 	}
 
 }

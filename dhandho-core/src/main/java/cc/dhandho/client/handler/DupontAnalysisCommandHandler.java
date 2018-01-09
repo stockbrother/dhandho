@@ -11,10 +11,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.client.CommandContext;
+import cc.dhandho.client.RestRequestCommandHandler;
+import cc.dhandho.client.rest.RestResponseContext;
 import cc.dhandho.rest.handler.DupontAnalysisJsonHandler;
 import cc.dhandho.rest.handler.DupontSvgJsonHandler;
 
-public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
+public class DupontAnalysisCommandHandler extends RestRequestCommandHandler {
 
 	public static final String OPT_a = "a";
 	public static final String OPT_s = "s";
@@ -24,22 +26,20 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 	static NumberFormat formatter = new DecimalFormat("#0.00");
 
 	@Override
-	public void execute(CommandContext cc) {
-
+	protected String buildRequest(CommandContext cc, JsonObject req) {
 		if (cc.getCommandLine().hasOption(OPT_a)) {
 			String yearS = cc.getCommandLine().getOptionValue(OPT_y);
 			int year = yearS == null ? 2016 : Integer.parseInt(yearS);
-			JsonObject req = new JsonObject();
+
 			req.addProperty("year", year);
-			cc.getServer().handle(DupontAnalysisJsonHandler.class.getName(), req);
-			cc.consume();
+			return DupontAnalysisJsonHandler.class.getName();
+
 		} else if (cc.getCommandLine().hasOption(OPT_s)) {
 
 			String code = cc.getCommandLine().getOptionValue(OPT_c);
 			String yearS = cc.getCommandLine().getOptionValue(OPT_y);
 			int year = yearS == null ? 2016 : Integer.parseInt(yearS);
 
-			JsonObject req = new JsonObject();
 			req.addProperty("corpId", code);
 			req.addProperty("year", year);
 
@@ -52,8 +52,18 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 				req.addProperty("filter", filter);
 			}
 
-			JsonObject res = (JsonObject) cc.getServer().handle(DupontSvgJsonHandler.class.getName(), req);
+			return DupontSvgJsonHandler.class.getName();
 
+		}
+		return null;
+	}
+
+	@Override
+	protected void onResponse(RestResponseContext rrc) {
+		if (rrc.isHandler(DupontAnalysisJsonHandler.class.getName())) {
+			super.onResponse(rrc);
+		} else if (rrc.isHandler(DupontSvgJsonHandler.class.getName())) {
+			JsonObject res = rrc.response;
 			String svg1 = res.get("svg1").getAsString();
 			String svg2 = res.get("svg2").getAsString();
 			String svg3 = res.get("svg3").getAsString();
@@ -64,11 +74,8 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 			StringWriter sW = new StringWriter();
 
 			writeSvg2Html(600, 320, new String[] { svg1, svg2, svg3 }, pointH, pointA, sW);
-			cc.getConsole().htmlRenderer.showHtml(sW.getBuffer().toString());
-
-			cc.consume();
+			rrc.getConsole().htmlRenderer.showHtml(sW.getBuffer().toString());
 		}
-
 	}
 
 	private static void writeSvg2Html(int width, int height, String[] svgA, JsonArray pointH, JsonArray pointA,
@@ -144,4 +151,5 @@ public class DupontAnalysisCommandHandler extends DhandhoCommandHandler {
 			throw JcpsException.toRtException(e);
 		}
 	}
+
 }

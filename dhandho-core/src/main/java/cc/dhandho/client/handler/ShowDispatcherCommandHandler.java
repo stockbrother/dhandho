@@ -1,5 +1,8 @@
 package cc.dhandho.client.handler;
 
+import cc.dhandho.client.handler.rest.ShowDbSchemaCommandHandler;
+import cc.dhandho.client.handler.rest.ShowReportCommandHandler;
+
 public class ShowDispatcherCommandHandler extends OptionDispatcherCommandHandler {
 
 	public static final String OPT_M = "M";// MetricDefines.
