@@ -1,19 +1,22 @@
-package cc.dhandho.jsweet;
+package cc.dhandho.client.jsweet;
 
-import static def.jquery.Globals.$;
+import static def.dom.Globals.console;
 import static def.dom.Globals.document;
 import static def.dom.Globals.window;
+import static def.jquery.Globals.$;
 import static jsweet.util.Lang.array;
 import static jsweet.util.Lang.function;
 
 import java.util.function.Consumer;
 
+import def.dom.HTMLDivElement;
+import def.dom.HTMLElement;
+import def.jquery.JQuery;
 import def.js.Array;
 import def.js.Object;
-import def.jquery.JQuery;
 
 public class DhoMain {
-	
+
 	public static void main(String[] args) {
 		$(document).ready(() -> {
 			DhoMain example = new DhoMain();
@@ -40,8 +43,8 @@ public class DhoMain {
 	public DhoMain() {
 
 		// uncomment to test mixins
-//		$(window).timer.pause();
-		
+		// $(window).timer.pause();
+
 		blockSize = $(window).width() / 10;
 
 		leftForMiddle = ($(window).width() / 2 - blockSize / 2) + "px";
@@ -110,8 +113,25 @@ public class DhoMain {
 	}
 
 	public void start() {
+		console.info(">>start");
 		blockAnimationSteps[0].accept(block1);
 		blockAnimationSteps[6].accept(block2);
+		this.showHtml();
+		console.info("<<start");
+	}
+
+	public void showHtml() {
+		console.info(">>showHtml");
+		//String s = String.valueOf($(window).$get("renderer"));
+		HTMLElement ele = document.getElementById("block1");
+		HTMLDivElement divEle = (HTMLDivElement)ele;
+		HTMLDivElement child = document.createElement(jsweet.util.StringTypes.div);
 		
+		child.innerText ="Hello,InnerText";
+		divEle.appendChild(child);
+		
+		//block1.$set("innerHTML", "::" );
+		
+		console.info("<<showHtml");
 	}
 }

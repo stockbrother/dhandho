@@ -16,7 +16,7 @@
 		<jcps-dataupgrader.version>0.0.1-SNAPSHOT</jcps-dataupgrader.version>
 		<jsweet-angular.version></jsweet-angular.version>
 		<jsweet-maven.version>2.0.1</jsweet-maven.version>
-
+		
 	</properties>
 
 	<build>
@@ -62,7 +62,7 @@
 					<outDir>target/jsweet/js</outDir>
 					<targetVersion>ES3</targetVersion>
 					<includes>
-						<include>cc/dhandho/jsweet/**/*.java</include>
+						<include>cc/dhandho/client/jsweet/**/*.java</include>
 					</includes>
 				</configuration>
 				<executions>
