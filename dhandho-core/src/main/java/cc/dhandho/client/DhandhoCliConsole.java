@@ -48,7 +48,17 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	public RestResponseHandler restResponseHandler;
 
 	private Usage usage = new Usage();
+	
+	protected FileObject consoleHome;
+	
+	public FileObject getConsoleHome() {
+		return consoleHome;
+	}
 
+	public DhandhoCliConsole(FileObject consoleHome) {
+		this.consoleHome = consoleHome;
+	}
+	
 	public DhoServer getServer() {
 		return server;
 	}

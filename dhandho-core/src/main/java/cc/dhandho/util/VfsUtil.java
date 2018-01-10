@@ -1,5 +1,6 @@
 package cc.dhandho.util;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -96,6 +97,7 @@ public class VfsUtil {
 			throw JcpsException.toRtException(e);
 		}
 	}
+
 	public static Writer getWriter(FileObject fo, Charset charSet) {
 		//
 		try {
@@ -112,5 +114,23 @@ public class VfsUtil {
 		} catch (FileSystemException e) {
 			throw JcpsException.toRtException(e);
 		}
+	}
+
+	public static StringBuilder load(FileObject fileObject, Charset forName, StringBuilder out) {
+		//
+		Reader r = getReader(fileObject, forName);
+		char[] cbuf = new char[1000];
+		while (true) {
+			try {
+				int len = r.read(cbuf);
+				if (-1 == len) {
+					break;
+				}
+				out.append(cbuf, 0, len);
+			} catch (IOException e) {
+				throw JcpsException.toRtException(e);
+			}
+		}
+		return out;
 	}
 }

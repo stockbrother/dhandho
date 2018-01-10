@@ -180,7 +180,7 @@ public class TestUtil {
 
 	public static DhandhoCliConsole newInMemoryTestDhandhoServerConsole() {
 
-		return new DhandhoCliConsole().server(newInMemoryTestDhandhoServer());
+		return new DhandhoCliConsole(newConsoleHome()).server(newInMemoryTestDhandhoServer());
 	}
 
 	public static ReportEngine newInMemoryReportEgine(DbProvider dbProvider) {
@@ -214,11 +214,12 @@ public class TestUtil {
 		//
 		return TestUtil.newRamFolder();
 	}
+
 	public static Container newContainerWithDefaultTestHome() {
 		DhoDataHome dataHome = TestUtil.getTheDefaultPopulatedDataHomeForTest();
 		Container app = new ContainerImpl();
 		app.addComponent(DhoDataHome.class, dataHome);
 		return app;
 	}
-	
+
 }

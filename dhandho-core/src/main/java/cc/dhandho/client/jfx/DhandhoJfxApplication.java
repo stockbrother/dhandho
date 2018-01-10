@@ -4,19 +4,16 @@ import org.apache.commons.vfs2.FileObject;
 
 import cc.dhandho.DhoDataHome;
 import cc.dhandho.client.HtmlRenderer;
+import cc.dhandho.client.jfx.JfxWebEngineHtmlRenderer.ReadyCallback;
 import cc.dhandho.commons.util.JfxUtil;
 import cc.dhandho.rest.server.DhoServer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class DhandhoJfxApplication extends Application implements HtmlRenderer {
-	
 
 	// this SERVER must be started and set before launch this application.
 
@@ -29,9 +26,9 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 	protected double width = 800;
 
 	protected double height = 300;
-	
+
 	JfxWebEngineHtmlRenderer htmlRenderer;
-	
+
 	public DhandhoJfxApplication() {
 
 	}
@@ -60,12 +57,18 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		console.start();
-		this.startConsoleStage1(stage);
+		this.htmlRenderer = new JfxWebEngineHtmlRenderer(console, new ReadyCallback() {
+
+			@Override
+			public void handle() {
+				onHtmlRendererReady(stage);
+			}
+		});
 
 	}
 
-	private void startConsoleStage1(Stage stage) {
+	private void onHtmlRendererReady(Stage stage) {
+		console.start();
 		stage.setTitle("Dhandho Console");
 		Scene root = new Scene(console.consolePane, this.width, this.height);
 		stage.setScene(root);
@@ -81,10 +84,10 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 
 	private void startHtmlStage(Stage stage) {
 		stage.setTitle("Dhandho Html");
-		this.htmlRenderer = new JfxWebEngineHtmlRenderer();
 		Scene root = new Scene(this.htmlRenderer);
 		stage.setScene(root);
 		stage.show();
+
 	}
 
 	private void doShowHtml(String html) {
@@ -96,7 +99,7 @@ public class DhandhoJfxApplication extends Application implements HtmlRenderer {
 			this.htmlStage.show();
 		}
 		this.htmlRenderer.showHtml(html);
-		
+
 	}
 
 	@Override

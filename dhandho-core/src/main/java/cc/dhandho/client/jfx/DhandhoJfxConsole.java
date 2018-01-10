@@ -21,6 +21,7 @@ public class DhandhoJfxConsole extends DhandhoCliConsole implements CommandLineW
 	protected JfxConsolePane consolePane;
 
 	public DhandhoJfxConsole(FileObject consoleHome) {
+		super(consoleHome);
 		try {
 			FileObject historyFile = consoleHome.resolveFile("history.txt");
 			consolePane = new JfxConsolePane(new DefaultHistoryStore(historyFile));
