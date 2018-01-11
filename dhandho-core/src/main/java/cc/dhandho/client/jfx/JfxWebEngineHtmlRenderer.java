@@ -39,7 +39,7 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 
 	ReadyCallback readHandler;
 
-	String htmlToShow;
+	String htmlToShow="AAA";
 
 	JfxWebEngineHtmlRenderer(DhandhoCliConsole console, ReadyCallback rh) {
 		this.console = console;
@@ -54,17 +54,20 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 			public void changed(ObservableValue ov, State oldState, State newState) {
 				LOG.info("change:" + ov + ",oldState:" + oldState + ",newState:" + newState);
 				if (newState == Worker.State.SUCCEEDED) {
-					webEngine.executeScript("test()");
+					// webEngine.executeScript("test()");
 					jsoWin = (JSObject) webEngine.executeScript("window");
 					jsoWin.setMember("renderer", JfxWebEngineHtmlRenderer.this);
 
 					readHandler.handle();
+				} else if (newState == Worker.State.FAILED) {
+					throw new JcpsException("failed to load html.");
 				}
 
 			}
 		});
+		webEngine.load("file:///D:/git/dhandho/dhandho-core/src/html/main.html");
+		// webEngine.loadContent(buildHtml(new StringBuilder()).toString());
 
-		webEngine.loadContent(buildHtml(new StringBuilder()).toString());
 	}
 
 	private StringBuilder buildHtml(StringBuilder out) {
@@ -87,8 +90,9 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 		LOG.info(html);
 		this.htmlToShow = html;
 
-		webEngine.executeScript("showHtml()");
-
+		//Object rt = webEngine.executeScript("window.dhoMain.showHtml()");
+		Object rt = webEngine.executeScript("showHtml()");
+		LOG.info("rt:" + rt);
 		// webEngine.executeScript("showHtml()");
 		// webEngine.executeScript("test()");
 

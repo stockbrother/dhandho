@@ -82,74 +82,81 @@ public class DupontAnalysisCommandHandler extends RestRequestCommandHandler {
 			Writer out) {
 		try {
 
-//			out.write("<html>\n");
-//			out.write("  <head>\n");
-//			out.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>\n");
-//			out.write("  </head>\n");
-//			out.write("  <body>\n");
-			out.write("    <table>");
-			out.write("      <tr><td style='vertical-align:top'>");
+			// out.write("<html>\n");
+			// out.write(" <head>\n");
+			// out.write(" <meta http-equiv=\"content-type\" content=\"text/html;
+			// charset=UTF-8\"/>\n");
+			// out.write(" </head>\n");
+			// out.write(" <body>\n");
+			out.write("    <table width=\"100%\">");
+			out.write("      <tr><td style='vertical-align:top'>");			
 			// Left TD:svg list
 			for (String svg : svgA) {
-				out.write("    <div style=\"width:" + width + "; height:" + height + ";\">\n");
+				//out.write("    <div style=\"width:" + width + "; height:" + height + ";\">\n");
 				out.write("    " + svg + "\n");
-				out.write("    </div>\n");
+				//out.write("    </div>\n");
+				//break;
 			}
 			out.write("      </td>");
 			// Right TD:point list
+
 			out.write("      <td style='vertical-align:top'>");
-			out.write("        <table>");
-			{
-				out.write("      <tr><th>");
-
-				out.write("      </th><th>");
-
-				out.write("      </th><th>");
-
-				out.write("      </th><th>");
-				out.write("(");
-				for (int j = 0; j < pointH.size(); j++) {
-					String type = pointH.get(j).getAsString();
-					type = type.substring(type.lastIndexOf('.') + 1);
-					out.write(type + "");
-					out.write(",");
-				}
-				out.write(")");
-				out.write("      </th></tr>");
-			}
-			for (int i = 0; i < pointA.size(); i++) {
-
-				JsonObject cp = pointA.get(i).getAsJsonObject();
-				boolean highLight = cp.get("highLight").getAsBoolean();
-
-				out.write("      <tr><td>");
-				out.write(highLight ? "*" : "");
-				out.write("      </td><td>");
-				out.write(cp.get("corpId").getAsString());
-				out.write("      </td><td>");
-				out.write(cp.get("corpName").getAsString());
-				out.write("      </td><td>");
-
-				JsonArray vector = cp.get("vector").getAsJsonArray();
-
-				out.write("(");
-				for (int j = 0; j < vector.size(); j++) {
-					out.write(formatter.format(vector.get(j).getAsDouble()) + "");
-					out.write(",");
-				}
-				out.write(")");
-
-				out.write("      </td></tr>");
-			}
-			out.write("        </table>");
+			writeRightTable(pointH,pointA,out);
 			out.write("      </td></tr>");
 			out.write("    </table>");
-//			out.write("  </body>\n");
-//			out.write("</html>\n");
+			// out.write(" </body>\n");
+			// out.write("</html>\n");
 			out.flush();
 		} catch (IOException e) {
 			throw JcpsException.toRtException(e);
 		}
+	}
+
+	private static void writeRightTable(JsonArray pointH, JsonArray pointA, Writer out) throws IOException {
+		out.write("        <table>");
+		{
+			out.write("      <tr><th>");
+
+			out.write("      </th><th>");
+
+			out.write("      </th><th>");
+
+			out.write("      </th><th>");
+			out.write("(");
+			for (int j = 0; j < pointH.size(); j++) {
+				String type = pointH.get(j).getAsString();
+				type = type.substring(type.lastIndexOf('.') + 1);
+				out.write(type + "");
+				out.write(",");
+			}
+			out.write(")");
+			out.write("      </th></tr>");
+		}
+		for (int i = 0; i < pointA.size(); i++) {
+
+			JsonObject cp = pointA.get(i).getAsJsonObject();
+			boolean highLight = cp.get("highLight").getAsBoolean();
+
+			out.write("      <tr><td>");
+			out.write(highLight ? "*" : "");
+			out.write("      </td><td>");
+			out.write(cp.get("corpId").getAsString());
+			out.write("      </td><td>");
+			out.write(cp.get("corpName").getAsString());
+			out.write("      </td><td>");
+
+			JsonArray vector = cp.get("vector").getAsJsonArray();
+
+			out.write("(");
+			for (int j = 0; j < vector.size(); j++) {
+				out.write(formatter.format(vector.get(j).getAsDouble()) + "");
+				out.write(",");
+			}
+			out.write(")");
+
+			out.write("      </td></tr>");
+		}
+		out.write("        </table>");
 	}
 
 }
