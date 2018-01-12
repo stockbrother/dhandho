@@ -180,6 +180,11 @@
 			<artifactId>jsweet-core</artifactId>
 			<version>5-20170726</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jsweet</groupId>
+			<artifactId>jsweet-transpiler</artifactId>
+			<version>2.0.1</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.jsweet.candies</groupId>

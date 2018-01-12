@@ -33,11 +33,14 @@ public class DhoMain {
 	public Object showHtml(String html) {
 		console.info(">>showHtml:html");
 		
-		HTMLElement ele = document.getElementById("mainDiv");
-		HTMLDivElement divEle = (HTMLDivElement) ele;
+		HTMLDivElement divEle = (HTMLDivElement)document.getElementById("mainDiv");
+		
+		HTMLDivElement child = document.createElement(jsweet.util.StringTypes.div);
+		
 		// divEle.innerText = "showHtml,InnerText," +
 		// renderer+",className:"+renderer.getClass().getName();
-		divEle.innerHTML = html;
+		child.innerHTML = html;
+		divEle.insertBefore(child, null);
 		console.info(">>showHtml");
 		return "OK";
 	}
