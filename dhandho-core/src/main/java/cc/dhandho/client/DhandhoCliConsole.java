@@ -17,11 +17,11 @@ import cc.dhandho.client.handler.CatCommandHandler;
 import cc.dhandho.client.handler.ClearScreenCommandHandler;
 import cc.dhandho.client.handler.CommandHandler;
 import cc.dhandho.client.handler.CorpChartCommandHandler;
-import cc.dhandho.client.handler.DupontAnalysisCommandHandler;
 import cc.dhandho.client.handler.ExitCommandHandler;
 import cc.dhandho.client.handler.HelpCommandHandler;
 import cc.dhandho.client.handler.MyCorpDispatcherCommandHandler;
 import cc.dhandho.client.handler.ShowDispatcherCommandHandler;
+import cc.dhandho.client.handler.rest.DupontAnalysisCommandHandler;
 import cc.dhandho.client.handler.rest.InputDataLoadCommandHandler;
 import cc.dhandho.client.handler.rest.SinaDataLoadCommandHandler;
 import cc.dhandho.client.handler.rest.SqlQueryCommandHandler;
@@ -32,7 +32,11 @@ import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.rest.server.DhoServer;
-
+/**
+ * @see 
+ * @author Wu
+ *
+ */
 public class DhandhoCliConsole extends AbstractComandLineApp {
 	protected DhoServer server;
 
@@ -101,7 +105,12 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 				, new DupontAnalysisCommandHandler());
 
-		this.addCommand(new CommandType("load", "Load input data from folder!"), new InputDataLoadCommandHandler());
+		this.addCommand(new CommandType("load", "Load input data from folder!")//
+				.addDesc("\nLoad input data, including:")//
+				.addDesc("\n<home>input/corps/sse.corplist.csv")//
+				.addDesc("\n<home>input/corps/sse.corplist2.csv")//
+				.addDesc("\n<home>input/corps/szse.corplist.csv")//
+				, new InputDataLoadCommandHandler());
 
 		this.addCommand(new CommandType("mycorp", "My corp related operations.").addDesc("\nFor instance:")//
 				.addDesc("\nmycorp -a")//

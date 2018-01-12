@@ -117,9 +117,14 @@ public class CenterPointDistanceBasedFilterDupontPointFinder extends DupontPoint
 					}
 				}).toArray(Map.Entry[]::new);
 		int total = pointArray.length;
-
-		int size = (int) (total * centerPercentage);
 		Map<String, CorpPoint> rt = new HashMap<>();
+		if (total == 0) {
+			return rt;
+		}
+		int size = (int) (total * centerPercentage);
+		if (size == 0) {
+			size = 1;
+		}
 		for (int i = 0; i < size; i++) {
 			rt.put(pointArray[i].getKey(), pointArray[i].getValue());
 		}

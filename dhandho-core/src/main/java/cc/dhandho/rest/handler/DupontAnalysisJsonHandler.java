@@ -1,5 +1,7 @@
 package cc.dhandho.rest.handler;
 
+import java.util.Map;
+
 import com.google.gson.JsonObject;
 
 import cc.dhandho.report.dupont.DupontAnalysis;
@@ -15,8 +17,11 @@ public class DupontAnalysisJsonHandler extends AbstractRestRequestHandler {
 		JsonObject req = (JsonObject) JsonUtil.parse(arg0.getReader());
 		int year = req.get("year").getAsInt();
 		DupontAnalysis dupontAnalysis = new DupontAnalysis(reportEngine);
-		dupontAnalysis.analysisAndStore(year, dbProvider);
-
+		Map<String,Object> result = dupontAnalysis.analysisAndStore(year, dbProvider);
+		
+		JsonObject res = JsonUtil.toJsonObject(result);
+		arg0.write(res);
+		
 	}
 
 }

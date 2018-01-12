@@ -1,4 +1,4 @@
-package cc.dhandho.client.handler;
+package cc.dhandho.client.handler.rest;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -63,7 +63,7 @@ public class DupontAnalysisCommandHandler extends RestRequestCommandHandler {
 		if (rrc.isHandler(DupontAnalysisJsonHandler.class.getName())) {
 			super.onResponse(rrc);
 		} else if (rrc.isHandler(DupontSvgJsonHandler.class.getName())) {
-			JsonObject res = rrc.response;
+			JsonObject res = (JsonObject)rrc.response;
 			String svg1 = res.get("svg1").getAsString();
 			String svg2 = res.get("svg2").getAsString();
 			String svg3 = res.get("svg3").getAsString();

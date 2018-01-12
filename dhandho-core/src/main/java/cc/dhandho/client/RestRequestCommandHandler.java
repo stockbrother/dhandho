@@ -1,5 +1,6 @@
 package cc.dhandho.client;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.client.handler.DhandhoCommandHandler;
@@ -19,7 +20,7 @@ public abstract class RestRequestCommandHandler extends DhandhoCommandHandler {
 		if (handlerS == null) {
 			return;
 		} else {
-			JsonObject res = (JsonObject) cc.getServer().handle(handlerS, req);
+			JsonElement res = cc.getServer().handle(handlerS, req);
 			RestResponseContext rrc = new RestResponseContext(cc, req, res);
 			rrc.handler = handlerS;
 			this.onResponse(rrc);

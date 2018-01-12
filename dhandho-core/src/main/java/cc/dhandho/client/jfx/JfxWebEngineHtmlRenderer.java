@@ -39,7 +39,7 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 
 	ReadyCallback readHandler;
 
-	String htmlToShow="AAA";
+	String htmlToShow = "AAA";
 
 	JfxWebEngineHtmlRenderer(DhandhoCliConsole console, ReadyCallback rh) {
 		this.console = console;
@@ -49,6 +49,10 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 		webEngine.setJavaScriptEnabled(true);
 
 		this.setCenter(webView);
+
+		String userDir = System.getProperty("user.dir");
+		userDir = userDir.replace("\\", "/");		String htmlPath = "file:///" + userDir + "/src/html/main.html";
+
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 			@Override
 			public void changed(ObservableValue ov, State oldState, State newState) {
@@ -60,12 +64,12 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 
 					readHandler.handle();
 				} else if (newState == Worker.State.FAILED) {
-					throw new JcpsException("failed to load html.");
+					throw new JcpsException("failed to load html:"+htmlPath);
 				}
 
 			}
 		});
-		webEngine.load("file:///D:/git/dhandho/dhandho-core/src/html/main.html");
+		webEngine.load(htmlPath);
 		// webEngine.loadContent(buildHtml(new StringBuilder()).toString());
 
 	}
@@ -90,7 +94,7 @@ public class JfxWebEngineHtmlRenderer extends BorderPane implements HtmlRenderer
 		LOG.info(html);
 		this.htmlToShow = html;
 
-		//Object rt = webEngine.executeScript("window.dhoMain.showHtml()");
+		// Object rt = webEngine.executeScript("window.dhoMain.showHtml()");
 		Object rt = webEngine.executeScript("showHtml()");
 		LOG.info("rt:" + rt);
 		// webEngine.executeScript("showHtml()");

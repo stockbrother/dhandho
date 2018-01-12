@@ -6,12 +6,15 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Map;
 
 import com.age5k.jcps.JcpsException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
@@ -153,6 +156,29 @@ public class JsonUtil {
 			JsonUtil.value(v, w);
 		}
 		endArray(w);
+	}
+
+	public static JsonObject toJsonObject(Map<String, Object> result) {
+		JsonObject rt = new JsonObject();
+		for (Map.Entry<String, Object> en : result.entrySet()) {
+			Object value = en.getValue();
+			String key = en.getKey();
+			if (value == null) {
+				rt.add(key, JsonNull.INSTANCE);
+			} else if (value instanceof Number) {
+				rt.addProperty(key, (Number) value);
+			} else if (value instanceof String) {
+				rt.addProperty(key, (String) value);
+			} else if (value instanceof Boolean) {
+				rt.addProperty(key, (Boolean) value);
+			} else if (value instanceof JsonElement) {
+				rt.add(key, (JsonElement) value);
+			} else {
+				throw new JcpsException("type not supported:" + value.getClass().getName());
+			}
+
+		}
+		return rt;
 	}
 
 }

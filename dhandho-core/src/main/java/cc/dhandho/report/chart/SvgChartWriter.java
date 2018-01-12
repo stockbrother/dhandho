@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -64,15 +63,16 @@ public class SvgChartWriter {
 	 *            A map: corpId => Point(x,y)
 	 * @param sb
 	 */
-	public void writeScatterSvg(String xLabel, int xIdx, String yLabel, int yIdx, Map<String,CorpPoint> xyPoints,
+	public void writeScatterSvg(String xLabel, int xIdx, String yLabel, int yIdx, Map<String, CorpPoint> xyPoints,
 			String[] heighLightKey, StringBuilder sb) {
 		StringWriter sWriter = new StringWriter();
 		writeScatterSvg(xLabel, xIdx, yLabel, yIdx, xyPoints, heighLightKey, sWriter);
 		sb.append(sWriter.getBuffer().toString());
 	}
 
-	public void writeScatterSvg(String xLabel, int xIdx, String yLabel, int yIdx, Map<String,CorpPoint> xyPoints,
+	public void writeScatterSvg(String xLabel, int xIdx, String yLabel, int yIdx, Map<String, CorpPoint> xyPoints,
 			String[] heighLightKey, Writer writer) {
+
 		String title = "[" + "todo" + "]";
 		XYDataset dataSet = createDataset(xyPoints, xIdx, yIdx, heighLightKey);
 
@@ -97,11 +97,21 @@ public class SvgChartWriter {
 		writeXml2(root, writer);
 	}
 
-	private XYDataset createDataset(Map<String,CorpPoint> xyPoints,  int xIdx, int yIdx, String[] heighLightKey) {
+	private XYDataset createDataset(Map<String, CorpPoint> xyPoints, int xIdx, int yIdx, String[] heighLightKey) {
+
 		DefaultXYDataset rt = new DefaultXYDataset();
 		Set<String> set = new HashSet<>(Arrays.asList(heighLightKey));
 
-		double[][] otherData = new double[2][xyPoints.size() - set.size()];
+		// assert heighLightKey contained in the points.
+
+		for (String k : heighLightKey) {
+			if (!xyPoints.containsKey(k)) {
+				throw new JcpsException("point is missing for key:" + k);
+			}
+		}
+		int size = xyPoints.size() - set.size();
+
+		double[][] otherData = new double[2][size];
 		AtomicInteger otherIdx = new AtomicInteger(0);
 
 		xyPoints.values().stream().forEach(new Consumer<CorpPoint>() {

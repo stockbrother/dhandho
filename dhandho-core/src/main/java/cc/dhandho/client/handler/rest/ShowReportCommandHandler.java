@@ -27,7 +27,7 @@ public class ShowReportCommandHandler extends RestRequestCommandHandler {
 
 	@Override
 	protected void onResponse(RestResponseContext rrc) {
-		JsonObject res = rrc.response;
+		JsonObject res = (JsonObject)rrc.response;
 
 		// Response
 		CorpDatedMetricReportData r = CorpDatedMetricReportData.parseJson(res.get("report").getAsJsonObject());

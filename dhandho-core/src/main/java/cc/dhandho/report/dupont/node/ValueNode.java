@@ -1,5 +1,8 @@
 package cc.dhandho.report.dupont.node;
 
+/**
+ * Save to 'DupontVNode' vertex type in DB. 
+ */
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

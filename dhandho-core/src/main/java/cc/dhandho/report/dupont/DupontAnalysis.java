@@ -1,22 +1,25 @@
 package cc.dhandho.report.dupont;
 
+/**
+ * Analysis result will save into to DB with DupantVNode type.
+ * @see ValueNode
+ */
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.record.OVertex;
-import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
 import cc.dhandho.graphdb.DbUtil;
@@ -24,8 +27,6 @@ import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.graphdb.dataver.DbUpgrader0_0_1;
 import cc.dhandho.input.xueqiu.DateUtil;
 import cc.dhandho.report.ReportEngine;
-import cc.dhandho.report.chart.SvgChartWriter;
-import cc.dhandho.report.dupont.node.DefineNode;
 import cc.dhandho.report.dupont.node.RoeNode;
 import cc.dhandho.report.dupont.node.ValueNode;
 import cc.dhandho.rest.server.DbProvider;
@@ -111,10 +112,13 @@ public class DupontAnalysis {
 	 * @param year
 	 * @param dbProvider
 	 */
-	public void analysisAndStore(int year, DbProvider dbProvider) {
+	public Map<String, Object> analysisAndStore(int year, DbProvider dbProvider) {
 		Date reportDate = DateUtil.newDateOfYearLastDay(year, TimeZone.getDefault());
 		LOG.info("goint to do dupont analysis for report date:" + reportDate);
-
+		Map<String, Object> rt = new HashMap<>();
+		StringBuilder message = new StringBuilder();
+		AtomicInteger totalCorps = new AtomicInteger(0);
+		long started = System.currentTimeMillis();
 		dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
 
 			@Override
@@ -132,6 +136,7 @@ public class DupontAnalysis {
 						ValueNode top = ac.getValueNode();// ROE node
 
 						// 3 component node:Netprofit-margin/Asset-turnover/Equity-multiplier.
+						totalCorps.incrementAndGet();
 
 						for (ValueNode vNode : top.getChildList()) {
 							OVertex v = t.newVertex(DbUpgrader0_0_1.V_DUPONT_VNODE);
@@ -150,6 +155,10 @@ public class DupontAnalysis {
 		});
 
 		LOG.info("end of dupont analysis for report date:" + reportDate);
+		rt.put("totalCorps", totalCorps.get());
+		rt.put("timeCostMs", System.currentTimeMillis() - started);
+
+		return rt;
 	}
 
 }

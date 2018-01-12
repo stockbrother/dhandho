@@ -1,5 +1,6 @@
 package cc.dhandho.client.rest;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.client.CommandContext;
@@ -9,13 +10,13 @@ public class RestResponseContext {
 
 	public JsonObject request;
 
-	public JsonObject response;
+	public JsonElement response;
 
 	public CommandContext commandContext;
 
 	public String handler;
 
-	public RestResponseContext(CommandContext cc, JsonObject req, JsonObject res) {
+	public RestResponseContext(CommandContext cc, JsonObject req, JsonElement res) {
 		this.commandContext = cc;
 		this.request = req;
 		this.response = res;
