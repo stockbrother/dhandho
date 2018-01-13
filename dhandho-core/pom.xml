@@ -16,7 +16,7 @@
 		<jcps-dataupgrader.version>0.0.1-SNAPSHOT</jcps-dataupgrader.version>
 		<jsweet-angular.version></jsweet-angular.version>
 		<jsweet-maven.version>2.0.1</jsweet-maven.version>
-		
+
 	</properties>
 
 	<build>
@@ -52,6 +52,17 @@
 				<configuration>
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>false</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>.jsweet</directory>
+						</fileset>
+					</filesets>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -185,13 +196,13 @@
 			<artifactId>jsweet-transpiler</artifactId>
 			<version>2.0.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jsweet.candies</groupId>
 			<artifactId>jquery</artifactId>
 			<version>1.10.0-20170726</version>
 		</dependency>
-		
+
 		<!-- scrop:runtime -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -220,7 +231,12 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>8</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -233,6 +249,11 @@
 			<id>jsweet-snapshots</id>
 			<name>libs-snapshot</name>
 			<url>http://repository.jsweet.org/artifactory/libs-snapshot-local</url>
+		</repository>
+		<repository>
+			<id>jsweet-external</id>
+			<name>libs-release</name>
+			<url>http://repository.jsweet.org/artifactory/ext-release-local</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>

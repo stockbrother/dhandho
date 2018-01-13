@@ -127,7 +127,7 @@ public class AbstractTest {
 	public AbstractTest() {
 		super();
 	}
-
+	
 	protected SourceFile getSourceFile(Class<?> mainClass) {
 		return new SourceFile(new File(TEST_DIRECTORY_NAME + "/" + mainClass.getName().replace(".", "/") + ".java"));
 	}

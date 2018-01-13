@@ -1,8 +1,11 @@
 package cc.dhandho.test.jsweet;
 import static jsweet.util.Lang.$export;
-public class JsView {
-	
+
+import def.dom.HTMLElement;
+public class JsView<T extends HTMLElement> {
+	T element;
 	public JsView() {
+		
 	}
 	
 	public void show() {
