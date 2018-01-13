@@ -8,3 +8,4 @@ target
 /javascript/
 /.jsweet/
 /tempOut/
+/node_modules/

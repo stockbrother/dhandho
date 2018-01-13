@@ -7,7 +7,6 @@ import static def.jquery.Globals.$;
 
 import def.dom.HTMLDivElement;
 import def.dom.HTMLElement;
-import def.js.Function;
 
 public class DhoMain {
 

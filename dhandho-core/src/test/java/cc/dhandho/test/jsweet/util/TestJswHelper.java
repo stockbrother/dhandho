@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.jsweet.transpiler.EcmaScriptComplianceLevel;
+import org.jsweet.transpiler.JSweetFactory;
 import org.jsweet.transpiler.JSweetTranspiler;
 import org.jsweet.transpiler.ModuleKind;
 import org.jsweet.transpiler.SourceFile;
 import org.jsweet.transpiler.util.EvaluationResult;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.provider.Provider;
@@ -24,22 +23,29 @@ import cc.dhandho.test.jsweet.TestTranspilationHandler;
 
 public class TestJswHelper {
 
-	@Rule
-	public final TestName testNameRule = new TestName();
+	public static File tsOutputDir = new File("target/jsweet/test");
 
 	private JSweetTranspiler transpiler;
 
 	private Provider<List<SourceFile>> sourceFileProvider;
 
-	private Class testClass;
-
 	private Consumer<TestTranspilationHandler> transpileConsumer;
 
 	private BiConsumer<TestTranspilationHandler, EvaluationResult> evalConsumer;
 
-	public TestJswHelper(Class testClass, JSweetTranspiler transpiler) {
-		this.transpiler = transpiler;
-		this.testClass = testClass;
+	private List<ModuleKind> moduleKindList = new ArrayList<>();
+
+	private String testName;
+
+	public TestJswHelper() {
+		transpiler = new JSweetTranspiler(null, new JSweetFactory(), null, tsOutputDir, null,
+				new File(JSweetTranspiler.TMP_WORKING_DIR_NAME + "/candies/js"), System.getProperty("java.class.path"));
+		transpiler.setEcmaTargetVersion(EcmaScriptComplianceLevel.ES5);
+		transpiler.setEncoding("UTF-8");
+		transpiler.setSkipTypeScriptChecks(true);
+		transpiler.setIgnoreAssertions(false);
+		transpiler.setGenerateSourceMaps(false);
+		transpiler.getCandiesProcessor().touch();
 	}
 
 	public TestJswHelper consumer(Consumer<TestTranspilationHandler> consumer) {
@@ -52,14 +58,25 @@ public class TestJswHelper {
 		return this;
 	}
 
-	public TestJswHelper execute() {
-		return execute(new ModuleKind[] { ModuleKind.none, ModuleKind.commonjs });
+	public TestJswHelper moduleKind(ModuleKind mk) {
+		this.moduleKindList.add(mk);
+		return this;
 	}
 
-	protected TestJswHelper execute(ModuleKind[] moduleKinds) {
+	public TestJswHelper execute() {
+		StackTraceElement[] ele = Thread.currentThread().getStackTrace();
+		this.testName = ele[2].getClassName() + "." + ele[2].getMethodName();
 
-		for (ModuleKind moduleKind : moduleKinds) {
-			execute(moduleKind);
+		if (this.moduleKindList.isEmpty()) {
+			this.moduleKindList.add(ModuleKind.none);
+		}
+
+		for (ModuleKind moduleKind : moduleKindList) {
+			boolean transpileOrEvel = this.evalConsumer == null;
+
+			SourceFile[] files = sourceFileProvider.get().toArray(new SourceFile[0]);
+
+			this.doExecute(moduleKind, transpileOrEvel, files);
 		}
 		return this;
 	}
@@ -71,18 +88,6 @@ public class TestJswHelper {
 
 	public TestJswHelper sourceFiles(Class<?>[] sourceClasses) {
 		return this.sourceFiles(new DefaultSourceFileProvider().add(sourceClasses));
-	}
-
-	protected void execute(ModuleKind moduleKind) {
-		boolean transpileOrEvel = this.evalConsumer == null;
-		doExecute(moduleKind, transpileOrEvel);
-	}
-
-	protected void doExecute(ModuleKind moduleKind, boolean transpileOrEval) {
-
-		SourceFile[] files = sourceFileProvider.get().toArray(new SourceFile[0]);
-
-		this.doExecute(moduleKind, transpileOrEval, files);
 	}
 
 	protected void doExecute(ModuleKind moduleKind, boolean transpileOrEval, SourceFile[] files) {
@@ -114,32 +119,27 @@ public class TestJswHelper {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("exception occured while running test " + getCurrentTestName() + " with module kind " + moduleKind);
+			fail("exception occured while running test " + testName + " with module kind " + moduleKind);
 		} finally {
 			transpiler.setModuleKind(originalModuleKind);
 			transpiler.setTsOutputDir(originalTsOutputDir);
 		}
 
-		if (moduleKind == ModuleKind.none && !transpiler.isBundle() && files.length > 1) {
-			ArrayUtils.reverse(files);
-			transpiler.setBundle(true);
-			try {
-				doExecute(moduleKind, transpileOrEval, files);
-			} finally {
-				transpiler.setBundle(false);
-				ArrayUtils.reverse(files);
-			}
-		}
-	}
-
-	protected final String getCurrentTestName() {
-		return testClass.getSimpleName() + "." + testNameRule.getMethodName();
 	}
 
 	private void setTsOutputDir(ModuleKind moduleKind) {
 
-		transpiler.setTsOutputDir(new File(JswTestUtil.tsOutputDir,
-				getCurrentTestName() + "/" + moduleKind + (transpiler.isBundle() ? "_bundle" : "")));
+		transpiler.setTsOutputDir(
+				new File(tsOutputDir, testName + "/" + moduleKind + (transpiler.isBundle() ? "_bundle" : "")));
+	}
+
+	public TestJswHelper addJsLib(File file) {
+		//
+		if (!file.exists()) {
+			throw new JcpsException("file not exists:" + file.getAbsolutePath());
+		}
+		transpiler.addJsLibFiles(file);
+		return this;
 	}
 
 }

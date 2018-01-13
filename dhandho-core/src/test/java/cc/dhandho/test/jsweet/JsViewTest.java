@@ -17,9 +17,8 @@ public class JsViewTest {
 
 	}
 
-	
 	public void testTranspile() {
-		TestJswHelper helper = JswTestUtil.newDefaultTestJswHelper(JsViewTest.class);
+		TestJswHelper helper = JswTestUtil.newDefaultTestJswHelper();
 
 		helper.sourceFiles(new Class<?>[] { JsView.class, MyTestMain.class, })//
 				.consumer(logHandler -> {
@@ -30,7 +29,7 @@ public class JsViewTest {
 
 	@Test
 	public void testEval() {
-		TestJswHelper helper = JswTestUtil.newDefaultTestJswHelper(JsViewTest.class);
+		TestJswHelper helper = JswTestUtil.newDefaultTestJswHelper();
 
 		helper.sourceFiles(new Class<?>[] { JsView.class, MyTestMain.class, })//
 				.consumer((logHandler, r) -> {
