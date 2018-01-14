@@ -9,3 +9,5 @@ target
 /.jsweet/
 /tempOut/
 /node_modules/
+/node_modules-del/
+/package-lock.json

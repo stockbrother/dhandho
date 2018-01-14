@@ -7,7 +7,7 @@ function showHtml() {
     return "Error:Renderer is null.";
   }
   
-  var dhoMain = window["dhoMain"];
+  var dhoMain = window["dho"];
   if(renderer == null){
 	  return "Error:dhoMain is null";
   }

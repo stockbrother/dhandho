@@ -1,6 +1,5 @@
-require('require-global')
 var jsdom = require('jsdom');
-const { JSDOM } = jsdom;
-const { window } = new JSDOM('<html></html>');
-const { document } = window.document;
+
+const { window } = new jsdom.JSDOM('<html><body><div id="mainDiv">MainDiv</div></body></html>');
+const { document } = window;
 var $ = require('jquery')(window);
