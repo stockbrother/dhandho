@@ -48,19 +48,23 @@ public class HttpClientFactory {
 	}
 
 	public void get(String host, Iterator<String> uriIt, HttpResponseCallback hep) {
+		this.get(host, 80, uriIt, hep);
+	}
+
+	public void get(String host, int port, Iterator<String> uriIt, HttpResponseCallback hep) {
 		try {
-			this.doGet(host, uriIt, hep);
+			this.doGet(host, port, uriIt, hep);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
 	}
 
-	private void doGet(String host, Iterator<String> uriIt, HttpResponseCallback hep) throws IOException {
+	private void doGet(String host, int port, Iterator<String> uriIt, HttpResponseCallback hep) throws IOException {
 		CloseableHttpClient httpclient = HttpClients.custom().build();
 		try {
 
-			HttpHost target = new HttpHost(host, 80, "http");
+			HttpHost target = new HttpHost(host, port, "http");
 			RequestConfig.Builder cb = RequestConfig.custom();
 			if (this.proxyEnabled) {
 

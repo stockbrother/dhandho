@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.age5k.jcps.JcpsException;
-import com.age5k.jcps.framework.server.ExecutorUtil;
+import com.age5k.jcps.framework.lifecycle.ExecutorUtil;
 
 import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
 import cc.dhandho.util.SemaphoreFuture;

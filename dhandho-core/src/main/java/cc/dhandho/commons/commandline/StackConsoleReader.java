@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.age5k.jcps.framework.server.ExecutorUtil;
+import com.age5k.jcps.framework.lifecycle.ExecutorUtil;
 
 public class StackConsoleReader {
 
