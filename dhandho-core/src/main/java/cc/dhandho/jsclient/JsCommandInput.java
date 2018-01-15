@@ -32,7 +32,7 @@ public class JsCommandInput extends JsDivWrapper {
 	}
 
 	private void doSend() {
-		String cmd = this.input.textContent;
+		String cmd = this.input.value;
 		client.runCommand(cmd);
 	}
 

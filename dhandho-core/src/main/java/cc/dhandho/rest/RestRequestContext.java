@@ -38,8 +38,8 @@ public class RestRequestContext {
 		return writer;
 	}
 
-	public JsonElement parseReader() {
-		return Streams.parse(reader);
+	public <T extends JsonElement> T parseReader() {
+		return (T)Streams.parse(reader);
 	}
 
 	public void write(JsonElement res) {
