@@ -1,4 +1,4 @@
-package cc.dhandho.command;
+package cc.dhandho.rest.command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +19,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.commons.commandline.CommandType;
+import cc.dhandho.rest.command.handler.DupontAnalysisCommandHandler;
+import cc.dhandho.rest.command.handler.HelpCommandHandler;
 import cc.dhandho.rest.server.DhoServer;
 
 public class CommandExecutor {
@@ -30,12 +32,35 @@ public class CommandExecutor {
 
 	DhoServer server;
 
+	public DhoServer getServer() {
+		return server;
+	}
+
 	private Map<String, CommandType> commandMap = new HashMap<>();
 
 	private Map<String, CommandHandler> handlerMap = new HashMap<>();
 
 	public CommandExecutor(DhoServer server) {
 		this.server = server;
+		this.addCommand(new CommandType("help").addDesc(""), new HelpCommandHandler());
+
+		this.addCommand(new CommandType("dupont", "Dupont Analysis or show the result as SVG chart!")//
+				.addDesc("\nFor instance,")//
+				.addDesc("\ndupont -a -y 2016, perform analysis on year 2016 and save the data to DB.")//
+				.addDesc("\ndupont -s -c 000002 -y 2016, show the analysis result as SVG with a corpId high-lighted.")//
+				.addDesc("\ndupont -s -c 000002 -y 2016 -f 0.01, show 1% points around the corpId high-lighted.")//
+				.addDesc(
+						"\ndupont -s -c 000002 -y 2016 -f mycorp, show points with scope of my corps as the background.")//
+
+				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
+						"Execute analysis and store the result to DB.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show svg through html renderer.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_y, "year", true, "year when analysis or showing svg.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_c, "corpId", true, "Corp id when showing svg.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_f, "filter", true, "Show svg with a filter on the points.")//
+
+				, new DupontAnalysisCommandHandler());
+
 	}
 
 	public void addCommand(CommandType type, CommandHandler handler) {
@@ -83,7 +108,7 @@ public class CommandExecutor {
 			CommandType help = this.getHelpCommand();
 			throw new JcpsException("please type:" + help.getName());
 		} else {
-			CommandContext cc = new CommandContext(type, cl);
+			CommandContext cc = new CommandContext(type, cl, this);
 			return h.execute(cc);
 		}
 	}

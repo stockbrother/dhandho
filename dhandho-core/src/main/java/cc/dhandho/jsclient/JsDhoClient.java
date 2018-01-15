@@ -13,7 +13,9 @@ import jsweet.util.function.TriFunction;
 
 public class JsDhoClient extends JsDivWrapper {
 
-	String url = "/handle/cc.dhandho.rest.handler.EchoJsonHandler";
+	// String url = "/handle/cc.dhandho.rest.handler.EchoJsonHandler";
+
+	String url = "/cmd/";
 
 	JsCommandInput commandInput;
 	JsResponseRenderer responseRender;
@@ -63,11 +65,8 @@ public class JsDhoClient extends JsDivWrapper {
 	}
 
 	public void runCommand(String cmd) {
-		def.js.Object data = new def.js.Object();
-		data.$set("command", cmd);
-		String dataS = JSON.stringify(data);
 
-		$.post(url, dataS, new TriFunction<Object, String, JQueryXHR, Object>() {
+		$.post(url, cmd, new TriFunction<Object, String, JQueryXHR, Object>() {
 
 			@Override
 			public Object apply(Object t, String u, JQueryXHR v) {

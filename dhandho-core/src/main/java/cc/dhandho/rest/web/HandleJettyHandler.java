@@ -13,12 +13,12 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import cc.dhandho.rest.server.DhoServer;
 
-public class BridgeJettyHandler extends AbstractHandler {
+public class HandleJettyHandler extends AbstractHandler {
 	DhoServer dserver;
 
-	public static final String contextPath = "/handle/";
+	public static final String contextPath = "/handle";
 
-	public BridgeJettyHandler(DhoServer dserver) {
+	public HandleJettyHandler(DhoServer dserver) {
 		this.dserver = dserver;
 	}
 
@@ -26,7 +26,7 @@ public class BridgeJettyHandler extends AbstractHandler {
 	public void handle(String s, Request request, HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		String uri = req.getRequestURI();
-		String handlerS = uri.substring(contextPath.length());
+		String handlerS = uri.substring(contextPath.length() + 1);
 		Reader reader = req.getReader();
 		Writer writer = res.getWriter();
 

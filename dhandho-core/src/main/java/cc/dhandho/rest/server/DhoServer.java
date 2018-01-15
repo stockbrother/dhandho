@@ -29,7 +29,7 @@ public interface DhoServer {
 	public void shutdown();
 
 	public JsonElement handle(final String handlerS, JsonElement request) ;
-
+	
 	public void handle(final String handlerS) ;
 
 	public void handle(final String handlerS, Reader reader, final Writer writer) ;

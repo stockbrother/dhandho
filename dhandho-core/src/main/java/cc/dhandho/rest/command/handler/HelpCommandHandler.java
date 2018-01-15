@@ -1,9 +1,11 @@
-package cc.dhandho.command;
+package cc.dhandho.rest.command.handler;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cc.dhandho.commons.commandline.CommandType;
+import cc.dhandho.rest.command.CommandContext;
+import cc.dhandho.rest.command.CommandHandler;
 
 public class HelpCommandHandler implements CommandHandler {
 

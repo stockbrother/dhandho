@@ -11,6 +11,7 @@ import cc.dhandho.jsclient.JsDivWrapper;
 import cc.dhandho.jsclient.JsElementWrapper;
 import cc.dhandho.jsclient.JsResponseRenderer;
 import cc.dhandho.rest.handler.EchoJsonHandler;
+import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.rest.web.JettyWebServer;
 import cc.dhandho.test.jsclient.source.TestDhoJsClient;
 import cc.dhandho.test.jsclient.util.TestJswHelper;
@@ -21,7 +22,8 @@ public class JsClientWithWebServerTest {
 	@Test
 	public void testEval() {
 
-		JettyWebServer web = TestUtil.mockWebServerWithHandler(new EchoJsonHandler());
+		DhoServer dserver = TestUtil.mockDhoServerWithHandler(new EchoJsonHandler());
+		JettyWebServer web = new JettyWebServer(dserver);
 		web.start();
 		try {
 

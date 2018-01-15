@@ -7,15 +7,18 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.lifecycle.Server;
 
+import cc.dhandho.rest.command.CommandExecutor;
 import cc.dhandho.rest.server.DhoServer;
 
 public class JettyWebServer implements Server {
 
 	org.eclipse.jetty.server.Server jserver;
 	DhoServer dserver;
+	CommandExecutor commands;
 
 	public JettyWebServer(DhoServer dserver) {
 		this.dserver = dserver;
+		this.commands = new CommandExecutor(dserver);
 	}
 
 	@Override
@@ -24,10 +27,18 @@ public class JettyWebServer implements Server {
 		ContextHandlerCollection contexts = new ContextHandlerCollection();
 
 		{
+			//
+			ContextHandler context = new ContextHandler();
+			context.setContextPath("/cmd");
+			context.setHandler(new CommandJettyHandler(this.commands));
+			contexts.addHandler(context);
+		}
+
+		{
 			// rest service, bridge to dho server for json handling.
 			ContextHandler context = new ContextHandler();
-			context.setContextPath(BridgeJettyHandler.contextPath);
-			context.setHandler(new BridgeJettyHandler(this.dserver));
+			context.setContextPath(HandleJettyHandler.contextPath);
+			context.setHandler(new HandleJettyHandler(this.dserver));
 			contexts.addHandler(context);
 		}
 		{

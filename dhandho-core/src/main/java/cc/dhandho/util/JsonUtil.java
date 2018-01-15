@@ -36,6 +36,10 @@ public class JsonUtil {
 		GSON.toJson(json, writer);
 	}
 
+	public static JsonReader toJsonReader(JsonElement json) {
+		return toJsonReader(JsonUtil.toString(json, true));
+	}
+
 	public static JsonReader toJsonReader(String jsonString) {
 		return GSON.newJsonReader(new StringReader(jsonString));
 	}
@@ -98,6 +102,10 @@ public class JsonUtil {
 			rt.add(s);
 		}
 		return rt;
+	}
+
+	public static String toString(JsonElement json) {
+		return toString(json, true);
 	}
 
 	public static String toString(JsonElement json, boolean pretty) {

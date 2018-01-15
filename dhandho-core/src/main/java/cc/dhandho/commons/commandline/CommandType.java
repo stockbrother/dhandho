@@ -18,9 +18,13 @@ public class CommandType {
 
 	private StringBuilder description = new StringBuilder();
 
-	public CommandType(String name, String desc) {
+	public CommandType(String name) {
 		this.name = name;
 		this.options = new Options();
+	}
+
+	public CommandType(String name, String desc) {
+		this(name);
 		this.addDesc(desc);
 	}
 

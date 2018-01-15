@@ -27,11 +27,11 @@ import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
 import cc.dhandho.rest.JsonHandlers;
+import cc.dhandho.rest.command.CommandExecutor;
 
 /**
  * 
- * @author Wu
- *
+ * @author Wu 
  */
 public class DhandhoServerImpl extends ExecutorBasedServer implements DhoServer {
 	// private static final Logger LOG = LoggerFactory.getLogger();
@@ -76,7 +76,7 @@ public class DhandhoServerImpl extends ExecutorBasedServer implements DhoServer 
 		this.dbProvider.createDbIfNotExist();
 		this.dbProvider.executeWithDbSession(new MyDataUpgraders());
 		handlers = new JsonHandlers(app);
-
+		
 		// load it at server start.
 		loader.load();
 		this.dbProvider.executeWithDbSession(((DbReportMetaInfos) metaInfos).initializer());
@@ -109,10 +109,10 @@ public class DhandhoServerImpl extends ExecutorBasedServer implements DhoServer 
 	public void handle(final String handlerS) {
 		handlers.handle(handlerS);
 	}
-
-	public void handle(final String handlerS, JsonReader reader, final JsonWriter writer) {
-		handlers.handle(handlerS, reader, writer);
-	}
+//
+//	public void handle(final String handlerS, JsonReader reader, final JsonWriter writer) {
+//		handlers.handle(handlerS, reader, writer);
+//	}
 
 	@Override
 	public JsonElement handle(String handlerS, JsonElement request) {

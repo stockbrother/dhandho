@@ -18,7 +18,7 @@ import com.google.gson.JsonObject;
 import cc.dhandho.commons.http.HttpClientUtil;
 import cc.dhandho.commons.http.JsonElementHttpResponseHandler;
 import cc.dhandho.rest.server.DhoServer;
-import cc.dhandho.rest.web.BridgeJettyHandler;
+import cc.dhandho.rest.web.HandleJettyHandler;
 import cc.dhandho.rest.web.JettyWebServer;
 import junit.framework.TestCase;
 
@@ -57,7 +57,7 @@ public class JettyWebServerTest {
 
 			String host = "localhost";
 			int port = 8080;
-			String uri = BridgeJettyHandler.contextPath + handlerS;
+			String uri = HandleJettyHandler.contextPath + handlerS;
 
 			JsonElement json = HttpClientUtil.doHttpGet(host, port, uri, new JsonElementHttpResponseHandler());
 			TestCase.assertTrue(json.isJsonObject());

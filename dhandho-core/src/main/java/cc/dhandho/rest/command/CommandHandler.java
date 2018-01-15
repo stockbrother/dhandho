@@ -1,4 +1,4 @@
-package cc.dhandho.command;
+package cc.dhandho.rest.command;
 
 import com.google.gson.JsonElement;
 

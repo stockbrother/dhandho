@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.commons.vfs2.AllFileSelector;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.container.impl.ContainerImpl;
+import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseType;
@@ -44,6 +46,7 @@ import cc.dhandho.rest.server.DhandhoServerImpl;
 import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.rest.server.MetricDefinesLoader;
 import cc.dhandho.rest.web.JettyWebServer;
+import cc.dhandho.util.JsonUtil;
 import junit.framework.TestCase;
 
 public class TestUtil {
@@ -235,7 +238,7 @@ public class TestUtil {
 		return app;
 	}
 
-	public static JettyWebServer mockWebServerWithHandler(RestRequestHandler handler) {
+	public static DhoServer mockDhoServerWithHandler(RestRequestHandler handler) {
 		DhoServer dserver = mock(DhoServer.class);
 		String handlerS = handler.getClass().getName();
 		doAnswer(new Answer<Void>() {
@@ -248,7 +251,7 @@ public class TestUtil {
 					String handlerName = (String) arguments[0];
 					Reader r = (Reader) arguments[1];
 					Writer w = (Writer) arguments[2];
-					TestCase.assertEquals(handlerS, handlerName);
+
 					JsonReader jR = new JsonReader(r);
 					JsonWriter jW = new JsonWriter(w);
 					RestRequestContext rrc = new RestRequestContext(jR, jW);
@@ -261,15 +264,34 @@ public class TestUtil {
 			}
 		}).when(dserver).handle(any(String.class), any(Reader.class), any(Writer.class));
 
-		JettyWebServer web = new JettyWebServer(dserver);
+		doAnswer(new Answer<JsonElement>() {
 
-		return web;
+			@Override
+			public JsonElement answer(InvocationOnMock invocation) throws Throwable {
+
+				Object[] arguments = invocation.getArguments();
+				if (arguments.length == 2) {
+					String handlerName = (String) arguments[0];
+					JsonElement r = (JsonElement) arguments[1];
+					JsonReader jR = JsonUtil.toJsonReader(r);
+					StringWriter sWriter = new StringWriter();
+					JsonWriter jW = new JsonWriter(sWriter);
+					RestRequestContext rrc = new RestRequestContext(jR, jW);
+					handler.handle(rrc);
+					return JsonUtil.parse(sWriter.getBuffer().toString());
+				} else {
+					throw new Exception("not supported.");
+				}
+			}
+		}).when(dserver).handle(any(String.class), any(JsonElement.class));
+
+		return dserver;
 	}
 
 	public static void runWithWebServer(JettyWebServer web) {
 		web.start();
 		try {
-			
+
 		} finally {
 			web.shutdown();
 		}
