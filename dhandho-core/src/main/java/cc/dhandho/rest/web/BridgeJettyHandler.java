@@ -29,6 +29,7 @@ public class BridgeJettyHandler extends AbstractHandler {
 		String handlerS = uri.substring(contextPath.length());
 		Reader reader = req.getReader();
 		Writer writer = res.getWriter();
+
 		this.dserver.handle(handlerS, reader, writer);
 
 		request.setHandled(true);

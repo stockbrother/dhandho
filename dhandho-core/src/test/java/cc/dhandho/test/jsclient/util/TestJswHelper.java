@@ -1,4 +1,4 @@
-package cc.dhandho.test.jsweet.util;
+package cc.dhandho.test.jsclient.util;
 
 import static org.junit.Assert.fail;
 
@@ -18,8 +18,8 @@ import org.jsweet.transpiler.util.EvaluationResult;
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.provider.Provider;
 
-import cc.dhandho.test.jsweet.JswTestUtil;
-import cc.dhandho.test.jsweet.TestTranspilationHandler;
+import cc.dhandho.test.jsclient.JswTestUtil;
+import cc.dhandho.test.jsclient.TestTranspilationHandler;
 
 public class TestJswHelper {
 

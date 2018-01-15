@@ -20,6 +20,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import cc.dhandho.util.FileUtil;
 import cc.dhandho.util.JsonUtil;
 
 public class JsonHandlers {
@@ -30,6 +31,8 @@ public class JsonHandlers {
 	private Map<String, RestRequestHandler> handlerMap = new HashMap<>();
 
 	private Container app;
+
+	private boolean trace = true;
 
 	public JsonHandlers(Container app) {
 		this.app = app;
@@ -52,7 +55,25 @@ public class JsonHandlers {
 	}
 
 	public void handle(String handlerS, Reader reader, Writer writer) {
-		this.handle(handlerS, gson.newJsonReader(reader), JsonUtil.newJsonWriter(writer));
+
+		if (this.trace) {
+			String string = FileUtil.readAsString(reader);
+			LOG.info(string);
+			reader = new StringReader(string);
+
+			StringWriter swriter = new StringWriter();
+			this.handle(handlerS, gson.newJsonReader(reader), JsonUtil.newJsonWriter(swriter));
+			String response = swriter.getBuffer().toString();
+			LOG.info("response:" + response);
+			try {
+				writer.write(response);
+			} catch (IOException e) {
+				throw JcpsException.toRtException(e);
+			}
+		} else {
+			this.handle(handlerS, gson.newJsonReader(reader), JsonUtil.newJsonWriter(writer));
+		}
+
 	}
 
 	public void handle(String handlerS, JsonReader reader, JsonWriter writer) {

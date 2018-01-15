@@ -1,4 +1,4 @@
-package cc.dhandho.test.jsweet.util;
+package cc.dhandho.test.jsclient.util;
 
 import java.io.File;
 import java.util.ArrayList;

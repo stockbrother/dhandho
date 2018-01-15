@@ -1,10 +1,10 @@
-package cc.dhandho.test.jsweet;
+package cc.dhandho.test.jsclient;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import cc.dhandho.test.jsweet.util.TestJswHelper;
+import cc.dhandho.test.jsclient.util.TestJswHelper;
 
 public class JsViewTest {
 

@@ -1,22 +1,25 @@
-package cc.dhandho.client.jsweet;
+package cc.dhandho.jsclient;
 
 import static def.dom.Globals.document;
-import static def.dom.Globals.window;
 import static def.jquery.Globals.$;
 
-public class DhoMain {
+import def.dom.HTMLBodyElement;
+import jsweet.util.StringTypes;
+
+public class JsDhoMain {
 
 	public static void main(String[] args) {
 		$(document).ready(() -> {
-			DhoJsClient client = new DhoJsClient();
+			
+			JsDhoClient client = new JsDhoClient();
 			client.start();
-			window.$set("dhoMain", client);
+			
 			return null;
 
 		});
 	}
 
-	public DhoMain() {
+	public JsDhoMain() {
 		
 	}
 

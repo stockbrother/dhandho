@@ -16,25 +16,56 @@ import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.DhandhoServerImpl;
 import cc.dhandho.rest.server.DhoServer;
+import cc.dhandho.rest.web.JettyWebServer;
 
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+	private static final boolean bootConsole = false;
+	private static final boolean bootWebServer = true;
+
+	DhoDataHome home;
+
+	DbProvider dbProvider;
+
+	DhoServer server;
+
+	JettyWebServer web;
 
 	public static void main(String[] args) {
-		DhoDataHome home = getDataHome();
+		new Main().boot();
+	}
 
-		DhoServer server = new DhandhoServerImpl(getDbProvider(home)).dataHome(home);
+	private void boot() {
+
+		home = getDataHome();
+		dbProvider = getDbProvider(home);
+		server = new DhandhoServerImpl(dbProvider).dataHome(home);
 		server.start();
 
-		FileObject consoleHome = getConsoleHome();
+		if (bootWebServer) {
+			web = new JettyWebServer(server);
+			web.start();
+		}
+/*
+		if (bootConsole) {
+			FileObject consoleHome = getConsoleHome();
+			DhandhoJfxApplication.launch(server, consoleHome);
+		}
+*/
+		Runtime.getRuntime().addShutdownHook(new Thread() {
 
-		DhandhoJfxApplication.launch(server, consoleHome);
-		//
-		// DhandhoJfxConsole console = new DhandhoJfxConsole(consoleHome);
-		// console.server(server);
-		// console.getServer().start();
-		// console.start();
-		// console.prompt();
+			@Override
+			public void run() {
+				if (web != null) {
+					web.shutdown();
+				}
+				
+				server.shutdown();
+				dbProvider.close();
+			}
+
+		});
+
 	}
 
 	private static DbProvider getDbProvider(DhoDataHome home) {
@@ -57,7 +88,7 @@ public class Main {
 		if (url == null) {
 			String userHome = System.getProperty("user.home");
 			userHome = userHome.replace('\\', '/');
-			url = "plocal://"+userHome + "/.dhandho/orientdb";
+			url = "plocal://" + userHome + "/.dhandho/orientdb";
 		}
 		return url;
 	}

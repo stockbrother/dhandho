@@ -69,11 +69,14 @@
 				<groupId>org.jsweet</groupId>
 				<artifactId>jsweet-maven-plugin</artifactId>
 				<version>${jsweet-maven.version}</version>
+				
 				<configuration>
 					<outDir>target/jsweet/js</outDir>
-					<targetVersion>ES3</targetVersion>
+					<targetVersion>ES5</targetVersion>
+					<bundle>true</bundle>
+					<sourceMap>true</sourceMap>
 					<includes>
-						<include>cc/dhandho/client/jsweet/**/*.java</include>
+						<include>cc/dhandho/jsclient/**/*.java</include>
 					</includes>
 				</configuration>
 				<executions>

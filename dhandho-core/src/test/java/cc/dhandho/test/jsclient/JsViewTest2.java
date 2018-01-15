@@ -1,4 +1,4 @@
-package cc.dhandho.test.jsweet;
+package cc.dhandho.test.jsclient;
 
 import org.junit.Assert;
 import org.junit.Test;

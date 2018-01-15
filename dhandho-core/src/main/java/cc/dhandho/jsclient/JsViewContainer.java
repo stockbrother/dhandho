@@ -1,4 +1,4 @@
-package cc.dhandho.client.jsweet;
+package cc.dhandho.jsclient;
 
 public class JsViewContainer {
 

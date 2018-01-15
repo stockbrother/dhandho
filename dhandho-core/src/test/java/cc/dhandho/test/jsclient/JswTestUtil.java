@@ -1,6 +1,6 @@
-package cc.dhandho.test.jsweet;
+package cc.dhandho.test.jsclient;
 
-import cc.dhandho.test.jsweet.util.TestJswHelper;
+import cc.dhandho.test.jsclient.util.TestJswHelper;
 
 public class JswTestUtil {
 

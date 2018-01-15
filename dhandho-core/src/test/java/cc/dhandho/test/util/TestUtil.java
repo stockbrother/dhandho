@@ -1,18 +1,28 @@
 package cc.dhandho.test.util;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 import org.apache.commons.vfs2.AllFileSelector;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.container.impl.ContainerImpl;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
 import cc.dhandho.DbReportMetaInfos;
@@ -24,14 +34,17 @@ import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.graphdb.MyDataUpgraders;
 import cc.dhandho.input.loader.CorpInfoInputDataLoader;
 import cc.dhandho.input.loader.WashedInputDataLoader;
-import cc.dhandho.mycorp.MyCorps;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.impl.ReportEngineImpl;
+import cc.dhandho.rest.RestRequestContext;
+import cc.dhandho.rest.RestRequestHandler;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.rest.server.DhandhoServerImpl;
 import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.rest.server.MetricDefinesLoader;
+import cc.dhandho.rest.web.JettyWebServer;
+import junit.framework.TestCase;
 
 public class TestUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);
@@ -220,6 +233,46 @@ public class TestUtil {
 		Container app = new ContainerImpl();
 		app.addComponent(DhoDataHome.class, dataHome);
 		return app;
+	}
+
+	public static JettyWebServer mockWebServerWithHandler(RestRequestHandler handler) {
+		DhoServer dserver = mock(DhoServer.class);
+		String handlerS = handler.getClass().getName();
+		doAnswer(new Answer<Void>() {
+
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+
+				Object[] arguments = invocation.getArguments();
+				if (arguments.length == 3) {
+					String handlerName = (String) arguments[0];
+					Reader r = (Reader) arguments[1];
+					Writer w = (Writer) arguments[2];
+					TestCase.assertEquals(handlerS, handlerName);
+					JsonReader jR = new JsonReader(r);
+					JsonWriter jW = new JsonWriter(w);
+					RestRequestContext rrc = new RestRequestContext(jR, jW);
+					handler.handle(rrc);
+
+				} else {
+					throw new Exception("not supported.");
+				}
+				return null;
+			}
+		}).when(dserver).handle(any(String.class), any(Reader.class), any(Writer.class));
+
+		JettyWebServer web = new JettyWebServer(dserver);
+
+		return web;
+	}
+
+	public static void runWithWebServer(JettyWebServer web) {
+		web.start();
+		try {
+			
+		} finally {
+			web.shutdown();
+		}
 	}
 
 }

@@ -1,4 +1,4 @@
-package cc.dhandho.test.jsweet;
+package cc.dhandho.test.jsclient;
 
 import static jsweet.util.Lang.$export;
 
