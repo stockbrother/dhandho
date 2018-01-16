@@ -31,7 +31,9 @@ public class CommandJettyHandler extends AbstractHandler {
 		String line = FileUtil.readAsString(reader);
 		//if line.length == 0 ,check the url is '/cmd/' or '/cmd'. the later will lead to a redirect from post to get. 
 		JsonElement json = commands.execute(line);
+		res.setContentType("text/json;charset=utf8");
 		JsonUtil.write(json, res.getWriter());
+		
 		request.setHandled(true);
 	}
 }

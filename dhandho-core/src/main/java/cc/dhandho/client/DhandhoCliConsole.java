@@ -2,15 +2,14 @@ package cc.dhandho.client;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.apache.commons.vfs2.FileObject;
 
 import com.age5k.jcps.JcpsException;
 import com.age5k.jcps.framework.handler.Handler;
+import com.age5k.jcps.framework.handler.Handler2;
 
 import cc.dhandho.DhoDataHome;
 import cc.dhandho.client.handler.CatCommandHandler;
@@ -32,8 +31,9 @@ import cc.dhandho.commons.commandline.CommandAndLine;
 import cc.dhandho.commons.commandline.CommandType;
 import cc.dhandho.report.MetricDefines;
 import cc.dhandho.rest.server.DhoServer;
+
 /**
- * @see 
+ * @see
  * @author Wu
  *
  */
@@ -42,19 +42,17 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	protected List<Handler> beforeShutdownHandlerList = new ArrayList<>();
 
-	protected Map<String, CommandHandler> handlerMap = new HashMap<>();
-
 	@Deprecated // move to server side.
 	protected MetricDefines metrics;
 
 	public HtmlRenderer htmlRenderer;
-	
+
 	public RestResponseHandler restResponseHandler;
 
 	private Usage usage = new Usage();
-	
+
 	protected FileObject consoleHome;
-	
+
 	public FileObject getConsoleHome() {
 		return consoleHome;
 	}
@@ -62,7 +60,7 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	public DhandhoCliConsole(FileObject consoleHome) {
 		this.consoleHome = consoleHome;
 	}
-	
+
 	public DhoServer getServer() {
 		return server;
 	}
@@ -94,8 +92,9 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 				.addDesc("\ndupont -a -y 2016, perform analysis on year 2016 and save the data to DB.")//
 				.addDesc("\ndupont -s -c 000002 -y 2016, show the analysis result as SVG with a corpId high-lighted.")//
 				.addDesc("\ndupont -s -c 000002 -y 2016 -f 0.01, show 1% points around the corpId high-lighted.")//
-				.addDesc("\ndupont -s -c 000002 -y 2016 -f mycorp, show points with scope of my corps as the background.")//
-				
+				.addDesc(
+						"\ndupont -s -c 000002 -y 2016 -f mycorp, show points with scope of my corps as the background.")//
+
 				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
 						"Execute analysis and store the result to DB.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show svg through html renderer.")//
@@ -162,8 +161,18 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 	}
 
 	public void addCommand(CommandType type, CommandHandler handler) {
-		this.handlerMap.put(type.getName(), handler);
-		this.addCommand(type.getName(), type);
+		super.addCommand(type, new Handler2<CommandAndLine>() {
+			@Override
+			public void handle(CommandAndLine cl) {
+				CommandContext cc = new CommandContext(cl);
+
+				handler.execute(cc);
+				if (!cc.isConsumed()) {
+					usage.usageOfCommand(cc, type);
+				}
+
+			}
+		});
 	}
 
 	@Override
@@ -178,22 +187,6 @@ public class DhandhoCliConsole extends AbstractComandLineApp {
 
 	public void addBeforeShutdownHandler(Handler h) {
 		this.beforeShutdownHandlerList.add(h);
-	}
-
-	@Override
-	public void processLine(CommandAndLine cl) {
-		CommandContext cc = new CommandContext(cl);
-		CommandType type = cl.getCommand();
-		CommandHandler h = this.handlerMap.get(type.getName());
-		if (h == null) {
-			cl.getConsole().peekWriter().writeLn("not found handler for command:" + cl.getCommand().getName());
-			return;
-		}
-
-		h.execute(cc);
-		if (!cc.isConsumed()) {
-			this.usage.usageOfCommand(cc, type);
-		}
 	}
 
 	public void htmlRenderer(HtmlRenderer htmlRenderer) {

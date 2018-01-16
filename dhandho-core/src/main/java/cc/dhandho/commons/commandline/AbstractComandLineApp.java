@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.handler.Handler2;
 import com.age5k.jcps.framework.lifecycle.ExecutorUtil;
 
 import cc.dhandho.commons.commandline.StackConsoleReader.LineRead;
@@ -66,7 +67,9 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 	private CommandLineParser parser = new BasicParser();
 
-	private Map<String, CommandType> commandMap = new HashMap<String, CommandType>();
+	private Map<String, CommandType> commandMap = new HashMap<>();
+
+	private Map<String, Handler2<CommandAndLine>> handlerMap = new HashMap<>();
 
 	private StackConsoleWriter writer;
 
@@ -161,27 +164,33 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 			String[] args = line.split(" ");
 			String cmd = args[0];
 			cmd = cmd.trim();
-			CommandType command = this.commandMap.get(cmd);
+			CommandType type = this.commandMap.get(cmd);
+			if (type == null) {
+				this.onCommandNotFound(cmd);
+				return;
+			}
+			String[] args2 = new String[args.length - 1];
+			System.arraycopy(args, 1, args2, 0, args2.length);
+
 			CommandLine cl = null;
-			String[] args2 = null;
-			if (command == null) {
-				command = this.getHelpCommand();
-				args2 = new String[] {};
-			} else {
-				args2 = new String[args.length - 1];
-				System.arraycopy(args, 1, args2, 0, args2.length);
-				cl = this.parseCommandLine(command, args2, false);
-			}
-			if (cl == null) {// not found the command or format error.
-				command = this.getHelpCommand();
-				args2 = new String[] { cmd };
-				cl = this.parseCommandLine(command, args2, true);
-			}
-			CommandAndLine cnl = new CommandAndLine(this, idx, command, cl);
+			boolean parseError = false;
 			try {
-				this.processLine(cnl);
-			} catch (Throwable t) {
-				this.unexpectedThrowable(cnl, t);
+
+				Options options = type.getOptions();
+				cl = this.parser.parse(options, args);
+			} catch (ParseException e) {
+				parseError = true;
+				this.onParseError(type, args, e);
+			}
+
+			if (!parseError) {
+				CommandAndLine cnl = new CommandAndLine(this, idx, type, cl);
+				Handler2<CommandAndLine> handler = this.handlerMap.get(cmd);
+				try {
+					handler.handle(cnl);
+				} catch (Throwable t) {
+					this.unexpectedThrowable(cnl, t);
+				}
 			}
 
 		} finally {
@@ -192,38 +201,22 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 
 	}
 
+	protected void onCommandNotFound(String cmd) {
+		LOG.warn("cmd not found:" + cmd);
+	}
+
 	protected void unexpectedThrowable(CommandAndLine cnl, Throwable t) {
 		StringWriter sWriter = new StringWriter();
 		t.printStackTrace(new PrintWriter(sWriter));
 		this.writer.write(sWriter.getBuffer().toString());
 	}
 
-	public abstract void processLine(CommandAndLine cl);
-
-	public CommandLine parseCommandLine(CommandType command, String[] args, boolean force) {
-
-		CommandLine rt = null;
-		try {
-
-			Options options = command.getOptions();
-			rt = this.parser.parse(options, args);
-
-		} catch (ParseException e) {
-			LOG.warn("parse error for cmd:" + command.getName(), e);
-			if (force) {
-				throw new RuntimeException(e);
-			}
-		}
-		return rt;
+	private void onParseError(CommandType command, String[] args, ParseException e) {
+		LOG.warn("parse error for cmd:" + command.getName(), e);
 	}
 
 	public CommandType getHelpCommand() {
-
-		CommandType type = this.commandMap.get("help");//
-		if (type == null) {
-			throw new JcpsException("no help command found.");
-		}
-		return type;
+		return null;
 	}
 
 	public void printHelp(Options options) {
@@ -330,8 +323,10 @@ public abstract class AbstractComandLineApp implements CommandLineApp {
 	}
 
 	@Override
-	public void addCommand(String name, CommandType type) {
+	public void addCommand(CommandType type, Handler2<CommandAndLine> handler) {
+		String name = type.getName();
 		this.commandMap.put(name, type);
+		this.handlerMap.put(name, handler);
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package cc.dhandho.commons.commandline;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import com.age5k.jcps.framework.handler.Handler2;
+
 /**
  * 
  * @author Wu
@@ -32,7 +34,7 @@ public interface CommandLineApp {
 
 	public CommandType getCommand(String name);
 
-	public void addCommand(String name, CommandType type);
+	public void addCommand(CommandType type, Handler2<CommandAndLine> handler);
 
 	// is print one more line after command print end.
 	public void printLine(boolean printLine);

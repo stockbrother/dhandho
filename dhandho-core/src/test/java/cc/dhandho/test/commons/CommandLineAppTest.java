@@ -4,16 +4,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import cc.dhandho.commons.commandline.AbstractComandLineApp;
-import cc.dhandho.commons.commandline.CommandAndLine;
 import junit.framework.TestCase;
 
 public class CommandLineAppTest extends TestCase {
 	public static class MyApp extends AbstractComandLineApp {
-
-		@Override
-		public void processLine(CommandAndLine cl) {
-
-		}
 
 	}
 
