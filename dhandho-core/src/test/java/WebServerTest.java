@@ -1,11 +1,7 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import cc.dhandho.jetty.Message;
-import cc.dhandho.jetty.WebServer;
-import cc.dhandho.rest.handler.EchoJsonHandler;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -21,7 +17,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import cc.dhandho.rest.handler.EchoJsonHandler;
 
 @Ignore
 public class WebServerTest {
@@ -35,8 +35,8 @@ public class WebServerTest {
     @Test
     public void test() throws IOException {
 
-        WebServer webServer = new WebServer();
-        webServer.start();
+        //WebServer webServer = new WebServer();
+        //webServer.start();
 
         HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         HttpClient httpclient = HttpClientBuilder.create().setConnectionManager(cm).build();
@@ -92,14 +92,14 @@ public class WebServerTest {
             reader = new StringReader(msgS);
         }
         if (sline.getStatusCode() == 200) {
-            Message msg2 = GSON.fromJson(reader, Message.class);
-            LOG.info(msg2.toString());
+            //Message msg2 = GSON.fromJson(reader, Message.class);
+           // LOG.info(msg2.toString());
 
         } else if (sline.getStatusCode() == 302) {
 
         }
 
-        webServer.stop();
+        //webServer.stop();
 
     }
 }

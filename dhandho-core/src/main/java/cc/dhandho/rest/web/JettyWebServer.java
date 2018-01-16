@@ -29,7 +29,7 @@ public class JettyWebServer implements Server {
 		{
 			//
 			ContextHandler context = new ContextHandler();
-			context.setContextPath("/cmd");
+			context.setContextPath("/web/cmd");
 			context.setHandler(new CommandJettyHandler(this.commands));
 			contexts.addHandler(context);
 		}
@@ -53,9 +53,18 @@ public class JettyWebServer implements Server {
 		{
 			// generated js files by jsweet.
 			ContextHandler context = new ContextHandler();
-			context.setContextPath("/js");
+			context.setContextPath("/web/js");
 			ResourceHandler handler = new ResourceHandler();
 			handler.setResourceBase("target/jsweet/js");
+			context.setHandler(handler);
+			contexts.addHandler(context);
+		}
+		{
+			// node_modules
+			ContextHandler context = new ContextHandler();
+			context.setContextPath("/web/node_modules");
+			ResourceHandler handler = new ResourceHandler();
+			handler.setResourceBase("node_modules");
 			context.setHandler(handler);
 			contexts.addHandler(context);
 		}
@@ -64,7 +73,7 @@ public class JettyWebServer implements Server {
 			// for debugging with source map.
 			ContextHandler context = new ContextHandler();
 
-			context.setContextPath("/src");
+			context.setContextPath("/web/src");
 			ResourceHandler handler = new ResourceHandler();
 			handler.setResourceBase("src");
 			context.setHandler(handler);

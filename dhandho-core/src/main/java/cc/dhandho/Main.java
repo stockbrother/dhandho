@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.age5k.jcps.JcpsException;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 
-import cc.dhandho.client.jfx.DhandhoJfxApplication;
+import cc.dhandho.admin.AdminConsole;
 import cc.dhandho.graphdb.DbConfig;
 import cc.dhandho.graphdb.DefaultDbProvider;
 import cc.dhandho.rest.server.DbProvider;
@@ -20,7 +20,7 @@ import cc.dhandho.rest.web.JettyWebServer;
 
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
-	private static final boolean bootConsole = false;
+	private static final boolean bootConsole = true;
 	private static final boolean bootWebServer = true;
 
 	DhoDataHome home;
@@ -30,6 +30,8 @@ public class Main {
 	DhoServer server;
 
 	JettyWebServer web;
+
+	AdminConsole console;
 
 	public static void main(String[] args) {
 		new Main().boot();
@@ -41,17 +43,16 @@ public class Main {
 		dbProvider = getDbProvider(home);
 		server = new DhandhoServerImpl(dbProvider).dataHome(home);
 		server.start();
+		if (bootConsole) {
+			console = new AdminConsole();
+			console.start();
+		}
 
 		if (bootWebServer) {
 			web = new JettyWebServer(server);
 			web.start();
 		}
-/*
-		if (bootConsole) {
-			FileObject consoleHome = getConsoleHome();
-			DhandhoJfxApplication.launch(server, consoleHome);
-		}
-*/
+
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 
 			@Override
@@ -59,7 +60,7 @@ public class Main {
 				if (web != null) {
 					web.shutdown();
 				}
-				
+
 				server.shutdown();
 				dbProvider.close();
 			}

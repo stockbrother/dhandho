@@ -73,7 +73,8 @@
 				<configuration>
 					<outDir>target/jsweet/js</outDir>
 					<targetVersion>ES5</targetVersion>
-					<bundle>true</bundle>
+					<bundle>false</bundle>
+					<module>commonjs</module>
 					<sourceMap>true</sourceMap>
 					<includes>
 						<include>cc/dhandho/jsclient/**/*.java</include>
@@ -205,7 +206,16 @@
 			<artifactId>jquery</artifactId>
 			<version>1.10.0-20170726</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.jsweet.candies</groupId>
+			<artifactId>es6-promise</artifactId>
+			<version>0.0.0-20170726</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jsweet.candies</groupId>
+			<artifactId>angular2</artifactId>
+			<version>2.0.0-20170726</version>
+		</dependency>
 		<!-- scrop:runtime -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>

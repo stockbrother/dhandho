@@ -18,7 +18,7 @@ public class JsCommandInput extends JsDivWrapper {
 		input = document.createElement(jsweet.util.StringTypes.input);
 		element.appendChild(input);
 		send = document.createElement(StringTypes.button);
-		send.textContent = "Run";
+		send.textContent = "Execute";
 		send.addEventListener(StringTypes.click, new Function<MouseEvent, Object>() {
 
 			@Override
