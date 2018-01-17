@@ -6,7 +6,6 @@ import def.angular.core.Component;
 import def.angular.http.Http;
 import def.angular.http.Response;
 import def.dom.Globals;
-import def.js.JSON;
 import def.rxjs.rxjs.Observable;
 
 @Component(//
@@ -17,28 +16,30 @@ import def.rxjs.rxjs.Observable;
 
 public class CommandComponent {
 	public String command;
-	public String response;
+	public JsonResponse response;
 	String url = "/web/cmd/";
 	Http http;
-	public CommandComponent(Http http) {
+	LoggerService log;
+
+	public CommandComponent(Http http, LoggerService log) {
 		this.http = http;
+		this.log = log;
 	}
 
 	public void onButtonClick() {
 		Globals.console.log("on Button Click,command:" + this.command);
-		
+
 		Observable<Response> ores = http.post(url, command);
 		ores.toPromise().thenOnFulfilledFunction(new Function<Response, Object>() {
 
 			@Override
 			public Object apply(Response t) {
 				Object json = t.json();
-				String response = JSON.stringify(json);
-				CommandComponent.this.response = response;
-				Globals.console.log("on Button Click,command:" + response);
+				CommandComponent.this.response = JsonResponse.valueOf(json);
+				log.debug("on Button Click,command:" + response);
 				return null;
 			}
 		});
-		
+
 	}
 }
