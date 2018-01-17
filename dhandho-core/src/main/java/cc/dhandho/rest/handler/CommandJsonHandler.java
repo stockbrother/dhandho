@@ -7,7 +7,11 @@ import com.google.gson.JsonObject;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.command.CommandExecutor;
-
+/**
+ * @see CommandExecutor
+ * @author wu
+ *
+ */
 public class CommandJsonHandler extends AbstractRestRequestHandler {
 
 	CommandExecutor engine;

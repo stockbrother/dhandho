@@ -44,8 +44,10 @@ public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
 		Map<String, CorpPoint> map = dpf.find();
 
 		JsonWriter w = arg0.getWriter();
+		//TODO use new JsonObject,not use writer?
 		try {
 			w.beginObject();
+			w.name("type").value("table");
 			w.name("corpPointsHeader");
 			JsonUtil.array(types, w);
 			writeCorpPoint("corpPointsBody", map, corpId, w);

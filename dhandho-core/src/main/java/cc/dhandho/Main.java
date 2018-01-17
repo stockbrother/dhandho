@@ -57,12 +57,15 @@ public class Main {
 
 			@Override
 			public void run() {
-				if (web != null) {
+				LOG.warn("shutdown hook called.");
+				
+				if (web != null) {					
 					web.shutdown();
 				}
 
 				server.shutdown();
 				dbProvider.close();
+				LOG.warn("shutdown hook exit.");
 			}
 
 		});

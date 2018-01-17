@@ -73,7 +73,7 @@ public class JettyWebServer implements Server {
 			// for debugging with source map.
 			ContextHandler context = new ContextHandler();
 
-			context.setContextPath("/web/src");
+			context.setContextPath("/src");
 			ResourceHandler handler = new ResourceHandler();
 			handler.setResourceBase("src");
 			context.setHandler(handler);

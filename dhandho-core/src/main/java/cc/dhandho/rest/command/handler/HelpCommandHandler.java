@@ -12,6 +12,8 @@ public class HelpCommandHandler implements CommandHandler {
 	@Override
 	public JsonElement execute(CommandContext cc) {
 		JsonObject rt = new JsonObject();
+		rt.addProperty("type", "table");
+		
 		StringBuilder sb = new StringBuilder();
 		String[] as = cc.getArgs();
 		if (as.length == 1) {
