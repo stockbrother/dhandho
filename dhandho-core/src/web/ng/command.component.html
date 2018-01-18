@@ -35,5 +35,6 @@
 			</div>
 			<div *ngSwitchDefault>UnknownData...</div>
 		</div>
+		<chart *ngIf="showChart()" [json]="response.json"></chart>
 	</div>
 </div>

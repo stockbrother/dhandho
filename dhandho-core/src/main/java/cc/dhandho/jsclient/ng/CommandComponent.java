@@ -72,6 +72,9 @@ public class CommandComponent {
 		});
 
 	}
+	public boolean showChart() {
+		return true;
+	}
 
 	public boolean isNumber(def.js.Object json) {
 		String type = typeof(json);
