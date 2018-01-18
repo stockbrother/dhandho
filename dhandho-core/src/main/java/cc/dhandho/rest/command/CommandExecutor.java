@@ -23,6 +23,7 @@ import cc.dhandho.rest.command.handler.DupontAnalysisCommandHandler;
 import cc.dhandho.rest.command.handler.HelpCommandHandler;
 import cc.dhandho.rest.handler.CommandJsonHandler;
 import cc.dhandho.rest.server.DhoServer;
+
 /**
  * @see CommandJsonHandler
  * @author wu
@@ -52,14 +53,15 @@ public class CommandExecutor {
 		this.addCommand(new CommandType("dupont", "Dupont Analysis or show the result as SVG chart!")//
 				.addDesc("\nFor instance,")//
 				.addDesc("\ndupont -a -y 2016, perform analysis on year 2016 and save the data to DB.")//
-				.addDesc("\ndupont -s -c 000002 -y 2016, show the analysis result as SVG with a corpId high-lighted.")//
-				.addDesc("\ndupont -s -c 000002 -y 2016 -f 0.01, show 1% points around the corpId high-lighted.")//
-				.addDesc(
-						"\ndupont -s -c 000002 -y 2016 -f mycorp, show points with scope of my corps as the background.")//
 
+				.addDesc("\ndupont -r -c 000002 -y 2016, report the analysis result as table.")//
+				.addDesc("\ndupont -r -c 000002 -y 2016 -f 0.01, report 1% points around the corpId high-lighted.")//
+				.addDesc(
+						"\ndupont -r -c 000002 -y 2016 -f mycorp, report points with scope of my corps as the background.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_a, "analysis", false,
 						"Execute analysis and store the result to DB.")//
-				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show svg through html renderer.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_r, "report", false, "Show report as plain table.")//
+				.addOption(DupontAnalysisCommandHandler.OPT_s, "svg", false, "Show report as svg .")//
 				.addOption(DupontAnalysisCommandHandler.OPT_y, "year", true, "year when analysis or showing svg.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_c, "corpId", true, "Corp id when showing svg.")//
 				.addOption(DupontAnalysisCommandHandler.OPT_f, "filter", true, "Show svg with a filter on the points.")//

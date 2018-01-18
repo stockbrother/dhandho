@@ -1,5 +1,6 @@
 package cc.dhandho.rest.command.handler;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -13,7 +14,11 @@ public class HelpCommandHandler implements CommandHandler {
 	public JsonElement execute(CommandContext cc) {
 		JsonObject rt = new JsonObject();
 		rt.addProperty("type", "table");
-		
+		JsonArray cnames = new JsonArray();
+		cnames.add("No.");
+		cnames.add("Line.");
+		rt.add("columnNames", cnames);
+
 		StringBuilder sb = new StringBuilder();
 		String[] as = cc.getArgs();
 		if (as.length == 1) {
@@ -30,8 +35,16 @@ public class HelpCommandHandler implements CommandHandler {
 			// print all command list.
 			cc.getUsage().usageOfAll(cc, sb);
 		}
+		String[] rows = sb.toString().split("\n");
+		JsonArray rowArray = new JsonArray();
+		for (int i = 0; i < rows.length; i++) {
+			JsonArray row = new JsonArray();
+			row.add(i);
+			row.add(rows[i]);
+			rowArray.add(row);
+		}
+		rt.add("rowArray", rowArray);
 
-		rt.addProperty("message", sb.toString());
 		cc.consume();
 
 		return rt;

@@ -58,13 +58,17 @@ public class Main {
 			@Override
 			public void run() {
 				LOG.warn("shutdown hook called.");
-				
-				if (web != null) {					
-					web.shutdown();
-				}
+				try {
 
-				server.shutdown();
-				dbProvider.close();
+					if (web != null) {
+						web.shutdown();
+					}
+
+					server.shutdown();
+					dbProvider.close();
+				} catch (Throwable t) {
+					LOG.warn("", t);
+				}
 				LOG.warn("shutdown hook exit.");
 			}
 
