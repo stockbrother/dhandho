@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpModule, Http, Response } from '@angular/http';
 import { CommandResponse } from './command-response';
 import { LoggerService } from '../service/logger.service';
 import { Observable } from 'rxjs/Observable';

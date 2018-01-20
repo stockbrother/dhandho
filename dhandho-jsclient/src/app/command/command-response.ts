@@ -23,7 +23,7 @@ export class CommandResponse {
         this.responseTime = /* currentTimeMillis */Date.now();
     }
 
-    public getTimeCose(): number {
+    public getTimeCost(): number {
         return this.responseTime - this.requestTime;
     }
 }

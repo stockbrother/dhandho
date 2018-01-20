@@ -46,7 +46,8 @@ public class JettyWebServer implements Server {
 			ContextHandler context = new ContextHandler();
 			context.setContextPath("/web");
 			ResourceHandler handler = new ResourceHandler();
-			handler.setResourceBase("src/web");
+			//handler.setResourceBase("src/web");
+			handler.setResourceBase("../dhandho-jsclient/dist");
 			context.setHandler(handler);
 			contexts.addHandler(context);
 		}
