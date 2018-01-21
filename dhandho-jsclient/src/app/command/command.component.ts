@@ -11,6 +11,8 @@ import { Observable } from 'rxjs/Observable';
 } )
 export class CommandComponent {
 
+    public title: string;
+
     public command: string;
 
     public responseArray: Array<CommandResponse> = <any>( new Array<any>() );
@@ -24,6 +26,7 @@ export class CommandComponent {
     log: LoggerService;
 
     public constructor( http: Http, log: LoggerService ) {
+        this.title = 'Command Component';
         if ( this.command === undefined ) { this.command = null; }
         if ( this.lastResponse === undefined ) { this.lastResponse = null; }
         if ( this.http === undefined ) { this.http = null; }
@@ -47,7 +50,10 @@ export class CommandComponent {
         const ores = this.http.post( this.url, command );
 
         ores.toPromise().then(( value: Response ) => {
-            const json: any = value.json();
+            let text1: string = value.toString();
+            let text: string = value.text();
+            console.log(value);
+            const json: any = JSON.parse( text1 );
             this.onResponse( requestTime, command, json );
             this.log.debug( 'post response:' + json );
             return null;
