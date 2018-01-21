@@ -53,7 +53,9 @@ export class CommandComponent {
             let text1: string = value.toString();
             let text: string = value.text();
             console.log(value);
-            const json: any = JSON.parse( text1 );
+            console.log(text1);
+            console.log(text);
+            const json: any = JSON.parse( text );
             this.onResponse( requestTime, command, json );
             this.log.debug( 'post response:' + json );
             return null;
