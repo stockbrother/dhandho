@@ -3,19 +3,27 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class LoggerService {
 
-    public debug( msg: any ) {
-        // console.debug(/* valueOf */new String( msg ).toString() );
+    public info( msg: any ) {
+        console.info( msg );
+    }
+
+    public trace( msg?: any, ...args: any[] ) {
+        console.debug( msg, args );
+    }
+
+    public debug( msg: any, ...args: any[] ) {
+        console.debug( msg, args );
     }
 
     public log( msg: any ) {
-        // console.log(/* valueOf */new String( msg ).toString() );
+        console.log( msg );
     }
 
     public warn( msg: any ) {
-        // console.warn(/* valueOf */new String( msg ).toString() );
+        console.warn( msg );
     }
 
     public error( msg: any ) {
-        // console.error(/* valueOf */new String( msg ).toString() );
+        console.error( msg );
     }
 }

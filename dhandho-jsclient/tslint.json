@@ -47,12 +47,10 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
-      true,
-      "debug",
-      "info",
+      true,           
       "time",
-      "timeEnd",
-      "trace"
+      "trace", 
+      "timeEnd"      
     ],
     "no-construct": true,
     "no-debugger": true,

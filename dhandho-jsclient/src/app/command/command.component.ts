@@ -17,8 +17,6 @@ export class CommandComponent {
 
     public responseArray: Array<CommandResponse> = <any>( new Array<any>() );
 
-    public lastResponse: CommandResponse;
-
     url = '/web/cmd/';
 
     http: Http;
@@ -28,7 +26,6 @@ export class CommandComponent {
     public constructor( http: Http, log: LoggerService ) {
         this.title = 'Command Component';
         if ( this.command === undefined ) { this.command = null; }
-        if ( this.lastResponse === undefined ) { this.lastResponse = null; }
         if ( this.http === undefined ) { this.http = null; }
         if ( this.log === undefined ) { this.log = null; }
         this.http = http;
@@ -50,17 +47,17 @@ export class CommandComponent {
         const ores = this.http.post( this.url, command );
 
         ores.toPromise().then(( value: Response ) => {
-            let text1: string = value.toString();
+            console.log( value );
             let text: string = value.text();
-            console.log(value);
-            console.log(text1);
-            console.log(text);
+            console.log( 'value:' + value );
+            console.log( 'text:' + text );
             const json: any = JSON.parse( text );
             this.onResponse( requestTime, command, json );
             this.log.debug( 'post response:' + json );
             return null;
         } ).catch(( t: any ) => {
-            this.log.debug( 'catchOnRejectedFunction,command:' + command );
+            this.log.error( 'catched exception' );
+            this.log.error( t );
             return null;
         } );
     }
@@ -71,7 +68,7 @@ export class CommandComponent {
 
     public isNumber( json: Object ): boolean {
         const type: string = typeof json;
-        this.log.debug( 'typeof,json:' + json + ',is:' + type );
+        this.log.debug( 'typeof,json:%s is: %s', json, type );
         return /* equals */( <any>( ( o1: any, o2: any ) => {
             if ( o1 && o1.equals ) {
                 return o1.equals( o2 );

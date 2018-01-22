@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { HttpModule, BaseRequestOptions, Http, XHRBackend, ResponseOptions } from '@angular/http';
+import { HttpModule, BaseRequestOptions, Http, XHRBackend, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { LoggerService } from '../service/logger.service';
 import { NgModule, DebugElement } from '@angular/core';
@@ -71,24 +71,38 @@ describe( 'CommandComponent', () => {
                 ['000004', 'Name4', false, 0.04, 0.14, 1.4],
             ]
         };
-
+        let jsonS: string = JSON.stringify( response );
+        console.log( jsonS );
         mockBackend.connections.subscribe( connection => {
 
             let res: Response = new Response( <ResponseOptions>{
-                body: JSON.stringify( response )
+                body: jsonS,
+                status: 200
             } );
-            res.headers.append( 'Content-Type', 'text/json;charset=utf8' );
             connection.mockRespond( res );
         } );
         //
-        expect( comp.lastResponse ).toBeFalsy();
-        comp.command = 'dupont -r -c 000001 -y 2016 -f 0.01';
+        expect( comp.responseArray.length ).toEqual( 0 );
+
         // Simulate execute command button click.
-        let button: DebugElement = fixture.debugElement.query( By.css( 'button' ) );
-        button.triggerEventHandler( 'click', null );
-        fixture.detectChanges();
-        tick();
-        expect( comp.lastResponse.json ).toBeTruthy();
+        {
+            comp.command = 'dupont -r -c 000001 -y 2016 -f 0.01';
+            let button: DebugElement = fixture.debugElement.query( By.css( 'button' ) );
+            button.triggerEventHandler( 'click', null );
+            fixture.detectChanges();
+            tick();
+            expect( comp.responseArray.length ).toEqual( 1 );
+            fixture.detectChanges();
+        }
+        {
+            comp.command = 'dupont -r -c 000002 -y 2016 -f 0.01';
+            let button: DebugElement = fixture.debugElement.query( By.css( 'button' ) );
+            button.triggerEventHandler( 'click', null );
+            fixture.detectChanges();
+            tick();
+            expect( comp.responseArray.length ).toEqual( 2 );
+            fixture.detectChanges();
+        }
 
     } ) );
 
