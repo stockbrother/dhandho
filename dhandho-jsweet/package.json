@@ -1,0 +1,9 @@
+{
+	"name": "dhandho-jsclient",
+	"version": "v0.0.1-SNAPSHOT",
+	"license": "ISC",
+	"dependencies": {
+		"@angular/core": "2.0.0-rc.5"
+	},
+	"devDependencies": {}
+}

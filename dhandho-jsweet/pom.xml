@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>cc.dhandho</groupId>
+	<artifactId>dhandho-jsweet</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Dhandho Jsweet</name>
+	<description></description>
+
+	<properties>
+		<log4j.version>2.5</log4j.version>
+		<junit.version>4.12</junit.version>
+		<jcps-dataupgrader.version>0.0.1-SNAPSHOT</jcps-dataupgrader.version>
+		<jsweet-angular.version></jsweet-angular.version>
+		<jsweet-maven.version>2.0.1</jsweet-maven.version>
+		<mockito.version>2.13.0</mockito.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>.jsweet</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jsweet</groupId>
+				<artifactId>jsweet-maven-plugin</artifactId>
+				<version>${jsweet-maven.version}</version>
+				
+				<configuration>
+					<outDir>target/jsweet/js</outDir>
+					<targetVersion>ES5</targetVersion>
+					<bundle>false</bundle>
+					<module>commonjs</module>
+					<sourceMap>true</sourceMap>
+					<includes>
+						<include>cc/dhandho/jsweet/**/*.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-js</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>jsweet</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>org.jsweet</groupId>
+			<artifactId>jsweet-core</artifactId>
+			<version>5-20170726</version>
+		</dependency>
+<!-- 
+		<dependency>
+			<groupId>org.jsweet.candies</groupId>
+			<artifactId>angular2</artifactId>
+			<version>2.0.0-20170726</version>
+		</dependency>
+
+		-->
+		<dependency>
+			<groupId>cc.dhandho</groupId>
+			<artifactId>dhandho-jscandy</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>jsweet-central</id>
+			<name>libs-release</name>
+			<url>http://repository.jsweet.org/artifactory/libs-release-local</url>
+		</repository>
+		<repository>
+			<snapshots />
+			<id>jsweet-snapshots</id>
+			<name>libs-snapshot</name>
+			<url>http://repository.jsweet.org/artifactory/libs-snapshot-local</url>
+		</repository>
+		<repository>
+			<id>jsweet-external</id>
+			<name>libs-release</name>
+			<url>http://repository.jsweet.org/artifactory/ext-release-local</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jsweet-plugins-release</id>
+			<name>plugins-release</name>
+			<url>http://repository.jsweet.org/artifactory/plugins-release-local</url>
+		</pluginRepository>
+		<pluginRepository>
+			<snapshots />
+			<id>jsweet-plugins-snapshots</id>
+			<name>plugins-snapshot</name>
+			<url>http://repository.jsweet.org/artifactory/plugins-snapshot-local</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
