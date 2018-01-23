@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpModule, Http, Response } from '@angular/http';
+import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
 import { CommandResponse } from './command-response';
 import { LoggerService } from '../service/logger.service';
 import { Observable } from 'rxjs/Observable';
@@ -19,11 +19,11 @@ export class CommandComponent {
 
     url = '/web/cmd/';
 
-    http: Http;
+    http: HttpClient;
 
     log: LoggerService;
 
-    public constructor( http: Http, log: LoggerService ) {
+    public constructor( http: HttpClient, log: LoggerService ) {
         this.title = 'Command Component';
         if ( this.command === undefined ) { this.command = null; }
         if ( this.http === undefined ) { this.http = null; }
@@ -46,12 +46,8 @@ export class CommandComponent {
         const requestTime: number = /* currentTimeMillis */Date.now();
         const ores = this.http.post( this.url, command );
 
-        ores.toPromise().then(( value: Response ) => {
-            console.log( value );
-            let text: string = value.text();
-            console.log( 'value:' + value );
-            console.log( 'text:' + text );
-            const json: any = JSON.parse( text );
+        ores.toPromise().then(( json ) => {
+            console.log( json );
             this.onResponse( requestTime, command, json );
             this.log.debug( 'post response:' + json );
             return null;

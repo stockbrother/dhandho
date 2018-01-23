@@ -1,6 +1,6 @@
 import { FormsModule } from '@angular/forms';
-import { HttpModule, BaseRequestOptions, Http, XHRBackend, Response, ResponseOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
+import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerService } from '../service/logger.service';
 import { NgModule, DebugElement } from '@angular/core';
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
@@ -8,7 +8,8 @@ import { CommandComponent } from './command.component';
 import { By } from '@angular/platform-browser';
 
 describe( 'CommandComponent', () => {
-    let mockBackend: MockBackend;
+
+    let httpMock: HttpTestingController;
 
     let comp: CommandComponent;
 
@@ -20,26 +21,15 @@ describe( 'CommandComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule( {
-            imports: [FormsModule, HttpModule],
+            imports: [FormsModule, HttpClientTestingModule],
             declarations: [
                 CommandComponent
             ],
             providers: [
-                LoggerService,
-                MockBackend,
-                BaseRequestOptions,
-                {
-                    provide: XHRBackend,
-                    useClass: MockBackend
-                },
-                {
-                    provide: Http,
-                    useFactory: ( backend, options ) => new Http( backend, options ),
-                    deps: [MockBackend, BaseRequestOptions, XHRBackend]
-                }
+                LoggerService
             ]
         } ).compileComponents();
-        mockBackend = TestBed.get( MockBackend );
+        httpMock = TestBed.get( HttpTestingController );
         fixture = TestBed.createComponent( CommandComponent );
         de = fixture.debugElement;
         comp = de.componentInstance;
@@ -71,16 +61,7 @@ describe( 'CommandComponent', () => {
                 ['000004', 'Name4', false, 0.04, 0.14, 1.4],
             ]
         };
-        let jsonS: string = JSON.stringify( response );
-        console.log( jsonS );
-        mockBackend.connections.subscribe( connection => {
 
-            let res: Response = new Response( <ResponseOptions>{
-                body: jsonS,
-                status: 200
-            } );
-            connection.mockRespond( res );
-        } );
         //
         expect( comp.responseArray.length ).toEqual( 0 );
 
@@ -89,21 +70,14 @@ describe( 'CommandComponent', () => {
             comp.command = 'dupont -r -c 000001 -y 2016 -f 0.01';
             let button: DebugElement = fixture.debugElement.query( By.css( 'button' ) );
             button.triggerEventHandler( 'click', null );
+
+            const req = httpMock.expectOne( { method: 'POST' } );
+            req.flush( response );
             fixture.detectChanges();
             tick();
             expect( comp.responseArray.length ).toEqual( 1 );
             fixture.detectChanges();
         }
-        {
-            comp.command = 'dupont -r -c 000002 -y 2016 -f 0.01';
-            let button: DebugElement = fixture.debugElement.query( By.css( 'button' ) );
-            button.triggerEventHandler( 'click', null );
-            fixture.detectChanges();
-            tick();
-            expect( comp.responseArray.length ).toEqual( 2 );
-            fixture.detectChanges();
-        }
-
     } ) );
 
 
