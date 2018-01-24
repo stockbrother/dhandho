@@ -1,4 +1,9 @@
 {
+  "cliOptions": {
+    "exclude": [
+      "**/app/dhojsw/**/*.ts"
+    ]
+  },
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
@@ -83,7 +88,7 @@
     ],
     "prefer-const": false,
     "quotemark": [
-      false,
+      true,
       "single"
     ],
     "radix": true,

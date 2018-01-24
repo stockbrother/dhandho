@@ -3,11 +3,12 @@
   "compilerOptions": {
     "outDir": "../../../out-tsc/app",
     "baseUrl": "./",
-    "module": "umd",
+    "module": "commonjs",
     "types": []
   },  
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "def/**/*"
   ]
 }

@@ -68,21 +68,21 @@
 			<plugin>
 				<groupId>org.jsweet</groupId>
 				<artifactId>jsweet-maven-plugin</artifactId>
-				<version>${jsweet-maven.version}</version>				
+				<version>${jsweet-maven.version}</version>
 				<configuration>
-					<tsOut>src/main/typings</tsOut>					
+					<tsOut>src/main/typings</tsOut>
 					<targetVersion>ES5</targetVersion>
 					<bundle>false</bundle>
 					<module>commonjs</module>
 					<moduleResolution>node</moduleResolution>
 					<sourceMap>true</sourceMap>
-					<tsOnly>true</tsOnly>					
-					<ignoreDefinitions>true</ignoreDefinitions>					
+					<tsOnly>true</tsOnly>
+					<ignoreDefinitions>true</ignoreDefinitions>
 					<includes>
 						<include>**/*.java</include>
 					</includes>
 					<excludes>
-						<exclude>def/**/*.java</exclude>
+						<exclude>none/**/*.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>
@@ -95,24 +95,45 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-sources</phase>
+						<configuration>
+							<tasks>
+								<replace token="@NgModule" value="@core.NgModule"
+									dir="src/main/typings/app/dhojsw">
+									<include name="**/*.ts" />
+								</replace>
+								<replace token="[BrowserModule" value="[platform_browser.BrowserModule"
+									dir="src/main/typings/app/dhojsw">
+									<include name="**/*.ts" />
+								</replace>
+								<replace token="@Component" value="@core.Component"
+									dir="src/main/typings/app/dhojsw">
+									<include name="**/*.ts" />
+								</replace>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
-		
+
 		<dependency>
 			<groupId>org.jsweet</groupId>
 			<artifactId>jsweet-core</artifactId>
 			<version>5-20170726</version>
 		</dependency>
-<!-- 
-		<dependency>
-			<groupId>org.jsweet.candies</groupId>
-			<artifactId>angular2</artifactId>
-			<version>2.0.0-20170726</version>
-		</dependency>
-
-		-->
+		<!-- <dependency> <groupId>org.jsweet.candies</groupId> <artifactId>angular2</artifactId> 
+			<version>2.0.0-20170726</version> </dependency> -->
 		<dependency>
 			<groupId>cc.dhandho</groupId>
 			<artifactId>dhandho-jscandy</artifactId>
@@ -152,7 +173,4 @@
 	</pluginRepositories>
 
 </project>
-<!--
-https://github.com/lgrignon/jsweet-maven-plugin
-https://stackoverflow.com/questions/35692503/ts2307-cannot-find-module-angular2-core-while-importing-angular2-on-typescrip
--->
+<!-- https://github.com/lgrignon/jsweet-maven-plugin https://stackoverflow.com/questions/35692503/ts2307-cannot-find-module-angular2-core-while-importing-angular2-on-typescrip -->

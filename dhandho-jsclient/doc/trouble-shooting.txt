@@ -1,4 +1,15 @@
+----------------------------------
+:Error:
 npm serve
 ERROR in Error: No NgModule metadata found for 'AppModule'.
-
-
+:Solution:
+----------------------------------
+:Cmd:ng build xxx.
+:Error Info: 
+WARNING in ./src/main/typings/environments/environment.ts
+7:24-31 Critical dependency: require function is used in a way in which dependencies cannot be statically extracted    
+:Solution:
+	update tsconfig.app.json:
+	from "umd" to: "commonjs"
+	"module":"commonjs"
+----------------------------------	
