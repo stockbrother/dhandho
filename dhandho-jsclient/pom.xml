@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cc.dhandho</groupId>
-	<artifactId>dhandho-jsweet</artifactId>
+	<artifactId>dhandho-jsclient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Dhandho Jsweet</name>
+	<name>Dhandho Jsclient</name>
 	<description></description>
 
 	<properties>
@@ -68,18 +68,22 @@
 			<plugin>
 				<groupId>org.jsweet</groupId>
 				<artifactId>jsweet-maven-plugin</artifactId>
-				<version>${jsweet-maven.version}</version>
-				
+				<version>${jsweet-maven.version}</version>				
 				<configuration>
-					<outDir>target/jsweet/js</outDir>
+					<tsOut>src/main/typings</tsOut>					
 					<targetVersion>ES5</targetVersion>
 					<bundle>false</bundle>
-					<module>es2015</module>
+					<module>commonjs</module>
+					<moduleResolution>node</moduleResolution>
 					<sourceMap>true</sourceMap>
-					<tsOnly>true</tsOnly>
+					<tsOnly>true</tsOnly>					
+					<ignoreDefinitions>true</ignoreDefinitions>					
 					<includes>
-						<include>cc/dhandho/jsweet/**/*.java</include>
+						<include>**/*.java</include>
 					</includes>
+					<excludes>
+						<exclude>def/**/*.java</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>

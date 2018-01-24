@@ -1,0 +1,4 @@
+npm serve
+ERROR in Error: No NgModule metadata found for 'AppModule'.
+
+

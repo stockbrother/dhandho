@@ -24,10 +24,11 @@
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",
     "tslint-language-service": "^0.9.8",
+    "systemjs": "0.19.27",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@angular/cli": "1.6.5",
+    "@angular/cli": "^1.6.5",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
