@@ -1,4 +1,4 @@
-package def.dhojs;
+package def.dhojsw;
 
 public class DhoJsDriver {
 

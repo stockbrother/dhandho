@@ -9,11 +9,13 @@
       "node"
     ]
   },
-  "files": [
+  "files": [    
     "test.ts"
   ],
   "include": [
-    "**/*Test.ts",
-    "**/*.d.ts"
+    "**/*Spec.ts"    
+  ],
+  "exclude": [
+    "def/angular/**/*.ts"
   ]
 }

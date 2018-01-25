@@ -1,0 +1,33 @@
+{
+	"author": "Wu",
+	"name": "dhandho-jsstub",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"prepublish": "npm run build",
+		"build": "tsc",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"version": "0.0.0",
+	"description": "Generated with typescript.java",
+	"license": "MIT",
+	"dependencies": {
+		"@angular/common": "^5.2.0",
+		"@angular/core": "^5.2.0",
+		"core-js": "^2.4.1",
+		"rxjs": "^5.5.6",
+		"tslint-language-service": "^0.9.8",
+		"systemjs": "0.19.27",
+		"zone.js": "^0.8.19"
+	},
+	"devDependencies": {
+		"@types/jasmine": "~2.8.3",
+		"@types/node": "~6.0.60",
+		"codelyzer": "^4.0.1",
+		"jasmine-core": "~2.8.0",
+		"jasmine-spec-reporter": "~4.2.1",
+		"ts-node": "~4.1.0",
+		"tslint": "~5.9.1",
+		"typescript": "~2.5.3"
+	}
+}

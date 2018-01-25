@@ -1,7 +1,8 @@
 {
   "cliOptions": {
     "exclude": [
-      "**/app/dhojsw/**/*.ts"
+      "**/app/dhojsw/**/*.ts",
+      "node_modules/**"
     ]
   },
   "rulesDirectory": [
