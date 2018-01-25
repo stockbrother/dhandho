@@ -1,3 +1,7 @@
-
-
-https://www.twilio.com/blog/2017/06/writing-a-node-module-in-typescript.html
+-----------------------------
+Build:
+npm pack
+-----------------------------
+Install:
+npm install ../dhandho-jsstub/dhojsw-jsstub-0.0.1.tgz
+-----------------------------

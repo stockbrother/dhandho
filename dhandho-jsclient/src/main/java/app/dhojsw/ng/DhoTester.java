@@ -1,11 +1,16 @@
 package app.dhojsw.ng;
 
-import jsweet.lang.Interface;
+import static def.dhojsw.jsstub.Globals.angular_async;
+import static def.dhojsw.jsstub.Globals.jasmine_describe;
 
-@Interface
 public class DhoTester {
-	public native Runnable angular_async(Runnable run);
 
-	public native void jasmine_describe(String desc, Runnable run);
+	public Runnable async(Runnable run) {
+		return angular_async(run);
+	}
+
+	public void describe(String desc, Runnable run) {
+		jasmine_describe(desc, run);
+	}
 
 }

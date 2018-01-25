@@ -1,2 +1,2 @@
-@jsweet.lang.Module("./dhojsw")
+@jsweet.lang.Root
 package def.dhojsw;

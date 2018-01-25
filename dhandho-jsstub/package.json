@@ -1,14 +1,14 @@
 {
 	"author": "Wu",
-	"name": "dhandho-jsstub",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"name": "@dhojsw/jsstub",
+	"main": "src/main/typings/index.js",
+	"types": "src/main/typings/index.d.ts",
 	"scripts": {
 		"prepublish": "npm run build",
 		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Generated with typescript.java",
 	"license": "MIT",
 	"dependencies": {

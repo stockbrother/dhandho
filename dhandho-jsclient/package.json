@@ -21,10 +21,12 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@dhojsw/jsstub": "file:../dhandho-jsstub/dhojsw-jsstub-0.0.1.tgz",
     "core-js": "^2.4.1",
+    "dhandho-jsstub": "file:../dhandho-jsstub/dhandho-jsstub-0.0.1.tgz",
     "rxjs": "^5.5.6",
-    "tslint-language-service": "^0.9.8",
     "systemjs": "0.19.27",
+    "tslint-language-service": "^0.9.8",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
