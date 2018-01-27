@@ -1,7 +1,8 @@
 package def.angular.core_testing;
 
-import java.util.function.Function;
+import jsweet.lang.Interface;
 
-public class Globals {
+@Interface 
+public abstract class Globals {
 
 }

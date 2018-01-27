@@ -2,6 +2,7 @@ package def.dhojsw.jsnative;
 
 import java.util.function.Consumer;
 
+import def.angular.core_testing.TestModuleMetadata;
 import def.jasmine.DoneFn;
 import def.jasmine.jasmine.Matchers;
 
@@ -18,5 +19,7 @@ public class Globals {
 	public static native void jasmine_beforeEach(Consumer<DoneFn> action);
 	
 	public static native void jasmine_beforeEach(Runnable action);
+	
+	public static native TestModuleMetadataBuilder angular_newTestModuleMetadataBuilder();
 	
 }
