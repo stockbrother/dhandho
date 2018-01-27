@@ -2,6 +2,7 @@
   "cliOptions": {
     "exclude": [
       "**/app/dhojsw/**/*.ts",
+      "**/def/**/*.ts",
       "node_modules/**"
     ]
   },

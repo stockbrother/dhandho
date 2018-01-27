@@ -1,20 +1,30 @@
 package app.dhojsw.ng.command;
 
-import static def.dhojsw.jsstub.Globals.jasmine_describe;
-import static def.dhojsw.jsstub.Globals.jasmine_it;
+import static app.dhojsw.ng.testing.Jasmine.beforeEach;
+import static app.dhojsw.ng.testing.Jasmine.describe;
+import static app.dhojsw.ng.testing.Jasmine.it;
+
+import def.angular.core_testing.TestBed;
+import def.angular.core_testing.TestModuleMetadata;
 
 public class CommandComponentSpec {
 
 	public static void main(String[] args) {
 
-		jasmine_describe("My First Test", new Runnable() {
+		describe("My First Test", new Runnable() {
 			@Override
 			public void run() {
-				jasmine_it("1.1", new Runnable() {
+				beforeEach(new Runnable() {
 
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
+						TestModuleMetadata meta = new TestModuleMetadata(); 
+						TestBed.configureTestingModule(meta).compileComponents();
+					}
+				});
+				it("1.1", new Runnable() {
+					@Override
+					public void run() {
 
 					}
 				});
@@ -22,11 +32,11 @@ public class CommandComponentSpec {
 			}
 		});
 
-		jasmine_describe("My Second Test", new Runnable() {
+		describe("My Second Test", new Runnable() {
 
 			@Override
 			public void run() {
-				jasmine_it("2.1", new Runnable() {
+				it("2.1", new Runnable() {
 
 					@Override
 					public void run() {

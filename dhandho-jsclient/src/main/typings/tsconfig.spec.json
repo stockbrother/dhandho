@@ -7,12 +7,17 @@
     "types": [
       "jasmine",
       "node"
+    ],
+    "rootDirs": [
+      "./",
+      "../../../target/ts"
     ]
   },
   "files": [    
     "test.ts"
-  ],
+  ],  
   "include": [
+    "node_modules/**/*",
     "**/*Spec.ts"    
   ],
   "exclude": [

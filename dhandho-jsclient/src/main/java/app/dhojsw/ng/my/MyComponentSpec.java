@@ -1,36 +1,37 @@
 package app.dhojsw.ng.my;
 
-import static def.dhojsw.jsstub.Globals.jasmine_describe;
-import static def.dhojsw.jsstub.Globals.jasmine_it;
+import static app.dhojsw.ng.testing.Jasmine.describe;
+import static app.dhojsw.ng.testing.Jasmine.expect;
+import static app.dhojsw.ng.testing.Jasmine.it;
+
+import def.jasmine.jasmine.Matchers;
 
 public class MyComponentSpec {
 
 	public static void main(String[] args) {
 
-		jasmine_describe("My First Test", new Runnable() {
+		describe("My First Test", new Runnable() {
 			@Override
 			public void run() {
-				jasmine_it("1.1", new Runnable() {
+				it("1.1", new Runnable() {
 
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
-
+						Matchers<String> matchers = expect("hello");
+						matchers.toBeTruthy("No truth");
 					}
 				});
-
 			}
 		});
 
-		jasmine_describe("My Second Test", new Runnable() {
+		describe("My Second Test", new Runnable() {
 
 			@Override
 			public void run() {
-				jasmine_it("2.1", new Runnable() {
+				it("2.1", new Runnable() {
 
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 
 					}
 				});

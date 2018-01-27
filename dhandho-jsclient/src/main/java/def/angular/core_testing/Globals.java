@@ -1,4 +1,4 @@
-package def.angular.core.testing;
+package def.angular.core_testing;
 
 import java.util.function.Function;
 

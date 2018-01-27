@@ -1,7 +1,7 @@
 package app.dhojsw.ng;
 
-import static def.dhojsw.jsstub.Globals.angular_async;
-import static def.dhojsw.jsstub.Globals.jasmine_describe;
+import static def.dhojsw.jsnative.Globals.angular_async;
+import static def.dhojsw.jsnative.Globals.jasmine_describe;
 
 public class DhoTester {
 

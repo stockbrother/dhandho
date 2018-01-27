@@ -13,3 +13,13 @@ WARNING in ./src/main/typings/environments/environment.ts
 	from "umd" to: "commonjs"
 	"module":"commonjs"
 ----------------------------------	
+:Cmd:ng test
+:Error Info:
+ERROR in ./src/main/typings/app/dhojsw/ng/command/CommandComponentSpec.ts
+Module not found: Error: Can't resolve '@dhojsw/jsstub' in 'D:\git\dhandho\dhandho-jsclient\src\main\typings\app\dhojsw\ng\command'
+ @ ./src/main/typings/app/dhojsw/ng/command/CommandComponentSpec.ts 4:13-38
+ @ ./src/main/typings Spec\.ts$
+ @ ./src/main/typings/test.ts
+:Solution:
+??
+ 
