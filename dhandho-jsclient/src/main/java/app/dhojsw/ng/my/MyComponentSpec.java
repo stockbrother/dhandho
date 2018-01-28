@@ -3,39 +3,25 @@ package app.dhojsw.ng.my;
 import static app.dhojsw.ng.testing.Jasmine.describe;
 import static app.dhojsw.ng.testing.Jasmine.expect;
 import static app.dhojsw.ng.testing.Jasmine.it;
-
-import def.jasmine.jasmine.Matchers;
+import static def.dhojsw.jsnative.Globals.js_isNumber;
 
 public class MyComponentSpec {
 
 	public static void main(String[] args) {
 
-		describe("My First Test", new Runnable() {
+		describe("Some native test", new Runnable() {
 			@Override
 			public void run() {
-				it("1.1", new Runnable() {
+
+				it("js_isNumber() method test", new Runnable() {
 
 					@Override
 					public void run() {
-						Matchers<String> matchers = expect("hello");
-						matchers.toBeTruthy("No truth");
+						boolean yes = js_isNumber(1.1);
+						expect(yes).toBe(true);
 					}
+
 				});
-			}
-		});
-
-		describe("My Second Test", new Runnable() {
-
-			@Override
-			public void run() {
-				it("2.1", new Runnable() {
-
-					@Override
-					public void run() {
-
-					}
-				});
-
 			}
 		});
 	}

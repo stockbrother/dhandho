@@ -6,6 +6,7 @@ import def.angular.core.Component;
 import def.js.Array;
 import def.js.PropertyDescriptor;
 import def.rxjs.rxjs.Observable;
+import static def.dom.Globals.console;
 
 @Component(//
 		selector = "app-command", //
@@ -41,13 +42,13 @@ public class CommandComponent {
 		Observable<Object> ores = this.http.post(this.url, command);
 
 		ores.toPromise().then((json) -> {
-			// console.log( json );
+			console.log( json );
 			this.onResponse(requestTime, command, json);
-			// this.log.debug( "post response:" + json );
+			console.log( "post response:" + json );
 			return null;
 		})._catch((Object t) -> {
-			// this.log.error( "catched exception" );
-			// this.log.error( t );
+			console.error( "catched exception" );
+			console.error( t );
 			return null;
 		});
 	}

@@ -66,7 +66,7 @@ public class CommandComponentSpec {
 				fixture.detectChanges();
 				Jasmine.expect(compiled.querySelector("h1").textContent).toContain(comp.title);
 			}));
-/**
+
 			it("1.3.Response Processing", angular_fakeAsync(() -> {
 				String jsonS = ("{\r\n" + //
 				"            'type': 'table',\r\n" + //
@@ -80,28 +80,32 @@ public class CommandComponentSpec {
 				"            ]\r\n" + //
 				"        }").replace('\'', '\"');
 				Object response = JSON.parse(jsonS);
+
 				expect(comp.responseArray.length).toEqual(0);
 				{
-					 comp.command = "dupont -r -c 000001 -y 2016 -f 0.01";
-			            DebugElement button = fixture.debugElement.query( By.css( "button" ) );
-			            button.triggerEventHandler( "click", null );
-			            RequestMatch rm = new RequestMatch();
-			            rm.method = "POST";
-			            TestRequest req = httpMock.expectOne( rm );
-			            req.flush( response );
-			            fixture.detectChanges();
-			            angular_tick();
-			            
-			            expect( comp.responseArray.length ).toEqual( 1 );
-			            fixture.detectChanges();
+					comp.command = "dupont -r -c 000001 -y 2016 -f 0.01";
+					DebugElement button = fixture.debugElement.query(By.css("button"));
+					boolean yes = true;
+					
+					button.triggerEventHandler("click", null);
+					
+					RequestMatch rm = new RequestMatch();
+					rm.method = "POST";
+					TestRequest req = httpMock.expectOne(rm);
+
+					req.flush(response);
+
+					fixture.detectChanges();
+
+					angular_tick();
+
+					expect(comp.responseArray.length).toEqual(1);
+
+					fixture.detectChanges();
+
 				}
-				Element compiled = fixture.debugElement.nativeElement;
-				it("Title should not be binded until fixture.detectChanges()", () -> {
-					Jasmine.expect(compiled.querySelector("h1").textContent).toEqual("");
-				});
-				fixture.detectChanges();
-				Jasmine.expect(compiled.querySelector("h1").textContent).toContain(comp.title);
-			}));**/
+				
+			}));
 		}
 	}
 

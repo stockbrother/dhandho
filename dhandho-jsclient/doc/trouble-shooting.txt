@@ -22,4 +22,26 @@ Module not found: Error: Can't resolve '@dhojsw/jsstub' in 'D:\git\dhandho\dhand
  @ ./src/main/typings/test.ts
 :Solution:
 ??
- 
+----------------------------------
+:Cmd:ng test
+:Error Info:
+:like:
+zone.js:2956 Failed to load ng:///DynamicTestModule/CommandComponent.ngfactory.js: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
+(anonymous) @ zone.js:2956
+proto.(anonymous function) @ zone.js:1372
+(anonymous) @ browser-source-map-support.js?3a3db3887ab08eb10eb5bdd356db8d254e26effa:107
+...
+
+:and:
+context.js:1972 Error: Spies must be created in a before function or a spec
+    at currentSpies (VM32 jasmine.js?73bc53d3671677e6a093fc74e4f9bcde57e5f7ad:1022)
+    at SpyRegistry.clearSpies (VM32 jasmine.js?73bc53d3671677e6a093fc74e4f9bcde57e5f7ad:4848)
+...
+:Solution:
+commint out code in method implementation of js_isNumber(). The code to remove is: 
+this.log.debug();
+:RootCause:
+method detectChanges() will execute the template html, which then calling the native method:
+js_isNumber(), js_isNumber() contains error that is hidden from known.
+fixture.detectChanges();  
+  

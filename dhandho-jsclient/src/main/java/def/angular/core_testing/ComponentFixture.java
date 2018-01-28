@@ -8,7 +8,10 @@ public class ComponentFixture<T> {
 	public T componentInstance;
 
 	public Object nativeElement;
-	
+
+	/**
+	 * What does detectChanges do? Why it shouldn't be called twice?
+	 */
 	public native void detectChanges();
-	
+
 }
