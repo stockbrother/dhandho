@@ -8,8 +8,16 @@ import def.jasmine.jasmine.Matchers;
 
 public class Globals {
 
+	//angular
 	public static native Runnable angular_async(Runnable run);
+	
+	public static native Runnable angular_fakeAsync(Runnable run);
+	
+	public static native void angular_tick();
 
+	public static native TestModuleMetadataBuilder angular_newTestModuleMetadataBuilder();
+	
+	//jasmine
 	public static native void jasmine_describe(String desc, Runnable run);
 
 	public static native void jasmine_it(String desc, Runnable run);
@@ -18,8 +26,8 @@ public class Globals {
 	
 	public static native void jasmine_beforeEach(Consumer<DoneFn> action);
 	
-	public static native void jasmine_beforeEach(Runnable action);
+	public static native void jasmine_beforeEach(Runnable action);	
 	
-	public static native TestModuleMetadataBuilder angular_newTestModuleMetadataBuilder();
+	public static native boolean js_isNumber(Object jso);
 	
 }

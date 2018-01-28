@@ -5,9 +5,9 @@ import jsweet.lang.Interface;
 @Interface
 public abstract class Matchers<T> {
 
-	public abstract boolean toBe(Expected<T> expected);
+	public abstract boolean toBe(Object expected);
 
-	public abstract boolean toEqual(Expected<T> expected);
+	public abstract boolean toEqual(Object expected);
 
 	public abstract boolean toMatch(String string);
 
@@ -44,9 +44,9 @@ public abstract class Matchers<T> {
 	public abstract boolean toThrow();
 
 	//
-	public abstract boolean toBe(Expected<T> expected, Object failOutput);
+	public abstract boolean toBe(Object expected, Object failOutput);
 
-	public abstract boolean toEqual(Expected<T> expected, Object failOutput);
+	public abstract boolean toEqual(Object expected, Object failOutput);
 
 	public abstract boolean toMatch(String string, Object failOutput);
 
