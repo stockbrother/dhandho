@@ -1,42 +1,45 @@
 package app.dhojsw.ng.testing;
 
-import static app.dhojsw.ng.testing.Jasmine.describe;
-import static app.dhojsw.ng.testing.Jasmine.expect;
-import static app.dhojsw.ng.testing.Jasmine.it;
+import static def.dhojsw.jsnative.Globals.js_isNumber;
+import static def.jasmine.Globals.describe;
+import static def.jasmine.Globals.expect;
+import static def.jasmine.Globals.it;
 
-import def.jasmine.jasmine.Matchers;
+import java.util.function.Consumer;
+
+import def.jasmine.DoneFn;
+import def.jasmine.jasmine.ArrayLikeMatchers;
 
 public class JsNativeSpec {
-
+	
 	public static void main(String[] args) {
-
-		describe("My First Test", new Runnable() {
+		describe("JsNativeSpec Test1:Some native test", new Runnable() {
 			@Override
 			public void run() {
-				it("1.1", new Runnable() {
+
+				it("js_isNumber() method test", new Consumer<DoneFn>() {
 
 					@Override
-					public void run() {
-						Matchers<String> matchers = expect("hello");
-						matchers.toBeTruthy("No truth");
+					public void accept(DoneFn t) {
+						boolean yes = js_isNumber(1.1);
+						expect(yes).toBe(true);
+						t.$apply();
 					}
+
+				});
+			}
+		});
+		describe("JsNativeSpec Test2:", new Runnable() {
+			@Override
+			public void run() {
+				it("1.1", (done) -> {
+
+					ArrayLikeMatchers<String> matchers = expect("hello");
+					matchers.toBeTruthy("No truth");
+					done.$apply();
 				});
 			}
 		});
 
-		describe("My Second Test", new Runnable() {
-
-			@Override
-			public void run() {
-				it("2.1", new Runnable() {
-
-					@Override
-					public void run() {
-
-					}
-				});
-
-			}
-		});
 	}
 }

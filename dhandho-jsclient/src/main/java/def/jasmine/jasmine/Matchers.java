@@ -5,72 +5,72 @@ import jsweet.lang.Interface;
 @Interface
 public abstract class Matchers<T> {
 
-	public abstract boolean toBe(Object expected);
+	public native boolean toBe(Object expected);
 
-	public abstract boolean toEqual(Object expected);
+	public native boolean toEqual(Object expected);
 
-	public abstract boolean toMatch(String string);
+	public native boolean toMatch(String string);
 
-	public abstract boolean toBeDefined();
+	public native boolean toBeDefined();
 
-	public abstract boolean toBeUndefined();
+	public native boolean toBeUndefined();
 
-	public abstract boolean toBeNull();
+	public native boolean toBeNull();
 
-	public abstract boolean toBeNaN();
+	public native boolean toBeNaN();
 
-	public abstract boolean toBeTruthy();
+	public native boolean toBeTruthy();
 
-	public abstract boolean toBeFalsy();
+	public native boolean toBeFalsy();
 
-	public abstract boolean toHaveBeenCalled();
+	public native boolean toHaveBeenCalled();
 
-	public abstract boolean toHaveBeenCalledBefore(Spy spy);
+	public native boolean toHaveBeenCalledBefore(Spy spy);
 
-	public abstract boolean toHaveBeenCalledWith(Object[] params);
+	public native boolean toHaveBeenCalledWith(Object[] params);
 
-	public abstract boolean toHaveBeenCalledTimes(Number number);
+	public native boolean toHaveBeenCalledTimes(Number number);
 
-	public abstract boolean toContain(Object any);
+	public native boolean toContain(Object any);
 
-	public abstract boolean toBeLessThan(Number number);
+	public native boolean toBeLessThan(Number number);
 
-	public abstract boolean toBeLessThanOrEqual(Number number);
+	public native boolean toBeLessThanOrEqual(Number number);
 
-	public abstract boolean toBeGreaterThan(Number number);
+	public native boolean toBeGreaterThan(Number number);
 
-	public abstract boolean toBeGreaterThanOrEqual(Number number);
+	public native boolean toBeGreaterThanOrEqual(Number number);
 
-	public abstract boolean toThrow();
+	public native boolean toThrow();
 
 	//
-	public abstract boolean toBe(Object expected, Object failOutput);
+	public native boolean toBe(Object expected, Object failOutput);
 
-	public abstract boolean toEqual(Object expected, Object failOutput);
+	public native boolean toEqual(Object expected, Object failOutput);
 
-	public abstract boolean toMatch(String string, Object failOutput);
+	public native boolean toMatch(String string, Object failOutput);
 
-	public abstract boolean toBeDefined(Object failOutput);
+	public native boolean toBeDefined(Object failOutput);
 
-	public abstract boolean toBeUndefined(Object failOutput);
+	public native boolean toBeUndefined(Object failOutput);
 
-	public abstract boolean toBeNull(Object failOutput);
+	public native boolean toBeNull(Object failOutput);
 
-	public abstract boolean toBeNaN(Object failOutput);
+	public native boolean toBeNaN(Object failOutput);
 
-	public abstract boolean toBeTruthy(Object failOutput);
+	public native boolean toBeTruthy(Object failOutput);
 
-	public abstract boolean toBeFalsy(Object failOutput);
+	public native boolean toBeFalsy(Object failOutput);
 
-	public abstract boolean toContain(Object any, Object failOutput);
+	public native boolean toContain(Object any, Object failOutput);
 
-	public abstract boolean toBeLessThan(Number number, Object failOutput);
+	public native boolean toBeLessThan(Number number, Object failOutput);
 
-	public abstract boolean toBeLessThanOrEqual(Number number, Object failOutput);
+	public native boolean toBeLessThanOrEqual(Number number, Object failOutput);
 
-	public abstract boolean toBeGreaterThan(Number number, Object failOutput);
+	public native boolean toBeGreaterThan(Number number, Object failOutput);
 
-	public abstract boolean toBeGreaterThanOrEqual(Number number, Object failOutput);
+	public native boolean toBeGreaterThanOrEqual(Number number, Object failOutput);
 
-	public abstract boolean toThrow(Object failOutput);
+	public native boolean toThrow(Object failOutput);
 }

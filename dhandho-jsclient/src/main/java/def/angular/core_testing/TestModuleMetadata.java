@@ -1,12 +1,19 @@
 package def.angular.core_testing;
 
-import def.dhojsw.jsnative.TestModuleMetadataBuilder;
+import jsweet.lang.ObjectType;
+import jsweet.lang.Optional;
 
 /**
- * @see TestModuleMetadataBuilder
  * @author wu
  *
  */
+@ObjectType
 public class TestModuleMetadata {
-
+	@Optional
+	public Class<?>[] imports;
+	@Optional
+	public Class<?>[] declarations;
+	@Optional
+	public Class<?>[] providers;
+	
 }

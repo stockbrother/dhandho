@@ -2,6 +2,9 @@ package app.dhojsw.ng.service;
 
 import static def.dom.Globals.console;
 
+import def.angular.core.Injectable;
+
+@Injectable()
 public class LoggerService {
 
 	public void info(Object msg, Object... args) {

@@ -1,8 +1,12 @@
 package def.angular.core_testing;
 
-import jsweet.lang.Interface;
+import java.util.function.Consumer;
 
-@Interface 
 public abstract class Globals {
-
+	
+	public static native void tick();
+	
+	public static native <T> Consumer<T> async(Runnable run);
+	
+	public static native <T> Consumer<T> fakeAsync(Runnable run);
 }
