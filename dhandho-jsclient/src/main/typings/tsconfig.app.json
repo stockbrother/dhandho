@@ -4,18 +4,15 @@
     "outDir": "../../../out-tsc/app",
     "baseUrl": "./",
     "module": "commonjs",
-    "types": ["native"],
-    "rootDirs": [
-      "./",
-      "../../../target/ts"
-    ]
+    "types": []
   },  
-  "include":[
-  	"node_modules/**/*"
+  "include":[  
+    "**/*.ts"
   ],
   "exclude": [
     "test.ts",
+    "def/**/*.*",
     "**/*.spec.ts",
-    "def/**/*"
+    "**/*Spec.ts"
   ]
 }

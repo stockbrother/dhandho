@@ -44,4 +44,16 @@ this.log.debug();
 method detectChanges() will execute the template html, which then calling the native method:
 js_isNumber(), js_isNumber() contains error that is hidden from known.
 fixture.detectChanges();  
-  
+---------------------------------
+:Cmd:ng serve
+:Cmd:tsc -p src\main\typings\tsconfig.app.json
+
+:Error Info:
+ERROR in error TS2688: Cannot find type definition file for 'native'.  
+:Solution:
+Open file:tsconfig.app.json:
+Change line:
+	types:["native"]
+To
+	types:[]
+	

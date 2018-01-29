@@ -62,6 +62,15 @@
 						<fileset>
 							<directory>.jsweet</directory>
 						</fileset>
+						<fileset>
+							<!--Clean generated ts-->
+							<directory>src/main/typings</directory>
+							<includes>
+								<include>app/dhojsw/**/*.ts</include>
+								<include>app/dhojsw/**/*.ts.map</include>
+								<include>def/**/*</include>
+							</includes>
+						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
@@ -139,7 +148,7 @@
 			<artifactId>dhandho-jscandy</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jsweet.candies</groupId>
 			<artifactId>es6-promise</artifactId>
