@@ -1,4 +1,38 @@
 ----------------------------------
+:Chrome:index.html
+:Console Error:	
+Uncaught Error: Component CommandComponent is not part of any NgModule or the module has not been imported into your module.
+    at
+:Solution:
+Add it in AppModule.java/ts:
+declarations = { ..., CommandComponent.class }, //
+ 	
+----------------------------------
+:Chrome:index.html
+:Console Error:
+Can't bind to 'ngModel' since it isn't a known property of 'input'.
+:Solution:
+In AppModule.java/ts:
+imports(FormsModule.class
+	 
+----------------------------------
+:Chrome:index.html
+:Console Error:
+StaticInjectorError(AppModule)[CommandComponent -> HttpClient]: 
+  StaticInjectorError(Platform: core)[CommandComponent -> HttpClient]: 
+    NullInjectorError: No provider for HttpClient!
+In AppModule.java/ts:
+imports(HttpClientModule.class
+    
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
 :Error:
 npm serve
 ERROR in Error: No NgModule metadata found for 'AppModule'.
@@ -56,4 +90,4 @@ Change line:
 	types:["native"]
 To
 	types:[]
-	
+    

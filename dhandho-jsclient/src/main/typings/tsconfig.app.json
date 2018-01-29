@@ -7,7 +7,8 @@
     "types": []
   },  
   "include":[  
-    "**/*.ts"
+    "**/*.ts",
+    "node_modules/**/*.ts"
   ],
   "exclude": [
     "test.ts",
