@@ -1,54 +1,40 @@
 package app.dhojsw.ng.command;
 
-import static def.angular.core_testing.Globals.async;
-import static def.angular.core_testing.Globals.fakeAsync;
-import static def.angular.core_testing.Globals.tick;
-import static def.jasmine.Globals.beforeEach;
-import static def.jasmine.Globals.describe;
-import static def.jasmine.Globals.expect;
-import static def.jasmine.Globals.it;
-
 import app.dhojsw.ng.service.LoggerService;
+import app.dhojsw.ng.testing.util.ComponentUnitDescriber;
+import app.dhojsw.ng.testing.util.TestBedHelper;
+import app.dhojsw.ng.testing.util.UnitDescriber;
 import def.angular.common_http_testing.HttpClientTestingModule;
 import def.angular.common_http_testing.HttpTestingController;
 import def.angular.common_http_testing.RequestMatch;
 import def.angular.common_http_testing.TestRequest;
 import def.angular.core.DebugElement;
-import def.angular.core_testing.ComponentFixture;
 import def.angular.core_testing.TestBed;
-import def.angular.core_testing.TestModuleMetadata;
 import def.angular.forms.FormsModule;
 import def.angular.platform_browser.By;
 import def.dom.Element;
 import def.js.JSON;
 
 public class CommandComponentSpec {
-	public static class DescribeContext<C> {
-		HttpTestingController httpMock;
 
-		C comp;
+	public static class FirstDescribeContext extends ComponentUnitDescriber<CommandComponent> {
 
-		ComponentFixture<C> fixture;
+		public FirstDescribeContext(String desc) {
+			super(desc);
+		}
 
-		DebugElement de;
-
-		Element ne;
-
-	}
-
-	public static class FirstDescribeContext extends DescribeContext<CommandComponent> implements Runnable {
 		@Override
 		public void run() {
-
 			beforeEach(() -> {
-				TestModuleMetadata meta = new TestModuleMetadata();
-				meta.imports = new Class<?>[] { FormsModule.class, HttpClientTestingModule.class };
-				meta.declarations = new Class<?>[] { CommandComponent.class };
-				meta.providers = new Class[] { LoggerService.class };
-				TestBed.configureTestingModule(meta);
-				TestBed.compileComponents();
-				httpMock = TestBed.get(HttpTestingController.class);
-				fixture = TestBed.createComponent(CommandComponent.class);
+
+				TestBedHelper testBed = new TestBedHelper()//
+						.imports(FormsModule.class, HttpClientTestingModule.class)//
+						.declarations(CommandComponent.class)//
+						.providers(LoggerService.class)//
+						.compileComponents();
+
+				httpMock = testBed.get(HttpTestingController.class);
+				fixture = testBed.createComponent(CommandComponent.class);
 				de = fixture.debugElement;
 				comp = (CommandComponent) de.componentInstance;
 				ne = de.nativeElement;
@@ -106,17 +92,13 @@ public class CommandComponentSpec {
 
 			}));
 		}
+
 	}
 
 	public static void main(String[] args) {
 
-		describe("Command Component Test1", new FirstDescribeContext());
+		new FirstDescribeContext("Command Component Test1").describe();
+		new UnitDescriber("Command Component Test2").describe();
 
-		describe("Command Component Test2", () -> {
-			it("2.1", (done) -> {
-				done.$apply();
-			});
-
-		});
 	}
 }
