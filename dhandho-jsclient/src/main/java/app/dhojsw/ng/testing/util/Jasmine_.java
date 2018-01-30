@@ -11,8 +11,11 @@ import def.jasmine.DoneFn;
 import def.jasmine.jasmine.Matchers;
 
 /**
- * Why this class? Reason: You cannot define a describe method in a class that
- * calling Globals.describe() method.So we define a bridge caller here.
+ * This is a Bridge class.<br>
+ * Why this class? Because we unable to define a 'describe' named method in a
+ * class that calling describe() method in another class, the
+ * def.jasmine.Globals.describe. <br>
+ * So we define a bridge caller here.
  * 
  * @author wu
  *

@@ -1,6 +1,6 @@
 package app.dhojsw.ng.command;
 
-import app.dhojsw.ng.service.LoggerService;
+import app.dhojsw.ng.service.Logger;
 import app.dhojsw.ng.testing.util.ComponentUnitDescriber;
 import app.dhojsw.ng.testing.util.TestBedHelper;
 import app.dhojsw.ng.testing.util.UnitDescriber;
@@ -9,7 +9,6 @@ import def.angular.common_http_testing.HttpTestingController;
 import def.angular.common_http_testing.RequestMatch;
 import def.angular.common_http_testing.TestRequest;
 import def.angular.core.DebugElement;
-import def.angular.core_testing.TestBed;
 import def.angular.forms.FormsModule;
 import def.angular.platform_browser.By;
 import def.dom.Element;
@@ -30,7 +29,7 @@ public class CommandComponentSpec {
 				TestBedHelper testBed = new TestBedHelper()//
 						.imports(FormsModule.class, HttpClientTestingModule.class)//
 						.declarations(CommandComponent.class)//
-						.providers(LoggerService.class)//
+						.providers(Logger.class)//
 						.compileComponents();
 
 				httpMock = testBed.get(HttpTestingController.class);

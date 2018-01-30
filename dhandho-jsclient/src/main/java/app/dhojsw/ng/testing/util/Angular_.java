@@ -6,6 +6,12 @@ import static def.angular.core_testing.Globals.tick;
 
 import java.util.function.Consumer;
 
+/**
+ * A bridge class.
+ * 
+ * @author Wu
+ *
+ */
 public class Angular_ {
 
 	public static <T> Consumer<T> async_(Runnable run) {

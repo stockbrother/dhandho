@@ -1,4 +1,10 @@
 ----------------------------------
+:Cmd:ng e2e:
+:Error:
+[17:34:57] E/launcher - Error: ReferenceError: Zone is not defined
+:Solution:
+
+----------------------------------
 :Chrome:index.html
 :Console Error:	
 Uncaught Error: Component CommandComponent is not part of any NgModule or the module has not been imported into your module.

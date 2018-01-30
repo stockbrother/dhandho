@@ -29,13 +29,13 @@ public class JsNativeSpec {
 				});
 			}
 		});
-		describe("JsNativeSpec Test2:", new Runnable() {
+		describe("JsNativeSpec Test2: String expect test", new Runnable() {
 			@Override
 			public void run() {
-				it("1.1", (done) -> {
+				it("expect String", (done) -> {
 
 					ArrayLikeMatchers<String> matchers = expect("hello");
-					matchers.toBeTruthy("No truth");
+					matchers.toBeTruthy("Not truth");
 					done.$apply();
 				});
 			}

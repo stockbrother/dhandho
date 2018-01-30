@@ -1,12 +1,14 @@
 package app.dhojsw.ng.command;
 
 import static def.dhojsw.jsnative.Globals.js_isNumber;
+import static def.dom.Globals.console;
+
+import app.dhojsw.ng.service.Logger;
 import def.angular.common_http.HttpClient;
 import def.angular.core.Component;
 import def.js.Array;
 import def.js.PropertyDescriptor;
 import def.rxjs.rxjs.Observable;
-import static def.dom.Globals.console;
 
 @Component(//
 		selector = "app-command", //
@@ -20,17 +22,18 @@ public class CommandComponent {
 	public Array<CommandResponse> responseArray = new Array<>();
 	String url = "/web/cmd/";
 	HttpClient http;
+	Logger log;
 
-	public CommandComponent(HttpClient http) {
+	public CommandComponent(HttpClient http, Logger log) {
 		this.title = "Command Component";
 		this.http = http;
+		this.log = log;
 	}
 
 	public void onResponse(double requestTime, String command, Object json) {
 		PropertyDescriptor typeP = def.js.Object.getOwnPropertyDescriptor(json, "type");
 		String type = (String) typeP.value;
-
-		Array<def.js.String> names = def.js.Object.getOwnPropertyNames(json);
+		log.debug("type:" + type);
 		CommandResponse rt = new CommandResponse(requestTime, command, json);
 		this.responseArray.unshift(rt);
 	}
@@ -42,13 +45,13 @@ public class CommandComponent {
 		Observable<Object> ores = this.http.post(this.url, command);
 
 		ores.toPromise().then((json) -> {
-			console.log( json );
+			log.debug(json);
 			this.onResponse(requestTime, command, json);
-			console.log( "post response:" + json );
+			log.debug("post response:" + json);
 			return null;
 		})._catch((Object t) -> {
-			console.error( "catched exception" );
-			console.error( t );
+			log.error("catched exception");
+			log.error(t);
 			return null;
 		});
 	}
