@@ -10,9 +10,5 @@
       "jasminewd2",
       "node"
     ]
-  },
-  "include":[  
-    "**/*.ts",
-    "node_modules/**/*.ts"
-  ],
+  }
 }

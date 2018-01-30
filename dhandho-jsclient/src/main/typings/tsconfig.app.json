@@ -14,6 +14,7 @@
     "test.ts",
     "def/**/*.*",
     "**/*.spec.ts",
-    "**/*Spec.ts"
+    "**/*Spec.ts",
+    "**/*E2e.ts"
   ]
 }
