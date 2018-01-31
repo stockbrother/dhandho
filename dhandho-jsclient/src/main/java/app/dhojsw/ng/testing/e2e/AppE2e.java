@@ -22,6 +22,7 @@ public class AppE2e extends UnitDescriber {
 
 	@Override
 	public void run() {
+
 		this.it("test", (done) -> {
 			promise.Promise<?> pro = browser.get("/");
 			By byy = by.css("app-root h1");
@@ -30,6 +31,23 @@ public class AppE2e extends UnitDescriber {
 			this.expect(text).toBeTruthy();
 			done.$apply();
 		});
+
+		this.it("test browser.executeAsyncScript", (done) -> {
+			browser.executeAsyncScript((done2) -> {
+				// browser is not defined:
+				// TODO make a function as argument for callable.
+				// promise.Promise<?> pro = browser.get("/");
+				// By byy = by.css("app-root h1");
+				// ElementFinder ef = element.$apply(byy);
+				// promise.Promise<String> text = ef.getText();
+				// this.expect(text).toBeTruthy();
+
+				done2.$apply();
+			});
+
+			done.$apply();
+		});
+
 	}
 
 }

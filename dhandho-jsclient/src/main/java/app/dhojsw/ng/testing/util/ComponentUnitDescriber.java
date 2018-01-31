@@ -5,7 +5,7 @@ import def.angular.core.DebugElement;
 import def.angular.core_testing.ComponentFixture;
 import def.dom.Element;
 
-public class ComponentUnitDescriber<C> extends UnitDescriber {
+public class ComponentUnitDescriber<C> extends AngularUnitDescriber {
 	public HttpTestingController httpMock;
 
 	public C comp;

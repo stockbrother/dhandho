@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import { async } from '@angular/core/testing';
 
 describe('dhandho-jsclient App', () => {
   let page: AppPage;
@@ -10,5 +11,8 @@ describe('dhandho-jsclient App', () => {
   it('should display welcome message', () => {
     page.navigateTo();
     expect(page.getParagraphText()).toEqual('Welcome to app!');
+    async(() => {
+
+    });
   });
 });
