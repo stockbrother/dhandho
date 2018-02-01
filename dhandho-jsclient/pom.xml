@@ -63,7 +63,7 @@
 							<directory>.jsweet</directory>
 						</fileset>
 						<fileset>
-							<!--Clean generated ts-->
+							<!--Clean generated ts -->
 							<directory>src/main/typings</directory>
 							<includes>
 								<include>app/dhojsw/**/*.ts</include>
@@ -111,6 +111,7 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<tasks>
+								<!-- tricks are all here. -->
 								<replace token="@NgModule" value="@core.NgModule"
 									dir="src/main/typings/app/dhojsw">
 									<include name="**/*.ts" />
@@ -123,6 +124,11 @@
 									dir="src/main/typings/app/dhojsw">
 									<include name="**/*.ts" />
 								</replace>
+								<replace token="RouterModuleForRoot]" value="RouterModuleForRoot.forRoot()]"
+									dir="src/main/typings/app/dhojsw">
+									<include name="**/*.ts" />
+								</replace>
+
 							</tasks>
 						</configuration>
 						<goals>

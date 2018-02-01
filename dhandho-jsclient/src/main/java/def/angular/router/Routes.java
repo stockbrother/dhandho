@@ -1,5 +1,9 @@
 package def.angular.router;
 
-public class Routes {
+import def.js.Array;
+import jsweet.lang.ObjectType;
+
+@ObjectType
+public class Routes extends Array<Route>{
 
 }
