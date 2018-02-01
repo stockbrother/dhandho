@@ -2,8 +2,7 @@ package app.dhojsw.ng.my;
 
 import def.angular.core.Component;
 
-@Component(//
-		selector = "app-my", //
+@Component(//		
 		templateUrl = "./MyComponent.html"//
 )
 

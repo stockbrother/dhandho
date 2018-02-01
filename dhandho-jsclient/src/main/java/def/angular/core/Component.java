@@ -8,7 +8,7 @@ import jsweet.lang.Decorator;
 @Decorator
 @Target(ElementType.TYPE)
 public @interface Component {
-	String selector();
+	String selector() default "";
 
 	String template() default "";
 

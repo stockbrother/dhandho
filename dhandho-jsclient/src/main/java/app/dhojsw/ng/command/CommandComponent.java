@@ -10,8 +10,7 @@ import def.js.Array;
 import def.js.PropertyDescriptor;
 import def.rxjs.rxjs.Observable;
 
-@Component(//
-		selector = "app-command", //
+@Component(//		
 		templateUrl = "./command.component.html", //
 		styleUrls = { "./command.component.css" }//
 )

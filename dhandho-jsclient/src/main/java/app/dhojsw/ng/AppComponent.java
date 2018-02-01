@@ -7,5 +7,5 @@ import def.angular.core.Component;
 		templateUrl = "./AppComponent.html", styleUrls = { "./AppComponent.css" })
 
 public class AppComponent {
-
+	public String title = "Dho";
 }
