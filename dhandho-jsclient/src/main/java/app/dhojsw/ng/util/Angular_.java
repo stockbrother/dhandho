@@ -1,4 +1,4 @@
-package app.dhojsw.ng.testing.util;
+package app.dhojsw.ng.util;
 
 import static def.angular.core_testing.Globals.async;
 import static def.angular.core_testing.Globals.fakeAsync;

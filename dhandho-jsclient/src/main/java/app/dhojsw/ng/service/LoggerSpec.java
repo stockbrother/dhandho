@@ -1,10 +1,10 @@
 package app.dhojsw.ng.service;
 
-import app.dhojsw.ng.testing.util.UnitDescriber;
+import app.dhojsw.util.JasmineDescriber;
 import def.angular.core_testing.TestBed;
 import def.angular.core_testing.TestModuleMetadata;
 
-public class LoggerSpec extends UnitDescriber {
+public class LoggerSpec extends JasmineDescriber {
 
 	public static void main(String[] args) {
 		new LoggerSpec("Logger Test").describe();

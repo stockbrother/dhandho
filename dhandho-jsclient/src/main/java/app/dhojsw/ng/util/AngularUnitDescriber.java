@@ -1,7 +1,8 @@
-package app.dhojsw.ng.testing.util;
+package app.dhojsw.ng.util;
 
 import java.util.function.Consumer;
 
+import app.dhojsw.util.Jasmine_;
 import def.jasmine.DoneFn;
 import def.jasmine.jasmine.Matchers;
 

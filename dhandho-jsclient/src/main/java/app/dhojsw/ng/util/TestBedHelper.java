@@ -1,13 +1,8 @@
-package app.dhojsw.ng.testing.util;
+package app.dhojsw.ng.util;
 
-import app.dhojsw.ng.command.CommandComponent;
-import app.dhojsw.ng.service.Logger;
-import def.angular.common_http_testing.HttpClientTestingModule;
-import def.angular.common_http_testing.HttpTestingController;
 import def.angular.core_testing.ComponentFixture;
 import def.angular.core_testing.TestBed;
 import def.angular.core_testing.TestModuleMetadata;
-import def.angular.forms.FormsModule;
 
 /**
  * Usage by example:<br>

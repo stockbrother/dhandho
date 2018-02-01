@@ -9,7 +9,21 @@ import def.js.ArrayLike;
 public class Globals {
 	public native static void describe(String desc, Runnable fun);
 
+	/**
+	 * Asynchronously running a test task.
+	 * 
+	 * @param desc
+	 * @param run
+	 */
 	public static native void it(String desc, Consumer<DoneFn> run);
+
+	/**
+	 * Synchronously running a test task.
+	 * 
+	 * @param desc
+	 * @param run
+	 */
+	public static native void it(String desc, Runnable run);
 
 	public static native <T> Matchers<T> expect(T obj);
 

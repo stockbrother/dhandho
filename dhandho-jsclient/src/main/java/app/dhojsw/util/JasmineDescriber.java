@@ -1,4 +1,4 @@
-package app.dhojsw.ng.testing.util;
+package app.dhojsw.util;
 
 import java.util.function.Consumer;
 
@@ -10,11 +10,15 @@ import def.jasmine.jasmine.Matchers;
  * @author Wu
  *
  */
-public class UnitDescriber implements Runnable {
+public class JasmineDescriber implements Runnable {
 
 	protected String desc;
-
-	public UnitDescriber(String desc) {
+	
+	public JasmineDescriber() {
+		this.desc = this.getClass().getName();
+	}
+	
+	public JasmineDescriber(String desc) {
 		this.desc = desc;
 	}
 
@@ -28,12 +32,17 @@ public class UnitDescriber implements Runnable {
 		});
 	}
 
-	protected UnitDescriber it(String desc, Consumer<DoneFn> func) {
+	protected JasmineDescriber it(String desc, Consumer<DoneFn> func) {
 		Jasmine_.it_(desc, func);
 		return this;
 	}
 
-	protected UnitDescriber beforeEach(Runnable run) {
+	protected JasmineDescriber it(String desc, Runnable func) {
+		Jasmine_.it_(desc, func);
+		return this;
+	}
+
+	protected JasmineDescriber beforeEach(Runnable run) {
 		Jasmine_.beforeEach_(run);
 		return this;
 	}

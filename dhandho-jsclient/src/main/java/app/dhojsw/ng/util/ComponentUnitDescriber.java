@@ -1,4 +1,4 @@
-package app.dhojsw.ng.testing.util;
+package app.dhojsw.ng.util;
 
 import def.angular.common_http_testing.HttpTestingController;
 import def.angular.core.DebugElement;

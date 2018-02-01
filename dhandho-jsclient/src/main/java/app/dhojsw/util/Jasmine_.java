@@ -1,4 +1,4 @@
-package app.dhojsw.ng.testing.util;
+package app.dhojsw.util;
 
 import static def.jasmine.Globals.describe;
 import static def.jasmine.Globals.beforeEach;
@@ -27,6 +27,10 @@ public class Jasmine_ {
 	}
 
 	public static void it_(String desc, Consumer<DoneFn> fun) {
+		it(desc, fun);
+	}
+
+	public static void it_(String desc, Runnable fun) {
 		it(desc, fun);
 	}
 

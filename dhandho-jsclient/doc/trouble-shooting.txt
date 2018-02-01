@@ -3,7 +3,10 @@
 :Error:
 [17:34:57] E/launcher - Error: ReferenceError: Zone is not defined
 :Solution:
-
+Remove the @angular/core/testing module dependence. 
+:Cause:
+Augular testing module looks do not work with protractor for e2e test. 
+ 
 ----------------------------------
 :Chrome:index.html
 :Console Error:	

@@ -1,9 +1,9 @@
 package app.dhojsw.ng.command;
 
 import app.dhojsw.ng.service.Logger;
-import app.dhojsw.ng.testing.util.ComponentUnitDescriber;
-import app.dhojsw.ng.testing.util.TestBedHelper;
-import app.dhojsw.ng.testing.util.UnitDescriber;
+import app.dhojsw.ng.util.ComponentUnitDescriber;
+import app.dhojsw.ng.util.TestBedHelper;
+import app.dhojsw.util.JasmineDescriber;
 import def.angular.common_http_testing.HttpClientTestingModule;
 import def.angular.common_http_testing.HttpTestingController;
 import def.angular.common_http_testing.RequestMatch;
@@ -97,7 +97,7 @@ public class CommandComponentSpec {
 	public static void main(String[] args) {
 
 		new FirstDescribeContext("Command Component Test1").describe();
-		new UnitDescriber("Command Component Test2").describe();
+		new JasmineDescriber("Command Component Test2").describe();
 
 	}
 }
