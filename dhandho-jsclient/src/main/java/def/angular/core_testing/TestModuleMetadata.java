@@ -10,7 +10,7 @@ import jsweet.lang.Optional;
 @ObjectType
 public class TestModuleMetadata {
 	@Optional
-	public Class<?>[] imports;
+	public Object[] imports;//Type or ModuleWithProviders
 	@Optional
 	public Class<?>[] declarations;
 	@Optional

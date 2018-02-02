@@ -1,5 +1,7 @@
 package def.angular.router;
 
-public class Router {
+import def.libes5.Promise;
 
+public class Router {
+	public native Promise<Boolean> navigate(Object[] args);
 }

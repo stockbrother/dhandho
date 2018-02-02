@@ -52,7 +52,7 @@ public class AngularUnitDescriber implements Runnable {
 	protected String desc;
 
 	public AngularUnitDescriber() {
-		
+		this.desc = this.getClass().getName();
 	}
 	
 	public AngularUnitDescriber(String desc) {

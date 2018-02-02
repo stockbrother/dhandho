@@ -24,7 +24,7 @@ import def.angular.core_testing.TestModuleMetadata;
 public class TestBedHelper {
 	TestModuleMetadata meta = new TestModuleMetadata();
 
-	public TestBedHelper imports(Class<?>... cls) {
+	public TestBedHelper imports(Object ... cls) {
 		meta.imports = cls;
 		return this;
 	}

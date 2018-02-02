@@ -124,7 +124,7 @@
 									dir="src/main/typings/app/dhojsw">
 									<include name="**/*.ts" />
 								</replace>
-								<replace token="RouterModuleForRoot]" value="RouterModuleForRoot.forRoot()]"
+								<replace token="REPLACEHOLDER" value="REPLACEHOLDER.call()"
 									dir="src/main/typings/app/dhojsw">
 									<include name="**/*.ts" />
 								</replace>

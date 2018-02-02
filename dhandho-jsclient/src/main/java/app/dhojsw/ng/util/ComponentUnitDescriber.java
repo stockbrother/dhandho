@@ -6,6 +6,7 @@ import def.angular.common_http_testing.HttpTestingController;
 import def.angular.core.DebugElement;
 import def.angular.core_testing.ComponentFixture;
 import def.angular.forms.FormsModule;
+import def.angular.router.Router;
 import def.dom.Element;
 
 public class ComponentUnitDescriber<C> extends AngularUnitDescriber {
@@ -20,6 +21,8 @@ public class ComponentUnitDescriber<C> extends AngularUnitDescriber {
 	public Element ne;
 
 	public Class<C> compType;
+	
+	public Router router;
 
 	public ComponentUnitDescriber(Class<C> compType) {
 		super();
@@ -56,4 +59,5 @@ public class ComponentUnitDescriber<C> extends AngularUnitDescriber {
 		}
 
 	};
+	
 }

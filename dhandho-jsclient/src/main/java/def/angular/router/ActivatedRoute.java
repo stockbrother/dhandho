@@ -1,5 +1,8 @@
 package def.angular.router;
 
-public class ActivatedRoute {
+import def.rxjs.rxjs.Observable;
 
+public class ActivatedRoute {
+	// readonly?
+	public Observable<ParamMap> paramMap;
 }

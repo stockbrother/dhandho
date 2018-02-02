@@ -7,8 +7,8 @@ import def.angular.common_http.HttpClient;
 import def.angular.core.Component;
 import def.angular.core.OnInit;
 
-@Component(templateUrl = "./StockCategoryComponent.html", //
-		styleUrls = { "StockCategoryComponent.css" })
+@Component(templateUrl = "./StockListComponent.html", //
+		styleUrls = { "./StockListComponent.css" })
 
 public class StockListComponent extends AbstractDataResponseComponent<JsonResponse> implements OnInit {
 
