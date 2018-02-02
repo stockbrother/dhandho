@@ -1,6 +1,5 @@
 package app.dhojsw.ng.util;
 
-import app.dhojsw.ng.AppComponent;
 import app.dhojsw.ng.PageNotFoundComponent;
 import app.dhojsw.ng.command.CommandComponent;
 import app.dhojsw.ng.my.MyComponent;
@@ -17,6 +16,7 @@ import jsweet.lang.Array;
 public class RouterModuleForRoot {
 
 	public static ModuleWithProviders forRoot() {
+
 		Array<Route> routes = new Array<>();		
 		push(routes, "command", CommandComponent.class);
 		push(routes, "my", MyComponent.class);
