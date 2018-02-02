@@ -11,9 +11,10 @@
 ----------------------------------
 :Cmd:ng serve
 :Error:in chrome console
-
+selector ng-component .... 
 :Solution:
-<ng-component></ng-component>
+Remove the XXXComoponent whith out a selector declared from AppModule's bootstrap annotations. 
+:Cause:
 
 
 ----------------------------------

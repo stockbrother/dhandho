@@ -51,10 +51,14 @@ public class AngularUnitDescriber implements Runnable {
 
 	protected String desc;
 
+	public AngularUnitDescriber() {
+		
+	}
+	
 	public AngularUnitDescriber(String desc) {
 		this.desc = desc;
 	}
-
+	
 	public <T> Consumer<T> async(Runnable run) {
 		return Angular_.async_(run);
 	}
@@ -86,7 +90,10 @@ public class AngularUnitDescriber implements Runnable {
 		Jasmine_.it_(desc, Angular_.async_(func));
 		return this;
 	}
-
+	protected AngularUnitDescriber it(String desc, Runnable func) {
+		Jasmine_.it_(desc, func);
+		return this;
+	}
 	protected AngularUnitDescriber it(String desc, Consumer<DoneFn> func) {
 		Jasmine_.it_(desc, func);
 		return this;

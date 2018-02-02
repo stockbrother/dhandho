@@ -1,8 +1,9 @@
-package app.dhojsw.ng.util;
+package app.dhojsw.ng;
 
-import app.dhojsw.ng.PageNotFoundComponent;
 import app.dhojsw.ng.command.CommandComponent;
 import app.dhojsw.ng.my.MyComponent;
+import app.dhojsw.ng.stock.StockDetailComponent;
+import app.dhojsw.ng.stock.StockListComponent;
 import def.angular.core.ModuleWithProviders;
 import def.angular.router.Route;
 import def.angular.router.RouterModule;
@@ -17,7 +18,10 @@ public class RouterModuleForRoot {
 
 	public static ModuleWithProviders forRoot() {
 
-		Array<Route> routes = new Array<>();		
+		Array<Route> routes = new Array<>();	
+		
+		push(routes, "stockList", StockListComponent.class);
+		push(routes, "stockDetail/:id", StockDetailComponent.class);
 		push(routes, "command", CommandComponent.class);
 		push(routes, "my", MyComponent.class);
 		push(routes, "**", PageNotFoundComponent.class);

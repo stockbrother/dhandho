@@ -19,7 +19,7 @@ public class CommandComponentSpec {
 	public static class FirstDescribeContext extends ComponentUnitDescriber<CommandComponent> {
 
 		public FirstDescribeContext(String desc) {
-			super(desc);
+			super(desc, CommandComponent.class);
 		}
 
 		@Override
