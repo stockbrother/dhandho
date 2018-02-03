@@ -7,6 +7,7 @@ import app.dhojsw.ng.my.MyComponent;
 import app.dhojsw.ng.service.Logger;
 import app.dhojsw.ng.util.ComponentUnitDescriber;
 import app.dhojsw.ng.util.TestBedHelper;
+import def.angular.common.Location;
 import def.angular.common_http_testing.HttpClientTestingModule;
 import def.angular.common_http_testing.HttpTestingController;
 import def.angular.common_http_testing.RequestMatch;
@@ -39,12 +40,13 @@ public class StockListComponentSpec extends ComponentUnitDescriber<StockListComp
 							PageNotFoundComponent.class)//
 					.providers(Logger.class)//
 					.compileComponents();
-			unit.router = testBed.get(Router.class);
 			unit.httpMock = testBed.get(HttpTestingController.class);
 			unit.fixture = testBed.createComponent(unit.compType);
 			unit.de = unit.fixture.debugElement;
 			unit.comp = (T) unit.de.componentInstance;
 			unit.ne = unit.de.nativeElement;
+			unit.router = testBed.get(Router.class);
+			unit.location = testBed.get(Location.class);
 		}
 
 	};
@@ -85,19 +87,17 @@ public class StockListComponentSpec extends ComponentUnitDescriber<StockListComp
 				req.flush(response);
 
 				fixture.detectChanges();
-
 				tick();
-
 				expect(comp.responseArray.length).toEqual(1);
 
 				fixture.detectChanges();
 
 			}
 			{
-				router.navigate(new Object[] {"/stockDetail/000001"});
-				fixture.detectChanges();
-				tick();
-				fixture.detectChanges();
+				router.navigate(new Object[] {"/stockDetail/000001"});				
+				tick(50);
+				expect(location.path()).toBe("/stockDetail/000001");						
+				
 			}
 			{
 				//DebugElement archor = fixture.debugElement.query(By.css("a"));

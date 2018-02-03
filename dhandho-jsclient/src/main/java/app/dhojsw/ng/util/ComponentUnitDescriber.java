@@ -1,6 +1,7 @@
 package app.dhojsw.ng.util;
 
 import app.dhojsw.ng.service.Logger;
+import def.angular.common.Location;
 import def.angular.common_http_testing.HttpClientTestingModule;
 import def.angular.common_http_testing.HttpTestingController;
 import def.angular.core.DebugElement;
@@ -23,6 +24,8 @@ public class ComponentUnitDescriber<C> extends AngularUnitDescriber {
 	public Class<C> compType;
 	
 	public Router router;
+	
+	public Location location;
 
 	public ComponentUnitDescriber(Class<C> compType) {
 		super();

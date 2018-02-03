@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import app.dhojsw.util.Jasmine_;
 import def.jasmine.DoneFn;
 import def.jasmine.jasmine.Matchers;
+import jsweet.lang.Optional;
 
 /**
  * Usage as a example:<br>
@@ -54,11 +55,11 @@ public class AngularUnitDescriber implements Runnable {
 	public AngularUnitDescriber() {
 		this.desc = this.getClass().getName();
 	}
-	
+
 	public AngularUnitDescriber(String desc) {
 		this.desc = desc;
 	}
-	
+
 	public <T> Consumer<T> async(Runnable run) {
 		return Angular_.async_(run);
 	}
@@ -69,6 +70,10 @@ public class AngularUnitDescriber implements Runnable {
 
 	public void tick() {
 		Angular_.tick_();
+	}
+
+	public void tick(@Optional double time) {
+		Angular_.tick_(time);
 	}
 
 	/**
@@ -90,10 +95,12 @@ public class AngularUnitDescriber implements Runnable {
 		Jasmine_.it_(desc, Angular_.async_(func));
 		return this;
 	}
+
 	protected AngularUnitDescriber it(String desc, Runnable func) {
 		Jasmine_.it_(desc, func);
 		return this;
 	}
+
 	protected AngularUnitDescriber it(String desc, Consumer<DoneFn> func) {
 		Jasmine_.it_(desc, func);
 		return this;

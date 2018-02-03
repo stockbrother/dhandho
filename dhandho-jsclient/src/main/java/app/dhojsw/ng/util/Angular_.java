@@ -26,4 +26,8 @@ public class Angular_ {
 		tick();
 	}
 
+	public static void tick_(double time) {
+		tick(time);
+	}
+
 }
