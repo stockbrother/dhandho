@@ -32,6 +32,9 @@ public class AllQuotesInfos {
 	public void put(Date reportDate, String corpId, BigDecimal value) {
 
 		this.quotesMap.put(corpId, value.doubleValue());
+		for (int i = 0; i < 1; i++) {
+
+		}
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("put,corpId:" + corpId + ",value:" + value);
 		}

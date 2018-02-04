@@ -5,18 +5,12 @@
 
 	<groupId>cc.dhandho</groupId>
 	<artifactId>dhandho-jsclient</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Dhandho Jsclient</name>
 	<description></description>
 
-	<properties>
-		<log4j.version>2.5</log4j.version>
-		<junit.version>4.12</junit.version>
-		<jcps-dataupgrader.version>0.0.1-SNAPSHOT</jcps-dataupgrader.version>
-		<jsweet-angular.version></jsweet-angular.version>
-		<jsweet-maven.version>2.0.1</jsweet-maven.version>
-		<mockito.version>2.13.0</mockito.version>
+	<properties>		
 	</properties>
 
 	<build>
@@ -34,17 +28,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -64,11 +48,9 @@
 						</fileset>
 						<fileset>
 							<!--Clean generated ts -->
-							<directory>src/main/typings</directory>
-							<includes>
-								<include>app/dhojsw/**/*.ts</include>
-								<include>app/dhojsw/**/*.ts.map</include>
-								<include>def/**/*</include>
+							<directory>src</directory>
+							<includes>								
+								<include>app/dhojsw/**/*.ts.map</include>								
 							</includes>
 						</fileset>
 					</filesets>
