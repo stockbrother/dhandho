@@ -5,9 +5,9 @@ import core = require('@angular/core');
 import core_testing = require('@angular/core/testing');
 import forms = require('@angular/forms');
 import router = require('@angular/router');
-import { Logger } from '../service/Logger';
-import { AngularUnitDescriber } from './AngularUnitDescriber';
-import { TestBedHelper } from './TestBedHelper';
+import { Logger } from '../service/logger';
+import { AngularUnitDescriber } from './angular.unit.describer';
+import { TestBedHelper } from './test.bed.helper';
 
 import Location = common.Location;
 import HttpClientTestingModule = common_http_testing.HttpClientTestingModule;
@@ -82,7 +82,7 @@ export class ComponentUnitDescriber<C> extends AngularUnitDescriber {
         } else throw new Error('invalid overload');
     }
 }
-ComponentUnitDescriber['__class'] = 'app.dhojsw.ng.util.ComponentUnitDescriber';
+ComponentUnitDescriber['__class'] = 'app.dhojsw.ng.util.component.unit.describer';
 ComponentUnitDescriber['__interfaces'] = ['java.lang.Runnable'];
 
 

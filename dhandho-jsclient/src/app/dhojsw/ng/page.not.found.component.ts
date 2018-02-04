@@ -2,7 +2,7 @@
 import core = require('@angular/core');
 
 import Component = core.Component;
-@core.Component({ templateUrl: './PageNotFoundComponent.html', styleUrls: ['./PageNotFoundComponent.css'] })
+@core.Component({ templateUrl: './page.not.found.component.html', styleUrls: ['./page.not.found.component.css'] })
 export class PageNotFoundComponent {
     public title: string = 'Dho';
 }

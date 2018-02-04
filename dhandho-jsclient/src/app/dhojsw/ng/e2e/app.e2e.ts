@@ -1,7 +1,7 @@
 /* Generated from Java with JSweet 2.0.1 - http://www.jsweet.org */
 import protractor = require('protractor');
 import webdriver = require('selenium-webdriver');
-import { JasmineDescriber } from '../../util/JasmineDescriber';
+import { JasmineDescriber } from '../../util/jasmine.describer';
 
 import browser = protractor.browser;
 import by = protractor.by;

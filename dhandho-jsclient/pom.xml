@@ -42,10 +42,7 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-					<filesets>
-						<fileset>
-							<directory>.jsweet</directory>
-						</fileset>
+					<filesets>						
 						<fileset>
 							<!--Clean generated ts -->
 							<directory>src</directory>
@@ -56,69 +53,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.jsweet</groupId>
-				<artifactId>jsweet-maven-plugin</artifactId>
-				<version>${jsweet-maven.version}</version>
-				<configuration>
-					<tsOut>src/main/typings</tsOut>
-					<targetVersion>ES5</targetVersion>
-					<bundle>false</bundle>
-					<module>commonjs</module>
-					<moduleResolution>node</moduleResolution>
-					<sourceMap>true</sourceMap>
-					<tsOnly>true</tsOnly>
-					<ignoreDefinitions>true</ignoreDefinitions>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
-					<excludes>
-						<exclude>none/**/*.java</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>generate-js</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>jsweet</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<configuration>
-							<tasks>
-								<!-- tricks are all here. -->
-								<replace token="@NgModule" value="@core.NgModule"
-									dir="src/main/typings/app/dhojsw">
-									<include name="**/*.ts" />
-								</replace>
-								<replace token="[BrowserModule" value="[platform_browser.BrowserModule"
-									dir="src/main/typings/app/dhojsw">
-									<include name="**/*.ts" />
-								</replace>
-								<replace token="@Component" value="@core.Component"
-									dir="src/main/typings/app/dhojsw">
-									<include name="**/*.ts" />
-								</replace>
-								<replace token="REPLACEHOLDER" value="REPLACEHOLDER.call()"
-									dir="src/main/typings/app/dhojsw">
-									<include name="**/*.ts" />
-								</replace>
-
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+			
 		</plugins>
 	</build>
 

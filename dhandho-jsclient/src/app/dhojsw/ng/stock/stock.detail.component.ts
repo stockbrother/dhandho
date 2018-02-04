@@ -2,15 +2,15 @@
 import common_http = require('@angular/common/http');
 import core = require('@angular/core');
 import router = require('@angular/router');
-import { Logger } from '../service/Logger';
-import { AbstractDataResponseComponent } from '../support/AbstractDataResponseComponent';
-import { JsonResponse } from '../support/JsonResponse';
+import { Logger } from '../service/logger';
+import { AbstractDataResponseComponent } from '../support/abstract.data.response.component';
+import { JsonResponse } from '../support/json.response';
 
 import HttpClient = common_http.HttpClient;
 import Component = core.Component;
 import OnInit = core.OnInit;
 import ActivatedRoute = router.ActivatedRoute;
-@core.Component({ templateUrl: './StockDetailComponent.html', styleUrls: ['./StockDetailComponent.css'] })
+@core.Component({ templateUrl: './stock.detail.component.html', styleUrls: ['./stock.detail.component.css'] })
 export class StockDetailComponent extends AbstractDataResponseComponent<JsonResponse> implements OnInit {
     public stockId: string;
 

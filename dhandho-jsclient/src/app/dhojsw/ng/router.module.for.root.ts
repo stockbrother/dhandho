@@ -1,11 +1,11 @@
 /* Generated from Java with JSweet 2.0.1 - http://www.jsweet.org */
 import core = require('@angular/core');
 import router = require('@angular/router');
-import { CommandComponent } from './command/CommandComponent';
-import { MyComponent } from './my/MyComponent';
-import { StockDetailComponent } from './stock/StockDetailComponent';
-import { StockListComponent } from './stock/StockListComponent';
-import { PageNotFoundComponent } from './PageNotFoundComponent';
+import { CommandComponent } from './command/command.component';
+import { MyComponent } from './my/my.component';
+import { StockDetailComponent } from './stock/stock.detail.component';
+import { StockListComponent } from './stock/stock.list.component';
+import { PageNotFoundComponent } from './page.not.found.component';
 
 import ModuleWithProviders = core.ModuleWithProviders;
 import Route = router.Route;

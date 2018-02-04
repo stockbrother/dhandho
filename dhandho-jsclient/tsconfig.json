@@ -16,7 +16,6 @@
       "dom"
     ],
     "plugins": [
-      { "name": "@angular/language-service"},
       { "name": "tslint-language-service"}
     ]
   }

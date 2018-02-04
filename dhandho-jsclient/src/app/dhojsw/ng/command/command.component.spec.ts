@@ -3,12 +3,12 @@ import common_http_testing = require('@angular/common/http/testing');
 import core = require('@angular/core');
 import forms = require('@angular/forms');
 import platform_browser = require('@angular/platform-browser');
-import { Logger } from '../service/Logger';
-import { ComponentUnitDescriber } from '../util/ComponentUnitDescriber';
-import { TestBedHelper } from '../util/TestBedHelper';
-import { JasmineDescriber } from '../../util/JasmineDescriber';
-import { CommandComponent } from './CommandComponent';
-import { AngularUnitDescriber } from '../util/AngularUnitDescriber';
+import { Logger } from '../service/logger';
+import { ComponentUnitDescriber } from '../util/component.unit.describer';
+import { TestBedHelper } from '../util/test.bed.helper';
+import { JasmineDescriber } from '../../util/jasmine.describer';
+import { CommandComponent } from './command.component';
+import { AngularUnitDescriber } from '../util/angular.unit.describer';
 
 import HttpClientTestingModule = common_http_testing.HttpClientTestingModule;
 import HttpTestingController = common_http_testing.HttpTestingController;
@@ -32,7 +32,6 @@ export namespace CommandComponentSpec {
         public constructor(desc: string) {
             super(desc, CommandComponent);
         }
-
         /**
          *
          */

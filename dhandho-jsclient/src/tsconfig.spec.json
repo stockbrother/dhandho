@@ -14,10 +14,6 @@
   ],  
   "include": [
     "node_modules/**/*",
-    "**/*.spec.ts",    
-    "**/*Spec.ts"    
-  ],
-  "exclude": [
-    "def/angular/**/*.ts"
+    "**/*.spec.ts"   
   ]
 }

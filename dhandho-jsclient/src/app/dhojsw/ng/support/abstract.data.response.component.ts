@@ -3,8 +3,8 @@ import jsnative = require('jsnative');
 import common_http = require('@angular/common/http');
 import core = require('@angular/core');
 import rxjs = require('rxjs');
-import { Logger } from '../service/Logger';
-import { JsonResponse } from './JsonResponse';
+import { Logger } from '../service/logger';
+import { JsonResponse } from './json.response';
 
 import js_isNumber = jsnative.js_isNumber;
 import HttpClient = common_http.HttpClient;
