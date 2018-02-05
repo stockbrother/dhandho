@@ -4,18 +4,6 @@ import core_testing = require('@angular/core/testing');
 import ComponentFixture = core_testing.ComponentFixture;
 import TestBed = core_testing.TestBed;
 /**
- * Usage by example:<br>
- * <code>
- *
- * TestBedHelper testBed = new TestBedHelper()
- * .imports(FormsModule.class, HttpClientTestingModule.class)
- * .declarations(CommandComponent.class)
- * .providers(Logger.class)
- * .compileComponents();
- * HttpTestingController httpMock = testBed.get(HttpTestingController.class);
- * ComponentFixture<CommandComponent> fixture = testBed.createComponent(CommandComponent.class);
- *
- * </code>
  *
  * @author Wu
  * @class

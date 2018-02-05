@@ -10,7 +10,10 @@ import HttpClient = common_http.HttpClient;
 import Component = core.Component;
 import OnInit = core.OnInit;
 import ActivatedRoute = router.ActivatedRoute;
-@core.Component({ templateUrl: './stock.detail.component.html', styleUrls: ['./stock.detail.component.css'] })
+@core.Component({
+    templateUrl: './stock.detail.component.html',
+    styleUrls: ['./stock.detail.component.css']
+})
 export class StockDetailComponent extends AbstractDataResponseComponent<JsonResponse> implements OnInit {
     public stockId: string;
 
@@ -48,9 +51,3 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
         });
     }
 }
-StockDetailComponent['__class'] = 'app.dhojsw.ng.stock.StockDetailComponent';
-StockDetailComponent['__interfaces'] = ['def.angular.core.OnInit'];
-
-
-
-

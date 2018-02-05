@@ -4,6 +4,7 @@ import core = require('@angular/core');
 import forms = require('@angular/forms');
 import platform_browser = require('@angular/platform-browser');
 import { Logger } from '../service/logger';
+import { BackendInterface, MockBackend } from '../service/backend.interface';
 import { ComponentUnitDescriber } from '../util/component.unit.describer';
 import { TestBedHelper } from '../util/test.bed.helper';
 import { JasmineDescriber } from '../../util/jasmine.describer';
@@ -23,12 +24,11 @@ export class CommandComponentSpec {
         new JasmineDescriber('Command Component Test2').describe();
     }
 }
-CommandComponentSpec['__class'] = 'app.dhojsw.ng.command.CommandComponentSpec';
-
 
 export namespace CommandComponentSpec {
 
     export class FirstDescribeContext extends ComponentUnitDescriber<CommandComponent> {
+        mock: MockBackend;
         public constructor(desc: string) {
             super(desc, CommandComponent);
         }
@@ -37,11 +37,19 @@ export namespace CommandComponentSpec {
          */
         public run() {
             this.beforeEach(() => {
-                let testBed: TestBedHelper = new TestBedHelper().imports(FormsModule, HttpClientTestingModule).declarations(CommandComponent).providers(Logger).compileComponents();
+                let testBed: TestBedHelper = new TestBedHelper()//
+                    .imports(FormsModule, HttpClientTestingModule)//
+                    .declarations(CommandComponent)//
+                    .providers(Logger, //
+                    { provide: BackendInterface, useClass: MockBackend }//
+                    )//
+                    .compileComponents()//
+                    ;
                 this.httpMock = <any>(testBed.get<any>(HttpTestingController));
                 this.fixture = testBed.createComponent<any>(CommandComponent);
                 this.de = this.fixture.debugElement;
                 this.comp = <CommandComponent>this.de.componentInstance;
+                this.mock = <MockBackend>this.comp.backend;
                 this.ne = this.de.nativeElement;
             });
             this.it$java_lang_String$java_util_function_Consumer('1.1.Should create the command', <any>(this.async<any>(() => {
@@ -56,18 +64,24 @@ export namespace CommandComponentSpec {
                 this.expect<any>(compiled.querySelector('h1').textContent).toContain(this.comp.title);
             })));
             this.it$java_lang_String$java_util_function_Consumer('1.3.Response Processing', <any>(this.fakeAsync<any>(() => {
-                let jsonS: string = /* replace */('{\r\n            \'type\': \'table\',\r\n            \'columnNames\': [\'corpId\', \'corpName\', \'highLight\', \'ProfitMargin\', \'AssetTurnover\', \'EquityMultiplier\'],\r\n            \'rowArray\': [\r\n                [\'000001\', \'Name1\', false, 0.01, 0.11, 1.1],\r\n                [\'000002\', \'Name2\', true, 0.02, 0.12, 1.2],\r\n                [\'000003\', \'Name3\', false, 0.03, 0.13, 1.3],\r\n                [\'000004\', \'Name4\', false, 0.04, 0.14, 1.4]\r\n            ]\r\n        }').split('\'').join('\"');
-                let response: any = JSON.parse(jsonS);
+
+                let response = {
+                    'type': 'table',
+                    'columnNames': ['corpId', 'corpName', 'highLight', 'ProfitMargin', 'AssetTurnover', 'EquityMultiplier'],
+                    'rowArray': [
+                        ['000001', 'Name1', false, 0.01, 0.11, 1.1],
+                        ['000002', 'Name2', true, 0.02, 0.12, 1.2],
+                        ['000003', 'Name3', false, 0.03, 0.13, 1.3],
+                        ['000004', 'Name4', false, 0.04, 0.14, 1.4]
+                    ]
+                };
                 this.expect<any>(this.comp.responseArray.length).toEqual(0);
                 {
                     this.comp.command = 'dupont -r -c 000001 -y 2016 -f 0.01';
                     let button: DebugElement = this.fixture.debugElement.query(By.css('button'));
                     let yes: boolean = true;
                     button.triggerEventHandler('click', null);
-                    let rm: RequestMatch = <any>Object.defineProperty({
-
-                    }, '__interfaces', { configurable: true, value: ['def.angular.common_http_testing.RequestMatch'] });
-                    rm.method = 'POST';
+                    let rm: RequestMatch = { method: 'POST' };
                     let req: TestRequest = this.httpMock.expectOne(rm);
                     req.flush(response);
                     this.fixture.detectChanges();
@@ -78,13 +92,6 @@ export namespace CommandComponentSpec {
             })));
         }
     }
-    FirstDescribeContext['__class'] = 'app.dhojsw.ng.command.CommandComponentSpec.FirstDescribeContext';
-    FirstDescribeContext['__interfaces'] = ['java.lang.Runnable'];
-
-
 }
-
-
-
 
 CommandComponentSpec.main(null);

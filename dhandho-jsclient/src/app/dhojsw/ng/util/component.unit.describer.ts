@@ -52,10 +52,6 @@ export class ComponentUnitDescriber<C> extends AngularUnitDescriber {
         }
     }
 }
-ComponentUnitDescriber['__class'] = 'app.dhojsw.ng.util.component.unit.describer';
-ComponentUnitDescriber['__interfaces'] = ['java.lang.Runnable'];
-
-
 
 export namespace ComponentUnitDescriber {
 
@@ -67,7 +63,7 @@ export namespace ComponentUnitDescriber {
         }
 
         /**
-         * 
+         *
          */
         public run() {
             let testBed: TestBedHelper = new TestBedHelper().imports(FormsModule, HttpClientTestingModule).declarations(this.unit.compType).providers(Logger).compileComponents();
@@ -78,9 +74,6 @@ export namespace ComponentUnitDescriber {
             this.unit.ne = this.unit.de.nativeElement;
         }
     }
-    BeforeEach['__class'] = 'app.dhojsw.ng.util.ComponentUnitDescriber.BeforeEach';
-    BeforeEach['__interfaces'] = ['java.lang.Runnable'];
-
 
 }
 

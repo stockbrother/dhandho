@@ -4,65 +4,26 @@ import { Jasmine_ } from '../../util/Jasmine_';
 import { Angular_ } from './Angular_';
 
 import Matchers = jasmine.Matchers;
-/**
- * Usage as a example:<br>
- * <code>
- * public class LoggerSpec extends UnitDescriber {
- * 
- * public static void main(String[] args) {
- * new LoggerSpec('Logger Test').describe();
- * }
- * 
- * Logger logger;
- * 
- * public LoggerSpec(String desc) {
- * super(desc);
- * }
- * 
- * &#64;Override
- * public void run() {
- * 
- * this.beforeEach(() -> {
- * TestModuleMetadata meta = new TestModuleMetadata();
- * meta.providers = new Class<?>[] { Logger.class };
- * TestBed.configureTestingModule(meta);
- * TestBed.compileComponents();
- * logger = TestBed.get(Logger.class);
- * });
- * 
- * this.it('Assert logger is injected.', (done) -> {
- * this.expect(this.logger).toBeTruthy('Logger not able being injected.');
- * this.logger.debug('debug msg');
- * this.logger.info('info msg');
- * this.logger.warn('warn msg');
- * this.logger.error('error msg');
- * done.$apply();
- * });
- * }
- * }
- * </code>
- * 
- * @author Wu
- * @param {string} desc
- * @class
- */
+
 export class AngularUnitDescriber {
     desc: string;
 
     public constructor(desc?: any) {
         if (((typeof desc === 'string') || desc === null)) {
             let __args = Array.prototype.slice.call(arguments);
-            
+
             (() => {
                 this.desc = desc;
             })();
         } else if (desc === undefined) {
             let __args = Array.prototype.slice.call(arguments);
-            
+
             (() => {
                 this.desc = /* getName */(c => c['__class'] ? c['__class'] : c['name'])((<any>this.constructor));
             })();
-        } else throw new Error('invalid overload');
+        } else {
+            throw new Error('invalid overload');
+        }
     }
 
     public async<T>(run: () => void): (p1: T) => void {
@@ -86,11 +47,13 @@ export class AngularUnitDescriber {
             return <any>this.tick$double(time);
         } else if (time === undefined) {
             return <any>this.tick$();
-        } else throw new Error('invalid overload');
+        } else {
+            throw new Error('invalid overload');
+        }
     }
 
     /**
-     * 
+     *
      */
     public describe() {
         Jasmine_.describe_(this.desc, () => {
@@ -114,11 +77,13 @@ export class AngularUnitDescriber {
     }
 
     public it(desc?: any, func?: any): any {
-        if (((typeof desc === 'string') || desc === null) && ((typeof func === 'function' && (<any>func).length == 0) || func === null)) {
+        if (((typeof desc === 'string') || desc === null) && ((typeof func === 'function' && (<any>func).length === 0) || func === null)) {
             return <any>this.it$java_lang_String$java_lang_Runnable(desc, func);
-        } else if (((typeof desc === 'string') || desc === null) && ((typeof func === 'function' && (<any>func).length == 1) || func === null)) {
+        } else if (((typeof desc === 'string') || desc === null) && ((typeof func === 'function' && (<any>func).length === 1) || func === null)) {
             return <any>this.it$java_lang_String$java_util_function_Consumer(desc, func);
-        } else throw new Error('invalid overload');
+        } else {
+            throw new Error('invalid overload');
+        }
     }
 
     it$java_lang_String$java_util_function_Consumer(desc: string, func: (p1: DoneFn) => void): AngularUnitDescriber {
@@ -142,9 +107,3 @@ export class AngularUnitDescriber {
     public run() {
     }
 }
-AngularUnitDescriber['__class'] = 'app.dhojsw.ng.util.AngularUnitDescriber';
-AngularUnitDescriber['__interfaces'] = ['java.lang.Runnable'];
-
-
-
-

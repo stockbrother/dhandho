@@ -24,7 +24,3 @@ export class Logger {
         (o => o.info.apply(o, [msg].concat(<any[]>args)))(console);
     }
 }
-Logger['__class'] = 'app.dhojsw.ng.service.Logger';
-
-
-

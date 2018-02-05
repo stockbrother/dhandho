@@ -42,13 +42,19 @@ export class StockListComponentSpec extends ComponentUnitDescriber<StockListComp
      */
     public run() {
         this.beforeEach(() => {
-            return new StockListComponentSpec.__app_dhojsw_ng_stock_StockListComponentSpec_BeforeEach<StockListComponent>(this).run();
+            return new StockListComponentSpec.BeforeEach<StockListComponent>(this).run();
         }
         );
         this.itFakeAsync('Test click refresh stock list.', () => {
             this.expect<any>(this.comp).toBeTruthy();
-            let jsonS: string = /* replace */('{\r\n            \'type\': \'table\',\r\n            \'columnNames\': [\'corpId\', \'corpName\'],\r\n            \'rowArray\': [\r\n                [\'000001\', \'Name1\'],\r\n                [\'000002\', \'Name2\'],\r\n                [\'000003\', \'Name3\'],\r\n                [\'000004\', \'Name4\']\r\n            ]\r\n        }').split('\'').join('\"');
-            let response: any = JSON.parse(jsonS);
+            let response = {
+                'type': 'table',
+                'columnNames': ['corpId', 'corpName'],
+                'rowArray': [
+                    ['000001', 'Name1'],
+                    ['000002', 'Name2'], ['000003', 'Name3'], ['000004', 'Name4']
+                ]
+            };
             this.expect<any>(this.comp.responseArray.length).toEqual(0);
             {
                 let button: DebugElement = this.fixture.debugElement.query(By.css('button'));
@@ -76,14 +82,11 @@ export class StockListComponentSpec extends ComponentUnitDescriber<StockListComp
     }
 
 }
-StockListComponentSpec['__class'] = 'app.dhojsw.ng.stock.StockListComponentSpec';
-StockListComponentSpec['__interfaces'] = ['java.lang.Runnable'];
-
 
 
 export namespace StockListComponentSpec {
 
-    export class __app_dhojsw_ng_stock_StockListComponentSpec_BeforeEach<T> {
+    export class BeforeEach<T> {
         unit: ComponentUnitDescriber<T>;
 
         public constructor(unit: ComponentUnitDescriber<T>) {
@@ -106,6 +109,5 @@ export namespace StockListComponentSpec {
     }
 
 }
-
 
 StockListComponentSpec.main(null);

@@ -39,9 +39,3 @@ export class StockListComponent extends AbstractDataResponseComponent<JsonRespon
     public ngOnInit() {
     }
 }
-StockListComponent['__class'] = 'app.dhojsw.ng.stock.StockListComponent';
-StockListComponent['__interfaces'] = ['def.angular.core.OnInit'];
-
-
-
-

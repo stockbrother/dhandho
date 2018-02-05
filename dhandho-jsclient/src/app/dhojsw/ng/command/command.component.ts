@@ -4,13 +4,18 @@ import common_http = require('@angular/common/http');
 import core = require('@angular/core');
 import rxjs = require('rxjs/Observable');
 import { Logger } from '../service/logger';
+import { BackendInterface } from '../service/backend.interface';
 import { CommandResponse } from './command.response';
 
 import js_isNumber = jsnative.js_isNumber;
 import HttpClient = common_http.HttpClient;
 import Component = core.Component;
 import Observable = rxjs.Observable;
-@Component({ templateUrl: './command.component.html', styleUrls: ['./command.component.css'] })
+
+@Component({
+    templateUrl: './command.component.html',
+    styleUrls: ['./command.component.css']
+})
 export class CommandComponent {
     public title: string;
 
@@ -20,18 +25,13 @@ export class CommandComponent {
 
     url: string = '/web/cmd/';
 
-    http: HttpClient;
+    backend: BackendInterface;
 
     log: Logger;
 
-    public constructor(http: HttpClient, log: Logger) {
-        if (this.title === undefined) this.title = null;
-
-        if (this.command === undefined) this.command = null;
-        if (this.http === undefined) this.http = null;
-        if (this.log === undefined) this.log = null;
+    public constructor(http: BackendInterface, log: Logger) {
         this.title = 'Command Component';
-        this.http = http;
+        this.backend = http;
         this.log = log;
     }
 
@@ -46,14 +46,14 @@ export class CommandComponent {
     public onButtonClick() {
         let command: string = this.command;
         let requestTime: number = Date.now();
-        let ores: Observable<any> = this.http.post(this.url, command);
-        ores.toPromise().then(((requestTime, command) => {
+        let ores: Observable<any> = this.backend.post(this.url, command);
+        ores.toPromise().then(((trequestTime, tcommand) => {
             return (json) => {
                 this.log.debug(json);
-                this.onResponse(requestTime, command, json);
+                this.onResponse(trequestTime, tcommand, json);
                 this.log.debug('post response:' + json);
                 return null;
-            }
+            };
         })(requestTime, command)).catch((t) => {
             this.log.error('catched exception');
             this.log.error(t);
