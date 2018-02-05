@@ -37,6 +37,10 @@ export class Jasmine_ {
         beforeEach(<any>(run));
     }
 
+    public static afterEach_(run: () => void) {
+        afterEach(<any>(run));
+    }
+
     public static expect_<T>(obj: T): Matchers<T> {
         return expect(obj);
     }

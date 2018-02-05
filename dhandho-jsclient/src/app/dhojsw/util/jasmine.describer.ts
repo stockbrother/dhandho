@@ -4,7 +4,7 @@ import { Jasmine_ } from './Jasmine_';
 
 import Matchers = jasmine.Matchers;
 /**
- * 
+ *
  * @author Wu
  * @param {string} desc
  * @class
@@ -61,6 +61,12 @@ export class JasmineDescriber {
         Jasmine_.beforeEach_(<any>(run));
         return this;
     }
+
+    afterEach(run: () => void): JasmineDescriber {
+        Jasmine_.afterEach_(<any>(run));
+        return this;
+    }
+
 
     public expect<T>(obj: T): Matchers<T> {
         return Jasmine_.expect_<any>(obj);
