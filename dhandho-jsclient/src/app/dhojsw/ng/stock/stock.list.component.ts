@@ -15,7 +15,7 @@ export class StockListComponent extends AbstractDataResponseComponent<JsonRespon
     }
 
     /**
-     * 
+     *
      * @return {*}
      */
     newRequestBody(): any {
@@ -23,7 +23,7 @@ export class StockListComponent extends AbstractDataResponseComponent<JsonRespon
     }
 
     /**
-     * 
+     *
      * @param {number} requestTime
      * @param {*} reqBody
      * @param {*} json
@@ -34,7 +34,7 @@ export class StockListComponent extends AbstractDataResponseComponent<JsonRespon
     }
 
     /**
-     * 
+     *
      */
     public ngOnInit() {
     }

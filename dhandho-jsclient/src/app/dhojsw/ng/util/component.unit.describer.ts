@@ -34,52 +34,22 @@ export class ComponentUnitDescriber<C> extends AngularUnitDescriber {
     public location: Location;
 
     public constructor(desc?: any, compType?: any) {
-        if(((typeof desc === 'string') || desc === null) && ((compType != null) || compType === null)) {
+        if (((typeof desc === 'string') || desc === null) && ((compType != null) || compType === null)) {
             let __args = Array.prototype.slice.call(arguments);
             super(desc);
-            if(this.httpMock === undefined) this.httpMock = null;
-            if(this.comp === undefined) this.comp = null;
-            if(this.fixture === undefined) this.fixture = null;
-            if(this.de === undefined) this.de = null;
-            if(this.ne === undefined) this.ne = null;
-            if(this.compType === undefined) this.compType = null;
-            if(this.router === undefined) this.router = null;
-            if(this.location === undefined) this.location = null;
-            if(this.httpMock === undefined) this.httpMock = null;
-            if(this.comp === undefined) this.comp = null;
-            if(this.fixture === undefined) this.fixture = null;
-            if(this.de === undefined) this.de = null;
-            if(this.ne === undefined) this.ne = null;
-            if(this.compType === undefined) this.compType = null;
-            if(this.router === undefined) this.router = null;
-            if(this.location === undefined) this.location = null;
             (() => {
                 this.compType = compType;
             })();
-        } else if(((desc != null) || desc === null) && compType === undefined) {
+        } else if (((desc != null) || desc === null) && compType === undefined) {
             let __args = Array.prototype.slice.call(arguments);
-            let compType: any = __args[0];
+            let tcompType: any = __args[0];
             super();
-            if(this.httpMock === undefined) this.httpMock = null;
-            if(this.comp === undefined) this.comp = null;
-            if(this.fixture === undefined) this.fixture = null;
-            if(this.de === undefined) this.de = null;
-            if(this.ne === undefined) this.ne = null;
-            if(this.compType === undefined) this.compType = null;
-            if(this.router === undefined) this.router = null;
-            if(this.location === undefined) this.location = null;
-            if(this.httpMock === undefined) this.httpMock = null;
-            if(this.comp === undefined) this.comp = null;
-            if(this.fixture === undefined) this.fixture = null;
-            if(this.de === undefined) this.de = null;
-            if(this.ne === undefined) this.ne = null;
-            if(this.compType === undefined) this.compType = null;
-            if(this.router === undefined) this.router = null;
-            if(this.location === undefined) this.location = null;
             (() => {
-                this.compType = compType;
+                this.compType = tcompType;
             })();
-        } else throw new Error('invalid overload');
+        } else {
+            throw new Error('invalid overload');
+        }
     }
 }
 ComponentUnitDescriber['__class'] = 'app.dhojsw.ng.util.component.unit.describer';
@@ -93,7 +63,6 @@ export namespace ComponentUnitDescriber {
         unit: ComponentUnitDescriber<T>;
 
         public constructor(unit: ComponentUnitDescriber<T>) {
-            if(this.unit === undefined) this.unit = null;
             this.unit = unit;
         }
 

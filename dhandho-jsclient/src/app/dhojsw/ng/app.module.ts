@@ -1,8 +1,8 @@
 /* Generated from Java with JSweet 2.0.1 - http://www.jsweet.org */
-import common_http = require( '@angular/common/http' );
+import common_http = require('@angular/common/http');
 import { NgModule } from '@angular/core';
-import forms = require( '@angular/forms' );
-import platform_browser = require( '@angular/platform-browser' );
+import forms = require('@angular/forms');
+import platform_browser = require('@angular/platform-browser');
 import { CommandComponent } from './command/command.component';
 import { MyComponent } from './my/my.component';
 import { Logger } from './service/logger';
@@ -20,7 +20,11 @@ import BrowserModule = platform_browser.BrowserModule;
  * @author wu
  * @class
  */
-@NgModule( { imports: [platform_browser.BrowserModule, FormsModule, HttpClientModule, RouterModuleForRoot.forRoot()], declarations: [AppComponent, MyComponent, CommandComponent, StockListComponent, StockDetailComponent, PageNotFoundComponent], bootstrap: [AppComponent], providers: [Logger] } )
+@NgModule({
+    imports: [platform_browser.BrowserModule, FormsModule, HttpClientModule, RouterModuleForRoot.forRoot()],
+    declarations: [AppComponent, MyComponent, CommandComponent, StockListComponent, StockDetailComponent, PageNotFoundComponent],
+    bootstrap: [AppComponent], providers: [Logger]
+})
 export class AppModule {
 
 

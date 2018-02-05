@@ -16,11 +16,5 @@ export class App2E2e extends JasmineDescriber {
         super();
     }
 }
-App2E2e['__class'] = 'app.dhojsw.ng.e2e.App2E2e';
-App2E2e['__interfaces'] = ['java.lang.Runnable'];
-
-
-
-
 
 App2E2e.main( null );

@@ -52,7 +52,3 @@ export class TestBedHelper {
         return TestBed.createComponent(class1);
     }
 }
-TestBedHelper['__class'] = 'app.dhojsw.ng.util.TestBedHelper';
-
-
-

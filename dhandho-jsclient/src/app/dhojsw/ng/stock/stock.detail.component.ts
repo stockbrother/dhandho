@@ -18,12 +18,10 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
 
     public constructor(http: HttpClient, log: Logger) {
         super(http, '/web/stocks/', log);
-        if(this.stockId === undefined) this.stockId = null;
-        if(this.route === undefined) this.route = null;
     }
 
     /**
-     * 
+     *
      * @return {*}
      */
     newRequestBody(): any {
@@ -31,7 +29,7 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
     }
 
     /**
-     * 
+     *
      * @param {number} requestTime
      * @param {*} reqBody
      * @param {*} json
@@ -42,7 +40,7 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
     }
 
     /**
-     * 
+     *
      */
     public ngOnInit() {
         this.route.paramMap.toPromise().then((map) => {

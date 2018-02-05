@@ -22,9 +22,5 @@ export class JsNativeSpec {
         });
     }
 }
-JsNativeSpec['__class'] = 'app.dhojsw.ng.testing.JsNativeSpec';
-
-
-
 
 JsNativeSpec.main(null);

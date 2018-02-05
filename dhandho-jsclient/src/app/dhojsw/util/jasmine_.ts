@@ -13,31 +13,31 @@ import Matchers = jasmine.Matchers;
  * @class
  */
 export class Jasmine_ {
-    public static describe_(desc : string, run : () => void) {
+    public static describe_(desc: string, run: () => void) {
         describe(desc, <any>(run));
     }
 
-    public static it_$java_lang_String$java_util_function_Consumer(desc : string, fun : (p1: DoneFn) => void) {
+    public static it_$java_lang_String$java_util_function_Consumer(desc: string, fun: (p1: DoneFn) => void) {
         it(desc, <any>(fun));
     }
 
-    public static it_(desc? : any, fun? : any) : any {
-        if(((typeof desc === 'string') || desc === null) && ((typeof fun === 'function' && (<any>fun).length == 1) || fun === null)) {
+    public static it_(desc?: any, fun?: any): any {
+        if (((typeof desc === 'string') || desc === null) && ((typeof fun === 'function' && (<any>fun).length == 1) || fun === null)) {
             return <any>Jasmine_.it_$java_lang_String$java_util_function_Consumer(desc, fun);
-        } else if(((typeof desc === 'string') || desc === null) && ((typeof fun === 'function' && (<any>fun).length == 0) || fun === null)) {
+        } else if (((typeof desc === 'string') || desc === null) && ((typeof fun === 'function' && (<any>fun).length == 0) || fun === null)) {
             return <any>Jasmine_.it_$java_lang_String$java_lang_Runnable(desc, fun);
         } else throw new Error('invalid overload');
     }
 
-    public static it_$java_lang_String$java_lang_Runnable(desc : string, fun : () => void) {
+    public static it_$java_lang_String$java_lang_Runnable(desc: string, fun: () => void) {
         it(desc, <any>(fun));
     }
 
-    public static beforeEach_(run : () => void) {
+    public static beforeEach_(run: () => void) {
         beforeEach(<any>(run));
     }
 
-    public static expect_<T>(obj : T) : Matchers<T> {
+    public static expect_<T>(obj: T): Matchers<T> {
         return expect(obj);
     }
 }

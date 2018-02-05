@@ -36,11 +36,5 @@ export class LoggerSpec extends JasmineDescriber {
         });
     }
 }
-LoggerSpec['__class'] = 'app.dhojsw.ng.service.LoggerSpec';
-LoggerSpec['__interfaces'] = ['java.lang.Runnable'];
-
-
-
-
 
 LoggerSpec.main(null);

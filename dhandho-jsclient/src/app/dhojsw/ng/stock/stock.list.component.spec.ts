@@ -28,15 +28,23 @@ import By = platform_browser.By;
 import Router = router.Router;
 import RouterTestingModule = router_testing.RouterTestingModule;
 export class StockListComponentSpec extends ComponentUnitDescriber<StockListComponent> {
+
+    public static main(args: string[]) {
+        new StockListComponentSpec().describe();
+    }
+
     public constructor() {
         super(StockListComponent);
     }
 
     /**
-     * 
+     *
      */
     public run() {
-        this.beforeEach(() => { return new StockListComponentSpec.__app_dhojsw_ng_stock_StockListComponentSpec_BeforeEach<StockListComponent>(this).run(); });
+        this.beforeEach(() => {
+            return new StockListComponentSpec.__app_dhojsw_ng_stock_StockListComponentSpec_BeforeEach<StockListComponent>(this).run();
+        }
+        );
         this.itFakeAsync('Test click refresh stock list.', () => {
             this.expect<any>(this.comp).toBeTruthy();
             let jsonS: string = /* replace */('{\r\n            \'type\': \'table\',\r\n            \'columnNames\': [\'corpId\', \'corpName\'],\r\n            \'rowArray\': [\r\n                [\'000001\', \'Name1\'],\r\n                [\'000002\', \'Name2\'],\r\n                [\'000003\', \'Name3\'],\r\n                [\'000004\', \'Name4\']\r\n            ]\r\n        }').split('\'').join('\"');
@@ -56,20 +64,17 @@ export class StockListComponentSpec extends ComponentUnitDescriber<StockListComp
                 this.tick();
                 this.expect<any>(this.comp.responseArray.length).toEqual(1);
                 this.fixture.detectChanges();
-            };
+            }
             {
                 this.router.navigate(['/stockDetail/000001']);
                 this.tick$double(50);
                 this.expect<any>(this.location.path()).toBe('/stockDetail/000001');
-            };
+            }
             {
-            };
+            }
         });
     }
 
-    public static main(args: string[]) {
-        new StockListComponentSpec().describe();
-    }
 }
 StockListComponentSpec['__class'] = 'app.dhojsw.ng.stock.StockListComponentSpec';
 StockListComponentSpec['__interfaces'] = ['java.lang.Runnable'];
@@ -82,12 +87,11 @@ export namespace StockListComponentSpec {
         unit: ComponentUnitDescriber<T>;
 
         public constructor(unit: ComponentUnitDescriber<T>) {
-            if(this.unit === undefined) this.unit = null;
             this.unit = unit;
         }
 
         /**
-         * 
+         *
          */
         public run() {
             let testBed: TestBedHelper = new TestBedHelper().imports(FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes(AppRoutes.getRoutes())).declarations(this.unit.compType, StockDetailComponent, CommandComponent, MyComponent, PageNotFoundComponent).providers(Logger).compileComponents();
@@ -100,13 +104,8 @@ export namespace StockListComponentSpec {
             this.unit.location = <any>(testBed.get<any>(Location));
         }
     }
-    __app_dhojsw_ng_stock_StockListComponentSpec_BeforeEach['__class'] = 'app.dhojsw.ng.stock.StockListComponentSpec.BeforeEach';
-    __app_dhojsw_ng_stock_StockListComponentSpec_BeforeEach['__interfaces'] = ['java.lang.Runnable'];
-
 
 }
-
-
 
 
 StockListComponentSpec.main(null);

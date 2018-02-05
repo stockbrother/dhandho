@@ -2,14 +2,11 @@
 export class JsonResponse {
     public json: any;
 
-    public responseTime: number;
+    public responseTime: number = 0;
 
-    public requestTime: number;
+    public requestTime: number = 0;
 
     public constructor(requestTime: number, json: any) {
-        if(this.json === undefined) this.json = null;
-        if(this.responseTime === undefined) this.responseTime = 0;
-        if(this.requestTime === undefined) this.requestTime = 0;
         this.requestTime = requestTime;
         this.json = json;
         this.responseTime = /* currentTimeMillis */Date.now();
@@ -19,7 +16,6 @@ export class JsonResponse {
         return this.responseTime - this.requestTime;
     }
 }
-JsonResponse['__class'] = 'app.dhojsw.ng.support.JsonResponse';
 
 
 

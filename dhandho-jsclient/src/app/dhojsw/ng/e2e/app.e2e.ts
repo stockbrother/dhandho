@@ -42,10 +42,6 @@ export class AppE2e extends JasmineDescriber {
         });
     }
 }
-AppE2e['__class'] = 'app.dhojsw.ng.e2e.AppE2e';
-AppE2e['__interfaces'] = ['java.lang.Runnable'];
-
-
 
 export namespace AppE2e {
 
@@ -60,13 +56,7 @@ export namespace AppE2e {
         constructor() {
         }
     }
-    MyFunction['__class'] = 'app.dhojsw.ng.e2e.AppE2e.MyFunction';
-    MyFunction['__interfaces'] = ['java.util.function.Consumer'];
-
 
 }
-
-
-
 
 AppE2e.main(null);

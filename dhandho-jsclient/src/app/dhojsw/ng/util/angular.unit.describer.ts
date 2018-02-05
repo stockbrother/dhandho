@@ -52,15 +52,13 @@ export class AngularUnitDescriber {
     public constructor(desc?: any) {
         if (((typeof desc === 'string') || desc === null)) {
             let __args = Array.prototype.slice.call(arguments);
-            if (this.desc === undefined) this.desc = null;
-            if (this.desc === undefined) this.desc = null;
+            
             (() => {
                 this.desc = desc;
             })();
         } else if (desc === undefined) {
             let __args = Array.prototype.slice.call(arguments);
-            if (this.desc === undefined) this.desc = null;
-            if (this.desc === undefined) this.desc = null;
+            
             (() => {
                 this.desc = /* getName */(c => c['__class'] ? c['__class'] : c['name'])((<any>this.constructor));
             })();
