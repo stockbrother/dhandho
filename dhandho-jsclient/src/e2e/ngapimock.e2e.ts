@@ -10,6 +10,7 @@ export class NgApimockTest extends JasmineDescriber {
         });
 
         this.it('test stock list with ngApimock', () => {
+
             ngApimock.selectScenario('api/stock-list', 'first-entry');
             browser.get('/');
             let buttons: ElementArrayFinder = element.all(by.css('a'));
@@ -22,7 +23,10 @@ export class NgApimockTest extends JasmineDescriber {
             refreshButton.click();
             let table: ElementFinder = element(by.css('table'));
             expect(table).toBeTruthy();
-            let allStockTr: ElementArrayFinder = table.element('tbody').all('tr');
+            let tbody: ElementFinder = table.element(by.tagName('tbody'));
+            expect(tbody).toBeTruthy('no <tbody> found');
+            let allStockTr: ElementArrayFinder = tbody.all(by.tagName('tr'));
+            expect(allStockTr).toBeTruthy('no <tr>...</> found');
             expect(allStockTr.count()).toEqual(4); // 4 stock in list.
             // TODO click one of it.
 

@@ -2,14 +2,14 @@
 import jsnative = require('jsnative');
 import common_http = require('@angular/common/http');
 import core = require('@angular/core');
-import rxjs = require('rxjs');
+import { Observable } from 'rxjs/Observable';
 import { Logger } from '../service/logger';
 import { JsonResponse } from './json.response';
 
 import js_isNumber = jsnative.js_isNumber;
 import HttpClient = common_http.HttpClient;
 import OnInit = core.OnInit;
-import Observable = rxjs.Observable;
+
 export abstract class AbstractDataResponseComponent<T extends JsonResponse> {
     url: string;
 
@@ -37,7 +37,8 @@ export abstract class AbstractDataResponseComponent<T extends JsonResponse> {
 
     abstract newResponse(requestTime: number, reqBody: any, json: any): T;
 
-    public onButtonClick() {
+    protected sendRequest() {
+        this.log.info('onButtonClick');
         let requestTime: number = Date.now();
         let body: any = this.newRequestBody();
         let ores: Observable<any> = this.http.post(this.url, body);
@@ -55,7 +56,7 @@ export abstract class AbstractDataResponseComponent<T extends JsonResponse> {
         });
     }
 
-    public showChart(): boolean {
+    private showChart(): boolean {
         return true;
     }
 

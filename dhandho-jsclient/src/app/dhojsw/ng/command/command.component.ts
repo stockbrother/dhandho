@@ -69,7 +69,3 @@ export class CommandComponent {
         return js_isNumber(json);
     }
 }
-CommandComponent['__class'] = 'app.dhojsw.ng.command.CommandComponent';
-
-
-
