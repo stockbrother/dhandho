@@ -1,5 +1,5 @@
 <div>
-	<button (click)="onButtonClick()">Refresh Stock List</button>
+	<button (click)="onButtonClick()">Refresh</button>
 	<div *ngFor="let response of responseArray" class="card">
 		<div [ngSwitch]="response.json.type" class="body">
 			<div *ngSwitchCase="'table'">

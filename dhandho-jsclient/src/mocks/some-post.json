@@ -1,0 +1,26 @@
+{
+  "expression": "api/some-post",
+  "method": "POST",
+  "name": "api/some-post",
+  "responses": {
+    "successful": {
+      "status": 200,
+      "default": true,
+      "data": {
+        "some": "thing"
+      }
+    },
+    "anotherSuccess": {
+      "status": 200,
+      "data": {
+        "some": "thing else"
+      }
+    },
+    "internal-server-error": {
+      "status": 500
+    }
+  }
+}
+
+        
+        

@@ -19,8 +19,11 @@ Run `ng build --base-href=/web/` to build the project. The build artifacts will 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
+Run `npm run mocks` to start the ngApimock server.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+The ngApimock web interface is available at `http://localhost:3000/mocking`
+
+Run `npm run e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 

@@ -1,0 +1,36 @@
+{
+	"expression": "api/stock-list",
+	"method": "POST",
+	"name": "api/stock-list",
+	"responses": {
+		"first-entry": {
+			"status": 200,
+			"default": true,
+			"data": {
+				"type": "table",
+				"columnNames": [
+					"corpId",
+					"corpName"
+				],
+				"rowArray": [
+					["000001", "Stock1"],
+					["000002", "Stock2"],
+					["000003", "Stock3"],
+					["000004", "Stock4"]
+				]
+			}
+		},
+		"anotherSuccess": {
+			"status": 200,
+			"data": {
+				"some": "thing else"
+			}
+		},
+		"internal-server-error": {
+			"status": 500
+		}
+	}
+}
+
+        
+        

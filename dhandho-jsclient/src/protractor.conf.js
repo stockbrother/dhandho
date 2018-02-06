@@ -24,5 +24,11 @@ exports.config = {
       project: 'src/tsconfig.e2e.json'
     });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+    global.ngApimock = require('../.tmp/ngApimock/protractor.mock.js');
+    browser.ngApimock = global.ngApimock; 
+  },
+  ngApimockOpts: {
+      angularVersion: 2,
+      hybrid: false
   }
 };
