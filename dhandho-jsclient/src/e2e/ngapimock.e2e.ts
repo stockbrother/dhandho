@@ -2,7 +2,7 @@ import { JasmineDescriber } from '../app/dhojsw/util/jasmine.describer';
 import { ElementPrinter } from './util/element.printer';
 import util = require('util');
 import { protractor, browser, element, by, ElementArrayFinder, ElementFinder } from 'protractor';
-import { Logs } from 'selenium-webdriver';
+import { Logs, promise } from 'selenium-webdriver';
 import { LogsUtil } from './util/e2e.util';
 let console = LogsUtil.console;
 
@@ -57,7 +57,7 @@ export class NgApimockTest extends JasmineDescriber {
                     let body = element(by.tagName('body'));
                     expect(body).toBeTruthy('body not found');
 
-                    console.info('info:' + new ElementPrinter(body).toString());
+                    new ElementPrinter(body).print();
 
                     expect(title).toEqual('000001', 'hello here!');
                     // expect(title).toEqual('000001', new ElementPrinter());
