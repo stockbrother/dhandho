@@ -12,18 +12,13 @@
 					</thead>
 					<tbody>
 						<tr *ngFor="let row of response.json.rowArray; let i = index">
-							<td
-								*ngFor="let cname of response.json.columnNames; let j = index">
-
-								<div *ngIf="isNumber(row[j])">{{row[j] | number:'1.2-3'}}
+							<td *ngFor="let cname of response.json.columnNames; let j = index">
+								<div *ngIf="j==0">
+									<a routerLink="/stockDetail/{{row[j]}}" routerLinkActive="active">{{row[j]}}</a>
 								</div>
-
-								<div *ngIf="!isNumber(row[j])">{{row[j]}}</div> <a
-								routerLink="/stockDetail/{{row[j]}}" routerLinkActive="active">OpenStockFrontPage</a>
-
+								<div *ngIf="j>0">{{row[j]}}</div>
 							</td>
 						</tr>
-
 					</tbody>
 				</table>
 			</div>

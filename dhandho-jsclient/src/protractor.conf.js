@@ -3,6 +3,8 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 
+
+
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
@@ -16,8 +18,13 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
+    isVerbose: true,
+    realtimeFailure: true,
+    includeStackTrace: true,
     defaultTimeoutInterval: 30000,
-    print: function() {}
+    print: function() {
+    	
+    }
   },
   onPrepare() {
     require('ts-node').register({
@@ -28,7 +35,7 @@ exports.config = {
     browser.ngApimock = global.ngApimock; 
   },
   ngApimockOpts: {
-      angularVersion: 2,
-      hybrid: false
+    angularVersion: 2,
+    hybrid: false
   }
 };
