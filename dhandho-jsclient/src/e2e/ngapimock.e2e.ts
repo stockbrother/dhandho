@@ -1,10 +1,11 @@
 import { JasmineDescriber } from '../app/dhojsw/util/jasmine.describer';
-import { ElementPrinter } from './util/element.printer';
+import { printAll } from './util/element.printer';
 import util = require('util');
 import { protractor, browser, element, by, ElementArrayFinder, ElementFinder } from 'protractor';
 import { Logs, promise } from 'selenium-webdriver';
 import { LogsUtil } from './util/e2e.util';
 let console = LogsUtil.console;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 export class NgApimockTest extends JasmineDescriber {
 
@@ -53,17 +54,9 @@ export class NgApimockTest extends JasmineDescriber {
             {// detail component
                 let h2: ElementFinder = element(by.css('h2'));
                 expect(h2).toBeTruthy('h2 not found');
-                h2.getText().then((title) => {
-                    let body = element(by.tagName('body'));
-                    expect(body).toBeTruthy('body not found');
-
-                    new ElementPrinter(body).print();
-
-                    expect(title).toEqual('000001', 'hello here!');
-                    // expect(title).toEqual('000001', new ElementPrinter());
-                });
+                expect(h2.getText()).toEqual('Stock Id:000001'); // Why a promise from 3rd party can be equal to a string?
             }
-
+            // TODO find way to printAll for any failure of expect.
             done();
         });
 

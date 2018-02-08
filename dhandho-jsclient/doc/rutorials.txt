@@ -1,0 +1,2 @@
+
+https://scotch.io/tutorials/handling-route-parameters-in-angular-v2

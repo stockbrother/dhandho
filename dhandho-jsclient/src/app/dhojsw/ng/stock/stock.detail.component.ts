@@ -19,8 +19,9 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
 
     route: ActivatedRoute;
 
-    public constructor(http: HttpClient, log: Logger) {
+    public constructor(http: HttpClient, log: Logger, route: ActivatedRoute) {
         super(http, '/web/stocks/', log);
+        this.route = route;
     }
 
     /**
@@ -46,8 +47,9 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
      *
      */
     public ngOnInit() {
-        this.route.paramMap.toPromise().then((map) => {
-            this.stockId = map.get('id');
+        // this.stockId = this.route.snapshot.paramMap.get('id');
+        this.route.paramMap.subscribe(params => {
+            this.stockId = params.get('id'); //
         });
     }
 }

@@ -13,7 +13,7 @@ interface ParentContext {
     text: string;
 }
 
-export class ElementPrinter {
+class ElementPrinter {
 
     root: ElementFinder;
     public constructor(root?: ElementFinder) {
@@ -23,44 +23,47 @@ export class ElementPrinter {
         }
     }
 
-    public print() {
-        this.doPrint(null, this.root);
+    public print(): promise.Promise<any> {
+        return this.doPrint(null, this.root);
     }
 
-    private doPrint(pc: ParentContext, ef: ElementFinder): void {
+    private doPrint(pc: ParentContext, ef: ElementFinder): promise.Promise<any> {
+        // this.log('doPrint, geting a promise');
         let deep: number = (pc == null ? 0 : (pc.deep + 1));
-
         if (deep > maxDeep) {
-            console.info('maxDeep exceeded');
-            return;
+            return promise.rejected('maxDeep exceeded');
         }
 
-        let pro1: promise.Promise<any[]> = promise.map(
-            promise.all([ef.getTagName(), ef.getText()]),
+        return promise.all([ef.getTagName(), ef.getText()]).then(
             (names) => {
-                return names;
-            });
+                let pc2: ParentContext = {
+                    deep: deep + 1,
+                    childCount: 0,
+                    tag: names[0],
+                    text: names[1]
+                };
+                return pc2;
+            }).then((pc2) => {
+                this.println(deep, '<' + pc2.tag + '>');
+                return pc2;
+            }).then((pc2) => {
 
-        pro1.then((names) => {
-            let pc2: ParentContext = {
+                let children: ElementArrayFinder = ef.all(by.xpath('./*'));
 
-                deep: deep + 1,
-                childCount: 0,
-                tag: names[0],
-                text: names[1]
-            };
-            this.println(deep, '<' + pc2.tag + '>');
-            let children: ElementArrayFinder = ef.all(by.xpath('./*'));
+                return children.each((child: ElementFinder, index) => {
+                    // this.log('each child:' + index);
+                    return this.doPrint(pc2, child);
+                }).then(() => {
+                    return pc2;
+                });
+            }).then((pc2) => {
+                this.println(deep, '</' + pc2.tag + '>');
+            })
+            ;
 
-            children.each((child: ElementFinder, index) => {
-                this.doPrint(pc2, child);
-            });
-
-            this.println(deep, '</' + pc2.tag + '>');
-        });
-
-
-
+    }
+    private log(msg: any) {
+        this.println(0, msg);
     }
     private println(intend: number, msg: any) {
         let line: string[] = [];
@@ -71,4 +74,10 @@ export class ElementPrinter {
         console.info(line.join(' '));
     }
 
+}
+
+export function printAll() {
+    let body = element(by.tagName('body'));
+    expect(body).toBeTruthy('body not found');
+    new ElementPrinter(body).print();
 }
