@@ -31,8 +31,18 @@
 			<table id="basic-info-of-stock">
 				<tbody>
 					<tr>
-						<td></td>
+						<td><button (click)=onRefreshStockDetail()>刷新</button></td>
 					</tr>
+					<tr>
+						<td>股票名称:{{stockName}}</td>
+					</tr>
+					<tr>
+						<td>股价({{priceDate}}):{{unitPrice}}</td>
+					</tr>
+					<tr>
+						<td>市值:{{totalPrice}}</td>
+					</tr>
+
 				</tbody>
 			</table>
 		</td>

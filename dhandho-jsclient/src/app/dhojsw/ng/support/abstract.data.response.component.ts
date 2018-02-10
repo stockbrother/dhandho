@@ -9,7 +9,9 @@ import { JsonResponse } from './json.response';
 import js_isNumber = jsnative.js_isNumber;
 import HttpClient = common_http.HttpClient;
 import OnInit = core.OnInit;
-
+/**
+ * TODO use object/promise reuse for HTTP processing, deprecated base class reuse.
+ */
 export abstract class AbstractDataResponseComponent<T extends JsonResponse> {
     url: string;
 

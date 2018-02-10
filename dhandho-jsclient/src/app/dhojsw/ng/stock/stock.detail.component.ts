@@ -19,9 +19,31 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
 
     route: ActivatedRoute;
 
+    public priceDate: string;
+    public unitPrice: number;
+    public totalPrice: number;
+    public stockName: string;
     public constructor(http: HttpClient, log: Logger, route: ActivatedRoute) {
-        super(http, '/web/stocks/', log);
+        super(http, '/api/stock-detail', log);
         this.route = route;
+    }
+
+    public onResponse(requestTime: number, reqBody: any, json: any) {
+
+        let type: string = <string>Object.getOwnPropertyDescriptor(json, 'type').value;
+        this.log.debug('type:' + type);
+        let rt: JsonResponse = new JsonResponse(requestTime, json);
+        let mapData: any = <any>Object.getOwnPropertyDescriptor(json, 'mapData').value;
+
+        this.priceDate = <string>Object.getOwnPropertyDescriptor(mapData, 'priceDate').value;
+        this.unitPrice = <number>Object.getOwnPropertyDescriptor(mapData, 'unitPrice').value;
+        this.totalPrice = <number>Object.getOwnPropertyDescriptor(mapData, 'totalPrice').value;
+        this.stockName = <string>Object.getOwnPropertyDescriptor(mapData, 'stockName').value;
+
+    }
+
+    onRefreshStockDetail(): void {
+        super.sendRequest();
     }
 
     /**

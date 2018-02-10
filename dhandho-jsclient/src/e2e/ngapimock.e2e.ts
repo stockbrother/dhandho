@@ -20,6 +20,7 @@ export class NgApimockTest extends JasmineDescriber {
 
             ngApimock.selectScenario('api/stock-list', 'first-entry');
             browser.get('/');
+            // find route links
             let buttons: ElementArrayFinder = element.all(by.css('a'));
             expect(buttons.count()).toEqual(3);
 
@@ -65,8 +66,25 @@ export class NgApimockTest extends JasmineDescriber {
                     linkI.click();
                     // TODO check link available, return a 200 not a 404 or other.
                 }
+                // refresh detail
+                let refreshButton: ElementFinder = element(by.cssContainingText('button', '刷新'));
+                refreshButton.click();
+                {
+                    let stockNameTd: ElementFinder = element(by.cssContainingText('#basic-info-of-stock td', '股票名称:'));
+                    expect(stockNameTd).toBeTruthy();
+                    expect(stockNameTd.getText()).toEqual('股票名称:平安银行');
+                }
+                {
+                    let unitPriceTd: ElementFinder = element(by.cssContainingText('#basic-info-of-stock td', '股价'));
+                    expect(unitPriceTd).toBeTruthy();
+                    expect(unitPriceTd.getText()).toEqual('股价(2018/02/10T11:11:11+8000):9.9');
+                }
+                {
+                    let stockNameTd: ElementFinder = element(by.cssContainingText('#basic-info-of-stock td', '市值:'));
+                    expect(stockNameTd).toBeTruthy();
+                    expect(stockNameTd.getText()).toEqual('市值:9900000000');
+                }
 
-                // TODO find way to printAll for any failure of expect.
                 done();
             }
 

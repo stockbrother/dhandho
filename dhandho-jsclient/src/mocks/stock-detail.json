@@ -1,0 +1,27 @@
+{
+	"expression": "api/stock-detail",
+	"method": "POST",
+	"name": "api/stock-detail",
+	"responses": {
+		"first": {
+			"status": 200,
+			"default": true,
+			"data": {
+				"type": "map",
+				"mapData": {
+					"unitPrice": 9.9,
+					"priceDate": "2018/02/10T11:11:11+8000",
+					"totalPrice": 9900000000,
+					"stockId": "000001",
+					"stockName": "平安银行"
+				}
+			}
+		},
+		"internal-server-error": {
+			"status": 500
+		}
+	}
+}
+
+        
+        
