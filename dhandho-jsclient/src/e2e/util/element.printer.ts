@@ -76,8 +76,11 @@ class ElementPrinter {
 
 }
 
-export function printAll() {
-    let body = element(by.tagName('body'));
-    expect(body).toBeTruthy('body not found');
-    new ElementPrinter(body).print();
+export function printAll(root?: ElementFinder) {
+    if (root == null) {
+        let body = element(by.tagName('body'));
+        expect(body).toBeTruthy('body not found');
+        root = body;
+    }
+    new ElementPrinter(root).print();
 }

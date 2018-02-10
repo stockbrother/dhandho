@@ -5,7 +5,7 @@ import { protractor, browser, element, by, ElementArrayFinder, ElementFinder } f
 import { Logs, promise } from 'selenium-webdriver';
 import { LogsUtil } from './util/e2e.util';
 let console = LogsUtil.console;
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 export class NgApimockTest extends JasmineDescriber {
 
@@ -54,12 +54,22 @@ export class NgApimockTest extends JasmineDescriber {
             {// detail component
                 let h2: ElementFinder = element(by.css('h2'));
                 expect(h2).toBeTruthy('h2 not found');
-                expect(h2.getText()).toEqual('Stock Id:000001'); // Why a promise from 3rd party can be equal to a string?
+                expect(h2.getText()).toEqual('Stock Id:000001'); // Why???: a promise from 3rd party can be equal to a string?
+                let quickLinks: ElementFinder = element(by.id('quick-links-of-stock'));
+                expect(quickLinks).toBeTruthy();
+                // printAll(quickLinks);
+                let links: ElementArrayFinder = quickLinks.all(by.xpath('./tbody/tr/td/a'));
+                expect(links.count()).toEqual(4);
+                for (let i: number = 0; i < 4; i++) {
+                    let linkI: ElementFinder = links.get(i);
+                    linkI.click();
+                    // TODO check link available, return a 200 not a 404 or other.
+                }
+
+                // TODO find way to printAll for any failure of expect.
+                done();
             }
-            // TODO find way to printAll for any failure of expect.
-            done();
-        });
 
-    }// end of run
+        }); // end of it().
+    } // end of run
 }
-
