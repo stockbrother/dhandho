@@ -6,6 +6,10 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 
 
 exports.config = {
+  plugins: [{
+    package: 'protractor-console',
+    logLevels: ['severe','warning','info','debug']
+  }],
   allScriptsTimeout: 11000,
   specs: [
     './**/main.e2e.ts'

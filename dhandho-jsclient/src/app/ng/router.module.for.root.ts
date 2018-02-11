@@ -3,6 +3,7 @@ import core = require('@angular/core');
 import router = require('@angular/router');
 import { CommandComponent } from './command/command.component';
 import { MyComponent } from './my/my.component';
+import { StockChartsComponent } from './stock/stock.charts.component';
 import { StockDetailComponent } from './stock/stock.detail.component';
 import { StockListComponent } from './stock/stock.list.component';
 import { PageNotFoundComponent } from './page.not.found.component';
@@ -20,6 +21,7 @@ export class RouterModuleForRoot {
         let routes: Array<Route> = <any>(new Array<any>());
         RouterModuleForRoot.push(routes, 'stockList', StockListComponent);
         RouterModuleForRoot.push(routes, 'stockDetail/:id', StockDetailComponent);
+        RouterModuleForRoot.push(routes, 'stockCharts/:id', StockChartsComponent);
         RouterModuleForRoot.push(routes, 'command', CommandComponent);
         RouterModuleForRoot.push(routes, 'my', MyComponent);
         RouterModuleForRoot.push(routes, '**', PageNotFoundComponent);

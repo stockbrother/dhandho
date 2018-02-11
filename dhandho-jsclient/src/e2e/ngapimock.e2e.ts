@@ -88,7 +88,7 @@ export class NgApimockTest extends JasmineDescriber {
                     let showChartsButton: ElementFinder = element(by.cssContainingText('#basic-info-of-stock a', 'Show Charts:'));
                     expect(showChartsButton).toBeTruthy();
 
-                    printAll();
+                    // printAll();
 
                     showChartsButton.click();
                     // route to stockCharts Component

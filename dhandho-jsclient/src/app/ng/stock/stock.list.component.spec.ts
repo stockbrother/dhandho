@@ -6,7 +6,6 @@ import forms = require('@angular/forms');
 import platform_browser = require('@angular/platform-browser');
 import router = require('@angular/router');
 import router_testing = require('@angular/router/testing');
-import { AppRoutes } from '../app.routes';
 import { PageNotFoundComponent } from '../page.not.found.component';
 import { CommandComponent } from '../command/command.component';
 import { MyComponent } from '../my/my.component';
@@ -16,7 +15,7 @@ import { TestBedHelper } from '../util/test.bed.helper';
 import { StockListComponent } from './stock.list.component';
 import { StockDetailComponent } from './stock.detail.component';
 import { AngularUnitDescriber } from '../util/angular.unit.describer';
-
+import { RouterModuleForRoot } from '../router.module.for.root';
 import Location = common.Location;
 import HttpClientTestingModule = common_http_testing.HttpClientTestingModule;
 import HttpTestingController = common_http_testing.HttpTestingController;
@@ -97,7 +96,7 @@ export namespace StockListComponentSpec {
          *
          */
         public run() {
-            let testBed: TestBedHelper = new TestBedHelper().imports(FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes(AppRoutes.getRoutes())).declarations(this.unit.compType, StockDetailComponent, CommandComponent, MyComponent, PageNotFoundComponent).providers(Logger).compileComponents();
+            let testBed: TestBedHelper = new TestBedHelper().imports(FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])).declarations(this.unit.compType, StockDetailComponent, CommandComponent, MyComponent, PageNotFoundComponent).providers(Logger).compileComponents();
             this.unit.httpMock = <any>(testBed.get<any>(HttpTestingController));
             this.unit.fixture = testBed.createComponent<any>(this.unit.compType);
             this.unit.de = this.unit.fixture.debugElement;
