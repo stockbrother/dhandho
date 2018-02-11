@@ -3,6 +3,7 @@ import router = require('@angular/router');
 import { CommandComponent } from './command/command.component';
 import { MyComponent } from './my/my.component';
 import { StockDetailComponent } from './stock/stock.detail.component';
+import { StockChartsComponent } from './stock/stock.charts.component';
 import { StockListComponent } from './stock/stock.list.component';
 import { PageNotFoundComponent } from './page.not.found.component';
 
@@ -11,7 +12,9 @@ import Route = router.Route;
 export class AppRoutes {
     public static initialized: boolean = false;
 
-    public static routes: Array<Route>; public static routes_$LI$(): Array<Route> {
+    public static routes: Array<Route>;
+
+    public static routes_$LI$(): Array<Route> {
         if (AppRoutes.routes == null) {
             AppRoutes.routes = <any>(new Array<any>());
         }
@@ -22,6 +25,7 @@ export class AppRoutes {
         if (!AppRoutes.initialized) {
             AppRoutes.push(AppRoutes.routes_$LI$(), 'stockList', StockListComponent);
             AppRoutes.push(AppRoutes.routes_$LI$(), 'stockDetail/:id', StockDetailComponent);
+            AppRoutes.push(AppRoutes.routes_$LI$(), 'stockCharts/:id', StockChartsComponent);
             AppRoutes.push(AppRoutes.routes_$LI$(), 'command', CommandComponent);
             AppRoutes.push(AppRoutes.routes_$LI$(), 'my', MyComponent);
             AppRoutes.push(AppRoutes.routes_$LI$(), '**', PageNotFoundComponent);
@@ -37,9 +41,5 @@ export class AppRoutes {
         routes.push(r);
     }
 }
-AppRoutes['__class'] = 'app.dhojsw.ng.AppRoutes';
-
-
-
 
 AppRoutes.routes_$LI$();

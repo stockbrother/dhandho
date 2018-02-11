@@ -1,4 +1,4 @@
-import { JasmineDescriber } from '../app/dhojsw/util/jasmine.describer';
+import { JasmineDescriber } from '../app/util/jasmine.describer';
 import { printAll } from './util/element.printer';
 import util = require('util');
 import { protractor, browser, element, by, ElementArrayFinder, ElementFinder } from 'protractor';
@@ -84,7 +84,21 @@ export class NgApimockTest extends JasmineDescriber {
                     expect(stockNameTd).toBeTruthy();
                     expect(stockNameTd.getText()).toEqual('市值:9900000000');
                 }
+                {
+                    let showChartsButton: ElementFinder = element(by.cssContainingText('#basic-info-of-stock a', 'Show Charts:'));
+                    expect(showChartsButton).toBeTruthy();
 
+                    printAll();
+
+                    showChartsButton.click();
+                    // route to stockCharts Component
+                    {
+                        printAll();
+                        h2 = element(by.css('h2'));
+                        expect(h2).toBeTruthy();
+                        expect(h2.getText()).toEqual('Stock Charts:000001');
+                    }
+                }
                 done();
             }
 

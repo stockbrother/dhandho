@@ -1,0 +1,24 @@
+{
+	"expression": "api/stock-charts",
+	"method": "POST",
+	"name": "api/stock-charts",
+	"responses": {
+		"first": {
+			"status": 200,
+			"default": true,
+			"data": {
+				"type": "stockCharts",
+				"stockCharts": [
+					"SVG1-TODO",
+					"SVG2-TODO"
+				]
+			}
+		},
+		"internal-server-error": {
+			"status": 500
+		}
+	}
+}
+
+        
+        

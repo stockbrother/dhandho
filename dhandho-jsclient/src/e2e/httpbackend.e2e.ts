@@ -1,6 +1,6 @@
 import http = require('http');
-import { JasmineDescriber } from '../app/dhojsw/util/jasmine.describer';
-import { Logger } from '../app/dhojsw/ng/service/logger';
+import { JasmineDescriber } from '../app/util/jasmine.describer';
+import { Logger } from '../app/ng/service/logger';
 import { browser, by, element } from 'protractor';
 import HttpBackend = require('httpbackend');
 

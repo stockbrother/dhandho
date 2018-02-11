@@ -46,8 +46,8 @@ export class CommandComponent {
     public onButtonClick() {
         let command: string = this.command;
         let requestTime: number = Date.now();
-        let ores: Observable<any> = this.backend.post(this.url, command);
-        ores.toPromise().then(((trequestTime, tcommand) => {
+
+        this.backend.newRequest(this.url).sendRequest(command).then(((trequestTime, tcommand) => {
             return (json) => {
                 this.log.debug(json);
                 this.onResponse(trequestTime, tcommand, json);
@@ -59,6 +59,7 @@ export class CommandComponent {
             this.log.error(t);
             return null;
         });
+
     }
 
     public showChart(): boolean {

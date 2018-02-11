@@ -7,6 +7,7 @@ import { CommandComponent } from './command/command.component';
 import { MyComponent } from './my/my.component';
 import { Logger } from './service/logger';
 import { StockDetailComponent } from './stock/stock.detail.component';
+import { StockChartsComponent } from './stock/stock.charts.component';
 import { StockListComponent } from './stock/stock.list.component';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page.not.found.component';
@@ -22,7 +23,7 @@ import BrowserModule = platform_browser.BrowserModule;
  */
 @NgModule({
     imports: [platform_browser.BrowserModule, FormsModule, HttpClientModule, RouterModuleForRoot.forRoot()],
-    declarations: [AppComponent, MyComponent, CommandComponent, StockListComponent, StockDetailComponent, PageNotFoundComponent],
+    declarations: [AppComponent, MyComponent, CommandComponent, StockListComponent, StockDetailComponent, StockChartsComponent, PageNotFoundComponent],
     bootstrap: [AppComponent], providers: [Logger]
 })
 export class AppModule {
