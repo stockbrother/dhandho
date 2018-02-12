@@ -24,6 +24,7 @@ export class StockChartsComponent extends AbstractComponent implements OnInit {
 
     onRefreshButtonClick(): void {
         this.backend.getStockCharts(this.stockId).then((stockCharts) => {
+            this.log.info('stockCharts response:' + stockCharts);
             this.stockCharts = stockCharts;
         });
     }
@@ -34,6 +35,7 @@ export class StockChartsComponent extends AbstractComponent implements OnInit {
     public ngOnInit() {
         this.route.paramMap.subscribe(params => {
             this.stockId = params.get('id'); //
+            this.onRefreshButtonClick();
         });
 
     }

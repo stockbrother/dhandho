@@ -3,7 +3,7 @@
 	"method": "POST",
 	"name": "api/stock-list",
 	"responses": {
-		"first-entry": {
+		"scenario1": {
 			"status": 200,
 			"default": true,
 			"data": {

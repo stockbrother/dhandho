@@ -4,12 +4,15 @@ import util = require('util');
 import { protractor, browser, element, by, ElementArrayFinder, ElementFinder } from 'protractor';
 import { Logs, promise } from 'selenium-webdriver';
 import { LogsUtil } from './util/e2e.util';
+import { e2e } from './util/element.printer';
+
 let console = LogsUtil.console;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 export class NgApimockTest extends JasmineDescriber {
 
     public run() {
+        e2e.elementPrintAllEnabled = false;
         let ngApimock: any = browser['ngApimock'];
 
         this.it('ngApimock test', () => {
@@ -18,7 +21,7 @@ export class NgApimockTest extends JasmineDescriber {
 
         this.it('test stock list with ngApimock', (done) => {
 
-            ngApimock.selectScenario('api/stock-list', 'first-entry');
+            // ngApimock.selectScenario('api/stock-list', 'scenario1');
             browser.get('/');
             // find route links
             let buttons: ElementArrayFinder = element.all(by.css('a'));
@@ -88,7 +91,7 @@ export class NgApimockTest extends JasmineDescriber {
                     let showChartsButton: ElementFinder = element(by.cssContainingText('#basic-info-of-stock a', 'Show Charts:'));
                     expect(showChartsButton).toBeTruthy();
 
-                    // printAll();
+                    printAll();
 
                     showChartsButton.click();
                     // route to stockCharts Component

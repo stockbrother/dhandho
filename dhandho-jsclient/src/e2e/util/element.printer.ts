@@ -6,6 +6,10 @@ import { LogsUtil } from './e2e.util';
 let console = LogsUtil.console;
 let maxDeep = 1000;
 
+export namespace e2e {
+    export let elementPrintAllEnabled: boolean = false;
+}
+
 interface ParentContext {
     deep: number;
     childCount: number;
@@ -77,6 +81,9 @@ class ElementPrinter {
 }
 
 export function printAll(root?: ElementFinder) {
+    if (!e2e.elementPrintAllEnabled) {
+        return;
+    }
     if (root == null) {
         let body = element(by.tagName('body'));
         expect(body).toBeTruthy('body not found');

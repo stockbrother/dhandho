@@ -3,9 +3,9 @@ import common_http = require('@angular/common/http');
 import core = require('@angular/core');
 import router = require('@angular/router');
 import { Logger } from '../service/logger';
-import { AbstractDataResponseComponent } from '../support/abstract.data.response.component';
+import { AbstractComponent } from '../support/abstract.component';
 import { JsonResponse } from '../support/json.response';
-
+import { BackendInterface } from '../service/backend.interface';
 import HttpClient = common_http.HttpClient;
 import Component = core.Component;
 import OnInit = core.OnInit;
@@ -14,7 +14,7 @@ import ActivatedRoute = router.ActivatedRoute;
     templateUrl: './stock.detail.component.html',
     styleUrls: ['./stock.detail.component.css']
 })
-export class StockDetailComponent extends AbstractDataResponseComponent<JsonResponse> implements OnInit {
+export class StockDetailComponent extends AbstractComponent implements OnInit {
     public stockId: string;
 
     route: ActivatedRoute;
@@ -23,9 +23,8 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
     public unitPrice: number;
     public totalPrice: number;
     public stockName: string;
-    public constructor(http: HttpClient, log: Logger, route: ActivatedRoute) {
-        super(http, '/api/stock-detail', log);
-        this.route = route;
+    constructor(backend: BackendInterface, log: Logger, route: ActivatedRoute) {
+        super(backend, log, route);
     }
 
     public onResponse(requestTime: number, reqBody: any, json: any) {
@@ -43,26 +42,10 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
     }
 
     onRefreshStockDetail(): void {
-        super.sendRequest();
-    }
-
-    /**
-     *
-     * @return {*}
-     */
-    newRequestBody(): any {
-        return '';
-    }
-
-    /**
-     *
-     * @param {number} requestTime
-     * @param {*} reqBody
-     * @param {*} json
-     * @return {JsonResponse}
-     */
-    newResponse(requestTime: number, reqBody: any, json: any): JsonResponse {
-        return new JsonResponse(requestTime, json);
+        let reqTime: number = new Date().getDate();
+        this.backend.newRequest('/api/stock-detail').sendRequest('').then((json) => {
+            this.onResponse(reqTime, '', json);
+        });
     }
 
     /**
@@ -72,6 +55,7 @@ export class StockDetailComponent extends AbstractDataResponseComponent<JsonResp
         // this.stockId = this.route.snapshot.paramMap.get('id');
         this.route.paramMap.subscribe(params => {
             this.stockId = params.get('id'); //
+            this.onRefreshStockDetail();
         });
     }
 }

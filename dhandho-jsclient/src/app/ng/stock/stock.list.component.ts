@@ -1,43 +1,36 @@
 /* Generated from Java with JSweet 2.0.1 - http://www.jsweet.org */
 import common_http = require('@angular/common/http');
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Logger } from '../service/logger';
-import { AbstractDataResponseComponent } from '../support/abstract.data.response.component';
+import { AbstractComponent } from '../support/abstract.component';
+import { BackendInterface } from '../service/backend.interface';
+
 import { JsonResponse } from '../support/json.response';
 
 import HttpClient = common_http.HttpClient;
 
 @Component({ templateUrl: './stock.list.component.html', styleUrls: ['./stock.list.component.css'] })
-export class StockListComponent extends AbstractDataResponseComponent<JsonResponse> implements OnInit {
-    public constructor(http: HttpClient, log: Logger) {
-        super(http, '/api/stock-list', log);
-    }
+export class StockListComponent extends AbstractComponent implements OnInit {
 
-    /**
-     *
-     * @return {*}
-     */
-    newRequestBody(): any {
-        return '';
-    }
 
-    /**
-     *
-     * @param {number} requestTime
-     * @param {*} reqBody
-     * @param {*} json
-     * @return {JsonResponse}
-     */
-    newResponse(requestTime: number, reqBody: any, json: any): JsonResponse {
-        return new JsonResponse(requestTime, json);
+    public responseArray: Array<JsonResponse> = <any>(new Array<any>());
+
+    constructor(backend: BackendInterface, log: Logger, route: ActivatedRoute) {
+        super(backend, log, route);
     }
 
     onRefreshButtonClick(): void {
-        super.sendRequest();
+        let reqTime: number = new Date().getDate();
+        this.backend.newRequest('/api/stock-list').sendRequest('').then((json) => {
+            let jsonR: JsonResponse = new JsonResponse(reqTime, json);
+            this.responseArray.unshift(jsonR);
+        });
     }
     /**
      *
      */
     public ngOnInit() {
+        this.onRefreshButtonClick();
     }
 }

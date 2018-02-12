@@ -12,6 +12,8 @@ import { StockListComponent } from './stock/stock.list.component';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page.not.found.component';
 import { RouterModuleForRoot } from './router.module.for.root';
+import { BackendInterface } from './service/backend.interface';
+
 import HttpClientModule = common_http.HttpClientModule;
 import FormsModule = forms.FormsModule;
 import BrowserModule = platform_browser.BrowserModule;
@@ -24,7 +26,8 @@ import BrowserModule = platform_browser.BrowserModule;
 @NgModule({
     imports: [platform_browser.BrowserModule, FormsModule, HttpClientModule, RouterModuleForRoot.forRoot()],
     declarations: [AppComponent, MyComponent, CommandComponent, StockListComponent, StockDetailComponent, StockChartsComponent, PageNotFoundComponent],
-    bootstrap: [AppComponent], providers: [Logger]
+    bootstrap: [AppComponent], //
+    providers: [Logger, BackendInterface]
 })
 export class AppModule {
 

@@ -1,2 +1,7 @@
 
-<h2>Stock Charts:</h2>
+<h2>Stock Charts:{{stockId}}</h2>
+<button (click)=onRefreshButtonClick()>刷新</button>
+
+<div *ngFor="let chart of stockCharts?.json.stockCharts" class="card">
+	{{chart}}
+</div>
