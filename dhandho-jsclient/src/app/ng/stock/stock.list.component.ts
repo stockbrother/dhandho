@@ -22,7 +22,7 @@ export class StockListComponent extends AbstractComponent implements OnInit {
 
     onRefreshButtonClick(): void {
         let reqTime: number = new Date().getDate();
-        this.backend.newRequest('/api/stock-list').sendRequest('').then((json) => {
+        this.backend.newRequestForStockList().sendRequest('').then((json) => {
             let jsonR: JsonResponse = new JsonResponse(reqTime, json);
             this.responseArray.unshift(jsonR);
         });

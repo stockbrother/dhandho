@@ -43,7 +43,7 @@ export class StockDetailComponent extends AbstractComponent implements OnInit {
 
     onRefreshStockDetail(): void {
         let reqTime: number = new Date().getDate();
-        this.backend.newRequest('/api/stock-detail').sendRequest('').then((json) => {
+        this.backend.newRequestForStockDetail().sendRequest('').then((json) => {
             this.onResponse(reqTime, '', json);
         });
     }

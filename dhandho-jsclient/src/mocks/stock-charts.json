@@ -1,7 +1,7 @@
 {
-	"expression": "api/stock-charts",
+	"expression": "rest/stock-charts",
 	"method": "POST",
-	"name": "api/stock-charts",
+	"name": "rest/stock-charts",
 	"responses": {
 		"first": {
 			"status": 200,

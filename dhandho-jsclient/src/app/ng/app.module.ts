@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page.not.found.component';
 import { RouterModuleForRoot } from './router.module.for.root';
 import { BackendInterface } from './service/backend.interface';
+import { GlobalConfig } from './service/global.config';
 
 import HttpClientModule = common_http.HttpClientModule;
 import FormsModule = forms.FormsModule;
@@ -27,7 +28,7 @@ import BrowserModule = platform_browser.BrowserModule;
     imports: [platform_browser.BrowserModule, FormsModule, HttpClientModule, RouterModuleForRoot.forRoot()],
     declarations: [AppComponent, MyComponent, CommandComponent, StockListComponent, StockDetailComponent, StockChartsComponent, PageNotFoundComponent],
     bootstrap: [AppComponent], //
-    providers: [Logger, BackendInterface]
+    providers: [GlobalConfig, Logger, BackendInterface]
 })
 export class AppModule {
 

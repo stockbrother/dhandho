@@ -1,7 +1,7 @@
 {
-	"expression": "api/stock-list",
+	"expression": "rest/stock-list",
 	"method": "POST",
-	"name": "api/stock-list",
+	"name": "rest/stock-list",
 	"responses": {
 		"scenario1": {
 			"status": 200,

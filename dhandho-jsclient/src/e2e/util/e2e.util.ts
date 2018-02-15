@@ -23,9 +23,10 @@ export class Console {
         });
     }
 
-
 }
 
-export class LogsUtil {
-    static console: Console = new Console();
+export namespace e2e.util {
+    export let elementPrintAllEnabled: boolean = false;
+    export let console: Console = new Console();
+
 }

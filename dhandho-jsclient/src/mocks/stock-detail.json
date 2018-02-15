@@ -1,7 +1,7 @@
 {
-	"expression": "api/stock-detail",
+	"expression": "rest/stock-detail",
 	"method": "POST",
-	"name": "api/stock-detail",
+	"name": "rest/stock-detail",
 	"responses": {
 		"first": {
 			"status": 200,

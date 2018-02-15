@@ -1,5 +1,5 @@
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -8,6 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "noEmit": false,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -18,5 +19,6 @@
     "plugins": [
       { "name": "tslint-language-service"}
     ]
-  }
+  },
+  "includes":["src/**/*"]
 }

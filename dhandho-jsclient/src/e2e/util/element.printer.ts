@@ -1,14 +1,7 @@
 import { protractor, browser, element, by, ElementArrayFinder, ElementFinder } from 'protractor';
 import { Logs, promise } from 'selenium-webdriver';
-import util = require('util');
-import { LogsUtil } from './e2e.util';
 
-let console = LogsUtil.console;
-let maxDeep = 1000;
-
-export namespace e2e {
-    export let elementPrintAllEnabled: boolean = false;
-}
+import { e2e } from './e2e.util';
 
 interface ParentContext {
     deep: number;
@@ -18,6 +11,8 @@ interface ParentContext {
 }
 
 class ElementPrinter {
+
+    static maxDeep: number = 1000;
 
     root: ElementFinder;
     public constructor(root?: ElementFinder) {
@@ -34,7 +29,7 @@ class ElementPrinter {
     private doPrint(pc: ParentContext, ef: ElementFinder): promise.Promise<any> {
         // this.log('doPrint, geting a promise');
         let deep: number = (pc == null ? 0 : (pc.deep + 1));
-        if (deep > maxDeep) {
+        if (deep > ElementPrinter.maxDeep) {
             return promise.rejected('maxDeep exceeded');
         }
 
@@ -81,7 +76,7 @@ class ElementPrinter {
 }
 
 export function printAll(root?: ElementFinder) {
-    if (!e2e.elementPrintAllEnabled) {
+    if (!e2e.util.elementPrintAllEnabled) {
         return;
     }
     if (root == null) {

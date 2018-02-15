@@ -1,7 +1,7 @@
 {
-  "expression": "api/some-post",
+  "expression": "rest/some-post",
   "method": "POST",
-  "name": "api/some-post",
+  "name": "rest/some-post",
   "responses": {
     "successful": {
       "status": 200,

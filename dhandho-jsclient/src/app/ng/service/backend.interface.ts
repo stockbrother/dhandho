@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from './logger';
+import { GlobalConfig } from './global.config';
 
 export class JsonRequestBuilder {
     log: Logger = new Logger();
@@ -40,22 +41,29 @@ export class StockCharts {
 
 @Injectable()
 export class BackendInterface {
-
-    static URL_STOCK_CHARTS = '/api/stock-charts';
-    static URL_STOCK_DETAIL = '/api/stock-detail';
+    static URL_STOCK_LIST = '/rest/stock-list';
+    static URL_STOCK_CHARTS = '/rest/stock-charts';
+    static URL_STOCK_DETAIL = '/rest/stock-detail';
 
     http: HttpClient;
 
     log: Logger;
 
-    constructor(http: HttpClient, log: Logger) {
+    globalConfig: GlobalConfig;
+
+    constructor(http: HttpClient, log: Logger, globalConfig: GlobalConfig) {
         this.http = http;
         this.log = log;
+        this.globalConfig = globalConfig;
     }
 
     newRequest(url: string): JsonRequestBuilder {
         let rt: JsonRequestBuilder = new JsonRequestBuilder(this.http).setUrl(url);
         return rt;
+    }
+
+    newRequestForStockList() {
+        return this.newRequest(BackendInterface.URL_STOCK_LIST);
     }
 
     newRequestForStockCharts() {
