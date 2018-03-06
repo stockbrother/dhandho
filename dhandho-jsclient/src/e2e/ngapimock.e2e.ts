@@ -7,11 +7,15 @@ import { e2e } from './util/e2e.util';
 
 let console = e2e.util.console;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
-
+/**
+ * Running:<br>
+ * npm run e2e
+ */
 export class NgApimockTest extends JasmineDescriber {
 
     public run() {
-        e2e.util.elementPrintAllEnabled = true;
+        // enable / disable printing of elements.
+        e2e.util.elementPrintAllEnabled = false;
         let ngApimock: any = browser['ngApimock'];
 
         this.it('ngApimock test', () => {

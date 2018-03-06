@@ -47,7 +47,6 @@ import cc.dhandho.rest.server.DhoServer;
 import cc.dhandho.rest.server.MetricDefinesLoader;
 import cc.dhandho.rest.web.JettyWebServer;
 import cc.dhandho.util.JsonUtil;
-import junit.framework.TestCase;
 
 public class TestUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);

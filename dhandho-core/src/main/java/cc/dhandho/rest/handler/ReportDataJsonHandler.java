@@ -3,15 +3,20 @@ package cc.dhandho.rest.handler;
 import java.io.IOException;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import cc.dhandho.AllQuotesInfos;
+import cc.dhandho.ReportMetaInfos;
 import cc.dhandho.report.CorpDatedMetricReportData;
+import cc.dhandho.report.MetricDefines;
+import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.query.ReportDataMetricQuery;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
+import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.util.JsonUtil;
 
 /**
@@ -20,6 +25,18 @@ import cc.dhandho.util.JsonUtil;
  *
  */
 public class ReportDataJsonHandler extends AbstractRestRequestHandler {
+	ReportEngine reportEngine;
+	protected MetricDefines metricDefines;
+	protected ReportMetaInfos metaInfos;
+	protected DbProvider dbProvider;
+	@Override
+	public void setContainer(Container app) {	
+		super.setContainer(app);
+		this.dbProvider = app.findComponent(DbProvider.class, true);
+		this.reportEngine = app.findComponent(ReportEngine.class, true);
+		metricDefines = app.findComponent(MetricDefines.class, true);
+		metaInfos = app.findComponent(ReportMetaInfos.class, true);
+	}
 
 	@Override
 	public void handle(RestRequestContext rrc) {

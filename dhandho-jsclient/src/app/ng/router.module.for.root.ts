@@ -37,7 +37,5 @@ export class RouterModuleForRoot {
         routes.push(r);
     }
 }
-RouterModuleForRoot['__class'] = 'app.dhojsw.ng.RouterModuleForRoot';
-
 
 

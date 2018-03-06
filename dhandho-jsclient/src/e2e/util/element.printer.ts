@@ -74,7 +74,11 @@ class ElementPrinter {
     }
 
 }
-
+/**
+ * print all element.
+ *
+ * @param root
+ */
 export function printAll(root?: ElementFinder) {
     if (!e2e.util.elementPrintAllEnabled) {
         return;

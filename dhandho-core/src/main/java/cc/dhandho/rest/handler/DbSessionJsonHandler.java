@@ -3,11 +3,13 @@ package cc.dhandho.rest.handler;
 import java.io.IOException;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
 import com.age5k.jcps.framework.handler.Handler2;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
+import cc.dhandho.rest.server.DbProvider;
 
 /**
  * 
@@ -15,6 +17,14 @@ import cc.dhandho.rest.RestRequestContext;
  *
  */
 public abstract class DbSessionJsonHandler extends AbstractRestRequestHandler {
+
+	DbProvider dbProvider;
+	
+	@Override
+	public void setContainer(Container app) {		
+		super.setContainer(app);
+		this.dbProvider = app.findComponent(DbProvider.class, true);
+	}
 
 	@Override
 	public void handle(RestRequestContext rrc) {

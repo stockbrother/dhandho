@@ -5,10 +5,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
+import com.age5k.jcps.framework.provider.Provider;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
+import cc.dhandho.mycorp.MyCorps;
+import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.chart.SvgChartWriter;
 import cc.dhandho.report.dupont.CenterPointDistanceBasedFilterDupontPointFinder;
 import cc.dhandho.report.dupont.CorpFilter;
@@ -19,10 +23,23 @@ import cc.dhandho.report.dupont.node.EquityMultiplier;
 import cc.dhandho.report.dupont.node.ProfitMarginNode;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
+import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.util.JsonUtil;
 import cc.dhandho.util.SvgUtil;
 
 public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
+
+	Provider<MyCorps> myCorpsProvider;
+	protected ReportEngine reportEngine;
+	DbProvider dbProvider;
+
+	@Override
+	public void setContainer(Container app) {
+		super.setContainer(app);
+		this.dbProvider = app.findComponent(DbProvider.class, true);
+		this.myCorpsProvider = app.findComponentLater(MyCorps.class, true);
+		this.reportEngine = app.findComponent(ReportEngine.class, true);
+	}
 
 	@Override
 	public void handle(RestRequestContext arg0) {
@@ -44,7 +61,7 @@ public class DupontSvgJsonHandler extends AbstractRestRequestHandler {
 		Map<String, CorpPoint> map = dpf.find();
 
 		JsonWriter w = arg0.getWriter();
-		//TODO use new JsonObject,not use writer?
+		// TODO use new JsonObject,not use writer?
 		try {
 			w.beginObject();
 			w.name("type").value("table");

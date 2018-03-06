@@ -5,11 +5,15 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
+import com.age5k.jcps.framework.provider.Provider;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
+import cc.dhandho.mycorp.MyCorps;
+import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.dupont.CenterPointDistanceBasedFilterDupontPointFinder;
 import cc.dhandho.report.dupont.CorpFilter;
 import cc.dhandho.report.dupont.CorpPoint;
@@ -20,10 +24,25 @@ import cc.dhandho.report.dupont.node.ProfitMarginNode;
 import cc.dhandho.rest.AbstractRestRequestHandler;
 import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.TableJsonWriter;
+import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.util.JsonUtil;
 
 public class DupontReportJsonHandler extends AbstractRestRequestHandler {
-
+	
+	protected ReportEngine reportEngine;
+	
+	protected DbProvider dbProvider;
+	
+	protected Provider<MyCorps> myCorpsProvider;
+	
+	@Override
+	public void setContainer(Container app) {	
+		super.setContainer(app);
+		this.reportEngine = app.findComponent(ReportEngine.class, true);
+		this.dbProvider = app.findComponent(DbProvider.class, true);
+		this.myCorpsProvider = app.findComponentLater(MyCorps.class, true);
+	}
+	
 	@Override
 	public void handle(RestRequestContext arg0) {
 		JsonObject req = (JsonObject) JsonUtil.parse(arg0.getReader());

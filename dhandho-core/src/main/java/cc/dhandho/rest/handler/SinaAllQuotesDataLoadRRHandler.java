@@ -5,7 +5,9 @@ import java.io.IOException;
 import org.apache.commons.vfs2.FileObject;
 
 import com.age5k.jcps.JcpsException;
+import com.age5k.jcps.framework.container.Container;
 
+import cc.dhandho.DhoDataHome;
 import cc.dhandho.input.sina.SinaAllQuotesPreprocessor;
 import cc.dhandho.input.sina.SinaQuotesCollector;
 import cc.dhandho.rest.AbstractRestRequestHandler;
@@ -13,6 +15,14 @@ import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.server.InputDataMainLoader;
 
 public class SinaAllQuotesDataLoadRRHandler extends AbstractRestRequestHandler {
+
+	protected DhoDataHome dataHome;
+	
+	@Override
+	public void setContainer(Container app) {	
+		super.setContainer(app);
+		this.dataHome = app.findComponent(DhoDataHome.class, true);
+	}
 
 	@Override
 	public void handle(RestRequestContext rrc) {
