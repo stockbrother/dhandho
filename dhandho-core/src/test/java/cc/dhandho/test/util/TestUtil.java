@@ -14,6 +14,7 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
+import org.junit.Assert;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
@@ -197,6 +198,29 @@ public class TestUtil {
 
 		return new DhandhoCliConsole(newConsoleHome()).server(newInMemoryTestDhandhoServer());
 	}
+	
+	public static Container populateDbWithDefaultDataHomeForTest(Container app) {
+		DbProvider dbProvider = TestUtil.newInMemoryTestDb();
+		DhoDataHome dataHome = TestUtil.getTheDefaultPopulatedDataHomeForTest();
+		ReportMetaInfos metaInfos = new DbReportMetaInfos();
+		MetricDefines metricDefines = new MetricDefinesLoader().load(dataHome);
+		app.addComponent(DhoDataHome.class, dataHome);
+		app.addComponent(MetricDefines.class, metricDefines);	
+		app.addComponent(ReportMetaInfos.class, metaInfos);
+		app.addComponent(DbProvider.class, dbProvider);
+
+		dbProvider.createDbIfNotExist();
+		dbProvider.executeWithDbSession(new MyDataUpgraders());
+
+		// load corp info to DB.
+		CorpInfoInputDataLoader dbu = app.newInstance(CorpInfoInputDataLoader.class);
+		dbProvider.executeWithDbSession(dbu);
+		// load washed data to DB.
+		WashedInputDataLoader wdu = app.newInstance(WashedInputDataLoader.class);
+		dbProvider.executeWithDbSession(wdu);
+
+		return app;
+	}
 
 	public static ReportEngine newInMemoryReportEgine(DbProvider dbProvider) {
 
@@ -294,6 +318,13 @@ public class TestUtil {
 		} finally {
 			web.shutdown();
 		}
+	}
+
+	public static void assertEqual(JsonElement je1, JsonElement je2) {
+		Assert.assertTrue(je1 == null && je2 == null || je1 != null && je2 != null);
+		String jr1 = JsonUtil.toString(je1);
+		String jr2 = JsonUtil.toString(je2);
+		Assert.assertEquals(jr1, jr2);
 	}
 
 }

@@ -19,7 +19,7 @@ public class StockListJsonHandler extends DbSessionJsonHandler {
 	@Override
 	protected void execute(RestRequestContext rrc, ODatabaseSession dbs) throws IOException {
 
-		String sql = "select from " + DbUpgrader0_0_1.V_CORP_INFO + " where 1=1 ";
+		String sql = "select from " + DbUpgrader0_0_1.V_CORP_INFO + " where 1=1 order by corpId";
 
 		DbUtil.executeQuery(dbs, sql, new Object[] {}, new OResultSetHandler<Object>() {
 
@@ -38,10 +38,18 @@ public class StockListJsonHandler extends DbSessionJsonHandler {
 	}
 
 	private Object doProcess(OResultSet rst, JsonReader reader, JsonWriter writer) throws IOException {
+		writer.beginObject();
+		writer.name("type").value("table");
+		writer.name("columnNames").beginArray().value("corpId").value("corpName").endArray();
+		writer.name("rowArray").beginArray();
 		while (rst.hasNext()) {
 			OVertex v = rst.next().getVertex().get();
-			
+			String corpId = v.getProperty("corpId");
+			String corpName = v.getProperty("corpName");
+			writer.beginArray().value(corpId).value(corpName).endArray();
 		}
+		writer.endArray();
+		writer.endObject();
 		return null;
 	}
 
