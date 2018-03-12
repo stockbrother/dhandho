@@ -21,7 +21,6 @@ import cc.dhandho.DbReportMetaInfos;
 import cc.dhandho.report.query.SvgChartMetricQueryBuilder;
 import cc.dhandho.util.JsonUtil;
 
-@Ignore
 public class SvgChartMetricQueryBuilderTest {
 
 	private Logger LOG = LoggerFactory.getLogger(SvgChartMetricQueryBuilderTest.class);

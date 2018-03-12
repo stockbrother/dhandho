@@ -82,3 +82,7 @@ export class BackendInterface {
         });
     }
 }
+
+export class MockBackend extends BackendInterface {
+
+}
