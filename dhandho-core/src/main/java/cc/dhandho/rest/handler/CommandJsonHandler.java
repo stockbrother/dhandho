@@ -23,7 +23,7 @@ public class CommandJsonHandler extends AbstractRestRequestHandler {
 	}
 
 	@Override
-	public void handle(RestRequestContext arg0) {
+	public void handleInternal(RestRequestContext arg0) {
 		JsonObject json = arg0.parseReader();
 		String command = json.get("command").getAsString();
 

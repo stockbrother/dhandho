@@ -30,7 +30,7 @@ public class ShowDbSchemaJsonHandler extends AbstractRestRequestHandler {
 	}
 
 	@Override
-	public void handle(RestRequestContext rrc) {
+	public void handleInternal(RestRequestContext rrc) {
 		// JsonObject req = (JsonObject) rrc.parseReader();
 
 		JsonObject json = this.dbProvider.executeWithDbSession(new Handler3<ODatabaseSession, JsonObject>() {

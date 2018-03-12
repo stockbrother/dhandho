@@ -14,7 +14,7 @@ import cc.dhandho.rest.server.DbProvider;
 /**
  * 
  * @author Wu
- *
+ * @deprecated 
  */
 public abstract class DbSessionJsonHandler extends AbstractRestRequestHandler {
 
@@ -27,7 +27,7 @@ public abstract class DbSessionJsonHandler extends AbstractRestRequestHandler {
 	}
 
 	@Override
-	public void handle(RestRequestContext rrc) {
+	public void handleInternal(RestRequestContext rrc) throws Exception{
 
 		this.dbProvider.executeWithDbSession(new Handler2<ODatabaseSession>() {
 

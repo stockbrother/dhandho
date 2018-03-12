@@ -10,7 +10,7 @@ import cc.dhandho.rest.RestRequestContext;
 public class XueqiuDataWashJsonHandler extends AbstractRestRequestHandler {
 
 	@Override
-	public void handle(RestRequestContext rrc) {
+	public void handleInternal(RestRequestContext rrc) {
 
 		File source = new File("C:\\dhandho\\data\\xueqiu\\raw");
 		File target = new File("C:\\dhandho\\data\\xueqiu\\washed");

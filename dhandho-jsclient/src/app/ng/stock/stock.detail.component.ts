@@ -15,14 +15,14 @@ import ActivatedRoute = router.ActivatedRoute;
     styleUrls: ['./stock.detail.component.css']
 })
 export class StockDetailComponent extends AbstractComponent implements OnInit {
-    public stockId: string;
+    public corpId: string;
 
     route: ActivatedRoute;
 
     public priceDate: string;
     public unitPrice: number;
     public totalPrice: number;
-    public stockName: string;
+    public corpName: string;
     constructor(backend: BackendInterface, log: Logger, route: ActivatedRoute) {
         super(backend, log, route);
     }
@@ -37,7 +37,7 @@ export class StockDetailComponent extends AbstractComponent implements OnInit {
         this.priceDate = <string>Object.getOwnPropertyDescriptor(mapData, 'priceDate').value;
         this.unitPrice = <number>Object.getOwnPropertyDescriptor(mapData, 'unitPrice').value;
         this.totalPrice = <number>Object.getOwnPropertyDescriptor(mapData, 'totalPrice').value;
-        this.stockName = <string>Object.getOwnPropertyDescriptor(mapData, 'stockName').value;
+        this.corpName = <string>Object.getOwnPropertyDescriptor(mapData, 'corpName').value;
 
     }
 
@@ -54,7 +54,7 @@ export class StockDetailComponent extends AbstractComponent implements OnInit {
     public ngOnInit() {
         // this.stockId = this.route.snapshot.paramMap.get('id');
         this.route.paramMap.subscribe(params => {
-            this.stockId = params.get('id'); //
+            this.corpId = params.get('id'); //
             this.onRefreshStockDetail();
         });
     }

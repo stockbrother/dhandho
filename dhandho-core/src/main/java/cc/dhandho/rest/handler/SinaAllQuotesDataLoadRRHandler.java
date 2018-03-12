@@ -25,7 +25,7 @@ public class SinaAllQuotesDataLoadRRHandler extends AbstractRestRequestHandler {
 	}
 
 	@Override
-	public void handle(RestRequestContext rrc) {
+	public void handleInternal(RestRequestContext rrc) {
 		try {
 
 			FileObject sina = dataHome.getInputFolder().resolveFile("sina");

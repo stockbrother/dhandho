@@ -26,7 +26,7 @@ public class SqlQueryJsonHandler extends AbstractRestRequestHandler {
 	}
 
 	@Override
-	public void handle(RestRequestContext rrc) {
+	public void handleInternal(RestRequestContext rrc) {
 		JsonObject req = (JsonObject) rrc.parseReader();
 		String sql = req.get("sql").getAsString();
 

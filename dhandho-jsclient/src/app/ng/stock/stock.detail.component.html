@@ -34,7 +34,7 @@
 						<td><button (click)=onRefreshStockDetail()>刷新</button></td>
 					</tr>
 					<tr>
-						<td>股票名称:{{stockName}}</td>
+						<td>股票名称:{{corpName}}</td>
 					</tr>
 					<tr>
 						<td>股价({{priceDate}}):{{unitPrice}}</td>
@@ -43,8 +43,8 @@
 						<td>市值:{{totalPrice}}</td>
 					</tr>
 					<tr>
-						<td><a routerLink="/stockCharts/{{stockId}}"
-							routerLinkActive="active">Show Charts:{{stockId}}</a></td>
+						<td><a routerLink="/stockCharts/{{corpId}}"
+							routerLinkActive="active">Show Charts:{{corpId}}</a></td>
 					</tr>
 				</tbody>
 			</table>

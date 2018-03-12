@@ -44,7 +44,7 @@ public class DupontReportJsonHandler extends AbstractRestRequestHandler {
 	}
 	
 	@Override
-	public void handle(RestRequestContext arg0) {
+	public void handleInternal(RestRequestContext arg0) {
 		JsonObject req = (JsonObject) JsonUtil.parse(arg0.getReader());
 		String corpId = req.get("corpId").getAsString();
 		int year = req.get("year").getAsInt();

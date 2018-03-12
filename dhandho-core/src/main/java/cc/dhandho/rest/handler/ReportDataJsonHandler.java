@@ -39,7 +39,7 @@ public class ReportDataJsonHandler extends AbstractRestRequestHandler {
 	}
 
 	@Override
-	public void handle(RestRequestContext rrc) {
+	public void handleInternal(RestRequestContext rrc) {
 
 		JsonObject json = (JsonObject) rrc.parseReader();
 		String corpId = json.get("corpId").getAsString();

@@ -59,9 +59,8 @@ public class TestUtil {
 				.dbType(ODatabaseType.MEMORY);
 	}
 
-	public static DbProvider newInMemoryTestDb() {
-		DbProvider rt = new DefaultDbProvider().dbConfig(newInMemoryTestDbConfig());
-		return rt;
+	public static DbProvider newInMemoryTestDbProvider() {
+		return TestUtil.newInMemoryTestDbProvider(false);
 	}
 
 	public static DbConfig newRemoteLocalhostDbConfig() {
@@ -170,6 +169,7 @@ public class TestUtil {
 
 	public static DbProvider newInMemoryTestDbProvider(boolean create) {
 		DbProvider rt = new DefaultDbProvider().dbConfig(newInMemoryTestDbConfig());
+		
 		if (create) {
 			rt.createDbIfNotExist();
 		}
@@ -178,7 +178,7 @@ public class TestUtil {
 	}
 
 	public static DhoServer newInMemoryTestDhandhoServer() {
-		return newInMemoryTestDhandhoServer(TestUtil.newInMemoryTestDb());
+		return newInMemoryTestDhandhoServer(TestUtil.newInMemoryTestDbProvider());
 	}
 
 	public static DhoServer newInMemoryTestDhandhoServer(DbProvider dbp) {
@@ -186,7 +186,7 @@ public class TestUtil {
 	}
 
 	public static DhoServer newInMemoryTestDhandhoServer(DhoDataHome home) {
-		return newInMemoryTestDhandhoServer(TestUtil.newInMemoryTestDb(), home);
+		return newInMemoryTestDhandhoServer(TestUtil.newInMemoryTestDbProvider(), home);
 	}
 
 	public static DhoServer newInMemoryTestDhandhoServer(DbProvider dbp, DhoDataHome home) {
@@ -200,7 +200,7 @@ public class TestUtil {
 	}
 	
 	public static Container populateDbWithDefaultDataHomeForTest(Container app) {
-		DbProvider dbProvider = TestUtil.newInMemoryTestDb();
+		DbProvider dbProvider = TestUtil.newInMemoryTestDbProvider();
 		DhoDataHome dataHome = TestUtil.getTheDefaultPopulatedDataHomeForTest();
 		ReportMetaInfos metaInfos = new DbReportMetaInfos();
 		MetricDefines metricDefines = new MetricDefinesLoader().load(dataHome);

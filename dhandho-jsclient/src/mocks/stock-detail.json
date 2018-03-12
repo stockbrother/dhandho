@@ -12,8 +12,8 @@
 					"unitPrice": 9.9,
 					"priceDate": "2018/02/10T11:11:11+8000",
 					"totalPrice": 9900000000,
-					"stockId": "000001",
-					"stockName": "平安银行"
+					"corpId": "000001",
+					"corpName": "平安银行"
 				}
 			}
 		},

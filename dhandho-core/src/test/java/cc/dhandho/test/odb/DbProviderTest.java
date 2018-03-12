@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 public class DbProviderTest extends TestCase {
 
 	public void test() {
-		DbProvider dbp = TestUtil.newInMemoryTestDb();
+		DbProvider dbp = TestUtil.newInMemoryTestDbProvider();
 		dbp.createDbIfNotExist();
 		System.out.println("done.");
 
