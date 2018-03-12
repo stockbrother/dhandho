@@ -26,6 +26,7 @@ public class RestJettyHandler extends AbstractHandler {
 	@Override
 	public void handle(String s, Request request, HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
+		res.setContentType("text/json;charset=utf-8");
 		String uri = req.getRequestURI();
 		String handlerS = uri.substring(contextPath.length() + 1);
 		
