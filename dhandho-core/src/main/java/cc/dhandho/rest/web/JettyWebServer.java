@@ -37,8 +37,8 @@ public class JettyWebServer implements Server {
 		{
 			// rest service, bridge to dho server for json handling.
 			ContextHandler context = new ContextHandler();
-			context.setContextPath(HandleJettyHandler.contextPath);
-			context.setHandler(new HandleJettyHandler(this.dserver));
+			context.setContextPath(RestJettyHandler.contextPath);
+			context.setHandler(new RestJettyHandler(this.dserver));
 			contexts.addHandler(context);
 		}
 		{
@@ -50,16 +50,7 @@ public class JettyWebServer implements Server {
 			handler.setResourceBase("../dhandho-jsclient/dist");
 			context.setHandler(handler);
 			contexts.addHandler(context);
-		}
-		{
-			// generated js files by jsweet.
-			ContextHandler context = new ContextHandler();
-			context.setContextPath("/web/js");
-			ResourceHandler handler = new ResourceHandler();
-			handler.setResourceBase("target/jsweet/js");
-			context.setHandler(handler);
-			contexts.addHandler(context);
-		}
+		}		
 		{
 			// node_modules
 			ContextHandler context = new ContextHandler();

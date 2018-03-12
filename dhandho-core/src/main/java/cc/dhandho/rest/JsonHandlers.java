@@ -20,6 +20,8 @@ import com.google.gson.JsonNull;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import cc.dhandho.rest.handler.StockDetailJsonHandler;
+import cc.dhandho.rest.handler.StockListJsonHandler;
 import cc.dhandho.util.FileUtil;
 import cc.dhandho.util.JsonUtil;
 
@@ -27,6 +29,8 @@ public class JsonHandlers {
 	private static final Logger LOG = LoggerFactory.getLogger(JsonHandlers.class);
 
 	public static Gson gson = new GsonBuilder().create();
+
+	private Map<String, String> aliasHandlerMap = new HashMap<>();
 
 	private Map<String, RestRequestHandler> handlerMap = new HashMap<>();
 
@@ -36,6 +40,10 @@ public class JsonHandlers {
 
 	public JsonHandlers(Container app) {
 		this.app = app;
+		aliasHandlerMap.put("stock-list", StockListJsonHandler.class.getName());
+		aliasHandlerMap.put("stock-detail", StockDetailJsonHandler.class.getName());
+		// aliasHandlerMap.put("stock-other", StockListJsonHandler.class.getName());
+
 	}
 
 	public void handle(Class<? extends RestRequestHandler> handlerS, JsonReader reader, JsonWriter writer)
@@ -105,14 +113,25 @@ public class JsonHandlers {
 	}
 
 	private RestRequestHandler resolveHandler(String handlerS) {
+
 		RestRequestHandler handler = handlerMap.get(handlerS);
-		if (handler != null) {
+		if (handler != null) {// got in cache
 			return handler;
+		}
+
+		String className = this.aliasHandlerMap.get(handlerS);
+		if (className != null) {
+			handler = handlerMap.get(className);
+			if (handler != null) {
+				return handler;
+			}
+		} else {
+			className = handlerS;
 		}
 
 		try {
 			// TODO cache handler instance.
-			Class handlerClass = Class.forName(handlerS);
+			Class handlerClass = Class.forName(className);
 			handler = (RestRequestHandler) app.newInstance(handlerClass);
 		} catch (ClassNotFoundException e) {
 			throw JcpsException.toRtException(e);

@@ -37,12 +37,16 @@ public class StockDetailJsonHandler extends AbstractRestRequestHandler {
 		writer.name("corpName").value(corpName);
 
 		Double price = this.aqis.getBuyPrice(corpId);
+		if (price == null) {
+			price = 0D;
+		}
+
 		writer.name("unitPrice").value(price);
 		long priceDate = this.aqis.getLastLoaded();
 		writer.name("priceDate").value(priceDate);
-		String metric = "总股本";
+		String metric = "实收资本_或股本_";
 		Double d = this.reportEngine.getMetricValue(corpId, 2016, metric);
-		Double totalPrice = null;
+		Double totalPrice = 0D;
 		if (d != null && price != null) {
 			totalPrice = d.doubleValue() * price.doubleValue();
 		}

@@ -13,12 +13,13 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import cc.dhandho.rest.server.DhoServer;
 
-public class HandleJettyHandler extends AbstractHandler {
+public class RestJettyHandler extends AbstractHandler {
 	DhoServer dserver;
+	
+	public static final String contextPath = "/rest";
+	
 
-	public static final String contextPath = "/handle";
-
-	public HandleJettyHandler(DhoServer dserver) {
+	public RestJettyHandler(DhoServer dserver) {
 		this.dserver = dserver;
 	}
 
@@ -27,6 +28,7 @@ public class HandleJettyHandler extends AbstractHandler {
 			throws IOException, ServletException {
 		String uri = req.getRequestURI();
 		String handlerS = uri.substring(contextPath.length() + 1);
+		
 		Reader reader = req.getReader();
 		Writer writer = res.getWriter();
 
