@@ -196,5 +196,31 @@ public class JsonUtil {
 		return Streams.parse(new JsonReader(new InputStreamReader(is, forName)));
 	}
 
-	
+	public static int[] getAsIntArray(JsonArray array) {
+
+		//
+		int[] rt = new int[array.size()];
+		for (int i = 0; i < rt.length; i++) {
+			rt[i] = array.get(i).getAsInt();
+		}
+		return rt;
+
+	}
+
+	public static JsonArray newJsonArray(int[] is) {
+		JsonArray rt = new JsonArray();
+		for (int vI : is) {
+			rt.add(vI);
+		}
+		return rt;
+	}
+
+	public static JsonArray newJsonArray(String[] is) {
+		JsonArray rt = new JsonArray();
+		for (String vI : is) {
+			rt.add(vI);
+		}
+		return rt;
+	}
+
 }

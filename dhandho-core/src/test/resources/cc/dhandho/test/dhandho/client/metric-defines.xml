@@ -12,6 +12,14 @@
 			<metric ref="总资产收益率" />
 			<metric ref="权益乘数" />
 		</metric>
+		<metric name="利润率" op="*">
+			<metric ref="净利润" />
+			<metric ref="营业总收入" />
+		</metric>
+		<metric name="总资产周转率" op="*">
+			<metric ref="营业总收入" />
+			<metric ref="资产总计" />
+		</metric>		
 		<metric name="毛利率" op="/">
 			<metric ref="营业总收入" />
 			<metric ref="营业成本" />

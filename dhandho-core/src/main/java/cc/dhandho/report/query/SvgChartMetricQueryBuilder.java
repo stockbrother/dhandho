@@ -50,8 +50,17 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 		SvgChartMetricQueryBuilder rt = new SvgChartMetricQueryBuilder(reader, aliasInfos);
 		return rt;
 	}
+	public static SvgChartMetricQueryBuilder newInstance(JsonObject reader, ReportMetaInfos aliasInfos) {
 
+		SvgChartMetricQueryBuilder rt = new SvgChartMetricQueryBuilder(reader, aliasInfos);
+		return rt;
+	}
+	
 	public SvgChartMetricQueryBuilder(JsonReader reader, ReportMetaInfos aliasInfos) {
+		super(reader, aliasInfos);
+	}
+	
+	public SvgChartMetricQueryBuilder(JsonObject reader, ReportMetaInfos aliasInfos) {
 		super(reader, aliasInfos);
 	}
 

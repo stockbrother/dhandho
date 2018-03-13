@@ -33,7 +33,7 @@ public abstract class MetricsQuery<T> implements OResultSetHandler<T> {
 		this.json = json.getAsJsonObject();
 		this.aliasInfos = reportMetaInfos;
 	}
-
+	
 	public T query(DbProvider dbProvider) {
 		return dbProvider.executeWithDbSession(new Handler3<ODatabaseSession, T>() {
 
