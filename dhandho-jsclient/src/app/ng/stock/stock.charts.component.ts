@@ -16,16 +16,16 @@ import ActivatedRoute = router.ActivatedRoute;
     styleUrls: ['./stock.charts.component.css']
 })
 export class StockChartsComponent extends AbstractComponent implements OnInit {
-    public stockId: string;
-    public stockCharts: StockCharts;
+    public corpId: string;
+    public charts: StockCharts;
     constructor(back: BackendInterface, log: Logger, route: ActivatedRoute) {
         super(back, log, route);
     }
 
     onRefreshButtonClick(): void {
-        this.backend.getStockCharts(this.stockId).then((stockCharts) => {
-            this.log.info('stockCharts response:' + stockCharts);
-            this.stockCharts = stockCharts;
+        this.backend.getStockCharts(this.corpId).then((charts) => {
+            this.log.info('charts response:' + charts);
+            this.charts = charts;
         });
     }
 
@@ -34,7 +34,7 @@ export class StockChartsComponent extends AbstractComponent implements OnInit {
      */
     public ngOnInit() {
         this.route.paramMap.subscribe(params => {
-            this.stockId = params.get('id'); //
+            this.corpId = params.get('id'); //
             this.onRefreshButtonClick();
         });
 

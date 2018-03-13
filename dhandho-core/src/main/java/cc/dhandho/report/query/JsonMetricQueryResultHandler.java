@@ -11,6 +11,11 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.age5k.jcps.JcpsException;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.util.JsonUtil;
+/**
+ * @see QueryJsonWrapper
+ * @author Wu
+ *
+ */
 
 public class JsonMetricQueryResultHandler implements OResultSetHandler<JsonArray> {
 

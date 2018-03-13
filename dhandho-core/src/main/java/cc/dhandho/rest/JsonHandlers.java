@@ -20,6 +20,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import cc.dhandho.rest.handler.StockChartsJsonHandler;
 import cc.dhandho.rest.handler.StockDetailJsonHandler;
 import cc.dhandho.rest.handler.StockListJsonHandler;
 import cc.dhandho.util.FileUtil;
@@ -42,7 +43,7 @@ public class JsonHandlers {
 		this.app = app;
 		aliasHandlerMap.put("stock-list", StockListJsonHandler.class.getName());
 		aliasHandlerMap.put("stock-detail", StockDetailJsonHandler.class.getName());
-		// aliasHandlerMap.put("stock-other", StockListJsonHandler.class.getName());
+		aliasHandlerMap.put("stock-charts", StockChartsJsonHandler.class.getName());
 
 	}
 

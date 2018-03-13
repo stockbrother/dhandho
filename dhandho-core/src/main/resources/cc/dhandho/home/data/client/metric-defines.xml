@@ -1,3 +1,8 @@
+<!-- Please note: -->
+<!-- Only when the home folder initializing, this file will be copied to 
+	the <user-home>/.dhandho/client/metric-defines.xml. -->
+<!-- Other wise, the file used might be out-dated,please copy it by yourself. -->
+<!-- See MetricsDefinesLoader.java and the citing code. -->
 <metrics for="xueqiu">
 
 	<group name="COMMON">
@@ -19,7 +24,7 @@
 		<metric name="总资产周转率" op="*">
 			<metric ref="营业总收入" />
 			<metric ref="资产总计" />
-		</metric>		
+		</metric>
 		<metric name="毛利率" op="/">
 			<metric ref="营业总收入" />
 			<metric ref="营业成本" />

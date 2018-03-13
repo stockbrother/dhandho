@@ -74,9 +74,16 @@ export class BackendInterface {
         return this.newRequest(BackendInterface.URL_STOCK_DETAIL);
     }
 
-    getStockCharts(stockId: string): Promise<StockCharts> {
+    getStockCharts(corpId: string): Promise<StockCharts> {
         let req: JsonRequestBuilder = this.newRequestForStockCharts();
-        let body = { stockId: stockId };
+        let body = {
+            corpId: corpId,
+            years: [2016, 2015, 2014, 2013, 2012],
+            metricsArray: [
+                ['净资产收益率'],
+                ['利润率', '总资产周转率', '权益乘数']
+            ]
+        };
         return req.sendRequest(body).then((json) => {
             return new StockCharts(json);
         });

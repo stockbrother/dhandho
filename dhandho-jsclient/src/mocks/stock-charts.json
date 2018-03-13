@@ -7,8 +7,8 @@
 			"status": 200,
 			"default": true,
 			"data": {
-				"type": "stockCharts",
-				"stockCharts": [
+				"type": "charts",
+				"charts": [
 					"SVG1-TODO",
 					"SVG2-TODO"
 				]

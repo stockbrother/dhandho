@@ -92,9 +92,10 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 				// resolve it
 				reportType = aliasInfos.getFirstReportTypeByAlias(alias);
 				if (reportType == null) {
-					throw new JcpsException("not fount alias:" + alias);
+					throw new JcpsException(
+							"not fount alias:" + alias + ",you may need build the request from MetricDefines.java?");
 				}
-				
+
 			}
 			String cI = aliasInfos.getColumnNameByAlias(reportType, alias);
 			if (cI == null) {
@@ -188,7 +189,7 @@ abstract class MetricJsonWrapper extends JsonWrapper {
 			}
 		}
 
-		private void doBuildAvg(StringBuffer sql,ReportMetaInfos aliasInfos) {
+		private void doBuildAvg(StringBuffer sql, ReportMetaInfos aliasInfos) {
 			List<MetricJsonWrapper> childL = this.getChildren();
 			sql.append("(");
 			doBuild("+", sql, aliasInfos);

@@ -17,6 +17,7 @@ import cc.dhandho.report.ReportEngine;
 import cc.dhandho.report.query.JsonArrayMetricsQuery;
 import cc.dhandho.report.query.ReportDataMetricQuery;
 import cc.dhandho.rest.server.DbProvider;
+import cc.dhandho.util.JsonUtil;
 
 public class ReportEngineImpl implements ReportEngine, Container.Aware {
 
@@ -35,6 +36,35 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 		this.dbProvider = app.findComponent(DbProvider.class, true);
 		this.reportMetaInfos = app.findComponent(ReportMetaInfos.class, true);
 		this.metricDefines = app.findComponent(MetricDefines.class, true);
+	}
+
+	@Override
+	public Double[][] getMetricValue(String corpId, int[] year, String[] metric) {
+		JsonObject json = new JsonObject();
+		json.addProperty("corpId", corpId);
+		JsonArray dates = JsonUtil.newJsonArray(year);
+
+		json.add("dates", dates);
+		JsonArray metrics = JsonUtil.newJsonArray(metric);
+		json.add("metrics", metrics);
+
+		JsonReader reader = new JsonReader(new StringReader(json.toString()));
+		JsonArrayMetricsQuery jb = new JsonArrayMetricsQuery(reader, this.reportMetaInfos);
+
+		JsonArray mvalues = jb.query(dbProvider);
+		Double[][] ds = new Double[year.length][];
+		for (int i = 0; i < mvalues.size(); i++) {
+
+			JsonObject row1 = (JsonObject) mvalues.get(i);
+			for (int j = 0; j < metric.length; j++) {
+
+				JsonElement m1 = row1.get("m" + (j + 1));
+				Double d = m1.isJsonNull() ? null : m1.getAsDouble();
+				ds[i][j] = d;
+			}
+
+		}
+		return ds;
 	}
 
 	@Override
@@ -79,7 +109,7 @@ public class ReportEngineImpl implements ReportEngine, Container.Aware {
 
 	@Override
 	public String getCorpName(String corpId) {
-		return this.dbProvider.executeWithDbSession(new CorpNameQueryHandler(corpId));		
+		return this.dbProvider.executeWithDbSession(new CorpNameQueryHandler(corpId));
 	}
 
 }
