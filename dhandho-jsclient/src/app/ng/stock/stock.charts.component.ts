@@ -2,6 +2,7 @@
 import common_http = require('@angular/common/http');
 import core = require('@angular/core');
 import router = require('@angular/router');
+import { DomSanitizer } from '@angular/platform-browser';
 import { Logger } from '../service/logger';
 import { JsonResponse } from '../support/json.response';
 import { BackendInterface, StockCharts } from '../service/backend.interface';
@@ -18,8 +19,10 @@ import ActivatedRoute = router.ActivatedRoute;
 export class StockChartsComponent extends AbstractComponent implements OnInit {
     public corpId: string;
     public charts: StockCharts;
-    constructor(back: BackendInterface, log: Logger, route: ActivatedRoute) {
+    private sanitizer: DomSanitizer;
+    constructor(back: BackendInterface, log: Logger, route: ActivatedRoute, sanitizer: DomSanitizer) {
         super(back, log, route);
+        this.sanitizer = sanitizer;
     }
 
     onRefreshButtonClick(): void {
@@ -29,6 +32,9 @@ export class StockChartsComponent extends AbstractComponent implements OnInit {
         });
     }
 
+    transform(html) {
+        return this.sanitizer.bypassSecurityTrustHtml(html);
+    }
     /**
      *
      */

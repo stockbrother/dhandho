@@ -1,10 +1,14 @@
 
 >.Requisitions
+=========================
 >>.jdk1.8
 	export JAVA_HOME=<path-to-jdk1.8>
 >>.maven
 
+>>.jcps components
+
 >.You may need to Compile
+=========================
 >>.Compile client side:
     Cd ../jsclient and  
     npm build --base-href=/web/    
@@ -12,6 +16,7 @@
 	mvn compile
 	
 >.Or Runing
+=========================
 >>.Start the server:
 	mvn exec:java -Dexec.mainClass=cc.dhandho.Main
 >>.Exit the server:
@@ -20,6 +25,7 @@
 	http://localhost:8080/web/index.html
 			
 >.Usage:
+=========================
 >>.In console:
 	
 >.TODO
