@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build --prod",
+    "build": "ng build --base-href=/web/",
     "test": "ng test",
     "lint": "ng lint",
     "mocks": "node server.js",
