@@ -39,8 +39,17 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import cc.dhandho.ReportMetaInfos;
 import com.age5k.jcps.JcpsException;
 import cc.dhandho.input.xueqiu.DateUtil;
+import cc.dhandho.util.JfreeChartUtil;
 import cc.dhandho.util.JsonUtil;
 
+/**
+ * A sub class of MetricsQuery. Which will handle the result set and build a
+ * jfree chart on that data. The result is a svg format string for being
+ * rendered in a html document.
+ * 
+ * @author Wu
+ *
+ */
 public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 
 	private static Logger LOG = LoggerFactory.getLogger(SvgChartMetricQueryBuilder.class);
@@ -50,20 +59,24 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 		SvgChartMetricQueryBuilder rt = new SvgChartMetricQueryBuilder(reader, aliasInfos);
 		return rt;
 	}
+
 	public static SvgChartMetricQueryBuilder newInstance(JsonObject reader, ReportMetaInfos aliasInfos) {
 
 		SvgChartMetricQueryBuilder rt = new SvgChartMetricQueryBuilder(reader, aliasInfos);
 		return rt;
 	}
-	
+
 	public SvgChartMetricQueryBuilder(JsonReader reader, ReportMetaInfos aliasInfos) {
 		super(reader, aliasInfos);
 	}
-	
+
 	public SvgChartMetricQueryBuilder(JsonObject reader, ReportMetaInfos aliasInfos) {
 		super(reader, aliasInfos);
 	}
 
+	/**
+	 * Here is the method of processing data set.
+	 */
 	@Override
 	public StringBuffer handle(OResultSet req) {
 
@@ -75,7 +88,7 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 		JFreeChart chart = ChartFactory.createLineChart(title, null, null, dataSet, PlotOrientation.VERTICAL, true,
 				true, false);
 
-		//
+		// set the line style.
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		for (int i = 0; i < dataSet.getRowCount(); i++) {
 
@@ -85,49 +98,9 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 
 		//
 
-		int width = this.query.getWidth();
-		int height = this.query.getHeight();
-
-		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-		Document doc = domImpl.createDocument(SVGConstants.SVG_NAMESPACE_URI, "svg", null);
-		SVGGraphics2D svgGenerator = new SVGGraphics2D(doc);
-		svgGenerator.getGeneratorContext().setPrecision(6);
-		chart.draw(svgGenerator, new Rectangle2D.Double(0, 0, width, height), null);
-		Element root = svgGenerator.getRoot();
-		root.setAttribute("viewBox", "0 0 " + width + " " + height);
-
-		// writeXmlWithDiv(width / 1, height / 1, root, writer);
 		StringWriter writer = new StringWriter();
-		writeXml2(root, writer);
+		JfreeChartUtil.writeSvg(chart, this.query.getWidth(), this.query.getHeight(), writer);
 		return writer.getBuffer();
-
-	}
-
-	private static void writeXmlWithDiv(int width, int height, Element root, Writer out) throws IOException {
-		out.write("<html>\n");
-		out.write("<head> <meta charset=\"UTF-8\"/> </head>\n");
-		out.write("<body>\n");
-
-		out.write("<div style=\"width:" + width + "; height:" + height + ";\">\n");
-		writeXml2(root, out);
-		out.write("</div>\n");
-		out.write("</body>\n");
-		out.write("</html>\n");
-		out.flush();
-	}
-
-	private static void writeXml2(Element root, Writer out) {
-		try {
-			TransformerFactory transFactory = TransformerFactory.newInstance();
-			Transformer transformer = transFactory.newTransformer();
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-			transformer.transform(new DOMSource(root), new StreamResult(out));
-		} catch (TransformerException e) {
-			throw new JcpsException(e);
-		}
 
 	}
 
@@ -153,9 +126,13 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 				}
 
 				String mName = this.query.getMetricName(j + 1);
+				if (LOG.isInfoEnabled()) {
+					LOG.info("addValue:" + mValue + "," + mName + "," + yearS);
+				}
 				dataset.addValue(mValue, mName, yearS);
 			}
 		}
+
 		return dataset;
 	}
 

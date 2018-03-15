@@ -18,7 +18,7 @@ import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.util.SVGConstants;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -44,7 +44,7 @@ public class LineChart {
 		int height = 480; /* Height of the image */
 		File lineChart = new File("LineChart.jpeg");
 		// ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
-		ChartUtilities.saveChartAsPNG(new File("LineChart.png"), chart, width, height);
+		ChartUtils.saveChartAsPNG(new File("LineChart.png"), chart, width, height);
 
 		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
 

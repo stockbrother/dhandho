@@ -2,7 +2,7 @@
 <h2>Stock Charts:{{stockId}}</h2>
 <button (click)=onRefreshButtonClick()>刷新</button>
 
-<div *ngFor="let chart of charts?.json.charts" class="card">	
-	<div style="width:600;height:400;" [innerHTML]="transform(chart)">
+<div *ngFor="let chart of charts?.json.charts" >
+	<div [ngStyle]="{'width':'600px', 'height':'400px'}" [innerHTML]="transform(chart)">
 	</div>
 </div>

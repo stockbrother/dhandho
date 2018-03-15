@@ -34,7 +34,7 @@ public class StockChartRestTest {
 	}
 
 	@Test
-	public void test() {
+	public void testChartJsonHandler() {
 		//
 
 		JsonObject jo = new JsonObject();
@@ -47,7 +47,7 @@ public class StockChartRestTest {
 	}
 
 	@Test
-	public void testCharts() {
+	public void testChartsJsonHandler() {
 
 		JsonObject jo = new JsonObject();
 		jo.add("corpId", new JsonPrimitive("000002"));
@@ -55,7 +55,10 @@ public class StockChartRestTest {
 		JsonArray metricsArray = new JsonArray();
 
 		metricsArray.add(JsonUtil.newJsonArray(new String[] { "净资产收益率" }));
-		metricsArray.add(JsonUtil.newJsonArray(new String[] { "利润率", "总资产周转率", "权益乘数" }));
+		metricsArray.add(JsonUtil.newJsonArray(new String[] { "利润率" }));
+		//metricsArray.add(JsonUtil.newJsonArray(new String[] { "总资产周转率" }));
+		//metricsArray.add(JsonUtil.newJsonArray(new String[] { "权益乘数" }));
+		//metricsArray.add(JsonUtil.newJsonArray(new String[] { "利润率", "总资产周转率", "权益乘数" }));
 
 		jo.add("metricsArray", metricsArray);
 

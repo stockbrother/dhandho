@@ -14,6 +14,12 @@ import cc.dhandho.rest.RestRequestContext;
 import cc.dhandho.rest.server.DbProvider;
 import cc.dhandho.util.JsonUtil;
 
+/**
+ * A list of charts with SVG format.
+ * @author Wu
+ *
+ */
+
 public class StockChartsJsonHandler extends AbstractRestRequestHandler {
 
 	AllQuotesInfos aqis;

@@ -5,19 +5,19 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
+//import org.jfree.ui.ApplicationFrame;
+//import org.jfree.ui.RefineryUtilities;
 
-public class LineChart_AWT extends ApplicationFrame {
+public class LineChart_AWT { // extends ApplicationFrame {
 
 	public LineChart_AWT(String applicationTitle, String chartTitle) {
-		super(applicationTitle);
+	//	super(applicationTitle);
 		JFreeChart lineChart = ChartFactory.createLineChart(chartTitle, "Years", "Number of Schools", createDataset(),
 				PlotOrientation.VERTICAL, true, true, false);
 
 		ChartPanel chartPanel = new ChartPanel(lineChart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
-		setContentPane(chartPanel);
+		//setContentPane(chartPanel);
 	}
 
 	private DefaultCategoryDataset createDataset() {
@@ -34,8 +34,8 @@ public class LineChart_AWT extends ApplicationFrame {
 	public static void main(String[] args) {
 		LineChart_AWT chart = new LineChart_AWT("School Vs Years", "Numer of Schools vs years");
 
-		chart.pack();
-		RefineryUtilities.centerFrameOnScreen(chart);
-		chart.setVisible(true);
+		//chart.pack();
+		//RefineryUtilities.centerFrameOnScreen(chart);
+		//chart.setVisible(true);
 	}
 }

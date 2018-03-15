@@ -8,12 +8,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.general.DatasetUtils;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 import com.age5k.jcps.JcpsException;
@@ -58,7 +58,7 @@ public class JFreeChartHandler implements RestRequestHandler {
 				writer.close();
 			}
 			if (true) {
-				ChartUtilities.saveChartAsPNG(new File("tmp.png"), chart, width, height);
+				ChartUtils.saveChartAsPNG(new File("tmp.png"), chart, width, height);
 			}
 			if (false) {
 				BufferedImage image = new BufferedImage(200, 100, BufferedImage.TYPE_INT_RGB);
@@ -67,7 +67,7 @@ public class JFreeChartHandler implements RestRequestHandler {
 				g2.dispose();
 
 				FileOutputStream fos = new FileOutputStream(new File("tmp.png"));
-				byte[] bytes = ChartUtilities.encodeAsPNG(image);
+				byte[] bytes = ChartUtils.encodeAsPNG(image);
 				fos.write(bytes);
 				fos.close();
 
@@ -99,7 +99,7 @@ public class JFreeChartHandler implements RestRequestHandler {
 		Number[][] data = new Integer[][] { { new Integer(-3), new Integer(-2) }, { new Integer(-1), new Integer(1) },
 				{ new Integer(2), new Integer(3) } };
 
-		CategoryDataset dataset = DatasetUtilities.createCategoryDataset("S", "C", data);
+		CategoryDataset dataset = DatasetUtils.createCategoryDataset("S", "C", data);
 
 		return ChartFactory.createLineChart("Line Chart", "Domain", "Range", dataset);
 
