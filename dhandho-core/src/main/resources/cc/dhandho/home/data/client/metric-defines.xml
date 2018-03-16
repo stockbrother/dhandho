@@ -46,6 +46,14 @@
 			<metric ref="期间费用" />
 			<metric ref="营业总收入" />
 		</metric>
+		<metric name="无形资产与商誉" op="+">
+			<metric ref="无形资产" />
+			<metric ref="商誉" />
+		</metric>		
+		<metric name="无形资产与商誉比重" op="/">
+			<metric ref="无形资产与商誉" />
+			<metric ref="资产总计" />
+		</metric>
 		<metric name="有息负债" op="+">
 			<metric ref="长期借款" />
 			<metric ref="短期借款" />
@@ -59,7 +67,7 @@
 		<metric name="有息负债成本" op="/">
 			<metric ref="财务费用" />
 			<metric ref="有息负债" />
-		</metric>
+		</metric>		
 		<metric name="营运资本" op="-">
 			<metric ref="流动资产合计" />
 			<metric ref="流动负债合计" />
