@@ -121,7 +121,7 @@ public class SvgChartMetricQueryBuilder extends MetricsQuery<StringBuffer> {
 				JsonElement jsonI = row.get(mKey);
 
 				Double mValue = null;
-				if (!jsonI.isJsonNull()) {
+				if (jsonI != null && !jsonI.isJsonNull()) {
 					mValue = jsonI.getAsDouble();
 				}
 

@@ -3,14 +3,18 @@ package cc.dhandho.report.query;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.age5k.jcps.JcpsException;
 import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonWriter;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 
-import com.age5k.jcps.JcpsException;
 import cc.dhandho.graphdb.OResultSetHandler;
 import cc.dhandho.util.JsonUtil;
+
 /**
  * @see QueryJsonWrapper
  * @author Wu
@@ -18,6 +22,7 @@ import cc.dhandho.util.JsonUtil;
  */
 
 public class JsonMetricQueryResultHandler implements OResultSetHandler<JsonArray> {
+	private static final Logger LOG = LoggerFactory.getLogger(JsonMetricQueryResultHandler.class);
 
 	public JsonMetricQueryResultHandler() {
 
@@ -36,7 +41,14 @@ public class JsonMetricQueryResultHandler implements OResultSetHandler<JsonArray
 				for (String key : row.getPropertyNames()) {
 					writer.name(key);
 					Object value = row.getProperty(key);
-					String jsonV = row.toJson(value);
+					String jsonV = null;
+					try {
+						jsonV = row.toJson(value);
+					} catch (UnsupportedOperationException e) {
+						LOG.error("", e);
+						// ignore?
+					}
+
 					writer.jsonValue(jsonV);
 				}
 
